@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản Trị Kiến Thức TADA AI</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Be Vietnam Pro', sans-serif; background: #fdfbfa; color: #1f1416; padding: 32px; }
+    .wrap { max-width: 640px; margin: 0 auto; background: #fff; border: 1px solid rgba(128,0,32,0.08); border-radius: 16px; padding: 28px; box-shadow: 0 16px 40px -20px rgba(128,0,32,0.25); }
+    h1 { color: #800020; font-size: 22px; margin-bottom: 6px; }
+    p.sub { color: #6e6063; margin-bottom: 20px; font-size: 14px; }
+    label { display: block; font-weight: 600; margin: 14px 0 6px; font-size: 14px; }
+    input, textarea, button { width: 100%; font-family: inherit; font-size: 15px; border-radius: 8px; border: 1px solid rgba(128,0,32,0.15); padding: 11px 14px; }
+    textarea { min-height: 220px; resize: vertical; }
+    button { background: #800020; color: #fff; border: none; font-weight: 600; cursor: pointer; margin-top: 20px; }
+    button:hover { background: #9e1a38; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    #status { margin-top: 16px; font-size: 14px; padding: 12px; border-radius: 8px; display: none; }
+    #status.ok { display: block; background: rgba(76,175,80,0.12); color: #2e7d32; }
+    #status.err { display: block; background: rgba(211,47,47,0.1); color: #c62828; }
+    .file-row { display: flex; gap: 10px; align-items: center; }
+    .file-row input[type=file] { flex: 1; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Quản Trị Kiến Thức TADA AI</h1>
+    <p class="sub">Thêm văn bản luật / tài liệu Thuế–Kế toán vào kho RAG.</p>
+
+    <label>Mật khẩu Admin</label>
+    <input type="password" id="pwd" placeholder="ADMIN_PASSWORD">
+
+    <label>Tiêu đề</label>
+    <input type="text" id="title" placeholder="Ví dụ: Thông tư 91/2026">
+
+    <label>Tag (tùy chọn)</label>
+    <input type="text" id="tag" placeholder="tax / ke-toan / bhxh">
+
+    <label>Chọn file (.docx / .txt / .md) hoặc dán nội dung</label>
+    <div class="file-row">
+      <input type="file" id="file" accept=".docx,.txt,.md">
+    </div>
+    <textarea id="content" placeholder="Dán nội dung tài liệu vào đây..."></textarea>
+
+    <button id="btn">Ingest vào kho kiến thức</button>
+    <hr style="margin:24px 0; border:none; border-top:1px solid rgba(128,0,32,0.12);">
+
+    <h2 style="color:#800020; font-size:17px; margin-bottom:6px;">Xóa tài liệu cũ (hết hiệu lực)</h2>
+    <p class="sub">Nhập tên văn bản / đường dẫn source để gỡ khỏi kho trước khi thêm bản mới.</p>
+
+    <label>Tên văn bản hoặc source cần xóa</label>
+    <input type="text" id="delSrc" placeholder="Ví dụ: Luat108 hoặc vault/thue-ke-toan/sources/108_2025">
+    <label>Chế độ xóa</label>
+    <select id="delMode" style="width:100%; font-family:inherit; font-size:15px; border-radius:8px; border:1px solid rgba(128,0,32,0.15); padding:11px 14px;">
+      <option value="contains">Chứa chuỗi (khuyên dùng)</option>
+      <option value="exact">Khớp chính xác</option>
+    </select>
+    <button id="btnDel" style="background:#a33; margin-top:16px;">Xóa tài liệu cũ</button>
+
+    <div id="status"></div>
+  </div>
+
+  <script>
+    var API = location.origin; // cung domain voi backend
+    document.getElementById('file').addEventListener('change', function (e) {
+      var f = e.target.files[0];
+      if (!f) return;
+      var r = new FileReader();
+      r.onload = function () {
+        document.getElementById('content').value = r.result;
+        if (!document.getElementById('title').value) {
+          document.getElementById('title').value = f.name.replace(/\.(md|txt)$/i, '');
+        }
+      };
+      r.readAsText(f);
+    });
+
+    document.getElementById('btn').addEventListener('click', async function () {
+      var status = document.getElementById('status');
+      var pwd = document.getElementById('pwd').value;
+      var title = document.getElementById('title').value.trim();
+      var content = document.getElementById('content').value.trim();
+      var tag = document.getElementById('tag').value.trim();
+      var fileInput = document.getElementById('file');
+      var file = fileInput.files[0];
+
+      status.className = '';
+      if (!pwd) { status.className = 'err'; status.textContent = 'Thiếu mật khẩu admin.'; return; }
+      if (!file && (!title || !content)) { status.className = 'err'; status.textContent = 'Chọn file HOẶC điền tiêu đề + nội dung.'; return; }
+
+      var btn = this; btn.disabled = true; btn.textContent = 'Đang xử lý...';
+      try {
+        if (file) {
+          // Upload file .docx/.txt/.md qua multipart -> endpoint /api/admin/upload
+          var form = new FormData();
+          form.append('file', file);
+          if (title) form.append('title', title);
+          if (tag) form.append('tag', tag);
+          var res = await fetch(API + '/api/admin/upload', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + pwd },
+            body: form
+          });
+          var data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Lỗi');
+          status.className = 'ok';
+          status.textContent = '✅ Đã ingest file "' + (title || file.name) + '": ' + data.chunks + ' chunks.';
+          fileInput.value = '';
+        } else {
+          // Paste noi dung -> endpoint /api/admin/ingest
+          var res2 = await fetch(API + '/api/admin/ingest', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + pwd },
+            body: JSON.stringify({ title: title, content: content, tag: tag, source: 'admin-ui' })
+          });
+          var data2 = await res2.json();
+          if (!res2.ok) throw new Error(data2.error || 'Lỗi');
+          status.className = 'ok';
+          status.textContent = '✅ Đã ingest thành công: ' + data2.chunks + ' chunks.';
+          document.getElementById('content').value = '';
+        }
+      } catch (err) {
+        status.className = 'err';
+        status.textContent = '❌ ' + err.message;
+      } finally {
+        btn.disabled = false; btn.textContent = 'Ingest vào kho kiến thức';
+      }
+    });
+
+    document.getElementById('btnDel').addEventListener('click', async function () {
+      var status = document.getElementById('status');
+      var pwd = document.getElementById('pwd').value;
+      var delSrc = document.getElementById('delSrc').value.trim();
+      var delMode = document.getElementById('delMode').value;
+
+      status.className = '';
+      if (!pwd || !delSrc) { status.className = 'err'; status.textContent = 'Thiếu mật khẩu hoặc tên cần xóa.'; return; }
+      if (!confirm('Xóa các chunks khớp "' + delSrc + '"? Thao tác không thể hoàn tác.')) return;
+
+      var btn = this; btn.disabled = true; btn.textContent = 'Đang xóa...';
+      try {
+        var res = await fetch(API + '/api/admin/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + pwd },
+          body: JSON.stringify({ source: delSrc, mode: delMode })
+        });
+        var data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Lỗi');
+        status.className = 'ok';
+        status.textContent = (data.deleted > 0)
+          ? '🗑️ Đã xóa ' + data.deleted + ' chunks khớp "' + delSrc + '".'
+          : 'ℹ️ Không tìm thấy chunks khớp "' + delSrc + '".';
+        document.getElementById('delSrc').value = '';
+      } catch (err) {
+        status.className = 'err';
+        status.textContent = '❌ ' + err.message;
+      } finally {
+        btn.disabled = false; btn.textContent = 'Xóa tài liệu cũ';
+      }
+    });
+  </script>
+</body>
+</html>

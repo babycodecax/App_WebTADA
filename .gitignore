@@ -1,0 +1,63 @@
+# === Python Backend ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+*.egg
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# === Node.js ===
+node_modules/
+.next/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm/
+*.tsbuildinfo
+next-env.d.ts
+
+# === Next.js API ===
+api/node_modules/
+api/.next/
+api/next-env.d.ts
+api/tsconfig.tsbuildinfo
+
+# === Environment / Secrets ===
+.env
+.env.local
+.env.*.local
+*.env
+
+# === OS ===
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# === Obsidian vault ===
+.vault/
+.trash/
+.tmp_extract/
+
+# === Claude Code ===
+.claude/settings.local.json
+
+# === Logs ===
+*.log
+
+# === IDE ===
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.user
+*.vs/

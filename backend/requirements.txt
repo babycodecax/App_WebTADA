@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+rank_bm25
+supabase
+requests
+pydantic
+underthesea
+python-dotenv
