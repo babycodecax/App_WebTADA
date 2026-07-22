@@ -18,13 +18,39 @@ document.addEventListener('DOMContentLoaded', function () {
   var busy = false;
 
   function cleanMd(text) {
-    return (text || '')
+    var cleaned = (text || '')
       .replace(/\*\*(.+?)\*\*/g, '$1')
       .replace(/\*(.+?)\*/g, '$1')
       .replace(/^#+\s*/gm, '')
-      .replace(/\[Nguồn\s*\d+\]/gi, '')
-      .replace(/\s{2,}/g, ' ')
-      .trim();
+
+    // Strip moi dong lien quan den nguon tham khao
+    var lines = cleaned.split(/\r?\n/);
+    var result = [];
+    var inSources = false;
+    for (var i = 0; i < lines.length; i++) {
+      var s = lines[i].trim();
+
+      // Bo dong gioi thieu danh sach nguon — ke ca sai chinh ta "nguồi"
+      if (/(?:nguồ|Nguồ|tài liệu|Tài liệu).*(?:tham khảo|đã dùng|sử dụng)/i.test(s) ||
+          /^Danh\s+sách/i.test(s)) {
+        inSources = true;
+        continue;
+      }
+      if (inSources) {
+        if (!s || s.startsWith('-') || s.startsWith('•') || s.startsWith('*')) continue;
+        inSources = false;
+      }
+
+      // Bo dong bat bang "-" co chua "Nguồn" hoac "Cheatsheet"
+      if (/^-\s*(?:Nguồn|Cheatsheet|glossary|Single Source of Truth|📌|📚)/i.test(s)) continue;
+
+      // Bo inline [Nguon X, ...] bat ky dang nao - quet rong
+      s = s.replace(/\[Nguồn\s*\d+[^\]]*\]/gi, '')
+           .replace(/\s{2,}/g, ' ')
+           .trim();
+      if (s) result.push(s);
+    }
+    return result.join('\n').trim();
   }
 
   function addMsg(text, who) {

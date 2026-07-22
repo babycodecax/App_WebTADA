@@ -3,30 +3,25 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  
+
   // 1. Sticky Header & Active Scroll
-  const header = document.getElementById('header');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
+  var header = document.getElementById('header');
+  window.addEventListener('scroll', function () {
+    header.classList.toggle('scrolled', window.scrollY > 50);
   });
 
   // Mobile Menu Toggle
-  const navToggle = document.getElementById('nav-toggle');
-  const navMenu = document.getElementById('nav-menu');
+  var navToggle = document.getElementById('nav-toggle');
+  var navMenu = document.getElementById('nav-menu');
 
   if (navToggle && navMenu) {
-    navToggle.addEventListener('click', () => {
+    navToggle.addEventListener('click', function () {
       navToggle.classList.toggle('active');
       navMenu.classList.toggle('active');
     });
 
-    // Close menu when clicking links
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
+    document.querySelectorAll('.nav-link').forEach(function (link) {
+      link.addEventListener('click', function () {
         navToggle.classList.remove('active');
         navMenu.classList.remove('active');
       });
@@ -34,37 +29,77 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 2. Services Tab Switcher
-  const tabButtons = document.querySelectorAll('.tab-btn');
-  const tabPanels = document.querySelectorAll('.tab-panel');
+  var tabButtons = document.querySelectorAll('.tab-btn');
+  var tabPanels = document.querySelectorAll('.tab-panel');
 
-  tabButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      // Remove active states
-      tabButtons.forEach(btn => btn.classList.remove('active'));
-      tabPanels.forEach(panel => panel.classList.remove('active'));
+  tabButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      tabButtons.forEach(function (btn) { btn.classList.remove('active'); });
+      tabPanels.forEach(function (panel) { panel.classList.remove('active'); });
 
-      // Add active state to clicked
       button.classList.add('active');
-      const tabId = button.getAttribute('data-tab');
+      var tabId = button.getAttribute('data-tab');
       document.getElementById(tabId).classList.add('active');
     });
   });
 
   // 3. FAQ Accordion
-  const faqItems = document.querySelectorAll('.faq-item');
+  var faqItems = document.querySelectorAll('.faq-item');
 
-  faqItems.forEach(item => {
-    const faqHeader = item.querySelector('.faq-header');
-    faqHeader.addEventListener('click', () => {
-      const isActive = item.classList.contains('active');
-      
-      // Close all first
-      faqItems.forEach(faq => faq.classList.remove('active'));
-      
-      // Toggle current
+  faqItems.forEach(function (item) {
+    var faqHeader = item.querySelector('.faq-header');
+    faqHeader.addEventListener('click', function () {
+      var isActive = item.classList.contains('active');
+      faqItems.forEach(function (f) { f.classList.remove('active'); });
       if (!isActive) {
         item.classList.add('active');
       }
     });
   });
+
+  // 4. Marquee — clone cards for seamless R→L scroll
+  (function () {
+    var tracks = document.querySelectorAll('[data-marquee], [data-marquee-testimonial], [data-marquee-stats]');
+    tracks.forEach(function (track) {
+      var cards = Array.from(track.children);
+      cards.forEach(function (c) { track.appendChild(c.cloneNode(true)); });
+    });
+
+    /* Pause hover */
+    document.querySelectorAll('.marquee-container').forEach(function (c) {
+      c.addEventListener('mouseenter', function () {
+        var t = c.querySelector('.marquee-track');
+        if (t) t.style.animationPlayState = 'paused';
+      });
+      c.addEventListener('mouseleave', function () {
+        var t = c.querySelector('.marquee-track');
+        if (t) t.style.animationPlayState = 'running';
+      });
+    });
+
+    /* Pause 2s on touch */
+    tracks.forEach(function (track) {
+      var timer = null;
+      track.addEventListener('touchstart', function () {
+        clearTimeout(timer);
+        track.style.animationPlayState = 'paused';
+      }, { passive: true });
+      track.addEventListener('touchend', function () {
+        timer = setTimeout(function () { track.style.animationPlayState = 'running'; }, 2000);
+      }, { passive: true });
+    });
+
+    /* Reset animation on tab switch */
+    tabButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        setTimeout(function () {
+          tracks.forEach(function (t) {
+            t.style.animation = 'none';
+            void t.offsetHeight;
+            t.style.animation = '';
+          });
+        }, 60);
+      });
+    });
+  })();
 });

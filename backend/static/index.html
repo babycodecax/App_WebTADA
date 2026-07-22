@@ -117,8 +117,6 @@
           <div class="chatbox-suggest" id="chat-suggest">
             <button>Mốc miễn thuế TNCN 2026?</button>
             <button>Thuế suất thuế TNDN hiện nay là bao nhiêu?</button>
-            <button>Giảm trừ gia cảnh bản thân khi tính thuế TNCN?</button>
-            <button>Hộ kinh doanh cần giấy tờ gì để đăng ký?</button>
           </div>
 
           <div class="chatbox-input-area">
@@ -154,7 +152,8 @@
 
         <!-- ==================== TAB 1: HKD & DOANH NGHIỆP ==================== -->
         <div class="tab-panel active" id="hkd-dn">
-          <div class="services-grid">
+          <div class="marquee-container">
+            <div class="marquee-track" data-marquee>
             
             <div class="service-card">
               <div class="service-card-header">
@@ -251,7 +250,7 @@
               </div>
             </div>
 
-            <div class="service-card" style="grid-column: span 1; margin: 0 auto; width: 100%;">
+            <div class="service-card">
               <div class="service-card-header">
                 <div class="service-icon-box">🏥</div>
                 <div class="service-num">07</div>
@@ -271,11 +270,13 @@
             </div>
 
           </div>
+          </div>
         </div>
 
         <!-- ==================== TAB 2: CÁ NHÂN & NGƯỜI LAO ĐỘNG ==================== -->
         <div class="tab-panel" id="ca-nhan">
-          <div class="services-grid">
+          <div class="marquee-container">
+            <div class="marquee-track" data-marquee>
 
             <div class="service-card">
               <div class="service-card-header">
@@ -336,6 +337,7 @@
 
 
           </div>
+          </div>
         </div>
 
       </div>
@@ -347,26 +349,28 @@
        ========================================== -->
   <section class="stats-section section-padding" id="stats">
     <div class="container">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-num" id="stat-1">100%</div>
-          <div class="stat-title">Hồ Sơ Đúng Hạn</div>
-          <div class="stat-desc">Mọi tờ khai, báo cáo quyết toán đều được nộp chuẩn chỉ đúng ngày quy định.</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num" id="stat-2">500+</div>
-          <div class="stat-title">Doanh Nghiệp & HKD</div>
-          <div class="stat-desc">Được sự tin tưởng hợp tác lâu dài của hàng trăm đơn vị trên toàn quốc.</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num" id="stat-3">0đ</div>
-          <div class="stat-title">Phí Phát Sinh Lạ</div>
-          <div class="stat-desc">Báo giá minh bạch, cam kết không phát sinh bất kỳ khoản phí ngoài luồng nào.</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num" id="stat-4">10+</div>
-          <div class="stat-title">Năm Thực Chiến</div>
-          <div class="stat-desc">Đội ngũ chuyên gia am hiểu sâu sắc thực tế xử lý nghiệp vụ thuế Việt Nam.</div>
+      <div class="stats-marquee-container">
+        <div class="stats-marquee-track" data-marquee-stats>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-1">100%</div>
+            <div class="stat-title">Hồ Sơ Đúng Hạn</div>
+            <div class="stat-desc">Mọi tờ khai, báo cáo quyết toán đều được nộp chuẩn chỉ đúng ngày quy định.</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-2">500+</div>
+            <div class="stat-title">Doanh Nghiệp & HKD</div>
+            <div class="stat-desc">Được sự tin tưởng hợp tác lâu dài của hàng trăm đơn vị trên toàn quốc.</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-3">0đ</div>
+            <div class="stat-title">Phí Phát Sinh Lạ</div>
+            <div class="stat-desc">Báo giá minh bạch, cam kết không phát sinh bất kỳ khoản phí ngoài luồng nào.</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-4">10+</div>
+            <div class="stat-title">Năm Thực Chiến</div>
+            <div class="stat-desc">Đội ngũ chuyên gia am hiểu sâu sắc thực tế xử lý nghiệp vụ thuế Việt Nam.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -383,7 +387,8 @@
         <p class="section-desc single-line">Những phản hồi chân thực từ cá nhân, hộ kinh doanh và doanh nghiệp đã trải nghiệm dịch vụ.</p>
       </div>
 
-      <div class="testimonials-grid">
+      <div class="marquee-container testimonials-marquee">
+        <div class="marquee-track testimonials-track" data-marquee-testimonial>
 
         <!-- Card 1 -->
         <div class="testimonial-card">
@@ -462,8 +467,8 @@
             </div>
           </div>
         </div>
-
-      </div>
+        </div>
+        </div>
 
       <!-- Trust bar -->
       <div class="trust-bar">
@@ -576,7 +581,6 @@
 
   <script>
     window.OB_CONFIG = { apiUrl: '' };
-
   </script>
   <script src="static/js/chatbox.js"></script>
   <script src="static/js/app.js"></script>

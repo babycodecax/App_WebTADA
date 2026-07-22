@@ -9,6 +9,7 @@ import os
 import re
 from typing import Iterator
 
+
 import requests
 from dotenv import load_dotenv
 
@@ -17,48 +18,64 @@ load_dotenv()
 logger = logging.getLogger("obsidian-chatbot.llm")
 
 OPENROUTER_KEY: str = os.getenv("OPENROUTER_KEY", "")
-MODEL_NAME: str = os.getenv("MODEL_NAME", "qwen/qwen-2.5-7b-instruct:free")
-API_URL: str = "http://localhost:20128/v1/chat/completions"
+MODEL_NAME: str = os.getenv("MODEL_NAME", "")
+API_URL: str = "https://openrouter.ai/api/v1/chat/completions"
 # Stream timeout: 30s giua cac token, neu qua lau thi tu dong cut
 _STREAM_SILENT_TIMEOUT = 30.0
 
 # Nhan dien file noi bo (cheatsheet, glossary, index) de che ten nguon
-_CHEATSHEET_RE = re.compile(r'(?:^|[/\\])_?(?:cheatsheet|glossary|_index)', re.IGNORECASE)
+_INTERNAL_SOURCE_RE = re.compile(r'(?:^|[/\\])_?(?:cheatsheet|glossary|_index)', re.IGNORECASE)
 
 _GENERIC_TITLE = "Văn bản pháp luật thuế/kế toán Việt Nam"
 
 
 SYSTEM_PROMPT = (
-    "Ban la tro ly hoi dap thue va ke toan Viet Nam. "
-    "QUY TAC (TUAN THU NGHIEM NGAT):\n"
-    "1. CHI dung thong tin co trong tai lieu tham khao ben duoi de tra loi. KHONG them thong tin khong co trong tai lieu.\n"
-    "2. Tra loi ngan gon, dung trong tam, bang tieng Viet, di thang vao cau tra loi, khong dan dat.\n"
-    "3. KHONG ghi [Nguon X] hay bat ky ky hieu trich dan nao trong doan tra loi. "
-    "Viet noi dung thuan tuy.\n"
-    "4. Neu tai lieu chi de cap mot phan cau hoi: tra loi phan co thong tin, noi ro phan nao chua co trong tai lieu.\n"
-    "5. Neu KHONG co thong tin tra loi trong tai lieu — noi thang 'Tai lieu hien co khong quy dinh/khong de cap van de nay', "
-    "KHONG tu suy luan, KHONG bia thong tin.\n"
-    "6. Sau cau tra loi, cach 1 dong va ghi 'Nguon tham khao:' roi xuong dong, liet ke tung nguon "
-    "theo dinh dang dau gach dau dong (-). Chi liet ke 1 lan o cuoi, khong rai rac.\n"
-    "7. NGHIEM CAM dung ky hieu [Nguon X] trong toan bo cau tra loi. "
-    "Phan nguon tham khao chi ghi ten tai lieu thuc te, khong them so thu tu.\n"
-    "8. QUAN TRONG: Khi liet ke nguon tham khao, CHI duoc ghi ten van ban luat chinh thuc "
-    "(Luật, Nghị định, Thông tư, Quyết định...) KHONG duoc ghi ten file noi bo, "
-    "cheatsheet, glossary, index hay tai lieu tong hop. Neu noi dung lay tu tai lieu "
-    "tong hop, ghi nguon la 'Văn bản pháp luật thuế/kế toán Việt Nam'."
+    "Bạn là trợ lý hỏi đáp về thuế và kế toán Việt Nam. "
+    "QUY TẮC (TUÂN THỦ NGHIÊM NGẶT):\n"
+    "1. CHỈ dùng thông tin có trong tài liệu tham khảo bên dưới để trả lời. KHÔNG thêm thông tin không có trong tài liệu.\n"
+    "2. Trả lời ngắn gọn trong 50 từ, đúng trọng tâm, bằng tiếng Việt, đi thẳng vào câu trả lời, không dẫn dắt.\n"
+    "3. KHÔNG ghi [Nguồn X], (Nguồn X), hay bất kỳ ký hiệu trích dẫn nào trong câu trả lời. "
+    "Viết nội dung thuần túy như bạn đang tư vấn trực tiếp.\n"
+    "4. KHÔNG thêm bất kỳ mục \"Nguồn tham khảo\", \"Danh sách nguồn\", \"Nguồn\" hay danh sách tài liệu nào ở cuối câu trả lời.\n"
+    "5. Nếu tài liệu chỉ đề cập một phần câu hỏi: trả lời phần có thông tin, nói rõ phần nào chưa có trong tài liệu.\n"
+    "KHÔNG tự suy luận, KHÔNG bịa thông tin."
 )
+
+
+def _sanitize_heading(heading: str) -> str:
+    """Bóc phần mô tả file nội bộ khỏi heading, chỉ giữ tên văn bản luật thực tế."""
+    h = heading
+    # Neu heading chua "cheatsheet" hoac "Single Source of Truth", lay phan sau ">" cuoi cung
+    if re.search(r'cheatsheet|glossary|_index|Single Source of Truth', h, re.IGNORECASE):
+        parts = h.split('>')
+        if len(parts) > 1:
+            h = parts[-1]  # lấy phần cuối sau ">" cuối
+    # Xoá icon emoji đầu dòng
+    h = re.sub(r'^[📌🔍📚📖⚖️💰✅❌⚠️➡️👉⭐🌟💡🆕📄🔹▪️]+', '', h).strip()
+    # Xoá nội dung trong ngoặc đơn
+    h = re.sub(r'\s*\([^)]*\)', '', h).strip()
+    return h
 
 
 def _build_messages(question: str, contexts: list[dict]) -> list[dict]:
     ctx_lines = []
     for i, c in enumerate(contexts):
-        # Nếu chunk từ file nội bộ (cheatsheet, glossary, index) thì ẩn tên thật,
-        # dùng tên chung để LLM không cite tên file internal ra người dùng
-        title = _GENERIC_TITLE if _CHEATSHEET_RE.search(c.get("file_path", "")) else c.get("title", "")
+        is_internal = bool(_INTERNAL_SOURCE_RE.search(c.get("file_path", "")))
+        if is_internal:
+            continue
+
+        title = c.get("title", "")
+        heading = c.get("heading", "")
+        if not title:
+            title = _GENERIC_TITLE
+        else:
+            title = _sanitize_heading(title)
+        if heading:
+            heading = _sanitize_heading(heading)
         ctx_lines.append(
             f"--- Tai lieu {i + 1} ---\n"
             f"Tieu de: {title}\n"
-            f"Muc: {c.get('heading', '')}\n"
+            f"Muc: {heading}\n"
             f"Noi dung:\n{c.get('text', '')}"
         )
     ctx_text = "\n\n".join(ctx_lines)

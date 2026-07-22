@@ -776,11 +776,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Service Nav Tabs */
+.services-tabs-container {
+  position: relative;
+  z-index: 1;
+}
+
 .services-tabs {
   display: flex;
   justify-content: center;
   gap: 16px;
   margin-bottom: 50px;
+  position: relative;
+  z-index: 2;
 }
 
 .tab-btn {
@@ -820,10 +827,94 @@ h1, h2, h3, h4, h5, h6 {
 .tab-panel {
   display: none;
   animation: fadeIn 0.6s ease forwards;
+  overflow: hidden;
 }
 
 .tab-panel.active {
   display: block;
+}
+
+/* ==========================================================================
+   MARQUEE - SERVICE CARDS AUTO-SCROLL
+   ========================================================================== */
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  padding: 12px 0;
+  pointer-events: none;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  will-change: transform;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+.marquee-track .service-card {
+  width: 320px;
+  min-width: 280px;
+  flex-shrink: 0;
+  margin: 0;
+  pointer-events: auto;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Testimonials marquee */
+.testimonials-marquee {
+  margin-top: 48px;
+  padding: 12px 0;
+}
+
+.testimonials-track .testimonial-card {
+  width: 380px;
+  min-width: 300px;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+/* Stats marquee */
+.stats-marquee-container {
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  padding: 12px 0;
+  pointer-events: none;
+}
+
+.stats-marquee-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: marquee-scroll 25s linear infinite;
+}
+.stats-marquee-track:hover {
+  animation-play-state: paused;
+}
+.stats-marquee-track .stat-card {
+  width: 280px;
+  min-width: 250px;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .marquee-track .service-card {
+    width: 260px;
+    min-width: 260px;
+  }
 }
 
 @keyframes fadeIn {
