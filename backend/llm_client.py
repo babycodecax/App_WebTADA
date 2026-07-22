@@ -1,11 +1,12 @@
-"""llm_client.py — Gọi OpenRouter streaming (1 model free).
+"""llm_client.py — Goi OpenRouter streaming (1 model free).
 
-Stream từng token qua Server-Sent Events friendly generator.
-Prompt ép model chỉ trả lời dựa trên tài liệu tham khảo, có cite nguồn.
+Stream tung token qua Server-Sent Events friendly generator.
+Prompt ep model chi tra loi dua tren tai lieu tham khao, co cite nguon.
 """
 import json
 import logging
 import os
+import re
 from typing import Iterator
 
 import requests
@@ -18,31 +19,50 @@ logger = logging.getLogger("obsidian-chatbot.llm")
 OPENROUTER_KEY: str = os.getenv("OPENROUTER_KEY", "")
 MODEL_NAME: str = os.getenv("MODEL_NAME", "qwen/qwen-2.5-7b-instruct:free")
 API_URL: str = "http://localhost:20128/v1/chat/completions"
-# Stream timeout: 30s giữa các token, nếu quá lâu thì tự động cut
+# Stream timeout: 30s giua cac token, neu qua lau thi tu dong cut
 _STREAM_SILENT_TIMEOUT = 30.0
+
+# Nhan dien file noi bo (cheatsheet, glossary, index) de che ten nguon
+_CHEATSHEET_RE = re.compile(r'(?:^|[/\\])_?(?:cheatsheet|glossary|_index)', re.IGNORECASE)
+
+_GENERIC_TITLE = "Văn bản pháp luật thuế/kế toán Việt Nam"
 
 
 SYSTEM_PROMPT = (
-    "Bạn là trợ lý hỏi đáp thuế và kế toán Việt Nam. "
-    "QUY TẮC (TUÂN THỦ NGHIÊM NGẶT):\n"
-    "1. CHỈ dùng thông tin có trong tài liệu tham khảo bên dưới để trả lời. KHÔNG thêm thông tin không có trong tài liệu.\n"
-    "2. Trả lời ngắn gọn, đúng trọng tâm, bằng tiếng Việt, đi thẳng vào câu trả lời, không dẫn dắt.\n"
-    "3. KHÔNG ghi [Nguồn X] hay bất kỳ ký hiệu trích dẫn nào trong đoạn trả lời. "
-    "Viết nội dung thuần tuý.\n"
-    "4. Nếu tài liệu chỉ đề cập một phần câu hỏi: trả lời phần có thông tin, nói rõ phần nào chưa có trong tài liệu.\n"
-    "5. Nếu KHÔNG có thông tin trả lời trong tài liệu — nói thẳng 'Tài liệu hiện có không quy định/không đề cập vấn đề này', "
-    "KHÔNG tự suy luận, KHÔNG bịa thông tin.\n"
-    "6. Sau câu trả lời, cách 1 dòng và ghi '📚 Nguồn tham khảo:' rồi xuống dòng, liệt kê từng nguồn "
-    "theo định dạng dấu gạch đầu dòng (-). Chỉ liệt kê 1 lần ở cuối, không rải rác."
+    "Ban la tro ly hoi dap thue va ke toan Viet Nam. "
+    "QUY TAC (TUAN THU NGHIEM NGAT):\n"
+    "1. CHI dung thong tin co trong tai lieu tham khao ben duoi de tra loi. KHONG them thong tin khong co trong tai lieu.\n"
+    "2. Tra loi ngan gon, dung trong tam, bang tieng Viet, di thang vao cau tra loi, khong dan dat.\n"
+    "3. KHONG ghi [Nguon X] hay bat ky ky hieu trich dan nao trong doan tra loi. "
+    "Viet noi dung thuan tuy.\n"
+    "4. Neu tai lieu chi de cap mot phan cau hoi: tra loi phan co thong tin, noi ro phan nao chua co trong tai lieu.\n"
+    "5. Neu KHONG co thong tin tra loi trong tai lieu — noi thang 'Tai lieu hien co khong quy dinh/khong de cap van de nay', "
+    "KHONG tu suy luan, KHONG bia thong tin.\n"
+    "6. Sau cau tra loi, cach 1 dong va ghi 'Nguon tham khao:' roi xuong dong, liet ke tung nguon "
+    "theo dinh dang dau gach dau dong (-). Chi liet ke 1 lan o cuoi, khong rai rac.\n"
+    "7. NGHIEM CAM dung ky hieu [Nguon X] trong toan bo cau tra loi. "
+    "Phan nguon tham khao chi ghi ten tai lieu thuc te, khong them so thu tu.\n"
+    "8. QUAN TRONG: Khi liet ke nguon tham khao, CHI duoc ghi ten van ban luat chinh thuc "
+    "(Luật, Nghị định, Thông tư, Quyết định...) KHONG duoc ghi ten file noi bo, "
+    "cheatsheet, glossary, index hay tai lieu tong hop. Neu noi dung lay tu tai lieu "
+    "tong hop, ghi nguon la 'Văn bản pháp luật thuế/kế toán Việt Nam'."
 )
 
 
 def _build_messages(question: str, contexts: list[dict]) -> list[dict]:
-    ctx_text = "\n\n".join(
-        f"[Nguồn {i + 1}] {c.get('title', '')} > {c.get('heading', '')}\n{c.get('text', '')}"
-        for i, c in enumerate(contexts)
-    )
-    user = f"Tài liệu tham khảo:\n{ctx_text}\n\nCâu hỏi: {question}"
+    ctx_lines = []
+    for i, c in enumerate(contexts):
+        # Nếu chunk từ file nội bộ (cheatsheet, glossary, index) thì ẩn tên thật,
+        # dùng tên chung để LLM không cite tên file internal ra người dùng
+        title = _GENERIC_TITLE if _CHEATSHEET_RE.search(c.get("file_path", "")) else c.get("title", "")
+        ctx_lines.append(
+            f"--- Tai lieu {i + 1} ---\n"
+            f"Tieu de: {title}\n"
+            f"Muc: {c.get('heading', '')}\n"
+            f"Noi dung:\n{c.get('text', '')}"
+        )
+    ctx_text = "\n\n".join(ctx_lines)
+    user = f"Tai lieu tham khao:\n{ctx_text}\n\nCau hoi: {question}"
     return [
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user", "content": user},
@@ -50,9 +70,9 @@ def _build_messages(question: str, contexts: list[dict]) -> list[dict]:
 
 
 def stream_answer(question: str, contexts: list[dict]) -> Iterator[str]:
-    """Yield từng đoạn text (delta) từ OpenRouter. Ném lỗi rõ ràng nếu fail."""
+    """Yield tung doan text (delta) tu OpenRouter. Nem loi ro rang neu fail."""
     if not OPENROUTER_KEY:
-        raise RuntimeError("Thiếu OPENROUTER_KEY trong .env (lấy tại openrouter.ai/keys)")
+        raise RuntimeError("Thieu OPENROUTER_KEY trong .env (lay tai openrouter.ai/keys)")
     payload = {
         "model": MODEL_NAME,
         "messages": _build_messages(question, contexts),
@@ -70,10 +90,10 @@ def stream_answer(question: str, contexts: list[dict]) -> Iterator[str]:
         )
         resp.raise_for_status()
     except Exception as exc:  # noqa: BLE001
-        logger.exception("Gọi OpenRouter thất bại")
-        raise RuntimeError(f"OpenRouter lỗi: {exc}") from exc
+        logger.exception("Goi OpenRouter that bai")
+        raise RuntimeError(f"OpenRouter loi: {exc}") from exc
 
-    # Set timeout cho stream để không treo nếu server ngừng gửi
+    # Set timeout cho stream de khong tre neu server ngung gui
     _raw = getattr(resp.raw, "_fp", None)
     _sock = getattr(_raw, "_sock", None) if hasattr(_raw, "_sock") else _raw
     if hasattr(_sock, "settimeout"):
@@ -97,4 +117,4 @@ def stream_answer(question: str, contexts: list[dict]) -> Iterator[str]:
             except (json.JSONDecodeError, KeyError, IndexError):
                 continue
     except Exception as exc:  # noqa: BLE001
-        logger.warning("Stream OpenRouter bị gián đoạn: %s", exc)
+        logger.warning("Stream OpenRouter bi gian doan: %s", exc)

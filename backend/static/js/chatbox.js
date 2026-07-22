@@ -49,24 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function showSources(sources) {
-    if (!sources || !sources.length) return;
-    var box = document.createElement('div');
-    box.className = 'chat-sources';
-    sources.forEach(function (s) {
-      var heading = [s.title, s.heading].filter(Boolean).join(' › ');
-      var item = document.createElement('div');
-      item.className = 'chat-source';
-      var label = document.createElement('b');
-      label.textContent = '📚 Nguồn: ';
-      item.appendChild(label);
-      item.appendChild(document.createTextNode(cleanMd(heading)));
-      box.appendChild(item);
-    });
-    messagesEl.appendChild(box);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-  }
-
   function autoGrow() {
     inputEl.style.height = 'auto';
     inputEl.style.height = Math.min(inputEl.scrollHeight, 140) + 'px';
