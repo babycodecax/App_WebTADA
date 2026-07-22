@@ -14,11 +14,14 @@ App_WebTADA/
 │   ├── llm_client.py             ← OpenRouter SSE streaming
 │   ├── requirements.txt
 │   └── .env                      ← Supabase + OpenRouter credentials
-├── vault/                        ← Kho tri thức (từ ai-second-brain)
+├── vault/                        ← Kho tri thức gốc
 │   ├── thue-ke-toan/             ← ~281 notes .md thuế/kế toán
 │   └── legal/                    ← Văn bản pháp luật
-├── docs/                         ← Tài liệu dự án, QA test
-├── start.bat                     ← Khởi động nhanh
+├── tools/                        ← Công cụ xử lý tài liệu
+│   ├── extract_docx.py           ← Trích xuất .docx → text
+│   ├── split_docx_to_notes.py    ← Tách .docx thành notes .md
+│   └── ...
+├── claude-code.bat               ← Shortcut chạy Claude Code
 └── .gitignore
 ```
 

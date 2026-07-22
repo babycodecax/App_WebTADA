@@ -48,6 +48,10 @@ Thumbs.db
 .trash/
 .tmp_extract/
 
+# === Tools ===
+tools/DataTest/
+tools/memory/
+
 # === Claude Code ===
 .claude/settings.local.json
 

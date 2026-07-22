@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Obsidian RAG Chatbox — Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="widget.css" />
+  <style>
+    .demo-wrap { max-width: 1080px; margin: 0 auto; padding: 64px 24px 120px; }
+    .embed-hint code { color: var(--accent); background: var(--accent-soft); padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <main class="demo-wrap">
+    <div class="demo-kicker">Obsidian RAG Chatbox</div>
+    <h1 class="demo-title">Hỏi đáp thuế &amp; kế toán<br />từ kho tri thức của bạn</h1>
+    <p class="demo-sub">
+      Trợ lý ảo truy xuất trực tiếp từ Obsidian Vault, dùng BM25 + mô hình ngôn ngữ miễn phí.
+      Nhấn nút trò chuyện góc dưới bên phải để thử.
+    </p>
+    <div class="embed-hint">
+      Nhúng vào bất kỳ trang nào: thêm 2 dòng sau vào <code>&lt;head&gt;</code> hoặc cuối <code>&lt;body&gt;</code>:<br />
+      <code>&lt;link rel="stylesheet" href="https://your-domain/static/widget.css"&gt;</code><br />
+      <code>&lt;script src="https://your-domain/static/widget.js"&gt;&lt;/script&gt;</code>
+    </div>
+  </main>
+
+  <script>
+    window.OB_CONFIG = { apiUrl: "", title: "Trợ lý Thuế & Kế toán", subtitle: "Từ kho tri thức Obsidian" };
+  </script>
+  <script src="widget.js"></script>
+</body>
+</html>
