@@ -55,6 +55,10 @@ tools/memory/
 # === Claude Code ===
 .claude/settings.local.json
 
+# === Playwright test artifacts ===
+.playwright-mcp/
+*.png
+
 # === Logs ===
 *.log
 
