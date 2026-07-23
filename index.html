@@ -38,6 +38,25 @@
           </svg>
           0986.4242.86
         </a>
+        <!-- Auth button: hiện khi chưa login -->
+        <button class="btn btn-google" id="btn-login" style="display:none">
+          <svg class="btn-icon" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
+            <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Đăng nhập
+        </button>
+        <!-- Avatar user: hiện khi đã login -->
+        <div class="user-avatar" id="user-avatar" style="display:none">
+          <img id="avatar-img" src="" alt="Avatar">
+          <div class="user-dropdown" id="user-dropdown">
+            <span id="user-name">User</span>
+            <span id="user-email" style="font-size:12px;color:var(--text-muted-dark)"></span>
+            <button class="btn-logout" id="btn-logout">Đăng xuất</button>
+          </div>
+        </div>
       </div>
 
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle Navigation">
@@ -122,6 +141,25 @@
           <div class="chatbox-input-area">
             <textarea class="chatbox-input" id="chat-input" rows="1" placeholder="Nhập câu hỏi của bạn..."></textarea>
             <button class="chatbox-send" id="chat-send" aria-label="Gửi">➤</button>
+          </div>
+
+          <!-- Auth overlay: hiện khi hết 3 câu free -->
+          <div class="chatbox-auth-overlay" id="chat-auth-overlay">
+            <div class="chatbox-auth-box">
+              <div class="chatbox-auth-icon">🔒</div>
+              <h3>Cần đăng nhập để tiếp tục hỏi</h3>
+              <p>Đăng nhập tài khoản Google để sử dụng đầy đủ tính năng của TADA.</p>
+              <button class="btn btn-google btn-auth-google" id="btn-auth-google">
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
+                  <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                  <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Đăng nhập với Google
+              </button>
+              <p class="chatbox-auth-note">Chỉ cần tài khoản Google, miễn phí.</p>
+            </div>
           </div>
         </div>
 
@@ -579,10 +617,150 @@
     </div>
   </footer>
 
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script>
     window.OB_CONFIG = { apiUrl: '' };
   </script>
   <script src="js/chatbox.js"></script>
   <script src="js/app.js"></script>
+  <script>
+    /* ====================================
+       AUTH — Supabase Google OAuth
+       ==================================== */
+    (function () {
+      var SUPABASE_URL = '', SUPABASE_ANON_KEY = '';
+      var MAX_FREE = 3;
+      var FREE_KEY = 'tada_free_count';
+      var supabase = null;
+      var session = null;
+
+      /* Lấy config từ backend */
+      fetch('/api/config')
+        .then(function (r) { return r.json(); })
+        .then(function (cfg) {
+          SUPABASE_URL = cfg.supabaseUrl;
+          SUPABASE_ANON_KEY = cfg.supabaseAnonKey;
+          if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
+          supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+          // Lang nghe auth state change ngay sau khi tao client
+          supabase.auth.onAuthStateChange(function (event, sess) {
+            if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+              session = sess;
+              updateUI();
+            } else if (event === 'SIGNED_OUT') {
+              session = null;
+              updateUI();
+            }
+          });
+          checkSession();
+        })
+        .catch(function () { console.warn('Không lấy được config.'); });
+
+      function checkSession() {
+        if (!supabase) return;
+        supabase.auth.getSession().then(function (res) {
+          if (res.error) return;
+          session = res.data.session;
+          updateUI();
+        });
+      }
+
+      function updateUI() {
+        var loginBtn = document.getElementById('btn-login');
+        var avatar = document.getElementById('user-avatar');
+        var chatbox = document.getElementById('chatbox');
+        if (!loginBtn || !avatar || !chatbox) return;
+
+        if (session) {
+          loginBtn.style.display = 'none';
+          avatar.style.display = 'flex';
+          var img = document.getElementById('avatar-img');
+          if (img) img.src = session.user.user_metadata.avatar_url || '';
+          var name = document.getElementById('user-name');
+          if (name) name.textContent = session.user.user_metadata.full_name || session.user.email || 'User';
+          var email = document.getElementById('user-email');
+          if (email) email.textContent = session.user.email || '';
+          chatbox.dataset.loggedIn = 'true';
+          localStorage.removeItem(FREE_KEY);
+          document.querySelectorAll('.chatbox-auth-overlay').forEach(function (o) { o.classList.remove('active'); });
+        } else {
+          loginBtn.style.display = 'inline-flex';
+          avatar.style.display = 'none';
+          chatbox.dataset.loggedIn = 'false';
+          chatbox.dataset.freeCount = localStorage.getItem(FREE_KEY) || '0';
+        }
+      }
+
+      /* Login - Google OAuth */
+      document.addEventListener('click', function (e) {
+        var btn = e.target.closest('#btn-login') || e.target.closest('#btn-auth-google');
+        if (!btn || !supabase) return;
+        supabase.auth.signInWithOAuth({ provider: 'google' });
+        // Dong dropdown neu dang mo
+        document.getElementById('user-avatar')?.classList.remove('active');
+      });
+
+      /* Toggle dropdown khi click avatar */
+      document.addEventListener('click', function (e) {
+        var avatar = document.getElementById('user-avatar');
+        if (!avatar) return;
+        if (e.target.closest('#user-avatar')) {
+          avatar.classList.toggle('active');
+        } else {
+          avatar.classList.remove('active');
+        }
+      });
+
+      /* Logout */
+      document.addEventListener('click', function (e) {
+        var btn = e.target.closest('#btn-logout');
+        if (!btn || !supabase) return;
+        supabase.auth.signOut().then(function () {
+          session = null;
+          updateUI();
+          localStorage.removeItem(FREE_KEY);
+        }).catch(function (e) { console.error(e); });
+      });
+
+      /* Lắng nghe auth state change (da chuyen len sau createClient) */
+
+      /* Hàm public */
+      window.TADA_AUTH = {
+        canAsk: function () {
+          if (session) return true;
+          var count = parseInt(localStorage.getItem(FREE_KEY) || '0', 10);
+          return count < MAX_FREE;
+        },
+        useQuestion: function () {
+          if (session) return;
+          var count = parseInt(localStorage.getItem(FREE_KEY) || '0', 10);
+          localStorage.setItem(FREE_KEY, String(count + 1));
+          var chatbox = document.getElementById('chatbox');
+          if (chatbox) chatbox.dataset.freeCount = String(count + 1);
+        },
+        isLoggedIn: function () { return !!session; },
+        remainingFree: function () {
+          if (session) return Infinity;
+          return MAX_FREE - (parseInt(localStorage.getItem(FREE_KEY) || '0', 10));
+        },
+        log: function (action, detail, qCount) {
+          if (!session) return;
+          var email = session.user.email || '';
+          var name = session.user.user_metadata?.full_name || '';
+          fetch('/api/log', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: email,
+              user_name: name,
+              action: action,
+              detail: detail || '',
+              question_count: qCount || 0
+            })
+          }).catch(function () {});
+        }
+      };
+    })();
+  </script>
 </body>
 </html>

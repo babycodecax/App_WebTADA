@@ -1,14 +1,12 @@
-"""llm_client.py — Goi OpenRouter streaming (1 model free).
-
-Stream tung token qua Server-Sent Events friendly generator.
-Prompt ep model chi tra loi dua tren tai lieu tham khao, co cite nguon.
+"""llm_client.py — Gọi LLM qua OpenAI-compatible API.
+Dùng chung cho OpenAI, Groq, OpenRouter, Together, Ollama, v.v.
+Chỉ cần đổi biến môi trường, KHÔNG sửa code.
 """
 import json
 import logging
 import os
 import re
 from typing import Iterator
-
 
 import requests
 from dotenv import load_dotenv
@@ -17,13 +15,17 @@ load_dotenv()
 
 logger = logging.getLogger("obsidian-chatbot.llm")
 
-OPENROUTER_KEY: str = os.getenv("OPENROUTER_KEY", "")
-MODEL_NAME: str = os.getenv("MODEL_NAME", "")
-API_URL: str = "https://openrouter.ai/api/v1/chat/completions"
-# Stream timeout: 30s giua cac token, neu qua lau thi tu dong cut
+# === Cấu hình từ environment variables ===
+LLM_API_KEY: str = os.getenv("LLM_API_KEY", os.getenv("OPENROUTER_KEY", ""))
+LLM_API_BASE_URL: str = os.getenv("LLM_API_BASE_URL", "")
+LLM_MODEL: str = os.getenv("LLM_MODEL", "")
+LLM_MAX_TOKENS: int = int(os.getenv("LLM_MAX_TOKENS", "1024"))
+LLM_TEMPERATURE: float = float(os.getenv("LLM_TEMPERATURE", "0.3"))
+
+# Stream timeout: 30s giữa các token
 _STREAM_SILENT_TIMEOUT = 30.0
 
-# Nhan dien file noi bo (cheatsheet, glossary, index) de che ten nguon
+# Nhận diện file nội bộ (cheatsheet, glossary, index) để che tên nguồn
 _INTERNAL_SOURCE_RE = re.compile(r'(?:^|[/\\])_?(?:cheatsheet|glossary|_index)', re.IGNORECASE)
 
 _GENERIC_TITLE = "Văn bản pháp luật thuế/kế toán Việt Nam"
@@ -45,14 +47,11 @@ SYSTEM_PROMPT = (
 def _sanitize_heading(heading: str) -> str:
     """Bóc phần mô tả file nội bộ khỏi heading, chỉ giữ tên văn bản luật thực tế."""
     h = heading
-    # Neu heading chua "cheatsheet" hoac "Single Source of Truth", lay phan sau ">" cuoi cung
     if re.search(r'cheatsheet|glossary|_index|Single Source of Truth', h, re.IGNORECASE):
         parts = h.split('>')
         if len(parts) > 1:
-            h = parts[-1]  # lấy phần cuối sau ">" cuối
-    # Xoá icon emoji đầu dòng
+            h = parts[-1]
     h = re.sub(r'^[📌🔍📚📖⚖️💰✅❌⚠️➡️👉⭐🌟💡🆕📄🔹▪️]+', '', h).strip()
-    # Xoá nội dung trong ngoặc đơn
     h = re.sub(r'\s*\([^)]*\)', '', h).strip()
     return h
 
@@ -87,30 +86,50 @@ def _build_messages(question: str, contexts: list[dict]) -> list[dict]:
 
 
 def stream_answer(question: str, contexts: list[dict]) -> Iterator[str]:
-    """Yield tung doan text (delta) tu OpenRouter. Nem loi ro rang neu fail."""
-    if not OPENROUTER_KEY:
-        raise RuntimeError("Thieu OPENROUTER_KEY trong .env (lay tai openrouter.ai/keys)")
+    """Yield từng đoạn text (delta) từ LLM qua OpenAI-compatible API."""
+    if not LLM_API_KEY:
+        raise RuntimeError(
+            "Thiếu LLM_API_KEY (hoặc OPENROUTER_KEY) trong .env. "
+            "Đặt tại: https://openrouter.ai/keys hoặc https://platform.openai.com/api-keys"
+        )
+
+    # Chuẩn hoá base_url: loại bỏ /chat/completions nếu người dùng vô tình thêm
+    base = LLM_API_BASE_URL.rstrip("/")
+    if base.endswith("/chat/completions"):
+        base = base[: -len("/chat/completions")]
+    elif base.endswith("/v1"):
+        pass  # ok
+    elif not base.endswith("/v1"):
+        base += "/v1"
+
     payload = {
-        "model": MODEL_NAME,
+        "model": LLM_MODEL,
         "messages": _build_messages(question, contexts),
         "stream": True,
+        "max_tokens": LLM_MAX_TOKENS,
+        "temperature": LLM_TEMPERATURE,
     }
     headers = {
-        "Authorization": f"Bearer {OPENROUTER_KEY}",
+        "Authorization": f"Bearer {LLM_API_KEY}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "http://localhost:8000",
-        "X-Title": "Obsidian RAG Chatbox",
     }
+
+    logger.info("LLM call: %s, model=%s", base + "/chat/completions", LLM_MODEL)
+
     try:
         resp = requests.post(
-            API_URL, json=payload, headers=headers, stream=True, timeout=60
+            base + "/chat/completions",
+            json=payload,
+            headers=headers,
+            stream=True,
+            timeout=60,
         )
         resp.raise_for_status()
     except Exception as exc:  # noqa: BLE001
-        logger.exception("Goi OpenRouter that bai")
-        raise RuntimeError(f"OpenRouter loi: {exc}") from exc
+        logger.exception("Gọi LLM thất bại")
+        raise RuntimeError(f"LLM lỗi: {exc}") from exc
 
-    # Set timeout cho stream de khong tre neu server ngung gui
+    # Set timeout cho stream
     _raw = getattr(resp.raw, "_fp", None)
     _sock = getattr(_raw, "_sock", None) if hasattr(_raw, "_sock") else _raw
     if hasattr(_sock, "settimeout"):
@@ -134,4 +153,4 @@ def stream_answer(question: str, contexts: list[dict]) -> Iterator[str]:
             except (json.JSONDecodeError, KeyError, IndexError):
                 continue
     except Exception as exc:  # noqa: BLE001
-        logger.warning("Stream OpenRouter bi gian doan: %s", exc)
+        logger.warning("Stream LLM bị gián đoạn: %s", exc)

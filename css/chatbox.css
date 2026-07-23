@@ -223,3 +223,162 @@
   color: var(--primary-burgundy);
   font-weight: 600;
 }
+
+/* ---- Auth overlay (hết 3 câu free) ---- */
+.chatbox-auth-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 5, 7, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.chatbox-auth-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.chatbox-auth-box {
+  background: #fff;
+  border-radius: var(--border-radius-md);
+  padding: 40px 32px 32px;
+  max-width: 360px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+}
+.chatbox-auth-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.chatbox-auth-box h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-burgundy);
+  margin: 0 0 8px;
+}
+.chatbox-auth-box p {
+  font-size: 14px;
+  color: var(--text-muted-dark);
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+.btn-auth-google {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--border-radius-sm);
+  border: 2px solid var(--border-light);
+  background: #fff;
+  color: var(--text-dark);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.btn-auth-google:hover {
+  border-color: var(--accent-gold);
+  background: var(--bg-light-alt);
+}
+.btn-auth-google .btn-icon {
+  width: 20px;
+  height: 20px;
+}
+.chatbox-auth-note {
+  font-size: 12px !important;
+  color: var(--text-muted-light) !important;
+  margin-top: 12px !important;
+  margin-bottom: 0 !important;
+}
+
+/* Chatbox: relative container cho overlay */
+.chatbox-wrap {
+  position: relative;
+}
+
+/* ---- Google Login Button (header) ---- */
+.btn-google {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--border-radius-sm);
+  border: none;
+  background: #fff;
+  color: var(--text-dark);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.btn-google:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  background: #f8f8f8;
+}
+.btn-google .btn-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* ---- User Avatar & Dropdown ---- */
+.user-avatar {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.user-avatar img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-gold);
+  object-fit: cover;
+}
+/* Cầu nối hover từ avatar xuống dropdown — tránh mất focus */
+.user-avatar::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 8px;
+}
+.user-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #fff;
+  border-radius: var(--border-radius-sm);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  padding: 12px 16px;
+  min-width: 200px;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 200;
+}
+.user-avatar.active .user-dropdown {
+  display: flex;
+}
+.btn-logout {
+  margin-top: 6px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  background: var(--bg-light-alt);
+  color: var(--primary-burgundy);
+  font-size: 13px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.btn-logout:hover {
+  background: var(--primary-burgundy);
+  color: #fff;
+}

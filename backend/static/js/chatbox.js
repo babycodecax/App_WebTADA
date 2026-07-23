@@ -80,9 +80,31 @@ document.addEventListener('DOMContentLoaded', function () {
     inputEl.style.height = Math.min(inputEl.scrollHeight, 140) + 'px';
   }
 
+  function showAuthOverlay() {
+    var overlay = document.getElementById('chat-auth-overlay');
+    if (overlay) overlay.classList.add('active');
+  }
+
+  function hideAuthOverlay() {
+    var overlay = document.getElementById('chat-auth-overlay');
+    if (overlay) overlay.classList.remove('active');
+  }
+
+  function checkFreeLimit() {
+    if (window.TADA_AUTH && !window.TADA_AUTH.canAsk()) {
+      showAuthOverlay();
+      return true; // bi chan
+    }
+    hideAuthOverlay();
+    return false;
+  }
+
   function send(text) {
     text = (text || '').trim();
     if (!text || busy) return;
+
+    // Kiem tra free limit
+    if (checkFreeLimit()) return;
 
     busy = true;
     sendEl.disabled = true;
@@ -92,6 +114,14 @@ document.addEventListener('DOMContentLoaded', function () {
     setTyping(true);
 
     var botEl = null, acc = '';
+
+    // Dem cau hoi free (chi khi chua login)
+    if (window.TADA_AUTH) window.TADA_AUTH.useQuestion();
+
+    // Ghi log cau hoi (neu da login)
+    if (window.TADA_AUTH && window.TADA_AUTH.isLoggedIn()) {
+      window.TADA_AUTH.log('question', text, 0);
+    }
 
     var body = JSON.stringify({ question: text, top_k: 3 });
     var url = (RAG_API_URL.replace(/\/+$/, '')) + '/api/chat';
@@ -127,6 +157,8 @@ document.addEventListener('DOMContentLoaded', function () {
       .then(function () {
         setTyping(false);
         busy = false; sendEl.disabled = false; inputEl.focus();
+        // Kiem tra lai limit sau khi tra loi
+        checkFreeLimit();
       });
 
     function handleEvent(block) {

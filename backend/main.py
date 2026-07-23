@@ -79,6 +79,36 @@ def health() -> dict[str, str]:
     return {"status": "ok", "service": "obsidian-chatbot", "phase": "4-frontend"}
 
 
+@app.get("/api/config")
+def config() -> dict[str, str]:
+    """Cung cấp thông tin Supabase public cho frontend auth."""
+    return {
+        "supabaseUrl": os.getenv("SUPABASE_URL", ""),
+        "supabaseAnonKey": os.getenv("SUPABASE_ANON_KEY", ""),
+    }
+
+
+class LogRequest(BaseModel):
+    email: str = ""
+    user_name: str = ""
+    action: str = "question"       # "login" | "question"
+    detail: str = ""               # nội dung câu hỏi
+    question_count: int = 0
+    ip_address: str = ""
+
+
+@app.post("/api/log")
+def api_log(req: LogRequest) -> dict[str, str]:
+    """Ghi log hoạt động người dùng (login, câu hỏi)."""
+    try:
+        from db import get_client
+        client = get_client()
+        client.table("activity_logs").insert(req.model_dump()).execute()
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Log activity thất bại: %s", exc)
+    return {"status": "ok"}
+
+
 class IngestRequest(BaseModel):
     mode: str = "local"          # "local" (hiện tại) | "webhook" (Phase 5)
     vault_dir: str | None = None  # ghi đè VAULT_DIR nếu có
