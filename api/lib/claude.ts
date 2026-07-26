@@ -1,36 +1,40 @@
 import OpenAI from 'openai';
 
-let _client: OpenAI | null = null;
+// Load .env.local for production
+try { require('dotenv').config({ path: require('path').join(__dirname, '..', '.env.local') }); } catch (e) {}
 
 export function getClient(): OpenAI {
-  const apiKey = process.env.OPENROUTER_API_KEY;
-  if (!apiKey) throw new Error('Missing OPENROUTER_API_KEY');
+  const model = process.env.LLM_MODEL || 'deepseek-v4-flash';
+  let apiKey: string;
+  let baseURL: string;
 
-  if (!_client) {
-    _client = new OpenAI({
-      apiKey,
-      baseURL: 'https://openrouter.ai/api/v1',
-      timeout: 60000,
-      maxRetries: 5,
-      defaultHeaders: {
-        'HTTP-Referer': 'https://tada.vn',
-        'X-Title': 'TADA AI Chatbox',
-      },
-    });
+  if (model.startsWith('gemini/')) {
+    // Gemini models qua Gemini API
+    apiKey = process.env.GEMINI_API_KEY || '';
+    if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
+    baseURL = 'https://generativelanguage.googleapis.com/v1beta/openai/';
+  } else {
+    // Opencode Go / provider khác
+    apiKey = process.env.LLM_API_KEY || '';
+    if (!apiKey) throw new Error('Missing LLM_API_KEY');
+    baseURL = (process.env.LLM_API_BASE_URL || 'https://opencode.ai/zen/go/v1').replace(/\/+$/, '');
   }
-  return _client;
+
+  return new OpenAI({
+    apiKey,
+    baseURL,
+    timeout: 60000,
+    maxRetries: 5,
+  });
 }
 
-// Model co the doi qua env. Chat: OpenRouter. Embedding: Gemini free (768 dim).
-export const CHAT_MODEL = process.env.CHAT_MODEL || 'anthropic/claude-3.5-sonnet';
+export const CHAT_MODEL = process.env.LLM_MODEL || 'deepseek-v4-flash';
 export const EMBED_MODEL = process.env.EMBED_MODEL || 'text-embedding-004';
 
-// Embedding dung Google Gemini (mien phi tai aistudio.google.com/apikey).
-// Tra ve vector 768 chieu (text-embedding-004).
 export async function embedText(text: string): Promise<number[]> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${EMBED_MODEL}:embedContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1/models/${EMBED_MODEL}:embedContent?key=${apiKey}`;
 
   let lastErr: unknown;
   for (let attempt = 1; attempt <= 6; attempt++) {
@@ -38,10 +42,7 @@ export async function embedText(text: string): Promise<number[]> {
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: `models/${EMBED_MODEL}`,
-          content: { parts: [{ text }] },
-        }),
+        body: JSON.stringify({ model: `models/${EMBED_MODEL}`, content: { parts: [{ text }] } }),
       });
       if (!res.ok) {
         const body = await res.text();

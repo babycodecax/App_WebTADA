@@ -1,5 +1,8 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
+// Load .env.local for production (next start doesn't auto-load)
+try { require('dotenv').config({ path: require('path').join(__dirname, '..', '.env.local') }); } catch (e) {}
+
 let _client: SupabaseClient | null = null;
 
 export function getSupabase(): SupabaseClient {

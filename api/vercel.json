@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/css/:path*", "destination": "/css/:path*" },
+    { "source": "/js/:path*", "destination": "/js/:path*" },
+    { "source": "/img/:path*", "destination": "/img/:path*" },
+    { "source": "/api/:path*", "destination": "/api/:path*" }
+  ]
+}
