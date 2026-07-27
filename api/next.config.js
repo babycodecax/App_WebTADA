@@ -4,6 +4,7 @@ const nextConfig = {
   images: { unoptimized: true },
   async rewrites() {
     return [
+      { source: '/', destination: '/index.html' },
       { source: '/blog', destination: '/blog.html' },
       { source: '/admin', destination: '/admin.html' },
     ];
