@@ -10,15 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     header.classList.toggle('scrolled', window.scrollY > 50);
   });
 
-  // Dropdown touch toggle
-  document.querySelectorAll('.dropdown-trigger').forEach(function(t) {
-    t.addEventListener('click', function(e) {
-      e.preventDefault();
-      var d = this.closest('.nav-dropdown');
-      if (d) d.classList.toggle('active');
-    });
-  });
-
   // Mobile Menu Toggle
   var navToggle = document.getElementById('nav-toggle');
   var navMenu = document.getElementById('nav-menu');
