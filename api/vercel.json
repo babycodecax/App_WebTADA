@@ -1,8 +1,5 @@
 {
   "version": 2,
-  "public": true,
-  "buildCommand": null,
-  "outputDirectory": null,
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
     { "source": "/blog", "destination": "/blog.html" },
