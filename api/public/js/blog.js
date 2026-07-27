@@ -72,7 +72,7 @@
     var parentContainer = container.closest ? container.closest('.container') : null;
     if (parentContainer) parentContainer.classList.add('blog-detail-wrap');
 
-    fetch(API + '/api/blog/' + encodeURIComponent(slug))
+    fetch(API + '/api/blog?slug=' + encodeURIComponent(slug))
       .then(function (r) {
         if (r.status === 404) throw new Error('Bài viết không tồn tại');
         if (!r.ok) throw new Error('HTTP ' + r.status);
