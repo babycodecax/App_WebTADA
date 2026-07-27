@@ -57,7 +57,7 @@ tools/memory/
 
 # === Playwright test artifacts ===
 .playwright-mcp/
-*.png
+*.playwright.png
 
 # === Logs ===
 *.log
@@ -69,3 +69,5 @@ tools/memory/
 *.ntvs*
 *.user
 *.vs/
+
+.vercel
