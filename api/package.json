@@ -5,7 +5,7 @@
   "engines": { "node": "24.x" },
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf .next && next build",
+    "build": "rm -rf .next && next build 2>&1",
     "start": "next start",
     "ingest": "node scripts/ingest-all.js"
   },
