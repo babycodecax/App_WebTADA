@@ -427,6 +427,12 @@ h1, h2, h3, h4, h5, h6 {
   fill: currentColor;
   flex-shrink: 0;
 }
+.dropdown-icon-img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
 
 .header-actions {
   display: flex;
@@ -1490,6 +1496,11 @@ h1, h2, h3, h4, h5, h6 {
   width: 18px;
   height: 18px;
   fill: currentColor;
+}
+.social-icon-img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 
 .footer-title {
