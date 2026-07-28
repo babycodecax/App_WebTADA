@@ -1,3 +1,10 @@
 {
-  "version": 2
+  "version": 2,
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/blog", "destination": "/blog.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/api/:path*", "destination": "/api/:path*" }
+  ],
+  "cleanUrls": true
 }

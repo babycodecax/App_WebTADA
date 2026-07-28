@@ -1,0 +1,602 @@
+[
+  {
+    "i": 1,
+    "ans": "Thuế: 1 triệu đồng.",
+    "err": false,
+    "time": 20.95
+  },
+  {
+    "i": 2,
+    "ans": "20 triệu đồng/lần.",
+    "err": false,
+    "time": 9.57
+  },
+  {
+    "i": 3,
+    "ans": "",
+    "err": true,
+    "time": 24.51
+  },
+  {
+    "i": 4,
+    "ans": "6,2 triệu đồng/tháng",
+    "err": false,
+    "time": 9.89
+  },
+  {
+    "i": 5,
+    "ans": "05 năm.",
+    "err": false,
+    "time": 10.94
+  },
+  {
+    "i": 6,
+    "ans": "4 triệu đồng.",
+    "err": false,
+    "time": 20.47
+  },
+  {
+    "i": 7,
+    "ans": "0,1% trên giá chuyển nhượng từng lần.",
+    "err": false,
+    "time": 21.05
+  },
+  {
+    "i": 8,
+    "ans": "",
+    "err": true,
+    "time": 24.32
+  },
+  {
+    "i": 9,
+    "ans": "Không. Phần lương ban đêm cao hơn lương ngày được miễn thuế.  \nPhần vượt mức quy định pháp luật mới chịu thuế.",
+    "err": false,
+    "time": 11.53
+  },
+  {
+    "i": 10,
+    "ans": "",
+    "err": true,
+    "time": 24.56
+  },
+  {
+    "i": 11,
+    "ans": "",
+    "err": true,
+    "time": 24.33
+  },
+  {
+    "i": 12,
+    "ans": "",
+    "err": true,
+    "time": 24.27
+  },
+  {
+    "i": 13,
+    "ans": "Không chịu thuế. Miễn thuế TNCN đối với chuyển nhượng chứng chỉ quỹ mở nắm giữ từ 02 năm trở lên theo Điều 43 Nghị định 253/2026/NĐ-CP.",
+    "err": false,
+    "time": 8.23
+  },
+  {
+    "i": 14,
+    "ans": "",
+    "err": true,
+    "time": 24.38
+  },
+  {
+    "i": 15,
+    "ans": "",
+    "err": true,
+    "time": 24.34
+  },
+  {
+    "i": 16,
+    "ans": "Không phải nộp thuế TNCN. Lãi tiền gửi tiết kiệm là thu nhập được miễn thuế.",
+    "err": false,
+    "time": 9.76
+  },
+  {
+    "i": 17,
+    "ans": "",
+    "err": true,
+    "time": 24.33
+  },
+  {
+    "i": 18,
+    "ans": "",
+    "err": true,
+    "time": 24.3
+  },
+  {
+    "i": 19,
+    "ans": "",
+    "err": true,
+    "time": 24.27
+  },
+  {
+    "i": 20,
+    "ans": "",
+    "err": true,
+    "time": 24.22
+  },
+  {
+    "i": 21,
+    "ans": "",
+    "err": true,
+    "time": 24.28
+  },
+  {
+    "i": 22,
+    "ans": "17%.",
+    "err": false,
+    "time": 8.9
+  },
+  {
+    "i": 23,
+    "ans": "",
+    "err": true,
+    "time": 24.36
+  },
+  {
+    "i": 24,
+    "ans": "",
+    "err": true,
+    "time": 24.36
+  },
+  {
+    "i": 25,
+    "ans": "",
+    "err": true,
+    "time": 24.25
+  },
+  {
+    "i": 26,
+    "ans": "",
+    "err": true,
+    "time": 24.26
+  },
+  {
+    "i": 27,
+    "ans": "",
+    "err": true,
+    "time": 24.32
+  },
+  {
+    "i": 28,
+    "ans": "",
+    "err": true,
+    "time": 24.21
+  },
+  {
+    "i": 29,
+    "ans": "",
+    "err": true,
+    "time": 24.3
+  },
+  {
+    "i": 30,
+    "ans": "",
+    "err": true,
+    "time": 24.36
+  },
+  {
+    "i": 31,
+    "ans": "",
+    "err": true,
+    "time": 24.34
+  },
+  {
+    "i": 32,
+    "ans": "",
+    "err": true,
+    "time": 24.32
+  },
+  {
+    "i": 33,
+    "ans": "",
+    "err": true,
+    "time": 24.34
+  },
+  {
+    "i": 34,
+    "ans": "",
+    "err": true,
+    "time": 24.31
+  },
+  {
+    "i": 35,
+    "ans": "",
+    "err": true,
+    "time": 24.32
+  },
+  {
+    "i": 36,
+    "ans": "",
+    "err": true,
+    "time": 24.29
+  },
+  {
+    "i": 37,
+    "ans": "",
+    "err": true,
+    "time": 24.25
+  },
+  {
+    "i": 38,
+    "ans": "",
+    "err": true,
+    "time": 24.35
+  },
+  {
+    "i": 39,
+    "ans": "Thu nhập từ trồng rừng, nuôi trồng thủy sản ở địa bàn khó khăn.",
+    "err": false,
+    "time": 21.78
+  },
+  {
+    "i": 40,
+    "ans": "Tài sản cố định dừng hoạt động dưới 12 tháng để sửa chữa vẫn được trích khấu hao.",
+    "err": false,
+    "time": 8.76
+  },
+  {
+    "i": 41,
+    "ans": "Chuyển nhượng tài sản mã hóa không chịu thuế GTGT.",
+    "err": false,
+    "time": 9.65
+  },
+  {
+    "i": 42,
+    "ans": "Giá tính thuế là giá của hàng hóa, dịch vụ cùng loại hoặc tương đương tại thời điểm phát sinh biếu tặng.",
+    "err": false,
+    "time": 22.62
+  },
+  {
+    "i": 43,
+    "ans": "01 tỷ đồng.",
+    "err": false,
+    "time": 22.64
+  },
+  {
+    "i": 44,
+    "ans": "",
+    "err": true,
+    "time": 24.3
+  },
+  {
+    "i": 45,
+    "ans": "Hóa đơn bán hàng.",
+    "err": false,
+    "time": 7.02
+  },
+  {
+    "i": 46,
+    "ans": "Là thời điểm xác định thuế nhập khẩu theo quy định của pháp luật về thuế xuất khẩu, thuế nhập khẩu.",
+    "err": false,
+    "time": 8.87
+  },
+  {
+    "i": 47,
+    "ans": "",
+    "err": true,
+    "time": 24.32
+  },
+  {
+    "i": 48,
+    "ans": "Phương pháp khấu trừ thuế.",
+    "err": false,
+    "time": 19.63
+  },
+  {
+    "i": 49,
+    "ans": "Trả lời: Thời điểm hoàn thành đối soát dữ liệu về cước dịch vụ, chậm nhất 02 tháng kể từ tháng phát sinh cước.",
+    "err": false,
+    "time": 11.15
+  },
+  {
+    "i": 50,
+    "ans": "",
+    "err": true,
+    "time": 24.36
+  },
+  {
+    "i": 51,
+    "ans": "Chuyển khấu trừ vào tháng/quý tiếp theo.",
+    "err": false,
+    "time": 8.17
+  },
+  {
+    "i": 52,
+    "ans": "",
+    "err": true,
+    "time": 24.31
+  },
+  {
+    "i": 53,
+    "ans": "",
+    "err": true,
+    "time": 24.36
+  },
+  {
+    "i": 54,
+    "ans": "Giá trị công trình, hạng mục công trình hoặc phần công việc bàn giao bao gồm cả giá trị nguyên vật liệu, máy móc, thiết bị chưa có thuế GTGT.",
+    "err": false,
+    "time": 24.33
+  },
+  {
+    "i": 55,
+    "ans": "",
+    "err": true,
+    "time": 24.3
+  },
+  {
+    "i": 56,
+    "ans": "Nộp thuế giá trị gia tăng bổ sung trên số tiền thuế nhập khẩu phải nộp.",
+    "err": false,
+    "time": 9.41
+  },
+  {
+    "i": 57,
+    "ans": "",
+    "err": true,
+    "time": 24.51
+  },
+  {
+    "i": 58,
+    "ans": "",
+    "err": true,
+    "time": 24.31
+  },
+  {
+    "i": 59,
+    "ans": "",
+    "err": true,
+    "time": 24.33
+  },
+  {
+    "i": 60,
+    "ans": "0%.",
+    "err": false,
+    "time": 19.78
+  },
+  {
+    "i": 61,
+    "ans": "Chủ quản nền tảng (Shopee, TikTok Shop) có chức năng đặt hàng và thanh toán phải khấu trừ, khai thay, nộp thay thuế cho từng giao dịch. HKD có doanh thu ≤ 01 tỷ đồng được hoàn hoặc bù trừ số thuế nộp thừa.",
+    "err": false,
+    "time": 11.13
+  },
+  {
+    "i": 62,
+    "ans": "",
+    "err": true,
+    "time": 24.3
+  },
+  {
+    "i": 63,
+    "ans": "",
+    "err": true,
+    "time": 24.37
+  },
+  {
+    "i": 64,
+    "ans": "",
+    "err": true,
+    "time": 24.33
+  },
+  {
+    "i": 65,
+    "ans": "",
+    "err": true,
+    "time": 24.31
+  },
+  {
+    "i": 66,
+    "ans": "(Doanh thu − 500 triệu) × 5%.  \nDoanh thu ≤500 triệu: không nộp.",
+    "err": false,
+    "time": 11.16
+  },
+  {
+    "i": 67,
+    "ans": "",
+    "err": true,
+    "time": 24.3
+  },
+  {
+    "i": 68,
+    "ans": "",
+    "err": true,
+    "time": 24.34
+  },
+  {
+    "i": 69,
+    "ans": "",
+    "err": true,
+    "time": 24.35
+  },
+  {
+    "i": 70,
+    "ans": "",
+    "err": true,
+    "time": 24.39
+  },
+  {
+    "i": 71,
+    "ans": "",
+    "err": true,
+    "time": 24.32
+  },
+  {
+    "i": 72,
+    "ans": "'M' là hóa đơn điện tử được khởi tạo từ máy tính tiền.",
+    "err": false,
+    "time": 9.63
+  },
+  {
+    "i": 73,
+    "ans": "",
+    "err": true,
+    "time": 24.33
+  },
+  {
+    "i": 74,
+    "ans": "60–80 triệu đồng.",
+    "err": false,
+    "time": 9.21
+  },
+  {
+    "i": 75,
+    "ans": "",
+    "err": true,
+    "time": 24.35
+  },
+  {
+    "i": 76,
+    "ans": "",
+    "err": true,
+    "time": 24.3
+  },
+  {
+    "i": 77,
+    "ans": "02 năm.",
+    "err": false,
+    "time": 8.01
+  },
+  {
+    "i": 78,
+    "ans": "3.",
+    "err": false,
+    "time": 9.07
+  },
+  {
+    "i": 79,
+    "ans": "Khai quyết toán thuế đến thời điểm doanh nghiệp bị sáp nhập.",
+    "err": false,
+    "time": 21.92
+  },
+  {
+    "i": 80,
+    "ans": "Mẫu số 04/SS-HĐĐT.",
+    "err": false,
+    "time": 23.6
+  },
+  {
+    "i": 81,
+    "ans": "S4a-DNSN (Sổ chi tiết thanh toán công nợ).",
+    "err": false,
+    "time": 11.35
+  },
+  {
+    "i": 82,
+    "ans": "",
+    "err": true,
+    "time": 24.33
+  },
+  {
+    "i": 83,
+    "ans": "N.",
+    "err": false,
+    "time": 8.82
+  },
+  {
+    "i": 84,
+    "ans": "",
+    "err": true,
+    "time": 24.27
+  },
+  {
+    "i": 85,
+    "ans": "",
+    "err": true,
+    "time": 24.24
+  },
+  {
+    "i": 86,
+    "ans": "",
+    "err": true,
+    "time": 24.31
+  },
+  {
+    "i": 87,
+    "ans": "",
+    "err": true,
+    "time": 24.38
+  },
+  {
+    "i": 88,
+    "ans": "Mẫu số B01 - DNSN.",
+    "err": false,
+    "time": 10.91
+  },
+  {
+    "i": 89,
+    "ans": "",
+    "err": true,
+    "time": 24.28
+  },
+  {
+    "i": 90,
+    "ans": "",
+    "err": true,
+    "time": 24.3
+  },
+  {
+    "i": 91,
+    "ans": "",
+    "err": true,
+    "time": 24.39
+  },
+  {
+    "i": 92,
+    "ans": "",
+    "err": true,
+    "time": 24.64
+  },
+  {
+    "i": 93,
+    "ans": "",
+    "err": true,
+    "time": 24.25
+  },
+  {
+    "i": 94,
+    "ans": "",
+    "err": true,
+    "time": 24.25
+  },
+  {
+    "i": 95,
+    "ans": "Khi hoàn thành thủ tục chuyển quyền sở hữu tài sản góp vốn.",
+    "err": false,
+    "time": 21.69
+  },
+  {
+    "i": 96,
+    "ans": "",
+    "err": true,
+    "time": 24.45
+  },
+  {
+    "i": 97,
+    "ans": "",
+    "err": true,
+    "time": 24.22
+  },
+  {
+    "i": 98,
+    "ans": "",
+    "err": true,
+    "time": 24.36
+  },
+  {
+    "i": 99,
+    "ans": "",
+    "err": true,
+    "time": 24.34
+  },
+  {
+    "i": 100,
+    "ans": "",
+    "err": true,
+    "time": 24.39
+  }
+]

@@ -382,3 +382,24 @@
   background: var(--primary-burgundy);
   color: #fff;
 }
+
+/* Nút Viết bài trong dropdown */
+.dropdown-write-btn {
+  display: block;
+  margin-top: 6px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  background: var(--primary-burgundy);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+.dropdown-write-btn:hover {
+  background: var(--accent-gold-dark);
+  color: #fff;
+}

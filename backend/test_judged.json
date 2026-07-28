@@ -1,0 +1,458 @@
+[
+  {
+    "i": 1,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 2,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 3,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 4,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 5,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 6,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 7,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 8,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 9,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 10,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 11,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 12,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 13,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 14,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 15,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 16,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 17,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 18,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 19,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 20,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 21,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 22,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 23,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 24,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 25,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 26,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 27,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 28,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 29,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 30,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 31,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 32,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 33,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 34,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 35,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 36,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 37,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 38,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 39,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 40,
+    "verdict": "SAI",
+    "method": "llm",
+    "reason": "",
+    "ans": "Tài sản cố định dừng hoạt động dưới 12 tháng để sửa chữa vẫn được trích khấu hao.",
+    "exp": "Có, vẫn được trích khấu hao tính vào chi phí được trừ. [tài liệu trao đổi]"
+  },
+  {
+    "i": 41,
+    "verdict": "SAI",
+    "method": "llm",
+    "reason": "",
+    "ans": "Chuyển nhượng tài sản mã hóa không chịu thuế GTGT.",
+    "exp": "Thu thuộc đối tượng không chịu thuế GTGT."
+  },
+  {
+    "i": 42,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 43,
+    "verdict": "SAI",
+    "method": "llm",
+    "reason": "",
+    "ans": "01 tỷ đồng.",
+    "exp": "Doanh thu năm từ 500 triệu đồng trở xuống."
+  },
+  {
+    "i": 44,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 45,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 46,
+    "verdict": "SAI",
+    "method": "llm",
+    "reason": "",
+    "ans": "Là thời điểm xác định thuế nhập khẩu theo quy định của pháp luật về thuế xuất khẩu, thuế nhập khẩu.",
+    "exp": "Thời điểm đăng ký tờ khai hải quan."
+  },
+  {
+    "i": 47,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 48,
+    "verdict": "SAI",
+    "method": "llm",
+    "reason": "",
+    "ans": "Phương pháp khấu trừ thuế.",
+    "exp": "Mặc định là phương pháp khấu trừ (vì trên 1 tỷ)."
+  },
+  {
+    "i": 49,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 50,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 51,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 52,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 53,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 54,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 55,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 56,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 57,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 58,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 59,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 60,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 61,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 62,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 63,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 64,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 65,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 66,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 67,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 68,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 69,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 70,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 71,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 72,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 73,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 74,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 75,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 76,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 77,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 78,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 79,
+    "verdict": "SAI",
+    "method": "llm",
+    "reason": "",
+    "ans": "Khai quyết toán thuế đến thời điểm doanh nghiệp bị sáp nhập.",
+    "exp": "Chậm nhất là ngày thứ 45 kể từ ngày có quyết định sáp nhập."
+  },
+  {
+    "i": 80,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 81,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 82,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 83,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 84,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 85,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 86,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 87,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 88,
+    "verdict": "DUNG",
+    "method": "keyword"
+  },
+  {
+    "i": 89,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 90,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 91,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 92,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 93,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 94,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 95,
+    "verdict": "SAI",
+    "method": "llm",
+    "reason": "",
+    "ans": "Khi hoàn thành thủ tục chuyển quyền sở hữu tài sản góp vốn.",
+    "exp": "Khi có thông báo nhận được báo cáo kết quả đợt chào bán từ UBCKNN."
+  },
+  {
+    "i": 96,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 97,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 98,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 99,
+    "verdict": "KHONG_TRA_LOI"
+  },
+  {
+    "i": 100,
+    "verdict": "KHONG_TRA_LOI"
+  }
+]

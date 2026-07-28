@@ -1,0 +1,502 @@
+[
+  {
+    "q": "Cá nhân trúng thưởng xổ số 30 triệu đồng vào tháng 8/2026 phải nộp bao nhiêu thuế TNCN",
+    "a": "1 triệu đồng [(30 triệu - 20 triệu) $\\times$ 10%].",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Ngưỡng thu nhập tính thuế đối với quà tặng là chứng khoán từ năm 2026 là bao nhiêu",
+    "a": "Phần giá trị quà tặng vượt trên 20 triệu đồng mỗi lần nhận.",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Cá nhân có thu nhập từ tiền lương 50 triệu đồng/tháng, không có người phụ thuộc, đóng bảo hiểm 10,5%, nộp thuế bao nhiêu",
+    "a": "2.375.000 đồng (Thu nhập tính thuế = 50 - 5,25 bảo hiểm - 15,5 giảm trừ bản thân = 29,25 triệu. Thuế = 10tr $\\times$ 5% + 19,25tr $\\times$ 10%).",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Mức giảm trừ gia cảnh cho người phụ thuộc năm 2026 là bao nhiêu",
+    "a": "6,2 triệu đồng/tháng. [tài liệu trao đổi]",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Nhân lực công nghệ cao làm dự án chip bán dẫn được miễn thuế TNCN trong bao lâu",
+    "a": "Được miễn thuế trong thời hạn 05 năm đối với thu nhập từ tiền lương, tiền công.",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Thu nhập từ nhượng quyền thương mại 100 triệu đồng thì thuế TNCN là bao nhiêu",
+    "a": "4 triệu đồng [(100 triệu - 20 triệu) $\\times$ 5%].",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Cá nhân cư trú bán tài sản mã hóa (crypto) qua sàn giao dịch phải nộp thuế suất bao nhiêu",
+    "a": "0,1% trên giá chuyển nhượng từng lần.",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Thời điểm xác định thu nhập tính thuế từ thừa kế là khi nào",
+    "a": "Là thời điểm cá nhân nhận được tài sản thừa kế.",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Tiền lương làm việc ban đêm được trả cao hơn lương ban ngày có phải nộp thuế TNCN không",
+    "a": "Phần tiền lương trả cao hơn do làm đêm được miễn thuế.",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Cá nhân có số thuế TNCN phải nộp sau quyết toán từ bao nhiêu trở xuống thì được miễn",
+    "a": "Từ 50.000 đồng trở xuống.",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Cá nhân không cư trú nhận lương tại Việt Nam 100 triệu đồng nộp thuế bao nhiêu",
+    "a": "20 triệu đồng (100 triệu $\\times$ 20%, không được giảm trừ).",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Mức đóng bảo hiểm xã hội bắt buộc tối đa năm 2026 căn cứ trên mức lương nào",
+    "a": "Căn cứ theo quy định của Luật BHXH hiện hành nhưng không quá 20 lần mức lương cơ sở (hoặc lương tham chiếu).",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Chuyển nhượng chứng chỉ quỹ mở nắm giữ trên 02 năm có chịu thuế TNCN không",
+    "a": "Được miễn thuế TNCN.",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Thu nhập từ kiều hối có phải nộp thuế TNCN không",
+    "a": "Không, đây là khoản thu nhập được miễn thuế.",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Hồ sơ giảm thuế TNCN do bệnh hiểm nghèo gồm những gì",
+    "a": "Văn bản đề nghị (Mẫu 01/MGTH) và hồ sơ bệnh án, chứng từ chi phí y tế.",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Lãi tiền gửi tiết kiệm tại ngân hàng có phải nộp thuế TNCN không",
+    "a": "Không, đây là thu nhập được miễn thuế.",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Cá nhân bán thẻ hội viên sân gôn có tính thuế TNCN không",
+    "a": "Có, tính theo thu nhập từ chuyển nhượng vốn hoặc tài sản khác tùy bản chất.",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Tiền bồi thường bảo hiểm nhân thọ nhận được có tính thuế TNCN không",
+    "a": "Được miễn thuế hoàn toàn.",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Cá nhân cư trú có thu nhập từ bản quyền 15 triệu đồng có phải nộp thuế không",
+    "a": "Không, vì chưa vượt ngưỡng 20 triệu đồng.",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Sử dụng thông tin gì để thay thế mã số thuế cá nhân từ 01/07/2025",
+    "a": "Số định danh cá nhân. [tài liệu trao đổi]",
+    "section": "I. THUẾ THU NHẬP CÁ NHÂN (TNCN) & BẢO HIỂM"
+  },
+  {
+    "q": "Doanh nghiệp có doanh thu năm 2025 là 2,8 tỷ đồng, năm 2026 áp dụng thuế suất TNDN bao nhiêu",
+    "a": "15%.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Doanh nghiệp doanh thu 40 tỷ đồng, thuế suất TNDN là bao nhiêu",
+    "a": "17%.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Phần chi thù lao cho thành viên Hội đồng quản trị không trực tiếp điều hành có được trừ không",
+    "a": "Không được tính vào chi phí được trừ.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Chi trang phục bằng tiền cho nhân viên 6 triệu đồng/người/năm, phần vượt mức không được trừ là bao nhiêu",
+    "a": "1 triệu đồng (Mức trần là 5 triệu). [tài liệu trao đổi]",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Khoản chi từ 05 triệu đồng trở lên thanh toán bằng tiền mặt có được trừ khi tính thuế TNDN không",
+    "a": "Không, bắt buộc phải có chứng từ thanh toán không dùng tiền mặt.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Doanh nghiệp mới thành lập từ hộ kinh doanh được miễn thuế TNDN trong bao lâu",
+    "a": "Miễn thuế trong 02 năm liên tục kể từ khi có thu nhập chịu thuế.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Lỗ từ chuyển nhượng bất động sản có được bù trừ với lãi từ hoạt động sản xuất kinh doanh không",
+    "a": "Có, doanh nghiệp được lựa chọn bù trừ số lỗ này vào thu nhập của hoạt động kinh doanh.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Thời gian chuyển lỗ tối đa của doanh nghiệp là bao nhiêu năm",
+    "a": "Liên tục không quá 05 năm.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Thu nhập từ lãi trái phiếu xanh có được miễn thuế TNDN không",
+    "a": "Có, đây là thu nhập được miễn thuế.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Doanh nghiệp trích lập quỹ lương dự phòng tối đa bao nhiêu %",
+    "a": "Không quá 17% quỹ tiền lương thực hiện.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Chi phí lãi vay của doanh nghiệp có giao dịch liên kết bị khống chế ở mức nào",
+    "a": "Tổng chi phí lãi vay được trừ không vượt quá 30% tổng lợi nhuận thuần từ hoạt động kinh doanh cộng chi phí lãi vay và chi phí khấu hao (EBITDA).",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Doanh nghiệp được trừ bao nhiêu % chi phí thực tế cho hoạt động nghiên cứu và phát triển (R&D)",
+    "a": "Được trừ chi phí thực tế phát sinh và thêm một tỷ lệ % bổ sung theo quy định.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Thu nhập từ chuyển nhượng tài sản mã hóa của tổ chức nước ngoài (không qua sàn) nộp thuế theo tỷ lệ nào",
+    "a": "0,1% trên doanh thu chuyển nhượng từng lần.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Chi phí học phí cho con người lao động nước ngoài tại Việt Nam có được trừ không",
+    "a": "Được trừ nếu có trong hợp đồng lao động và đủ hóa đơn chứng từ (từ mầm non đến THPT).",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Tiền nộp phạt vi phạm hành chính về thuế có được tính vào chi phí được trừ không",
+    "a": "Không được tính.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Doanh nghiệp Nhà nước đánh giá lại tài sản để cổ phần hóa, chênh lệch tăng xử lý thế nào",
+    "a": "Được miễn thuế TNDN và ghi tăng vốn Nhà tại doanh nghiệp.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Thu nhập từ chuyển nhượng vốn của doanh nghiệp nộp thuế suất bao nhiêu",
+    "a": "20% trên thu nhập tính thuế.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Dự án đầu tư mới tại địa bàn khó khăn được hưởng thuế suất ưu đãi 10% trong bao lâu",
+    "a": "Trong 15 năm.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Doanh nghiệp được miễn thuế TNDN đối với thu nhập từ hoạt động nào trong nông nghiệp",
+    "a": "Sản xuất, chế biến nông sản tại địa bàn đặc biệt khó khăn.",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Tài sản cố định dừng hoạt động dưới 12 tháng để sửa chữa có được trích khấu hao không",
+    "a": "Có, vẫn được trích khấu hao tính vào chi phí được trừ. [tài liệu trao đổi]",
+    "section": "II. THUẾ THU NHẬP DOANH NGHIỆP (TNDN)"
+  },
+  {
+    "q": "Hoạt động chuyển nhượng tài sản mã hóa thuộc diện chịu thuế GTGT như thế nào",
+    "a": "Thu thuộc đối tượng không chịu thuế GTGT.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Giá tính thuế GTGT đối với hàng biếu tặng khách hàng được xác định thế nào",
+    "a": "Theo giá bán của hàng hóa cùng loại hoặc tương đương tại thời điểm phát sinh.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Ngưỡng doanh thu để hộ kinh doanh không phải nộp thuế GTGT năm 2026 là bao nhiêu",
+    "a": "Doanh thu năm từ 500 triệu đồng trở xuống.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Hóa đơn GTGT của hoạt động casino ghi giá tính thuế là bao nhiêu",
+    "a": "Là số tiền thu được trừ số tiền trả thưởng cho khách, đã có thuế TTĐB.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Cơ sở kinh doanh nộp thuế theo phương pháp trực tiếp khi bán hàng sử dụng loại hóa đơn nào",
+    "a": "Hóa đơn bán hàng.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Thời điểm xác định thuế GTGT đối với hàng hóa nhập khẩu là khi nào",
+    "a": "Thời điểm đăng ký tờ khai hải quan.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Thuế suất GTGT 0% áp dụng cho trường hợp nào khi bán hàng cho tổ chức trong khu phi thuế quan",
+    "a": "Khi hàng hóa được tiêu dùng trong khu phi thuế quan.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Doanh thu 2 tỷ đồng/năm thì doanh nghiệp được áp dụng phương pháp tính thuế nào",
+    "a": "Mặc định là phương pháp khấu trừ (vì trên 1 tỷ).",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Dịch vụ viễn thông lập hóa đơn GTGT vào thời điểm nào",
+    "a": "Thời điểm hoàn thành đối soát dữ liệu cước nhưng không quá ngày cuối cùng của tháng phát sinh.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Doanh nghiệp sáp nhập điều chuyển tài sản cho nhau có phải nộp thuế GTGT không",
+    "a": "Không phải lập hóa đơn, không nộp thuế, chỉ cần lệnh điều chuyển và hồ sơ nguồn gốc. [tài liệu trao đổi]",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Số thuế GTGT đầu vào chưa được khấu trừ hết trong tháng được xử lý thế nào",
+    "a": "Được khấu trừ vào tháng/quý tiếp theo.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Hoàn thuế GTGT cho dự án đầu tư sử dụng mẫu tờ khai nào",
+    "a": "Mẫu số 02/GTGT.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Người nước ngoài xuất cảnh được hoàn bao nhiêu % tiền thuế GTGT trên hóa đơn",
+    "a": "85% (Ngân hàng được hưởng 15% phí dịch vụ).",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Giá tính thuế GTGT đối với xây dựng có bao thầu nguyên vật liệu là gì",
+    "a": "Là giá trị công trình, hạng mục công trình thực hiện bàn giao chưa có thuế GTGT.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Dịch vụ gôn ghi giá tính thuế GTGT bao gồm những khoản nào",
+    "a": "Giá bán vé, phí chơi gôn, bảo dưỡng sân cỏ, thuê xe, caddy và các khoản thu liên quan.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Khi thay đổi mục đích sử dụng hàng nhập khẩu được miễn thuế, doanh nghiệp phải làm gì",
+    "a": "Phải nộp thuế GTGT bổ sung trên số tiền thuế nhập khẩu phải nộp.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Doanh nghiệp mới thành lập hoạt động 5 tháng có doanh thu 600 triệu đồng, doanh thu ước tính năm để xác định phương pháp thuế là bao nhiêu",
+    "a": "1,44 tỷ đồng [(600/5) $\\times$ 12]. Phải áp dụng phương pháp khấu trừ.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Hàng hóa xuất khẩu bị người mua trả lại đã được hoàn thuế thì phải nộp lại tiền gì",
+    "a": "Nộp lại số tiền thuế đã được hoàn và tiền chậm nộp.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Tỷ lệ % để tính thuế GTGT trên doanh thu bán buôn, bán lẻ là bao nhiêu",
+    "a": "1%.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Dịch vụ cung cấp qua kênh TMĐT của nhà cung cấp nước ngoài chịu thuế suất GTGT bao nhiêu",
+    "a": "10%.",
+    "section": "III. THUẾ GIÁ TRỊ GIA TĂNG (GTGT)"
+  },
+  {
+    "q": "Sàn Shopee, TikTok Shop có trách nhiệm gì đối với HKD trên sàn",
+    "a": "Khấu trừ, khai thay và nộp thay thuế TNCN, GTGT cho HKD.",
+    "section": "IV. HỘ KINH DOANH (HKD) & THƯƠNG MẠI ĐIỆN TỬ"
+  },
+  {
+    "q": "HKD nộp thuế theo phương pháp kê khai sử dụng sổ nào để theo dõi doanh thu",
+    "a": "Mẫu số S2b-HKD.",
+    "section": "IV. HỘ KINH DOANH (HKD) & THƯƠNG MẠI ĐIỆN TỬ"
+  },
+  {
+    "q": "Ngưỡng doanh thu để HKD quy mô lớn phải thực hiện chế độ kế toán đầy đủ là bao nhiêu",
+    "a": "Doanh thu năm trên 03 tỷ đồng. [tài liệu trao đổi]",
+    "section": "IV. HỘ KINH DOANH (HKD) & THƯƠNG MẠI ĐIỆN TỬ"
+  },
+  {
+    "q": "HKD mới ra kinh doanh đạt doanh thu lũy kế 1,1 tỷ đồng phải dùng hóa đơn điện tử trong bao lâu",
+    "a": "Trong vòng 30 ngày kể từ ngày vượt ngưỡng.",
+    "section": "IV. HỘ KINH DOANH (HKD) & THƯƠNG MẠI ĐIỆN TỬ"
+  },
+  {
+    "q": "HKD nông sản tự sản xuất bán ra có phải nộp thuế GTGT không",
+    "a": "Không chịu thuế GTGT.",
+    "section": "IV. HỘ KINH DOANH (HKD) & THƯƠNG MẠI ĐIỆN TỬ"
+  },
+  {
+    "q": "HKD cho thuê bất động sản nộp thuế TNCN theo mức nào",
+    "a": "Thuế suất 5% trên doanh thu tính thuế.",
+    "section": "IV. HỘ KINH DOANH (HKD) & THƯƠNG MẠI ĐIỆN TỬ"
+  },
+  {
+    "q": "HKD nộp thuế theo phương pháp khoán tạm ngừng kinh doanh có phải nộp hồ sơ khai thuế tháng đó không",
+    "a": "Không, nếu tạm ngừng trọn tháng.",
+    "section": "IV. HỘ KINH DOANH (HKD) & THƯƠNG MẠI ĐIỆN TỬ"
+  },
+  {
+    "q": "Sổ chi tiết tiền của HKD (Mẫu S2e-HKD) dùng để theo dõi loại tiền nào",
+    "a": "Tiền mặt và tiền gửi ngân hàng.",
+    "section": "IV. HỘ KINH DOANH (HKD) & THƯƠNG MẠI ĐIỆN TỬ"
+  },
+  {
+    "q": "HKD nộp thuế theo phương pháp kê khai tính giá xuất kho theo phương pháp nào",
+    "a": "Bình quân gia quyền (cuối kỳ hoặc từng lần).",
+    "section": "IV. HỘ KINH DOANH (HKD) & THƯƠNG MẠI ĐIỆN TỬ"
+  },
+  {
+    "q": "Cá nhân cho thuê nhà khác tỉnh đang ở thì nộp hồ sơ khai thuế tại đâu",
+    "a": "Tại Cơ quan thuế nơi có bất động sản. [tài liệu trao đổi]",
+    "section": "IV. HỘ KINH DOANH (HKD) & THƯƠNG MẠI ĐIỆN TỬ"
+  },
+  {
+    "q": "Ký hiệu hóa đơn năm 2026 của doanh nghiệp bắt đầu bằng ký tự gì",
+    "a": "C26 (có mã) hoặc K26 (không mã).",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Chữ 'M' trong ký hiệu hóa đơn điện tử có nghĩa là gì",
+    "a": "Hóa đơn điện tử khởi tạo từ máy tính tiền.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Thời hạn nộp hồ sơ quyết toán thuế TNDN năm là bao lâu",
+    "a": "Chậm nhất là ngày cuối cùng của tháng thứ 3 kể từ ngày kết thúc năm tài chính.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Hành vi không lập hóa đơn khi bán hàng từ 50 số trở lên bị phạt bao nhiêu",
+    "a": "Phạt tiền từ 60 triệu đến 80 triệu đồng.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Lập hóa đơn không đúng thời điểm nhưng không dẫn đến chậm nộp thuế bị phạt bao nhiêu",
+    "a": "Phạt cảnh cáo (nếu có tình tiết giảm nhẹ và vi phạm lần đầu).",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Tiền chậm nộp thuế được tính theo tỷ lệ bao nhiêu",
+    "a": "0,03%/ngày trên số tiền chậm nộp.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Thời hiệu xử phạt vi phạm hành chính về thủ tục thuế là bao nhiêu năm",
+    "a": "02 năm.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Hóa đơn điện tử bán tài sản công bắt đầu bằng số mấy",
+    "a": "Số 3.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Doanh nghiệp sáp nhập vào doanh nghiệp khác phải nộp hồ sơ khai thuế vào lúc nào",
+    "a": "Chậm nhất là ngày thứ 45 kể từ ngày có quyết định sáp nhập.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Mẫu thông báo phát hiện hóa đơn điện tử có sai sót gửi cơ quan thuế là mẫu nào",
+    "a": "Mẫu số 04/SS-HĐĐT.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Doanh nghiệp siêu nhỏ theo dõi nợ phải trả cho người lao động trên mẫu sổ nào",
+    "a": "Mẫu số S4a-DNSN.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Tài khoản 337 trong hệ thống tài khoản mới (TT99/2025) phản ánh nội dung gì",
+    "a": "Nợ phải trả phát sinh từ hợp đồng.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Phiếu xuất kho kiêm vận chuyển nội bộ điện tử ký hiệu bằng chữ cái nào",
+    "a": "Chữ N.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Trường hợp nào được ủy quyền quyết toán thuế TNCN thay",
+    "a": "Cá nhân chỉ có thu nhập từ tiền lương tại một nơi và đang làm việc tại đó vào lúc quyết toán.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Mã định danh khoản phải nộp (ID) dùng để làm gì",
+    "a": "Để truy vấn và nộp thuế chính xác vào ngân sách.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Thời hạn giải quyết hồ sơ 'Hoàn thuế trước' là bao nhiêu ngày làm việc",
+    "a": "Chậm nhất là 06 ngày làm việc.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Doanh nghiệp vi phạm quy định tiêu hủy hóa đơn quá hạn 11 ngày bị phạt tối đa bao nhiêu",
+    "a": "8 triệu đồng.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Báo cáo tình hình tài chính của doanh nghiệp siêu nhỏ sử dụng mẫu nào",
+    "a": "Mẫu số B01-DNSN.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Cá nhân Việt Nam sử dụng thông tin định danh để nộp thuế qua đâu",
+    "a": "Cổng dịch vụ công hoặc ứng dụng eTax Mobile/VNeID.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Hóa đơn điện tử của cơ quan thuế cấp theo từng lần phát sinh có bắt buộc chữ ký người mua không",
+    "a": "Không nhất thiết phải có chữ ký số của người mua.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Trường hợp hóa đơn bị sai số tiền nhưng chưa gửi cho người mua xử lý thế nào",
+    "a": "Hủy hóa đơn, lập hóa đơn mới và gửi thông báo 04/SS.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Hành vi trốn thuế từ 100 triệu đồng trở lên bị xử lý thế nào",
+    "a": "Có thể bị truy cứu trách nhiệm hình sự.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Doanh nghiệp trả lương cho người thân không có bảng chấm công bị rủi ro gì",
+    "a": "Bị loại chi phí được trừ khi quyết toán thuế TNDN. [tình huống thực tế]",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Tiền lãi chậm nộp thuế được miễn khi nào",
+    "a": "Khi người nộp thuế gặp trường hợp bất khả kháng (thiên tai, hỏa hoạn...).",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Doanh nghiệp được hạch toán tăng vốn góp vào thời điểm nào",
+    "a": "Khi có thông báo nhận được báo cáo kết quả đợt chào bán từ UBCKNN.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Hệ số K tính phí bảo vệ môi trường đối với khai thác khoáng sản xác định theo đâu",
+    "a": "Theo Nghị định 27/2023/NĐ-CP.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Thời hạn lưu trữ hồ sơ thuế điện tử là bao lâu",
+    "a": "Theo thời hạn lưu trữ tài liệu kế toán (thường là 10 năm).",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Dự phòng tổn thất đầu tư nắm giữ đến ngày đáo hạn (HTM) được tính thế nào",
+    "a": "Dựa trên chênh lệch giữa giá trị ghi sổ và giá trị hiện tại của dòng tiền tương lai thu được.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Chi phí đào tạo nhân lực công nghệ số được miễn thuế TNCN trong bao lâu",
+    "a": "Miễn thuế trong 05 năm.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  },
+  {
+    "q": "Doanh nghiệp nộp thừa tiền thuế dưới bao nhiêu thì không được hoàn trả tự động",
+    "a": "Dưới 50.000 đồng.",
+    "section": "V. HÓA ĐƠN & QUẢN LÝ THUẾ"
+  }
+]

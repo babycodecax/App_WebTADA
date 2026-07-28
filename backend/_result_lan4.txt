@@ -1,0 +1,11 @@
+===== SO SANH VOI DAP AN MAU =====
+Tong: 100
+DUNG: 55
+SAI: 45
+Khong tra loi: 0
+Ti le dung: 55.0%
+===== THOI GIAN =====
+Trung binh: 5.8s
+Nhanh nhat: 4.7s
+Cham nhat: 18.1s
+=== CAC CAU TRA LOI SAI ===

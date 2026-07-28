@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Blog — TADA</title>
+  <link rel="stylesheet" href="static/css/styles.css">
+  <link rel="stylesheet" href="static/css/blog-admin.css">
+</head>
+<body class="admin-body">
+  <header class="admin-header">
+    <div class="container admin-header-inner">
+      <a href="/" class="admin-logo">TADA</a>
+      <span class="admin-title">Quản lý Blog</span>
+      <nav class="nav" style="flex:1;justify-content:center;gap:16px">
+        <a href="/" class="nav-link">Trang chủ</a>
+        <a href="/blog" class="nav-link">Bài viết</a>
+      </nav>
+      <div class="admin-user" id="admin-user">
+        <img id="admin-avatar" src="" alt="" class="admin-avatar-img" style="display:none">
+        <span id="admin-email"></span>
+        <button class="btn btn-outline btn-sm" id="admin-logout" style="display:none">Đăng xuất</button>
+        <button class="btn btn-primary btn-sm" id="admin-login">Đăng nhập</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main container">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <button class="admin-nav-btn active" data-view="editor">
+        <span>✏️</span> Soạn bài
+      </button>
+      <button class="admin-nav-btn" data-view="list">
+        <span>📋</span> Bài viết
+      </button>
+    </aside>
+
+    <!-- Editor -->
+    <section class="admin-view active" id="view-editor">
+      <div class="admin-card">
+        <h2>Soạn bài mới</h2>
+        <form id="post-form">
+          <div class="form-group">
+            <label>Tiêu đề</label>
+            <input type="text" id="post-title" class="form-input" required placeholder="Nhập tiêu đề bài viết">
+          </div>
+          <div class="form-group">
+            <label>Slug (URL) <small>tự động sinh từ tiêu đề nếu để trống</small></label>
+            <input type="text" id="post-slug" class="form-input" placeholder="vd: huong-dan-quyet-toan-thue-2026">
+          </div>
+          <div class="form-group">
+            <label>Mô tả ngắn</label>
+            <input type="text" id="post-summary" class="form-input" placeholder="Tóm tắt nội dung bài viết (hiện ở danh sách)">
+          </div>
+          <div class="form-group">
+            <label>Nội dung (Markdown)</label>
+            <textarea id="post-content" class="form-textarea" rows="20" placeholder="Viết nội dung bài viết bằng Markdown..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Trạng thái</label>
+            <select id="post-status" class="form-select">
+              <option value="published">Xuất bản</option>
+              <option value="draft">Bản nháp</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="btn-save">Đăng bài</button>
+            <button type="button" class="btn btn-secondary" id="btn-preview">Xem trước</button>
+          </div>
+          <div id="form-msg" class="form-msg"></div>
+        </form>
+      </div>
+
+      <!-- Preview -->
+      <div class="admin-card" id="preview-box" style="display:none">
+        <h3>Xem trước</h3>
+        <div id="preview-content" class="blog-preview"></div>
+      </div>
+    </section>
+
+    <!-- List -->
+    <section class="admin-view" id="view-list">
+      <div class="admin-card">
+        <h2>Danh sách bài viết</h2>
+        <div id="post-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="static/js/blog-admin.js"></script>
+</body>
+</html>

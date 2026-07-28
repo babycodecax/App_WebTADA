@@ -1,0 +1,17 @@
+Tong: 100
+DUNG: 89
+SAI: 11
+Ti le: 89.0%
+TB time: 8.7s
+
+#ERR 17: Cá nhân bán thẻ hội viên sân gôn có tính thuế TNCN không => time=28.23s
+#ERR 25: Khoản chi từ 05 triệu đồng trở lên thanh toán bằng tiền mặt có được trừ khi tính => time=24.55s
+#ERR 29: Thu nhập từ lãi trái phiếu xanh có được miễn thuế TNDN không => time=22.51s
+#ERR 33: Thu nhập từ chuyển nhượng tài sản mã hóa của tổ chức nước ngoài (không qua sàn)  => time=24.08s
+#ERR 49: Dịch vụ viễn thông lập hóa đơn GTGT vào thời điểm nào => time=20.67s
+#ERR 53: Người nước ngoài xuất cảnh được hoàn bao nhiêu % tiền thuế GTGT trên hóa đơn => time=24.66s
+#ERR 61: Sàn Shopee, TikTok Shop có trách nhiệm gì đối với HKD trên sàn => time=20.27s
+#ERR 69: HKD nộp thuế theo phương pháp kê khai tính giá xuất kho theo phương pháp nào => time=23.38s
+#ERR 73: Thời hạn nộp hồ sơ quyết toán thuế TNDN năm là bao lâu => time=21.8s
+#ERR 85: Mã định danh khoản phải nộp (ID) dùng để làm gì => time=22.44s
+#ERR 89: Cá nhân Việt Nam sử dụng thông tin định danh để nộp thuế qua đâu => time=22.69s

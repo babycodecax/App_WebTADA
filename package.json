@@ -1,0 +1,27 @@
+{
+  "name": "app_webtada",
+  "version": "1.0.0",
+  "description": "1 project duy nhất — 3 thành phần:",
+  "main": "index.js",
+  "scripts": {
+    "sync": "node scripts/sync-public.js",
+    "deploy": "npm run sync && cd api && git add -A && git commit -m \"sync: static files\" && git push",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/babycodecax/App_WebTADA.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/babycodecax/App_WebTADA/issues"
+  },
+  "homepage": "https://github.com/babycodecax/App_WebTADA#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.110.8",
+    "dotenv": "^17.4.2"
+  }
+}

@@ -1,0 +1,602 @@
+[
+  {
+    "i": 1,
+    "ans": "1. TRA SỐ LIỆU: Mức miễn thuế TNCN từ trúng thưởng xổ số là 10 triệu đồng/giải thưởng, thuế suất 10% trên phần vượt.\n2. TÍNH NẾU CẦN: (30.000.000 - 10.000.000) × 10% = 2.000.000 đồng.\n3. ĐÁP ÁN: Cá nhân phải nộp 2.000.000 đồng thuế TNCN.",
+    "err": false,
+    "time": 38.7
+  },
+  {
+    "i": 2,
+    "ans": "",
+    "err": true,
+    "time": 76.9
+  },
+  {
+    "i": 3,
+    "ans": "1. TRA SỐ LIỆU: Tài liệu tham khảo không có số liệu về biểu thuế thu nhập cá nhân; dựa trên kiến thức thuế Việt Nam hiện hành, mức giảm trừ gia cảnh cho bản thân là 11 triệu đồng/tháng, thuế suất lũy tiến từng phần.\n2. TÍNH: Thu nhập chịu thuế = 50 triệu - (50 triệu x 10,5% bảo hiểm) = 44,75 triệu; thu nhập tính thuế = 44,75 triệu - 11 triệu giảm trừ = 33,75 triệu. Tính thuế: 5 triệu x 5% + 5 triệu x 10% + 8 triệu x 15% + 14 triệu x 20% + 1,75 triệu x 25% = 250.000 + 500.000 + 1.200.000 + 2.800.000 + 437.500 = 5.187.500 đồng.\n3. ĐÁP ÁN: Cá nhân nộp thuế thu nhập cá nhân 5.187.500 đồng/tháng.",
+    "err": false,
+    "time": 40.5
+  },
+  {
+    "i": 4,
+    "ans": "1. Mức giảm trừ gia cảnh cho người phụ thuộc năm 2026 là **4,4 triệu đồng/tháng**.",
+    "err": false,
+    "time": 17.76
+  },
+  {
+    "i": 5,
+    "ans": "5 năm kể từ khi bắt đầu làm việc.",
+    "err": false,
+    "time": 42.72
+  },
+  {
+    "i": 6,
+    "ans": "Thuế suất thuế TNCN đối với thu nhập từ nhượng quyền thương mại là 5%. Số thuế phải nộp là 100 triệu đồng × 5% = 5 triệu đồng.",
+    "err": false,
+    "time": 19.11
+  },
+  {
+    "i": 7,
+    "ans": "",
+    "err": true,
+    "time": 69.8
+  },
+  {
+    "i": 8,
+    "ans": "Thời điểm người thừa kế nhận được tài sản thừa kế.",
+    "err": false,
+    "time": 28.62
+  },
+  {
+    "i": 9,
+    "ans": "Phần chênh lệch cao hơn so với lương ban ngày được miễn thuế TNCN.",
+    "err": false,
+    "time": 18.7
+  },
+  {
+    "i": 10,
+    "ans": "Bước 1: Tra số liệu: Tài liệu tham khảo không có quy định về miễn thuế TNCN sau quyết toán.\nBước 2: Căn cứ quy định hiện hành, cá nhân có số thuế TNCN phải nộp sau quyết toán từ 50.000 đồng trở xuống thì được miễn nộp.\nĐáp án: 50.000 đồng.",
+    "err": false,
+    "time": 16.44
+  },
+  {
+    "i": 11,
+    "ans": "Cá nhân không cư trú chịu thuế suất 20% trên tổng thu nhập từ tiền lương. Với 100 triệu đồng, số thuế phải nộp là 20 triệu đồng.",
+    "err": false,
+    "time": 16.9
+  },
+  {
+    "i": 12,
+    "ans": "Mức đóng bảo hiểm xã hội bắt buộc tối đa năm 2026 căn cứ trên 20 lần mức lương cơ sở (đối với khu vực nhà nước) hoặc 20 lần mức lương tối thiểu vùng (đối với khu vực tư nhân).",
+    "err": false,
+    "time": 14.07
+  },
+  {
+    "i": 13,
+    "ans": "",
+    "err": true,
+    "time": 73.89
+  },
+  {
+    "i": 14,
+    "ans": "",
+    "err": true,
+    "time": 69.52
+  },
+  {
+    "i": 15,
+    "ans": "Hồ sơ giảm thuế TNCN do bệnh hiểm nghèo gồm tờ khai giảm thuế mẫu số 01/GCTT, bản sao giấy tờ y tế xác nhận bệnh hiểm nghèo (giấy ra vi",
+    "err": false,
+    "time": 20.37
+  },
+  {
+    "i": 16,
+    "ans": "Lãi tiền gửi tiết kiệm tại ngân hàng không phải nộp thuế thu nhập cá nhân.",
+    "err": false,
+    "time": 9.46
+  },
+  {
+    "i": 17,
+    "ans": "",
+    "err": true,
+    "time": 71.25
+  },
+  {
+    "i": 18,
+    "ans": "Không, tiền bồi thường bảo hiểm nhân thọ nhận được không phải chịu thuế thu nhập cá nhân.",
+    "err": false,
+    "time": 34.63
+  },
+  {
+    "i": 19,
+    "ans": "",
+    "err": true,
+    "time": 70.28
+  },
+  {
+    "i": 20,
+    "ans": "1. TRA SỐ LIỆU: Tài liệu cung cấp không có thông tin về việc thay thế mã số thuế cá nhân từ 01/07/2025.\n2. TÍNH NẾU CẦN: Không.\n3. ĐÁP ÁN: Số định danh cá nhân (số thẻ căn cước công d",
+    "err": false,
+    "time": 71.97
+  },
+  {
+    "i": 21,
+    "ans": "",
+    "err": true,
+    "time": 67.91
+  },
+  {
+    "i": 22,
+    "ans": "20%.",
+    "err": true,
+    "time": 23.97
+  },
+  {
+    "i": 23,
+    "ans": "Có, thù lao cho thành viên Hội đồng quản trị không trực tiếp điều hành được tính vào chi phí được trừ khi xác định thu nhập chịu thuế thu nhập doanh nghiệp nếu có chứng từ hợp lệ và được phê duyệt theo quy định.",
+    "err": false,
+    "time": 24.34
+  },
+  {
+    "i": 24,
+    "ans": "1. TRA SỐ LIỆU: Không có trong tài liệu tham khảo.\n2. TÍNH: Mức chi trang phục bằng tiền được trừ tối đa 5 triệu đồng/người/năm, chi 6 triệu → vượt 1 triệu.\n3. ĐÁP ÁN: Phần vượt mức không được trừ là 1 triệu đồng/người/năm.",
+    "err": false,
+    "time": 15.6
+  },
+  {
+    "i": 25,
+    "ans": "",
+    "err": true,
+    "time": 67.83
+  },
+  {
+    "i": 26,
+    "ans": "Bước 1: TRA SỐ LIỆU: Tài liệu tham khảo không có nội dung cụ thể về thời gian miễn thuế TNDN cho doanh nghiệp mới thành lập từ hộ kinh doanh.\n\nBước 2: TÍNH NẾU CẦN: Không.\n\nBước 3: ĐÁP ÁN: 3 năm, kể từ ngày được cấp Giấy chứng nhận đăng ký doanh nghiệp.",
+    "err": false,
+    "time": 49.13
+  },
+  {
+    "i": 27,
+    "ans": "",
+    "err": true,
+    "time": 73.8
+  },
+  {
+    "i": 28,
+    "ans": "1. TRA SỐ LIỆU: Tài liệu tham khảo không quy định cụ thể thời gian chuyển lỗ của doanh nghiệp.  \n2. TÍNH NẾU CẦN: Không cần tính.  \n3. ĐÁP ÁN: Thời gian chuyển lỗ tối đa của doanh nghiệp là 5 năm.",
+    "err": false,
+    "time": 12.04
+  },
+  {
+    "i": 29,
+    "ans": "1. TRA SỐ LIỆU: Các tài liệu tham khảo (chủ yếu về thuế GTGT) không có quy định nào về miễn thuế TNDN đối với thu nhập từ lãi trái phiếu xanh.\n2. TÍNH NẾU CẦN: Không có phép tính.\n3. ĐÁP ÁN: Thu nhập từ lãi trái phiếu xanh không được miễn thuế TNDN, thuộc thu nhập chịu thuế theo quy định.",
+    "err": false,
+    "time": 74.15
+  },
+  {
+    "i": 30,
+    "ans": "",
+    "err": true,
+    "time": 76.24
+  },
+  {
+    "i": 31,
+    "ans": "30% của tổng lợi nhuận thuần từ hoạt động kinh doanh trước chi phí lãi vay, thuế, khấu hao và chi phí khấu hao (EBITDA).",
+    "err": false,
+    "time": 39.08
+  },
+  {
+    "i": 32,
+    "ans": "",
+    "err": true,
+    "time": 70.51
+  },
+  {
+    "i": 33,
+    "ans": "Thu nhập từ chuyển nhượng tài sản mã hóa của tổ chức nước ngoài (không qua sàn) áp dụng thuế suất thuế TNDN 0,1% trên doanh thu.",
+    "err": false,
+    "time": 66.49
+  },
+  {
+    "i": 34,
+    "ans": "**TRA SỐ LIỆU**: Không có số liệu cụ thể trong tài liệu tham khảo.  \n**TÍNH NẾU CẦN**: Không cần tính.  \n**ĐÁP ÁN**: Chi phí học phí cho con người lao động nước ngoài tại Việt Nam không được trừ khi tính thuế thu nhập doanh nghiệp vì đây là chi phí mang tính cá nhân, không liên quan trực tiếp đến hoạt động sản xuất, kinh doanh.",
+    "err": false,
+    "time": 14.32
+  },
+  {
+    "i": 35,
+    "ans": "Không được tính vào chi phí được trừ.",
+    "err": false,
+    "time": 12.17
+  },
+  {
+    "i": 36,
+    "ans": "1. **TRA SỐ LIỆU**: Tài liệu tham khảo không có quy định cụ thể về xử lý chênh lệch tăng do đánh giá lại tài sản khi cổ phần hóa doanh nghiệp nhà nước.\n2. **TÍNH NẾU CẦN**: Không yêu cầu phép tính.\n3. **ĐÁP ÁN**: Chênh lệch tăng do đánh giá lại tài sản được bổ sung vào vốn nhà nước tại doanh nghiệp (tăng vốn chủ sở hữu).",
+    "err": false,
+    "time": 60.46
+  },
+  {
+    "i": 37,
+    "ans": "1. TRA SỐ LIỆU: Tài liệu tham khảo không quy định cụ thể mức thuế suất thuế TNDN đối với thu nhập từ chuyển nhượng vốn của doanh nghiệp.  \n2. TÍNH NẾU CẦN: Không.  \n3. ĐÁP ÁN: Thuế suất thuế TNDN đối với thu nhập từ chuyển nhượng vốn của doanh nghiệp là 20%.",
+    "err": false,
+    "time": 38.59
+  },
+  {
+    "i": 38,
+    "ans": "15 năm.",
+    "err": false,
+    "time": 9.48
+  },
+  {
+    "i": 39,
+    "ans": "**Đáp án:** Doanh nghiệp được miễn thuế TNDN đối với thu nhập từ trồng trọt, chăn nuôi, nuôi trồng thủy sản và sản xuất muối.",
+    "err": false,
+    "time": 58.15
+  },
+  {
+    "i": 40,
+    "ans": "Có, tài sản cố định dừng hoạt động dưới 12 tháng để sửa chữa vẫn được trích khấu hao.",
+    "err": false,
+    "time": 12.98
+  },
+  {
+    "i": 41,
+    "ans": "1. TRA SỐ LIỆU: Tài liệu tham khảo không có quy định cụ thể về tài sản mã hóa.  \n2. TÍNH NẾU CẦN: Không.  \n3. ĐÁP ÁN: Hoạt động chuyển nhượng tài sản mã hóa hiện không thuộc diện chịu thuế GTGT do tài sản mã hóa chưa được công nhận là hàng hóa, dịch vụ chịu thuế theo quy định của pháp luật.",
+    "err": false,
+    "time": 21.35
+  },
+  {
+    "i": 42,
+    "ans": "Giá tính thuế GTGT đối với hàng biếu tặng khách hàng là giá của hàng hóa, dịch vụ cùng loại hoặc tương đương tại thời điểm phát sinh hoạt động biếu tặng.",
+    "err": false,
+    "time": 13.73
+  },
+  {
+    "i": 43,
+    "ans": "1. TRA SỐ LIỆU: Trong tài liệu tham khảo không có quy định cụ thể về ngưỡng doanh thu miễn thuế GTGT cho hộ kinh doanh; tài liệu số 8 chỉ nhắc đến \"đối tượng không chịu thuế\" mà không nêu con số.\n2. TÍNH NẾU CẦN: Không cần tính.\n3. ĐÁP ÁN: 100 triệu đồng/năm.",
+    "err": false,
+    "time": 58.3
+  },
+  {
+    "i": 44,
+    "ans": "",
+    "err": true,
+    "time": 66.66
+  },
+  {
+    "i": 45,
+    "ans": "1. TRA SỐ LIỆU: Tài liệu tham khảo không quy định cụ thể loại hóa đơn cho phương pháp trực tiếp.  \n2. TÍNH NẾU CẦN: Không.  \n3. ĐÁP ÁN: Cơ sở kinh doanh nộp thuế theo phương pháp trực tiếp sử dụng hóa đơn bán hàng.",
+    "err": false,
+    "time": 38.69
+  },
+  {
+    "i": 46,
+    "ans": "Thời điểm xác định thuế GTGT đối với hàng hóa nhập khẩu là thời điểm xác định thuế nhập khẩu theo quy định của pháp luật về thuế xuất khẩu, thuế nhập khẩu.",
+    "err": false,
+    "time": 7.25
+  },
+  {
+    "i": 47,
+    "ans": "Thuế suất GTGT 0% áp dụng khi bán hàng hóa từ nội địa Việt Nam cho tổ chức trong khu phi thuế quan, với điều kiện hàng hóa được tiêu dùng trong khu phi thuế quan và phục vụ trực tiếp cho hoạt động sản xuất xuất khẩu, trừ trường hợp xăng dầu và xe ô tô.",
+    "err": false,
+    "time": 16.56
+  },
+  {
+    "i": 48,
+    "ans": "Phương pháp khấu trừ thuế.",
+    "err": false,
+    "time": 5.15
+  },
+  {
+    "i": 49,
+    "ans": "1. TRA SỐ LIỆU: Điều 16 Nghị định 181/2025 quy định thời điểm xác định thuế GTGT đối với dịch vụ viễn thông: (a) dịch vụ kết nối: thời điểm hoàn thành đối soát dữ liệu, chậm nhất 02 tháng kể từ tháng phát sinh cước; (b) dịch vụ cung cấp theo kỳ: thời điểm hoàn thành đối soát, chậm nhất ngày 07 của tháng sau hoặc 07 ngày sau kết thúc kỳ; (c) thẻ trả trước, thu cước hòa mạng: thời điểm bán thẻ, thu cước.\n2. TÍNH: Không cần phép tính.\n3. ĐÁP ÁN: Lập hóa đơn GTGT dịch vụ viễn thông vào thời điểm hoàn thành đối soát dữ liệu (chậm nhất",
+    "err": false,
+    "time": 19.76
+  },
+  {
+    "i": 50,
+    "ans": "**Không phải nộp thuế GTGT.**",
+    "err": false,
+    "time": 9.69
+  },
+  {
+    "i": 51,
+    "ans": "Số thuế GTGT đầu vào chưa được khấu trừ hết trong tháng được khấu trừ vào tháng tiếp theo.",
+    "err": false,
+    "time": 7.97
+  },
+  {
+    "i": 52,
+    "ans": "Mẫu số 02/GTGT.",
+    "err": false,
+    "time": 32.86
+  },
+  {
+    "i": 53,
+    "ans": "85%",
+    "err": true,
+    "time": 16.31
+  },
+  {
+    "i": 54,
+    "ans": "Giá tính thuế GTGT đối với xây dựng có bao thầu nguyên vật liệu là giá trị công trình, hạng mục công trình hay phần công việc thực hiện bàn giao bao gồm cả giá trị nguyên vật liệu, máy móc, thiết bị chưa có thuế GTGT.",
+    "err": false,
+    "time": 7.92
+  },
+  {
+    "i": 55,
+    "ans": "",
+    "err": true,
+    "time": 72.83
+  },
+  {
+    "i": 56,
+    "ans": "Doanh nghiệp phải nộp thuế giá trị gia tăng bổ sung trên số tiền thuế nhập khẩu phải nộp.",
+    "err": false,
+    "time": 10.35
+  },
+  {
+    "i": 57,
+    "ans": "1. TRA SỐ LIỆU: Theo Điều 21 ND 181/2025, doanh thu ước tính = tổng doanh thu / số tháng hoạt động × 12 tháng.\n2. TÍNH: 600 triệu / 5 tháng × 12 tháng = 1.440 triệu đồng = 1,44 tỷ đồng.\n3. ĐÁP ÁN: Doanh thu ước tính năm là 1 tỷ 440 triệu đồng.",
+    "err": false,
+    "time": 8.84
+  },
+  {
+    "i": 58,
+    "ans": "1. TRA SỐ LIỆU: Tài liệu tham khảo không quy định cụ thể trường hợp này.\n2. TÍNH NẾU CẦN: Không.\n3. ĐÁP ÁN: Phải nộp lại số thuế giá trị gia tăng đã được hoàn.",
+    "err": false,
+    "time": 38.46
+  },
+  {
+    "i": 59,
+    "ans": "1%",
+    "err": true,
+    "time": 54.62
+  },
+  {
+    "i": 60,
+    "ans": "",
+    "err": true,
+    "time": 58.65
+  },
+  {
+    "i": 61,
+    "ans": "Sàn Shopee, TikTok Shop có trách nhiệm khấu trừ, kê khai và nộp thay thuế giá trị gia tăng, thuế thu nhập cá nhân cho hộ kinh doanh trên sàn.",
+    "err": false,
+    "time": 63.86
+  },
+  {
+    "i": 62,
+    "ans": "",
+    "err": true,
+    "time": 63.01
+  },
+  {
+    "i": 63,
+    "ans": "",
+    "err": true,
+    "time": 62.93
+  },
+  {
+    "i": 64,
+    "ans": "",
+    "err": true,
+    "time": 72.18
+  },
+  {
+    "i": 65,
+    "ans": "Không. Sản phẩm cây trồng, chăn nuôi tự sản xuất hoặc chỉ qua sơ chế thông thường của tổ chức, cá nhân tự sản xuất bán ra thuộc đối tượng không chịu thuế GTGT.",
+    "err": false,
+    "time": 9.91
+  },
+  {
+    "i": 66,
+    "ans": "Mức thuế suất thuế TNCN là 5% trên doanh thu tính thuế.",
+    "err": false,
+    "time": 16.04
+  },
+  {
+    "i": 67,
+    "ans": "HKD nộp thuế khoán tạm ngừng kinh doanh không phải nộp hồ sơ khai thuế tháng đó nếu đã thông báo tạm ngừng.",
+    "err": false,
+    "time": 29.55
+  },
+  {
+    "i": 68,
+    "ans": "Sổ chi tiết tiền của HKD (Mẫu S2e-HKD) dùng để theo dõi Tiền Việt Nam, ngoại tệ, vàng, bạc, kim khí quý, đá quý.",
+    "err": false,
+    "time": 29.61
+  },
+  {
+    "i": 69,
+    "ans": "",
+    "err": true,
+    "time": 78.36
+  },
+  {
+    "i": 70,
+    "ans": "",
+    "err": true,
+    "time": 62.78
+  },
+  {
+    "i": 71,
+    "ans": "",
+    "err": true,
+    "time": 77.96
+  },
+  {
+    "i": 72,
+    "ans": "Chữ 'M' trong ký hiệu hóa đơn điện tử là ký hiệu của hóa đơn giá trị gia tăng (GTGT).",
+    "err": false,
+    "time": 15.37
+  },
+  {
+    "i": 73,
+    "ans": "Chậm nhất là ngày cuối cùng của tháng thứ 3 kể từ ngày kết thúc năm dương lịch hoặc năm tài chính (thường là 31/3 đối với năm dương lịch).",
+    "err": false,
+    "time": 38.62
+  },
+  {
+    "i": 74,
+    "ans": "",
+    "err": true,
+    "time": 67.99
+  },
+  {
+    "i": 75,
+    "ans": "4.000.000 đồng đến 8.000.000 đồng (đối với tổ chức; cá nhân bằng 1/2 mức này).",
+    "err": false,
+    "time": 42.09
+  },
+  {
+    "i": 76,
+    "ans": "Tiền chậm nộp thuế được tính với tỷ lệ 0,03%/ngày tính trên số tiền thuế chậm nộp.",
+    "err": false,
+    "time": 21.86
+  },
+  {
+    "i": 77,
+    "ans": "2 năm.",
+    "err": false,
+    "time": 17.39
+  },
+  {
+    "i": 78,
+    "ans": "",
+    "err": true,
+    "time": 80.29
+  },
+  {
+    "i": 79,
+    "ans": "Doanh nghiệp sáp nhập vào doanh nghiệp khác phải nộp hồ sơ khai quyết toán thuế đến thời điểm sáp nhập (thời điểm chấm dứt hoạt động để sáp nhập).",
+    "err": false,
+    "time": 7.54
+  },
+  {
+    "i": 80,
+    "ans": "M",
+    "err": true,
+    "time": 30.21
+  },
+  {
+    "i": 81,
+    "ans": "",
+    "err": true,
+    "time": 70.91
+  },
+  {
+    "i": 82,
+    "ans": "Tài khoản 337 - Phân phối chênh lệch tỷ giá hối đoái, phản ánh chênh lệch tỷ giá phát sinh trong giai đoạn đầu tư xây dựng cơ bản và việc phân bổ số chênh lệch đó vào doanh thu hoặc chi phí tài chính khi doanh nghiệp đi vào hoạt động sản xuất kinh doanh.",
+    "err": false,
+    "time": 19.55
+  },
+  {
+    "i": 83,
+    "ans": "",
+    "err": true,
+    "time": 75.65
+  },
+  {
+    "i": 84,
+    "ans": "Cá nhân có thu nhập từ tiền lương, tiền công ký hợp đồng lao động từ 03 tháng trở lên tại một nơi và thực tế đang làm việc tại nơi đó vào thời điểm quyết toán được ủy quyền cho tổ chức trả thu nhập quyết toán thuế TNCN thay.",
+    "err": false,
+    "time": 56.51
+  },
+  {
+    "i": 85,
+    "ans": "Mã định danh khoản phải nộp (ID) dùng để xác định duy nhất từng khoản phải nộp ngân sách nhà nước, hỗ trợ quản lý, đối chiếu và hạch toán các khoản thuế, phí, lệ phí khi nộp qua ngân hàng hoặc Kho bạc.",
+    "err": false,
+    "time": 38.22
+  },
+  {
+    "i": 86,
+    "ans": "06 ngày làm việc.",
+    "err": false,
+    "time": 21.33
+  },
+  {
+    "i": 87,
+    "ans": "",
+    "err": true,
+    "time": 74.08
+  },
+  {
+    "i": 88,
+    "ans": "Doanh nghiệp siêu nhỏ sử dụng mẫu B01a-DN – Bảng cân đối kế toán (theo Thông tư 132/2018/TT-BTC) hoặc mẫu B01-DN (theo Thông tư 133/2016/TT-BTC) để lập Báo cáo tình hình tài chính.",
+    "err": false,
+    "time": 36.44
+  },
+  {
+    "i": 89,
+    "ans": "Cá nhân Việt Nam sử dụng thông tin định danh để nộp thuế qua C",
+    "err": false,
+    "time": 25.56
+  },
+  {
+    "i": 90,
+    "ans": "",
+    "err": true,
+    "time": 72.62
+  },
+  {
+    "i": 91,
+    "ans": "Người bán hủy hóa đơn đã lập và lập hóa đơn mới thay thế với số tiền đúng.",
+    "err": false,
+    "time": 41.62
+  },
+  {
+    "i": 92,
+    "ans": "Hành vi trốn thuế từ 100 triệu đồng trở lên bị truy cứu trách nhiệm hình sự, với mức phạt tiền từ 100 triệu đến 4,5 tỷ đồng hoặc phạt tù từ 6 tháng đến 7 năm.",
+    "err": false,
+    "time": 16.45
+  },
+  {
+    "i": 93,
+    "ans": "1. TRA SỐ LIỆU: Không có quy định cụ thể trong tài liệu tham khảo.\n2. TÍNH NẾU CẦN: Không.\n3. ĐÁP ÁN: Chi phí tiền lương có thể bị loại khi tính thuế thu nhập doanh nghiệp, dẫn đến truy thu thuế, phạt hành chính và có thể bị ấn định thuế.",
+    "err": false,
+    "time": 38.8
+  },
+  {
+    "i": 94,
+    "ans": "",
+    "err": true,
+    "time": 72
+  },
+  {
+    "i": 95,
+    "ans": "",
+    "err": true,
+    "time": 70.2
+  },
+  {
+    "i": 96,
+    "ans": "Hệ số K tính phí bảo vệ môi trường đối với khai thác khoáng sản được xác định dựa trên loại khoáng sản, phương pháp khai thác (lộ thiên hoặc hầm lò) và điều kiện khai thác cụ thể theo quy định của pháp luật về phí bảo vệ môi trường.",
+    "err": false,
+    "time": 21.11
+  },
+  {
+    "i": 97,
+    "ans": "Thời hạn lưu trữ hồ sơ thuế điện tử là 10 năm kể từ khi kết thúc kỳ tính thuế.",
+    "err": false,
+    "time": 33.79
+  },
+  {
+    "i": 98,
+    "ans": "1. TRA SỐ LIỆU: Tài liệu (TT 99/2025) quy định tại điểm 1.4 phải lập dự phòng tổn thất đầu tư nắm giữ đến ngày đáo hạn theo hướng dẫn tại Tài khoản 229, không có số tỷ lệ hoặc công thức cụ thể.  \n2. TÍNH NẾU CẦN: Không có số liệu để tính.  \n3. ĐÁP ÁN: Dự phòng tổn thất đầu tư nắm giữ đến ngày đáo hạn được lập theo hướng dẫn tại Tài khoản 229, khi có bằng chứng tổn thất tại thời điểm",
+    "err": false,
+    "time": 23.62
+  },
+  {
+    "i": 99,
+    "ans": "",
+    "err": true,
+    "time": 77.18
+  },
+  {
+    "i": 100,
+    "ans": "50.000 đồng.",
+    "err": false,
+    "time": 69.74
+  }
+]

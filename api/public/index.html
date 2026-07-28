@@ -791,7 +791,7 @@
       function fmt(iso) { if (!iso) return ''; return new Date(iso).toLocaleDateString('vi-VN', {year:'numeric',month:'long',day:'numeric'}); }
       var grid = document.getElementById('blog-mini-grid');
       if (!grid) return;
-      fetch('/api/blog?limit=5')
+      fetch('/api/blog?limit=10')
         .then(function (r) { return r.json(); })
         .then(function (posts) {
           if (!posts || !posts.length) {

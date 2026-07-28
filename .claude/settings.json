@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(jq -r '(.tool_response.filePath // .tool_input.file_path)' | tr '\\\\' '/'); case \"$FILE\" in api/*|backend/static/*) node .claude/scripts/deploy-vercel.js 2>/dev/null;; esac; true"
+          }
+        ]
+      }
+    ]
+  }
+}

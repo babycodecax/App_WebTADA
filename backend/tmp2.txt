@@ -1,0 +1,5 @@
+Tong: 100
+DUNG: 82
+SAI (err/empty): 18
+Ti le: 82.0%
+TB time: 10.3s

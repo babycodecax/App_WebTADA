@@ -22,6 +22,7 @@ from fastapi.responses import JSONResponse, StreamingResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
+from blog import router as blog_router
 from ingestion import ingest_local
 from search_engine import search, rebuild
 from llm_client import stream_answer
@@ -58,6 +59,18 @@ async def rate_limit_middleware(request: Request, call_next: Any) -> Any:
 
 
 app = FastAPI(title="Obsidian RAG Chatbox", version="0.4.0")
+app.include_router(blog_router)
+
+
+@app.on_event("startup")
+def startup_rebuild():
+    """Rebuild BM25 index ngay khi server start."""
+    try:
+        logger.info("=== Server starting: rebuilding BM25 index... ===")
+        n = rebuild()
+        logger.info("=== BM25 index ready: %d chunks loaded ===", n)
+    except Exception as exc:
+        logger.warning("Rebuild BM25 index thất bại (sẽ lazy-load): %s", exc)
 app.middleware("http")(rate_limit_middleware)
 app.add_middleware(
     CORSMiddleware,
@@ -74,17 +87,29 @@ def index() -> FileResponse:
     return FileResponse(os.path.join(STATIC_DIR, "index.html"))
 
 
+@app.get("/blog")
+def blog_list() -> FileResponse:
+    return FileResponse(os.path.join(STATIC_DIR, "blog.html"))
+
+
+@app.get("/admin")
+def admin_page() -> FileResponse:
+    return FileResponse(os.path.join(STATIC_DIR, "admin.html"))
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok", "service": "obsidian-chatbot", "phase": "4-frontend"}
 
 
 @app.get("/api/config")
-def config() -> dict[str, str]:
-    """Cung cấp thông tin Supabase public cho frontend auth."""
+def config() -> dict[str, str | list[str]]:
+    """Cung cấp thông tin Supabase public cho frontend auth + admin list."""
+    admin_raw = os.getenv("ADMIN_EMAILS", "")
     return {
         "supabaseUrl": os.getenv("SUPABASE_URL", ""),
         "supabaseAnonKey": os.getenv("SUPABASE_ANON_KEY", ""),
+        "adminEmails": [e.strip().lower() for e in admin_raw.split(",") if e.strip()],
     }
 
 
@@ -117,7 +142,7 @@ class IngestRequest(BaseModel):
 
 class ChatRequest(BaseModel):
     question: str = Field(..., min_length=1, max_length=2000)
-    top_k: int = Field(default=5, ge=1, le=10)
+    top_k: int = Field(default=5, ge=1, le=15)
 
 
 @app.post("/api/ingest")

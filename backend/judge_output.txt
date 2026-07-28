@@ -1,0 +1,133 @@
+===== GIAM KHAO CHAM BAI (LLM + fallback) =====
+
+  #  1 ✅ DUNG   Thuế: 1 triệu đồng.
+  #  2 ✅ DUNG   20 triệu đồng/lần.
+  #  3 ⏭️  KHONG_TRA_LOI
+  #  4 ✅ DUNG   6,2 triệu đồng/tháng
+  #  5 ✅ DUNG   05 năm.
+  #  6 ✅ DUNG   4 triệu đồng.
+  #  7 ✅ DUNG   0,1% trên giá chuyển nhượng từng lần.
+  #  8 ⏭️  KHONG_TRA_LOI
+  #  9 ✅ DUNG   Không. Phần lương ban đêm cao hơn lương ngày được miễn thuế.  
+Phần vư
+  # 10 ⏭️  KHONG_TRA_LOI
+  # 11 ⏭️  KHONG_TRA_LOI
+  # 12 ⏭️  KHONG_TRA_LOI
+  # 13 ✅ DUNG   Không chịu thuế. Miễn thuế TNCN đối với chuyển nhượng chứng chỉ quỹ mở
+  # 14 ⏭️  KHONG_TRA_LOI
+  # 15 ⏭️  KHONG_TRA_LOI
+  # 16 ✅ DUNG   Không phải nộp thuế TNCN. Lãi tiền gửi tiết kiệm là thu nhập được miễn
+  # 17 ⏭️  KHONG_TRA_LOI
+  # 18 ⏭️  KHONG_TRA_LOI
+  # 19 ⏭️  KHONG_TRA_LOI
+  # 20 ⏭️  KHONG_TRA_LOI
+  # 21 ⏭️  KHONG_TRA_LOI
+  # 22 ✅ DUNG   17%.
+  # 23 ⏭️  KHONG_TRA_LOI
+  # 24 ⏭️  KHONG_TRA_LOI
+  # 25 ⏭️  KHONG_TRA_LOI
+  # 26 ⏭️  KHONG_TRA_LOI
+  # 27 ⏭️  KHONG_TRA_LOI
+  # 28 ⏭️  KHONG_TRA_LOI
+  # 29 ⏭️  KHONG_TRA_LOI
+  # 30 ⏭️  KHONG_TRA_LOI
+  # 31 ⏭️  KHONG_TRA_LOI
+  # 32 ⏭️  KHONG_TRA_LOI
+  # 33 ⏭️  KHONG_TRA_LOI
+  # 34 ⏭️  KHONG_TRA_LOI
+  # 35 ⏭️  KHONG_TRA_LOI
+  # 36 ⏭️  KHONG_TRA_LOI
+  # 37 ⏭️  KHONG_TRA_LOI
+  # 38 ⏭️  KHONG_TRA_LOI
+  # 39 ✅ DUNG   Thu nhập từ trồng rừng, nuôi trồng thủy sản ở địa bàn khó khăn.
+  # 40 ❌ SAI    Tài sản cố định dừng hoạt động dưới 12 tháng để sửa chữa vẫn được tríc
+       DAP AN: Có, vẫn được trích khấu hao tính vào chi phí được trừ. [tài liệu trao 
+  # 41 ❌ SAI    Chuyển nhượng tài sản mã hóa không chịu thuế GTGT.
+       DAP AN: Thu thuộc đối tượng không chịu thuế GTGT.
+  # 42 ✅ DUNG   Giá tính thuế là giá của hàng hóa, dịch vụ cùng loại hoặc tương đương 
+  # 43 ❌ SAI    01 tỷ đồng.
+       DAP AN: Doanh thu năm từ 500 triệu đồng trở xuống.
+  # 44 ⏭️  KHONG_TRA_LOI
+  # 45 ✅ DUNG   Hóa đơn bán hàng.
+  # 46 ❌ SAI    Là thời điểm xác định thuế nhập khẩu theo quy định của pháp luật về th
+       DAP AN: Thời điểm đăng ký tờ khai hải quan.
+  # 47 ⏭️  KHONG_TRA_LOI
+  # 48 ❌ SAI    Phương pháp khấu trừ thuế.
+       DAP AN: Mặc định là phương pháp khấu trừ (vì trên 1 tỷ).
+  # 49 ✅ DUNG   Trả lời: Thời điểm hoàn thành đối soát dữ liệu về cước dịch vụ, chậm n
+  # 50 ⏭️  KHONG_TRA_LOI
+  # 51 ✅ DUNG   Chuyển khấu trừ vào tháng/quý tiếp theo.
+  # 52 ⏭️  KHONG_TRA_LOI
+  # 53 ⏭️  KHONG_TRA_LOI
+  # 54 ✅ DUNG   Giá trị công trình, hạng mục công trình hoặc phần công việc bàn giao b
+  # 55 ⏭️  KHONG_TRA_LOI
+  # 56 ✅ DUNG   Nộp thuế giá trị gia tăng bổ sung trên số tiền thuế nhập khẩu phải nộp
+  # 57 ⏭️  KHONG_TRA_LOI
+  # 58 ⏭️  KHONG_TRA_LOI
+  # 59 ⏭️  KHONG_TRA_LOI
+  # 60 ✅ DUNG   0%.
+  # 61 ✅ DUNG   Chủ quản nền tảng (Shopee, TikTok Shop) có chức năng đặt hàng và thanh
+  # 62 ⏭️  KHONG_TRA_LOI
+  # 63 ⏭️  KHONG_TRA_LOI
+  # 64 ⏭️  KHONG_TRA_LOI
+  # 65 ⏭️  KHONG_TRA_LOI
+  # 66 ✅ DUNG   (Doanh thu − 500 triệu) × 5%.  
+Doanh thu ≤500 triệu: không nộp.
+  # 67 ⏭️  KHONG_TRA_LOI
+  # 68 ⏭️  KHONG_TRA_LOI
+  # 69 ⏭️  KHONG_TRA_LOI
+  # 70 ⏭️  KHONG_TRA_LOI
+  # 71 ⏭️  KHONG_TRA_LOI
+  # 72 ✅ DUNG   'M' là hóa đơn điện tử được khởi tạo từ máy tính tiền.
+  # 73 ⏭️  KHONG_TRA_LOI
+  # 74 ✅ DUNG   60–80 triệu đồng.
+  # 75 ⏭️  KHONG_TRA_LOI
+  # 76 ⏭️  KHONG_TRA_LOI
+  # 77 ✅ DUNG   02 năm.
+  # 78 ✅ DUNG   3.
+  # 79 ❌ SAI    Khai quyết toán thuế đến thời điểm doanh nghiệp bị sáp nhập.
+       DAP AN: Chậm nhất là ngày thứ 45 kể từ ngày có quyết định sáp nhập.
+  # 80 ✅ DUNG   Mẫu số 04/SS-HĐĐT.
+  # 81 ✅ DUNG   S4a-DNSN (Sổ chi tiết thanh toán công nợ).
+  # 82 ⏭️  KHONG_TRA_LOI
+  # 83 ✅ DUNG   N.
+  # 84 ⏭️  KHONG_TRA_LOI
+  # 85 ⏭️  KHONG_TRA_LOI
+  # 86 ⏭️  KHONG_TRA_LOI
+  # 87 ⏭️  KHONG_TRA_LOI
+  # 88 ✅ DUNG   Mẫu số B01 - DNSN.
+  # 89 ⏭️  KHONG_TRA_LOI
+  # 90 ⏭️  KHONG_TRA_LOI
+  # 91 ⏭️  KHONG_TRA_LOI
+  # 92 ⏭️  KHONG_TRA_LOI
+  # 93 ⏭️  KHONG_TRA_LOI
+  # 94 ⏭️  KHONG_TRA_LOI
+  # 95 ❌ SAI    Khi hoàn thành thủ tục chuyển quyền sở hữu tài sản góp vốn.
+       DAP AN: Khi có thông báo nhận được báo cáo kết quả đợt chào bán từ UBCKNN.
+  # 96 ⏭️  KHONG_TRA_LOI
+  # 97 ⏭️  KHONG_TRA_LOI
+  # 98 ⏭️  KHONG_TRA_LOI
+  # 99 ⏭️  KHONG_TRA_LOI
+  #100 ⏭️  KHONG_TRA_LOI
+
+===== KET QUA ======
+Tong:             100
+Co tra loi:        35
+DUNG:             28
+SAI:              7
+KHONG TRA LOI:    65
+Ti le dung/tra loi: 80.0%
+Ti le dung/tong:  28.0%
+LLM judge call:   7
+LLM judge dung:   0
+
+=== CHI TIET CAU SAI (7) ===
+  #40 [llm] | Tài sản cố định dừng hoạt động dưới 12 tháng để sửa chữa vẫn được trích khấu hao
+  #41 [llm] | Chuyển nhượng tài sản mã hóa không chịu thuế GTGT.
+  #43 [llm] | 01 tỷ đồng.
+  #46 [llm] | Là thời điểm xác định thuế nhập khẩu theo quy định của pháp luật về thuế xuất kh
+  #48 [llm] | Phương pháp khấu trừ thuế.
+  #79 [llm] | Khai quyết toán thuế đến thời điểm doanh nghiệp bị sáp nhập.
+  #95 [llm] | Khi hoàn thành thủ tục chuyển quyền sở hữu tài sản góp vốn.
+
+Da ghi: test_judged.json

@@ -35,7 +35,7 @@
   function renderList(grid) {
     grid.innerHTML = '<div class="blog-loading">Đang tải bài viết...</div>';
 
-    fetch(API + '/api/blog?limit=20')
+    fetch(API + '/api/blog?limit=999')
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
         return r.json();
