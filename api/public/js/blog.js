@@ -104,6 +104,7 @@
 
   function renderMarkdown(md) {
     if (typeof marked !== 'undefined') {
+      marked.setOptions({ breaks: true, gfm: true });
       return marked.parse(md || '');
     }
     // fallback: simple line breaks

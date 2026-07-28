@@ -176,21 +176,19 @@
 /* Post list in admin */
 .post-list-item {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
   padding: 12px 0;
   border-bottom: 1px solid var(--border-light);
-  gap: 12px;
+  gap: 8px;
 }
 .post-list-item:last-child { border-bottom: none; }
-.post-list-info { flex: 1; min-width: 0; }
+.post-list-info { flex: 1; min-width: 200px; }
 .post-list-title {
   font-weight: 700;
   font-size: 15px;
   color: var(--text-dark);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-word;
 }
 .post-list-meta {
   font-size: 12px;
@@ -199,21 +197,25 @@
 }
 .post-list-actions {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-shrink: 0;
 }
 .post-list-actions button {
-  padding: 4px 10px;
-  font-size: 12px;
-  border-radius: 4px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
   border: 1px solid var(--border-light);
   cursor: pointer;
   background: #fff;
   font-family: var(--font-sans);
   transition: var(--transition-fast);
+  white-space: nowrap;
 }
-.post-list-actions .edit-btn:hover { border-color: var(--primary-burgundy); color: var(--primary-burgundy); }
-.post-list-actions .delete-btn:hover { border-color: #c0392b; color: #c0392b; }
+.post-list-actions .edit-btn { border-color: var(--primary-burgundy); color: var(--primary-burgundy); }
+.post-list-actions .edit-btn:hover { background: var(--primary-burgundy); color: #fff; }
+.post-list-actions .delete-btn { border-color: #c0392b; color: #c0392b; }
+.post-list-actions .delete-btn:hover { background: #c0392b; color: #fff; }
 
 /* Responsive */
 @media (max-width: 768px) {
