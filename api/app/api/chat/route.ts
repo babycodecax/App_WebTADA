@@ -120,10 +120,29 @@ function _countMatches(terms: string[], haystack: string): number {
   return count;
 }
 
+// Phát hiện chủ đề từ query để bổ sung search
+function _detectTopics(q: string): string[] {
+  const topics: string[] = [];
+  if (/hộ.*kinh.*doanh|hkd|cndk|kinh doanh|may mặc|bán hàng|dịch vụ/.test(q)) topics.push('hộ kinh doanh');
+  if (/bất động sản|nhà|đất|chuyển nhượng/.test(q)) topics.push('bất động sản');
+  if (/đầu tư|chứng khoán|cổ phiếu|trái phiếu/.test(q)) topics.push('đầu tư chứng khoán');
+  if (/xuất nhập khẩu|xnk|hải quan/.test(q)) topics.push('xuất nhập khẩu');
+  if (/bảo hiểm|bhxh|bhyt|bhtn/.test(q)) topics.push('bảo hiểm');
+  return topics;
+}
+
 async function searchKnowledge(query: string, topK: number = TOP_K) {
-  const terms = _tokenize(query); // chỉ tokenize, không expand
+  const terms = _tokenize(query);
+  const topics = _detectTopics(query);
+  // Thêm term chủ đề vào search để ưu tiên chunk đúng chủ đề
+  for (const t of topics) {
+    const tTokens = _tokenize(t);
+    for (const tt of tTokens) {
+      if (!terms.includes(tt)) terms.push(tt);
+    }
+  }
   if (!terms.length) return [];
-  console.log('[search] terms:', JSON.stringify(terms));
+  console.log('[search] terms:', JSON.stringify(terms), 'topics:', JSON.stringify(topics));
 
   // Load all chunks from Supabase (cached in Vercel edge)
   const { data, error } = await getSupabase()
