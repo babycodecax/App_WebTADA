@@ -3,7 +3,7 @@ import { getSupabase } from '@/lib/supabase';
 import { getClient } from '@/lib/claude';
 
 export const runtime = 'nodejs';
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 const CHAT_MODEL = process.env.LLM_MODEL || process.env.CHAT_MODEL || 'deepseek-v4-flash';
 const TOP_K = 15;
@@ -326,10 +326,13 @@ export async function POST(req: NextRequest) {
           ));
         } finally {
           // Cache the answer
-          if (fullAnswer && !contexts.length) {
-            // Only cache if we had results
-          } else if (fullAnswer) {
+          if (fullAnswer) {
             await setCachedAnswer(question, fullAnswer, sources);
+          } else if (contexts.length > 0) {
+            // Có sources nhưng LLM ko trả lời → gửi fallback
+            controller.enqueue(encoder.encode(
+              `data: ${JSON.stringify({ type: 'token', data: 'Hệ thống AI đang quá tải, xin vui lòng thử lại câu hỏi ngắn hơn hoặc hỏi lại sau.' })}\n\n`
+            ));
           }
           controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'done' })}\n\n`));
           controller.close();
