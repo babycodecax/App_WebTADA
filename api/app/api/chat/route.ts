@@ -259,7 +259,7 @@ export async function POST(req: NextRequest) {
       }));
       // Giới hạn content mỗi chunk để tránh prompt quá dài
       ctxText = contexts.slice(0, TOP_K).map((c, i) =>
-        `--- Tai lieu ${i + 1} ---\nTieu de: ${c.title || ''}\nMuc: ${c.heading || ''}\nNoi dung:\n${(c.content || '').slice(0, 800)}`
+        `--- Tai lieu ${i + 1} ---\nTieu de: ${c.title || ''}\nMuc: ${c.heading || ''}\nNoi dung:\n${(c.content || '').slice(0, 2000)}`
       ).join('\n\n');
     }
 
