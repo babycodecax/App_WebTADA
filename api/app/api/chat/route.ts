@@ -123,6 +123,7 @@ function _countMatches(terms: string[], haystack: string): number {
 // Phát hiện chủ đề từ query để bổ sung search
 function _detectTopics(q: string): string[] {
   const topics: string[] = [];
+  if (/thu nhập|tiền công|tiền lương|tncn|thuế tncn|lương|người phụ thuộc/.test(q)) topics.push('thu nhập');
   if (/hộ.*kinh.*doanh|hkd|cndk|kinh doanh|may mặc|bán hàng|dịch vụ/.test(q)) topics.push('hộ kinh doanh');
   if (/bất động sản|nhà|đất|chuyển nhượng/.test(q)) topics.push('bất động sản');
   if (/đầu tư|chứng khoán|cổ phiếu|trái phiếu/.test(q)) topics.push('đầu tư chứng khoán');
