@@ -45,11 +45,20 @@ const TOPIC_KEYWORDS: Record<string, string> = {
 };
 
 // ─── Search: full-text + keyword rerank ───
+// Stopword cơ bản — loại khỏi search terms để tránh nhiễu
+const STOPWORDS = new Set([
+  'và', 'của', 'là', 'được', 'trong', 'với', 'cho', 'năm', 'các', 'có',
+  'theo', 'tại', 'từ', 'để', 'khi', 'nào', 'bao', 'nhiêu', 'làm', 'sao',
+  'thế', 'này', 'như', 'về', 'còn', 'đã', 'sẽ', 'đang', 'bị', 'không',
+  'những', 'một', 'hai', 'ba', 'ngày', 'tháng', 'mấy', 'đó', 'thì',
+]);
+
 function _tokenize(text: string): string[] {
   // Giữ cả token ngắn có chứa số (VD: "2", "50") vì là giá trị thuế quan trọng
   return (text || '').toLowerCase().split(/[\s,.\-:;!?()]+/).filter(t => {
     if (t.length === 0) return false;
     if (t.length === 1 && !/\d/.test(t)) return false; // chỉ lọc "a", "b" — giữ "2", "5"
+    if (STOPWORDS.has(t)) return false; // lọc stopword
     return true;
   });
 }
