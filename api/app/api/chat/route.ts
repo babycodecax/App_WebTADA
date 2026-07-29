@@ -6,7 +6,7 @@ export const runtime = 'nodejs';
 export const maxDuration = 120;
 
 const CHAT_MODEL = process.env.LLM_MODEL || process.env.CHAT_MODEL || 'deepseek-v4-flash';
-const TOP_K = 8;
+const TOP_K = 12;
 
 // ─── Structured knowledge (cache hot) ───
 let _structuredCache: { key: string; value: string }[] | null = null;
@@ -257,8 +257,27 @@ export async function POST(req: NextRequest) {
         file_path: c.file_path || '',
         score: c.score || 0,
       }));
+      // Đa dạng hóa nguồn: tối đa 2 chunk/file, ưu tiên nhiều chủ đề khác nhau
+      const seenFiles = new Set<string>();
+      const diverseSources: typeof contexts = [];
+      for (const c of contexts) {
+        const fp = c.file_path || '';
+        if (seenFiles.has(fp)) continue;
+        seenFiles.add(fp);
+        diverseSources.push(c);
+        if (diverseSources.length >= 6) break;
+      }
+      // Nếu chưa đủ 6, lấy thêm từ contexts gốc
+      if (diverseSources.length < 6) {
+        for (const c of contexts) {
+          if (!diverseSources.includes(c)) {
+            diverseSources.push(c);
+            if (diverseSources.length >= 6) break;
+          }
+        }
+      }
       // Giới hạn content mỗi chunk để tránh prompt quá dài
-      ctxText = contexts.slice(0, TOP_K).map((c, i) =>
+      ctxText = diverseSources.map((c, i) =>
         `--- Tai lieu ${i + 1} ---\nTieu de: ${c.title || ''}\nMuc: ${c.heading || ''}\nNoi dung:\n${(c.content || '').slice(0, 2000)}`
       ).join('\n\n');
     }
