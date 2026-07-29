@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="static/css/styles.css">
   <link rel="stylesheet" href="static/css/chatbox.css">
   <link rel="stylesheet" href="static/css/blog.css">
+  <link rel="stylesheet" href="static/css/audit.css">
 </head>
 <body>
 
@@ -181,6 +182,64 @@
                 Đăng nhập với Google
               </button>
               <p class="chatbox-auth-note">Chỉ cần tài khoản Google, miễn phí.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audit BCTC Button -->
+        <button class="audit-toggle-btn" id="audit-toggle">
+          <svg class="audit-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+            <rect x="9" y="3" width="6" height="4" rx="1"/>
+            <path d="M9 14l2 2 4-4"/>
+          </svg>
+          Kiểm toán Báo cáo Tài chính
+        </button>
+
+        <!-- Audit Panel -->
+        <div class="audit-panel" id="audit-panel">
+          <div class="audit-panel-header">
+            <span class="audit-panel-title">📊 Rà soát Báo cáo Tài chính</span>
+            <button class="audit-panel-close" id="audit-panel-close">✕</button>
+          </div>
+
+          <div class="audit-panel-body">
+            <!-- Upload state -->
+            <div class="audit-state" id="audit-state-upload">
+              <div class="audit-upload-icon">📂</div>
+              <p class="audit-upload-desc">Tải lên file Excel BCTC để kiểm tra tự động.<br>Hỗ trợ: B01, B02, B03 (mẫu TT200/TT99).</p>
+              <label class="audit-upload-btn" id="audit-upload-label">
+                <input type="file" id="audit-file-input" accept=".xlsx" hidden>
+                Chọn file Excel
+              </label>
+              <p class="audit-upload-hint" id="audit-file-name">Chưa chọn file</p>
+            </div>
+
+            <!-- Processing state -->
+            <div class="audit-state audit-state-hidden" id="audit-state-processing">
+              <div class="audit-spinner"></div>
+              <p class="audit-processing-text">Đang rà soát BCTC...</p>
+              <p class="audit-processing-sub">Quá trình này có thể mất 30-60 giây</p>
+            </div>
+
+            <!-- Results state -->
+            <div class="audit-state audit-state-hidden" id="audit-state-result">
+              <div class="audit-result-summary">
+                <div class="audit-result-icon" id="audit-result-icon">✅</div>
+                <div class="audit-result-stats">
+                  <span class="audit-result-label">Kết quả rà soát</span>
+                  <div class="audit-result-counts" id="audit-result-counts"></div>
+                </div>
+              </div>
+              <div class="audit-violations" id="audit-violations-list"></div>
+              <p class="audit-footer-note">⚠️ Đây là kết quả từ Rule Engine tự động. Tham khảo ý kiến chuyên gia trước khi điều chỉnh.</p>
+            </div>
+
+            <!-- Error state -->
+            <div class="audit-state audit-state-hidden" id="audit-state-error">
+              <div class="audit-error-icon">❌</div>
+              <p class="audit-error-text" id="audit-error-text">Có lỗi xảy ra</p>
+              <button class="audit-retry-btn" id="audit-retry-btn">Thử lại</button>
             </div>
           </div>
         </div>
@@ -632,6 +691,7 @@
   </script>
   <script src="static/js/chatbox.js"></script>
   <script src="static/js/app.js"></script>
+  <script src="static/js/audit.js"></script>
   <script>
     /* ====================================
        AUTH — Supabase Google OAuth

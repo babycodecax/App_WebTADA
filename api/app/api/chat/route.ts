@@ -150,15 +150,34 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
   console.log('[search] terms:', JSON.stringify(terms), 'topics:', JSON.stringify(topics));
 
   // Load chunks: nếu có topic "thu nhập" hoặc "TNCN", thêm thẳng file từ Supabase
+  // Dùng 2 like() riêng + Promise.all thay vì .or() vì .or() không parse được value có space ("thu nhập")
   let forcedChunks: any[] = [];
   if (topics.some(t => t === 'thu nhập' || t === 'tncn')) {
     try {
-      const { data: tncnRows } = await getSupabase()
+      const [r1, r2] = await Promise.all([
+        getSupabase()
+          .from('knowledge_chunks')
+          .select('id, content, title, heading, file_path, chunk_index')
+          .like('title', '%thu nhập%')
+          .limit(3),
+        getSupabase()
+          .from('knowledge_chunks')
+          .select('id, content, title, heading, file_path, chunk_index')
+          .like('title', '%TNCN%')
+          .limit(3),
+      ]);
+      forcedChunks = [...(r1.data || []), ...(r2.data || [])];
+    } catch (_) {}
+  }
+  // Mở rộng: nếu có topic HKD, force thêm HKD chunks
+  if (topics.some(t => t === 'hộ kinh doanh')) {
+    try {
+      const { data: hkdRows } = await getSupabase()
         .from('knowledge_chunks')
         .select('id, content, title, heading, file_path, chunk_index')
-        .or('title.ilike.%thu nhập%,title.ilike.%TNCN%')
-        .limit(3);
-      if (tncnRows) forcedChunks = tncnRows;
+        .like('file_path', '%hkd%')
+        .limit(2);
+      if (hkdRows) forcedChunks = [...forcedChunks, ...hkdRows];
     } catch (_) {}
   }
 
