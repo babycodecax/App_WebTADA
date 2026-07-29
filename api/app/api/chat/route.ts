@@ -26,9 +26,32 @@ function buildStructuredPrompt(structured: { key: string; value: string }[]): st
   return `\nBẢNG SỐ LIỆU TRA CỨU NHANH (ưu tiên dùng số này):\n${rows}\n`;
 }
 
+// Keyword mapping: từ thường → từ domain chuẩn (giúp search match tài liệu thuế)
+const TOPIC_KEYWORDS: Record<string, string> = {
+  'tncn': 'thuế thu nhập cá nhân',
+  'thuế tncn': 'thuế thu nhập cá nhân',
+  'thu nhập': 'thu nhập',
+  'thu nhập cá nhân': 'thuế thu nhập cá nhân',
+  'người phụ thuộc': 'người phụ thuộc',
+  'giảm trừ': 'giảm trừ',
+  'giảm trừ gia cảnh': 'giảm trừ gia cảnh',
+  'thuế suất': 'thuế suất',
+  'biểu thuế': 'biểu thuế lũy tiến',
+  'tiền lương': 'thu nhập từ tiền lương',
+  'tiền công': 'thu nhập từ tiền lương',
+  'thu nhập tiền công': 'thu nhập từ tiền lương',
+  'đóng thuế': 'số thuế phải nộp',
+  'số thuế': 'số thuế phải nộp',
+};
+
 // ─── Search: full-text + keyword rerank ───
 function _tokenize(text: string): string[] {
-  return (text || '').toLowerCase().split(/[\s,.\-:;!?()]+/).filter(t => t.length > 1);
+  // Giữ cả token ngắn có chứa số (VD: "2", "50") vì là giá trị thuế quan trọng
+  return (text || '').toLowerCase().split(/[\s,.\-:;!?()]+/).filter(t => {
+    if (t.length === 0) return false;
+    if (t.length === 1 && !/\d/.test(t)) return false; // chỉ lọc "a", "b" — giữ "2", "5"
+    return true;
+  });
 }
 
 function _keywordBoost(query: string, chunk: { content: string; title: string; heading: string }): number {
@@ -44,12 +67,54 @@ function _keywordBoost(query: string, chunk: { content: string; title: string; h
   const numMatches = (text.match(/\d{1,3}(?:[.,]\d+)?\s*(tỷ|triệu|tr|nghìn|%|đồng)/gi) || []).length;
   boost += Math.min(numMatches * 0.3, 1.0);
   if (title.toLowerCase().includes('cheatsheet')) boost += 3.0;
+
+  // Keyword mapping boost: nếu query có chứa từ domain chuẩn
+  for (const [key] of Object.entries(TOPIC_KEYWORDS)) {
+    if (q.includes(key) && (title.includes(key) || heading.includes(key) || text.includes(key))) {
+      boost += 1.0;
+    }
+  }
+
   return boost;
 }
 
+/** Mở rộng query: thêm từ khóa domain chuẩn + tokenize query gốc */
+function _expandKeywords(query: string): string[] {
+  const q = query.toLowerCase().trim();
+  const terms: string[] = [];
+
+  // 1) Tokenize query gốc
+  const tokens = _tokenize(q);
+  for (const t of tokens) {
+    if (!terms.includes(t)) terms.push(t);
+  }
+
+  // 2) Thêm token domain chuẩn từ keyword mapping
+  for (const [key, val] of Object.entries(TOPIC_KEYWORDS)) {
+    if (q.includes(key)) {
+      const valTokens = _tokenize(val);
+      for (const vt of valTokens) {
+        if (!terms.includes(vt)) terms.push(vt);
+      }
+    }
+  }
+
+  return terms;
+}
+
+/** Đếm số term match trong chunk, dùng để boost chứ không filter */
+function _countMatches(terms: string[], haystack: string): number {
+  let count = 0;
+  for (const t of terms) {
+    if (haystack.includes(t)) count++;
+  }
+  return count;
+}
+
 async function searchKnowledge(query: string, topK: number = TOP_K) {
-  const terms = _tokenize(query);
+  const terms = _tokenize(query); // chỉ tokenize, không expand
   if (!terms.length) return [];
+  console.log('[search] terms:', JSON.stringify(terms));
 
   // Load all chunks from Supabase (cached in Vercel edge)
   const { data, error } = await getSupabase()
@@ -62,7 +127,7 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
     return [];
   }
 
-  // Filter + score
+  // Filter + score: chunk chỉ cần match ít nhất 1 term để giữ
   const scored: any[] = [];
   for (const row of data) {
     const content = (row.content || '');
@@ -70,14 +135,11 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
     const heading = (row.heading || '');
     const haystack = (content + ' ' + title + ' ' + heading).toLowerCase();
 
-    let matchCount = 0;
-    for (const t of terms) {
-      if (haystack.includes(t)) matchCount++;
-    }
+    const matchCount = _countMatches(terms, haystack);
     if (matchCount === 0) continue;
 
-    // Base score: match density
-    let score = matchCount / terms.length;
+    // Base score: log-scale, không phạt khi nhiều term
+    let score = 1.0 + Math.log2(matchCount + 1);
 
     // Cheatsheet: +5 ưu tiên tuyệt đối
     if (title.toLowerCase().includes('cheatsheet') || title.toLowerCase().includes('_cheatsheet')) {
