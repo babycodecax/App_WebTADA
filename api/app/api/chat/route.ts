@@ -6,7 +6,7 @@ export const runtime = 'nodejs';
 export const maxDuration = 120;
 
 const CHAT_MODEL = process.env.LLM_MODEL || process.env.CHAT_MODEL || 'deepseek-v4-flash';
-const TOP_K = 15;
+const TOP_K = 8;
 
 // ─── Structured knowledge (cache hot) ───
 let _structuredCache: { key: string; value: string }[] | null = null;
@@ -258,8 +258,8 @@ export async function POST(req: NextRequest) {
         score: c.score || 0,
       }));
       // Giới hạn content mỗi chunk để tránh prompt quá dài
-      ctxText = contexts.map((c, i) =>
-        `--- Tai lieu ${i + 1} ---\nTieu de: ${c.title || ''}\nMuc: ${c.heading || ''}\nNoi dung:\n${(c.content || '').slice(0, 1500)}`
+      ctxText = contexts.slice(0, TOP_K).map((c, i) =>
+        `--- Tai lieu ${i + 1} ---\nTieu de: ${c.title || ''}\nMuc: ${c.heading || ''}\nNoi dung:\n${(c.content || '').slice(0, 800)}`
       ).join('\n\n');
     }
 
