@@ -300,7 +300,7 @@ export async function POST(req: NextRequest) {
       }
       // Force thêm 1 chunk TNCN từ data gốc nếu query có liên quan
       if (/thu nhập|tiền công|tncn|người phụ thuộc|npt/.test(question)) {
-        const tncn = contexts.find(c => /luat-109-tncn|nd-253-tncn|luat-thue-tncn/.test(c.file_path || ''));
+        const tncn = contexts.find(c => /luat-109|nd-253|luat-thue-tncn|_cheatsheet/.test(c.file_path || ''));
         if (tncn && !diverseSources.includes(tncn)) diverseSources.push(tncn);
       }
       // Nếu còn còn < 6 sources và query có HKD, thêm nd-68
