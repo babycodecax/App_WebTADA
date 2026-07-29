@@ -157,6 +157,7 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
 
   // Score ALL chunks — KHÔNG filter, dùng boost-based scoring
   const scored: any[] = [];
+  const topicBoost = topics.length > 0 ? topics.join(' ') : '';
   for (const row of data) {
     const content = (row.content || '');
     const title = (row.title || '');
@@ -177,6 +178,14 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
     // Title/heading match
     for (const field of [title.toLowerCase(), heading.toLowerCase()]) {
       if (field && terms.some(t => field.includes(t))) score += 1.5;
+    }
+    // Topic boost: nếu chunk có chứa từ khóa topic, +5 để ưu tiên
+    if (topicBoost && haystack.includes(topicBoost)) {
+      score += 5.0;
+      // Thêm bonus nếu title/heading có topic
+      if (title.includes(topicBoost) || heading.includes(topicBoost)) {
+        score += 3.0;
+      }
     }
     // Topic keyword boost
     for (const [key] of Object.entries(TOPIC_KEYWORDS)) {
