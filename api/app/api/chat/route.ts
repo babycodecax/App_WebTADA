@@ -302,7 +302,7 @@ export async function POST(req: NextRequest) {
         try {
           const chatStream = await getClient().chat.completions.create({
             model: CHAT_MODEL,
-            max_tokens: 2048,
+            max_tokens: 4096,
             temperature: 0.0,
             messages: [
               { role: 'system', content: system },
