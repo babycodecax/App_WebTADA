@@ -285,7 +285,7 @@ export async function POST(req: NextRequest) {
         file_path: c.file_path || '',
         score: c.score || 0,
       }));
-      // Đa dạng hóa nguồn: tối đa 2 chunk/file, ưu tiên nhiều chủ đề khác nhau
+      // Đa dạng hóa nguồn: tối đa 1 chunk/file, ưu tiên nhiều chủ đề khác nhau
       const seenFiles = new Set<string>();
       const diverseSources: typeof contexts = [];
       for (const c of contexts) {
@@ -293,20 +293,11 @@ export async function POST(req: NextRequest) {
         if (seenFiles.has(fp)) continue;
         seenFiles.add(fp);
         diverseSources.push(c);
-        if (diverseSources.length >= 6) break;
-      }
-      // Nếu chưa đủ 6, lấy thêm từ contexts gốc
-      if (diverseSources.length < 6) {
-        for (const c of contexts) {
-          if (!diverseSources.includes(c)) {
-            diverseSources.push(c);
-            if (diverseSources.length >= 6) break;
-          }
-        }
+        if (diverseSources.length >= 5) break;
       }
       // Giới hạn content mỗi chunk để tránh prompt quá dài
       ctxText = diverseSources.map((c, i) =>
-        `--- Tai lieu ${i + 1} ---\nTieu de: ${c.title || ''}\nMuc: ${c.heading || ''}\nNoi dung:\n${(c.content || '').slice(0, 2000)}`
+        `--- Tai lieu ${i + 1} ---\nTieu de: ${c.title || ''}\nMuc: ${c.heading || ''}\nNoi dung:\n${(c.content || '').slice(0, 1000)}`
       ).join('\n\n');
     }
 
