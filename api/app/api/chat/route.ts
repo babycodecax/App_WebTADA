@@ -286,14 +286,35 @@ export async function POST(req: NextRequest) {
         score: c.score || 0,
       }));
       // Đa dạng hóa nguồn: tối đa 1 chunk/file, ưu tiên nhiều chủ đề khác nhau
+      // Nhưng vẫn ưu tiên giữ ít nhất 1 file TNCN và 1 file HKD nếu có
       const seenFiles = new Set<string>();
       const diverseSources: typeof contexts = [];
+      // forcedTopics: các file_path pattern cần giữ
+      const forcedPatterns: {pattern: RegExp, label: string}[] = [];
+      if (/thu nhập|tiền công|tiền lương|tncn|lương/.test(question)) {
+        forcedPatterns.push({pattern: /tncn|luat-109|nd-253/, label: 'tncn'});
+      }
+      if (/hkd|hộ kinh doanh|kinh doanh|may mặc/.test(question)) {
+        forcedPatterns.push({pattern: /nd-68-2026|tt-50-2026/, label: 'hkd'});
+      }
+      // Luôn giữ cheatsheet nếu có
+      forcedPatterns.push({pattern: /cheatsheet/, label: 'cheatsheet'});
+
       for (const c of contexts) {
         const fp = c.file_path || '';
         if (seenFiles.has(fp)) continue;
         seenFiles.add(fp);
         diverseSources.push(c);
-        if (diverseSources.length >= 5) break;
+        if (diverseSources.length >= 6) break;
+      }
+      // Force-add các chunk cần thiết nếu chưa có
+      for (const {pattern, label} of forcedPatterns) {
+        if (diverseSources.some(s => pattern.test(s.file_path || ''))) continue;
+        const forced = contexts.find(c => pattern.test(c.file_path || '') && !diverseSources.includes(c));
+        if (forced) {
+          if (diverseSources.length >= 8) diverseSources.pop(); // thay thế chunk cuối
+          diverseSources.push(forced);
+        }
       }
       // Giới hạn content mỗi chunk để tránh prompt quá dài
       ctxText = diverseSources.map((c, i) =>
