@@ -142,6 +142,15 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
       if (!terms.includes(tt)) terms.push(tt);
     }
   }
+  // Term mapping: nếu query có "tiền công" → thêm "thu nhập" "tiền lương"
+  // để file TNCN match được
+  const qLow = query.toLowerCase();
+  if (/tiền công|tiền lương/.test(qLow) && !terms.some(t => /thu nhập/.test(t))) {
+    terms.push('thu nhập');
+  }
+  if (/thu nhập/.test(qLow) && !terms.some(t => /tiền lương/.test(t))) {
+    terms.push('tiền lương');
+  }
   if (!terms.length) return [];
   console.log('[search] terms:', JSON.stringify(terms), 'topics:', JSON.stringify(topics));
 
