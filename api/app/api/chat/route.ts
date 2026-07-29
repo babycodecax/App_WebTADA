@@ -123,10 +123,10 @@ function _countMatches(terms: string[], haystack: string): number {
 // Phát hiện chủ đề từ query để bổ sung search
 function _detectTopics(q: string): string[] {
   const topics: string[] = [];
-  if (/thu nhập|tiền công|tiền lương|tncn|thuế tncn|lương|người phụ thuộc/.test(q)) topics.push('thu nhập tncn');
+  if (/thu nhập|tiền công|tiền lương|tncn|thuế tncn|lương|người phụ thuộc/.test(q)) topics.push('thu nhập', 'tncn');
   if (/hộ.*kinh.*doanh|hkd|cndk|kinh doanh|may mặc|bán hàng|dịch vụ/.test(q)) topics.push('hộ kinh doanh');
   if (/bất động sản|nhà|đất|chuyển nhượng/.test(q)) topics.push('bất động sản');
-  if (/đầu tư|chứng khoán|cổ phiếu|trái phiếu/.test(q)) topics.push('đầu tư chứng khoán');
+  if (/đầu tư|chứng khoán|cổ phiếu|trái phiếu/.test(q)) topics.push('chứng khoán');
   if (/xuất nhập khẩu|xnk|hải quan/.test(q)) topics.push('xuất nhập khẩu');
   if (/bảo hiểm|bhxh|bhyt|bhtn/.test(q)) topics.push('bảo hiểm');
   return topics;
