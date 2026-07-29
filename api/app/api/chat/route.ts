@@ -257,8 +257,9 @@ export async function POST(req: NextRequest) {
         file_path: c.file_path || '',
         score: c.score || 0,
       }));
+      // Giới hạn content mỗi chunk để tránh prompt quá dài
       ctxText = contexts.map((c, i) =>
-        `--- Tai lieu ${i + 1} ---\nTieu de: ${c.title || ''}\nMuc: ${c.heading || ''}\nNoi dung:\n${c.content || ''}`
+        `--- Tai lieu ${i + 1} ---\nTieu de: ${c.title || ''}\nMuc: ${c.heading || ''}\nNoi dung:\n${(c.content || '').slice(0, 1500)}`
       ).join('\n\n');
     }
 
