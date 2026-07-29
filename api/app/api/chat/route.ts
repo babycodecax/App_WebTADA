@@ -136,7 +136,7 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
     return [];
   }
 
-  // Filter + score: chunk chỉ cần match ít nhất 1 term để giữ
+  // Score ALL chunks — KHÔNG filter, dùng boost-based scoring
   const scored: any[] = [];
   for (const row of data) {
     const content = (row.content || '');
@@ -145,21 +145,25 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
     const haystack = (content + ' ' + title + ' ' + heading).toLowerCase();
 
     const matchCount = _countMatches(terms, haystack);
-    if (matchCount === 0) continue;
+    // Base: match count (log-scale)
+    let score = matchCount > 0 ? 1.0 + Math.log2(matchCount + 1) : 0;
 
-    // Base score: log-scale, không phạt khi nhiều term
-    let score = 1.0 + Math.log2(matchCount + 1);
-
-    // Cheatsheet: +5 ưu tiên tuyệt đối
+    // Cheatsheet: +8 ưu tiên tuyệt đối
     if (title.toLowerCase().includes('cheatsheet') || title.toLowerCase().includes('_cheatsheet')) {
-      score += 5.0;
+      score += 8.0;
     }
-    // Chunk có số liệu cụ thể
+    // Chunk có số liệu cụ thể 50tr, 2 người...
     const numMatches = (content.match(/\d{1,3}(?:[.,]\d+)?\s*(tỷ|triệu|tr|nghìn|%|đồng)/gi) || []).length;
-    score += Math.min(numMatches * 0.2, 1.0);
+    score += Math.min(numMatches * 0.3, 1.5);
     // Title/heading match
     for (const field of [title.toLowerCase(), heading.toLowerCase()]) {
       if (field && terms.some(t => field.includes(t))) score += 1.5;
+    }
+    // Topic keyword boost
+    for (const [key] of Object.entries(TOPIC_KEYWORDS)) {
+      if (terms.some(t => key.includes(t)) && haystack.includes(key)) {
+        score += 1.0;
+      }
     }
 
     scored.push({ ...row, score });
