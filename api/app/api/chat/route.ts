@@ -123,7 +123,7 @@ function _countMatches(terms: string[], haystack: string): number {
 // Phát hiện chủ đề từ query để bổ sung search
 function _detectTopics(q: string): string[] {
   const topics: string[] = [];
-  if (/thu nhập|tiền công|tiền lương|tncn|thuế tncn|lương|người phụ thuộc/.test(q)) topics.push('thu nhập');
+  if (/thu nhập|tiền công|tiền lương|tncn|thuế tncn|lương|người phụ thuộc/.test(q)) topics.push('thu nhập tncn');
   if (/hộ.*kinh.*doanh|hkd|cndk|kinh doanh|may mặc|bán hàng|dịch vụ/.test(q)) topics.push('hộ kinh doanh');
   if (/bất động sản|nhà|đất|chuyển nhượng/.test(q)) topics.push('bất động sản');
   if (/đầu tư|chứng khoán|cổ phiếu|trái phiếu/.test(q)) topics.push('đầu tư chứng khoán');
@@ -156,9 +156,8 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
     return [];
   }
 
-  // Score ALL chunks — KHÔNG filter, dùng boost-based scoring
+  // Score ALL chunks — boost riêng cho mỗi topic
   const scored: any[] = [];
-  const topicBoost = topics.length > 0 ? topics.join(' ') : '';
   for (const row of data) {
     const content = (row.content || '');
     const title = (row.title || '');
@@ -166,32 +165,25 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
     const haystack = (content + ' ' + title + ' ' + heading).toLowerCase();
 
     const matchCount = _countMatches(terms, haystack);
-    // Base: match count (log-scale)
     let score = matchCount > 0 ? 1.0 + Math.log2(matchCount + 1) : 0;
 
-    // Cheatsheet: +8 ưu tiên tuyệt đối
+    // Cheatsheet +8
     if (title.toLowerCase().includes('cheatsheet') || title.toLowerCase().includes('_cheatsheet')) {
       score += 8.0;
     }
-    // Chunk có số liệu cụ thể 50tr, 2 người...
+    // Số liệu cụ thể
     const numMatches = (content.match(/\d{1,3}(?:[.,]\d+)?\s*(tỷ|triệu|tr|nghìn|%|đồng)/gi) || []).length;
     score += Math.min(numMatches * 0.3, 1.5);
     // Title/heading match
     for (const field of [title.toLowerCase(), heading.toLowerCase()]) {
       if (field && terms.some(t => field.includes(t))) score += 1.5;
     }
-    // Topic boost: nếu chunk có chứa từ khóa topic, +5 để ưu tiên
-    if (topicBoost && haystack.includes(topicBoost)) {
-      score += 5.0;
-      // Thêm bonus nếu title/heading có topic
-      if (title.includes(topicBoost) || heading.includes(topicBoost)) {
+
+    // Topic boost per topic (tối đa +15, chia đều)
+    for (const topic of topics) {
+      if (haystack.includes(topic)) {
         score += 3.0;
-      }
-    }
-    // Topic keyword boost
-    for (const [key] of Object.entries(TOPIC_KEYWORDS)) {
-      if (terms.some(t => key.includes(t)) && haystack.includes(key)) {
-        score += 1.0;
+        if (title.includes(topic) || heading.includes(topic)) score += 2.0;
       }
     }
 
@@ -199,7 +191,17 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
   }
 
   scored.sort((a, b) => (b.score || 0) - (a.score || 0));
+  // Lấy topK + thêm forced topics ở cuối
   const top = scored.slice(0, topK);
+  // Nếu còn slot, thêm chunk từ mỗi topic còn thiếu
+  if (top.length < topK && topics.length > 0) {
+    for (const topic of topics) {
+      if (top.some(s => (s.content + ' ' + s.title + ' ' + s.heading).toLowerCase().includes(topic))) continue;
+      const missing = scored.find(s => !top.includes(s) && (s.content + ' ' + s.title + ' ' + s.heading).toLowerCase().includes(topic));
+      if (missing) top.push(missing);
+      if (top.length >= topK) break;
+    }
+  }
   return top;
 }
 
