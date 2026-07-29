@@ -142,17 +142,25 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
       if (!terms.includes(tt)) terms.push(tt);
     }
   }
-  // Term mapping: nếu query có "tiền công" → thêm "thu nhập" "tiền lương"
-  // để file TNCN match được
   const qLow = query.toLowerCase();
   if (/tiền công|tiền lương/.test(qLow) && !terms.some(t => /thu nhập/.test(t))) {
     terms.push('thu nhập');
   }
-  if (/thu nhập/.test(qLow) && !terms.some(t => /tiền lương/.test(t))) {
-    terms.push('tiền lương');
-  }
   if (!terms.length) return [];
   console.log('[search] terms:', JSON.stringify(terms), 'topics:', JSON.stringify(topics));
+
+  // Load chunks: nếu có topic "thu nhập" hoặc "TNCN", thêm thẳng file từ Supabase
+  let forcedChunks: any[] = [];
+  if (topics.some(t => t === 'thu nhập' || t === 'tncn')) {
+    try {
+      const { data: tncnRows } = await getSupabase()
+        .from('knowledge_chunks')
+        .select('id, content, title, heading, file_path, chunk_index')
+        .or('title.ilike.%thu nhập%,title.ilike.%TNCN%')
+        .limit(3);
+      if (tncnRows) forcedChunks = tncnRows;
+    } catch (_) {}
+  }
 
   // Load all chunks from Supabase (cached in Vercel edge)
   const { data, error } = await getSupabase()
@@ -200,15 +208,13 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
   }
 
   scored.sort((a, b) => (b.score || 0) - (a.score || 0));
-  // Lấy topK + thêm forced topics ở cuối
   const top = scored.slice(0, topK);
-  // Nếu còn slot, thêm chunk từ mỗi topic còn thiếu
-  if (top.length < topK && topics.length > 0) {
-    for (const topic of topics) {
-      if (top.some(s => (s.content + ' ' + s.title + ' ' + s.heading).toLowerCase().includes(topic))) continue;
-      const missing = scored.find(s => !top.includes(s) && (s.content + ' ' + s.title + ' ' + s.heading).toLowerCase().includes(topic));
-      if (missing) top.push(missing);
-      if (top.length >= topK) break;
+  // Merge forcedChunks vào cuối nếu chưa có trong top
+  for (const fc of forcedChunks) {
+    if (top.length >= topK + 2) break;
+    if (!top.some(t => t.id === fc.id)) {
+      fc.score = 5.0; // gán điểm thấp để xếp cuối nhưng vẫn có
+      top.push(fc);
     }
   }
   return top;
