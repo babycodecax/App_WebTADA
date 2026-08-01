@@ -128,7 +128,7 @@ h1, h2, h3, h4, h5, h6 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 40px;
-  align-items: center;
+  align-items: stretch;
 }
 
 .grid-3 {
@@ -427,6 +427,17 @@ h1, h2, h3, h4, h5, h6 {
   fill: currentColor;
   flex-shrink: 0;
 }
+.dropdown-icon-img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.social-icon-img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
 
 .header-actions {
   display: flex;
@@ -531,6 +542,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .hero-content {
   max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100%;
+  padding-top: 0;
 }
 
 .hero-badge {
@@ -1490,6 +1506,11 @@ h1, h2, h3, h4, h5, h6 {
   width: 18px;
   height: 18px;
   fill: currentColor;
+}
+.social-icon-img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 
 .footer-title {

@@ -98,6 +98,37 @@ document.addEventListener('DOMContentLoaded', function () {
     inputEl.style.height = Math.min(inputEl.scrollHeight, 140) + 'px';
   }
 
+  /* --- Thu/phóng chatbox: mặc định thu vừa (chatbox + audit = cao cột trái).
+         Ấn vào chatbox → phóng to đọc dễ; click ra ngoài → thu lại. --- */
+  var chatboxWrap = document.getElementById('chatbox');
+
+  function expandChat() {
+    if (chatboxWrap) chatboxWrap.classList.add('is-expanded');
+  }
+
+  function collapseChat() {
+    if (chatboxWrap) chatboxWrap.classList.remove('is-expanded');
+  }
+
+  function isChatExpanded() {
+    return !!(chatboxWrap && chatboxWrap.classList.contains('is-expanded'));
+  }
+
+  if (chatboxWrap) {
+    chatboxWrap.addEventListener('click', function (e) {
+      if (isChatExpanded()) return; // đang rộng — giữ nguyên
+      // Nút "Làm mới" không nên phóng to chatbox
+      if (e.target.closest('.chatbox-reset')) return;
+      expandChat();
+      setTimeout(function () { inputEl.focus(); }, 60);
+    });
+    // Click ra ngoài chatbox → thu lại
+    document.addEventListener('click', function (e) {
+      if (!isChatExpanded()) return;
+      if (!chatboxWrap.contains(e.target)) collapseChat();
+    });
+  }
+
   function showAuthOverlay() {
     var overlay = document.getElementById('chat-auth-overlay');
     if (overlay) overlay.classList.add('active');

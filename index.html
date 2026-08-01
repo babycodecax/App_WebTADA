@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="static/css/styles.css">
   <link rel="stylesheet" href="static/css/chatbox.css">
   <link rel="stylesheet" href="static/css/blog.css">
+  <link rel="stylesheet" href="static/css/audit.css">
 </head>
 <body>
 
@@ -140,7 +141,8 @@
         </div>
       </div>
       
-      <!-- Cot phai Hero: Chatbox (truc tiep cot 2 cua grid-2) -->
+      <!-- Cot phai Hero: Chatbox + Audit (cot 2 cua grid-2) -->
+      <div class="chatbox-col">
       <div class="chatbox-wrap" id="chatbox">
           <div class="chatbox-header">
             <div class="chatbox-avatar">🤖</div>
@@ -184,6 +186,35 @@
             </div>
           </div>
         </div>
+
+        <!-- Audit BCTC — bên phải dưới chatbox, form đầy đủ -->
+        <div class="audit-section" id="audit-section">
+          <div class="audit-label">📊 Rà soát Báo cáo Tài chính</div>
+          <div class="audit-row">
+            <label class="audit-btn" id="audit-upload-label">
+              <input type="file" id="audit-file-input" accept=".xlsx,.xls,.docx" multiple hidden>
+              📁 Chọn file BCTC
+            </label>
+            <button class="audit-btn audit-btn-outline" id="audit-export-btn" style="display:none">
+              📄 Xuất PDF
+            </button>
+            <button class="audit-btn audit-btn-outline" id="audit-download-word-btn" style="display:none">
+              📝 Tải Word
+            </button>
+          </div>
+          <div class="audit-hint" id="audit-file-name">.xlsx / .xls / .docx (B01 B02 B03 theo TT200/TT99)</div>
+          <div class="audit-progress" id="audit-progress" style="display:none">
+            <div class="audit-spinner-sm"></div>
+            <span>Đang rà soát…</span>
+          </div>
+          <div class="audit-result" id="audit-result" style="display:none">
+            <span class="audit-badge" id="audit-badge"></span>
+            <span class="audit-summary" id="audit-summary"></span>
+          </div>
+          <div class="audit-error" id="audit-error" style="display:none"></div>
+        </div>
+
+      </div><!-- end chatbox-col -->
 
     </div>
   </section>
@@ -632,6 +663,7 @@
   </script>
   <script src="static/js/chatbox.js"></script>
   <script src="static/js/app.js"></script>
+  <script src="static/js/audit.js"></script>
   <script>
     /* ====================================
        AUTH — Supabase Google OAuth
@@ -643,6 +675,12 @@
       var FREE_KEY = 'tada_free_count';
       var supabase = null;
       var session = null;
+
+      /* Placeholder — đảm bảo TADA_AUTH luôn tồn tại từ lúc script chạy,
+         trước khi fetch config hoàn thành.
+         audit.js sẽ gọi isLoggedIn() → false → hiện overlay.
+         Sau khi config load xong + checkSession → isLoggedIn() trả true. */
+      window.TADA_AUTH = { isLoggedIn: function(){ return false; }, canAsk: function(){ return false; }, log: function(){}, getSession: function(){ return null; } };
 
       /* Lấy config từ backend */
       fetch('/api/config')
@@ -707,6 +745,7 @@
           chatbox.dataset.loggedIn = 'false';
           chatbox.dataset.freeCount = localStorage.getItem(FREE_KEY) || '0';
         }
+        publishSession();
       }
 
       /* Login - Google OAuth */
@@ -742,6 +781,11 @@
 
       /* Lắng nghe auth state change (đã chuyển xuống sau createClient) */
 
+      /* Thông báo session cho các module khác (audit.js...) */
+      function publishSession() {
+        document.dispatchEvent(new CustomEvent('tada:auth', { detail: { session: session } }));
+      }
+
       /* Hàm public: kiểm tra còn câu hỏi không */
       window.TADA_AUTH = {
         canAsk: function () {
@@ -758,6 +802,17 @@
         },
         isLoggedIn: function () {
           return !!session;
+        },
+        getSession: function () {
+          return session;
+        },
+        logout: function () {
+          if (!supabase) return;
+          supabase.auth.signOut().then(function () {
+            session = null;
+            updateUI();
+            localStorage.removeItem(FREE_KEY);
+          }).catch(function () {});
         },
         remainingFree: function () {
           if (session) return Infinity;

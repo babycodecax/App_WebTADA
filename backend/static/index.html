@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="static/css/styles.css">
   <link rel="stylesheet" href="static/css/chatbox.css">
   <link rel="stylesheet" href="static/css/blog.css">
+  <link rel="stylesheet" href="static/css/audit.css">
 </head>
 <body>
 
@@ -37,7 +38,7 @@
               Facebook
             </a>
             <a href="https://zalo.me/g/izers2awkn1hyqojzdfv" target="_blank" class="dropdown-item">
-              <svg class="dropdown-icon" viewBox="0 0 24 24"><path d="M18 7c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1zm-3.5 3c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1zm-4-4C7.46 6 5 8.24 5 11c0 1.25.5 2.39 1.32 3.26L5.14 17.8c-.14.39.22.76.61.61l3.61-1.25C10.05 17.76 10.77 18 11.5 18c3.04 0 5.5-2.24 5.5-5s-2.46-5-5.5-5zm6.5 6c.73 0 1.45-.24 2.13-.56l3.61 1.25c.39.14.76-.22.61-.61l-1.18-3.54C20.5 13.39 21 12.25 21 11c0-2.3-1.88-4.23-4.4-4.83.25.57.4 1.2.4 1.83 0 2.21-1.57 4.05-3.7 4.74.57 1.89 2.2 3.27 4.2 3.27z"/></svg>
+              <img src="static/img/zalo.png" alt="Zalo" class="dropdown-icon-img">
               Zalo Group
             </a>
             <a href="https://youtube.com/@dvthue-ketoan?si=mOWkMM8NzgrDLocv" target="_blank" class="dropdown-item">
@@ -140,7 +141,8 @@
         </div>
       </div>
       
-      <!-- Cot phai Hero: Chatbox (truc tiep cot 2 cua grid-2) -->
+      <!-- Cot phai Hero: Chatbox + Audit (cot 2 cua grid-2) -->
+      <div class="chatbox-col">
       <div class="chatbox-wrap" id="chatbox">
           <div class="chatbox-header">
             <div class="chatbox-avatar">🤖</div>
@@ -184,6 +186,35 @@
             </div>
           </div>
         </div>
+
+        <!-- Audit BCTC — bên phải dưới chatbox, form đầy đủ -->
+        <div class="audit-section" id="audit-section">
+          <div class="audit-label">📊 Rà soát Báo cáo Tài chính</div>
+          <div class="audit-row">
+            <label class="audit-btn" id="audit-upload-label">
+              <input type="file" id="audit-file-input" accept=".xlsx,.xls,.docx" multiple hidden>
+              📁 Chọn file BCTC
+            </label>
+            <button class="audit-btn audit-btn-outline" id="audit-export-btn" style="display:none">
+              📄 Xuất PDF
+            </button>
+            <button class="audit-btn audit-btn-outline" id="audit-download-word-btn" style="display:none">
+              📝 Tải Word
+            </button>
+          </div>
+          <div class="audit-hint" id="audit-file-name">.xlsx / .xls / .docx (B01 B02 B03 theo TT200/TT99)</div>
+          <div class="audit-progress" id="audit-progress" style="display:none">
+            <div class="audit-spinner-sm"></div>
+            <span>Đang rà soát…</span>
+          </div>
+          <div class="audit-result" id="audit-result" style="display:none">
+            <span class="audit-badge" id="audit-badge"></span>
+            <span class="audit-summary" id="audit-summary"></span>
+          </div>
+          <div class="audit-error" id="audit-error" style="display:none"></div>
+        </div>
+
+      </div><!-- end chatbox-col -->
 
     </div>
   </section>
@@ -575,12 +606,9 @@
                 <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.518 3.545 12 3.545 12 3.545s-7.518 0-9.388.507a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.87.507 9.388.507 9.388.507s7.518 0 9.388-.507a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
               </svg>
             </a>
-            <!-- Zalo Group Icon (SVG) -->
+            <!-- Zalo Group Icon -->
             <a href="https://zalo.me/g/izers2awkn1hyqojzdfv" target="_blank" class="social-icon-link" aria-label="Group Zalo Hỗ Trợ HKD & Doanh nghiệp">
-              <svg class="social-svg" viewBox="0 0 24 24">
-                <!-- Group chat bubble icon representing Zalo Group support -->
-                <path d="M18 7c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1zm-3.5 3c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1zm-4-4C7.46 6 5 8.24 5 11c0 1.25.5 2.39 1.32 3.26L5.14 17.8c-.14.39.22.76.61.61l3.61-1.25C10.05 17.76 10.77 18 11.5 18c3.04 0 5.5-2.24 5.5-5s-2.46-5-5.5-5zm6.5 6c.73 0 1.45-.24 2.13-.56l3.61 1.25c.39.14.76-.22.61-.61l-1.18-3.54C20.5 13.39 21 12.25 21 11c0-2.3-1.88-4.23-4.4-4.83.25.57.4 1.2.4 1.83 0 2.21-1.57 4.05-3.7 4.74.57 1.89 2.2 3.27 4.2 3.27z"/>
-              </svg>
+              <img src="static/img/zalo.png" alt="Zalo" class="social-icon-img">
             </a>
           </div>
         </div>
@@ -635,6 +663,7 @@
   </script>
   <script src="static/js/chatbox.js"></script>
   <script src="static/js/app.js"></script>
+  <script src="static/js/audit.js"></script>
   <script>
     /* ====================================
        AUTH — Supabase Google OAuth
@@ -646,6 +675,12 @@
       var FREE_KEY = 'tada_free_count';
       var supabase = null;
       var session = null;
+
+      /* Placeholder — đảm bảo TADA_AUTH luôn tồn tại từ lúc script chạy,
+         trước khi fetch config hoàn thành.
+         audit.js sẽ gọi isLoggedIn() → false → hiện overlay.
+         Sau khi config load xong + checkSession → isLoggedIn() trả true. */
+      window.TADA_AUTH = { isLoggedIn: function(){ return false; }, canAsk: function(){ return false; }, log: function(){}, getSession: function(){ return null; } };
 
       /* Lấy config từ backend */
       fetch('/api/config')
@@ -710,6 +745,7 @@
           chatbox.dataset.loggedIn = 'false';
           chatbox.dataset.freeCount = localStorage.getItem(FREE_KEY) || '0';
         }
+        publishSession();
       }
 
       /* Login - Google OAuth */
@@ -745,6 +781,11 @@
 
       /* Lắng nghe auth state change (đã chuyển xuống sau createClient) */
 
+      /* Thông báo session cho các module khác (audit.js...) */
+      function publishSession() {
+        document.dispatchEvent(new CustomEvent('tada:auth', { detail: { session: session } }));
+      }
+
       /* Hàm public: kiểm tra còn câu hỏi không */
       window.TADA_AUTH = {
         canAsk: function () {
@@ -761,6 +802,17 @@
         },
         isLoggedIn: function () {
           return !!session;
+        },
+        getSession: function () {
+          return session;
+        },
+        logout: function () {
+          if (!supabase) return;
+          supabase.auth.signOut().then(function () {
+            session = null;
+            updateUI();
+            localStorage.removeItem(FREE_KEY);
+          }).catch(function () {});
         },
         remainingFree: function () {
           if (session) return Infinity;
@@ -791,7 +843,7 @@
       function fmt(iso) { if (!iso) return ''; return new Date(iso).toLocaleDateString('vi-VN', {year:'numeric',month:'long',day:'numeric'}); }
       var grid = document.getElementById('blog-mini-grid');
       if (!grid) return;
-      fetch('/api/blog?limit=5')
+      fetch('/api/blog?limit=10')
         .then(function (r) { return r.json(); })
         .then(function (posts) {
           if (!posts || !posts.length) {

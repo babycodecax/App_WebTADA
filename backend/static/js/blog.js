@@ -32,10 +32,49 @@
     }
   }
 
+  /** Tìm bài viết liên quan: matching keyword từ title */
+  function findRelated(currentSlug, currentTitle, allPosts, maxCount) {
+    if (maxCount === undefined) maxCount = 4;
+    // Extract meaningful keywords (≥ 5 ký tự) từ title hiện tại
+    var keywords = (currentTitle || '').toLowerCase().split(/[\s,.\-:;!?()]+/).filter(function (w) {
+      return w.length >= 5 && !['của', 'trong', 'với', 'cho', 'năm', 'các', 'có', 'theo', 'tại', 'từ', 'để', 'khi', 'nào', 'bao', 'nhiêu', 'làm', 'sao', 'thế', 'này', 'như', 'về', 'còn', 'đã', 'sẽ', 'đang', 'bị', 'không', 'những', 'một', 'ngày', 'tháng', 'đó', 'thì'].includes(w);
+    });
+
+    // Score each post by keyword matches in title + summary
+    var scored = [];
+    allPosts.forEach(function (p) {
+      if (p.slug === currentSlug) return;
+      var text = ((p.title || '') + ' ' + (p.summary || '')).toLowerCase();
+      var score = 0;
+      keywords.forEach(function (kw) {
+        if (text.includes(kw)) score++;
+      });
+      if (score > 0) scored.push({ post: p, score: score });
+    });
+
+    scored.sort(function (a, b) { return b.score - a.score; });
+    return scored.slice(0, maxCount).map(function (s) { return s.post; });
+  }
+
+  /** Render danh sách bài viết liên quan */
+  function renderRelatedPosts(related, container) {
+    if (!related || related.length === 0) return;
+    var html = '<div class="blog-related"><h3>📖 Bài viết liên quan</h3><div class="blog-related-grid">';
+    related.forEach(function (p) {
+      html +=
+        '<a href="?slug=' + encodeURIComponent(p.slug) + '" class="blog-related-card">' +
+          '<h4>' + escHtml(p.title) + '</h4>' +
+          (p.summary ? '<p>' + escHtml(p.summary.slice(0, 100)) + '</p>' : '') +
+        '</a>';
+    });
+    html += '</div></div>';
+    container.insertAdjacentHTML('beforeend', html);
+  }
+
   function renderList(grid) {
     grid.innerHTML = '<div class="blog-loading">Đang tải bài viết...</div>';
 
-    fetch(API + '/api/blog?limit=20')
+    fetch(API + '/api/blog?limit=999')
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
         return r.json();
@@ -92,6 +131,18 @@
             '<div class="content">' + contentHtml + '</div>' +
           '</article>';
         document.title = post.title + ' — TADA';
+
+        // B�i vi?t li�n quan
+        fetch(API + '/api/blog?limit=999')
+          .then(function (r) { return r.json(); })
+          .then(function (allPosts) {
+            var related = findRelated(post.slug, post.title, allPosts);
+            var articleEl = container.querySelector('.blog-detail');
+            if (articleEl && related.length > 0) {
+              renderRelatedPosts(related, container);
+            }
+          })
+          .catch(function () { /* silent */ });
       })
       .catch(function (err) {
         // Xóa wrap class khi lỗi
@@ -104,6 +155,7 @@
 
   function renderMarkdown(md) {
     if (typeof marked !== 'undefined') {
+      marked.setOptions({ breaks: true, gfm: true });
       return marked.parse(md || '');
     }
     // fallback: simple line breaks

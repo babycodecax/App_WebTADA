@@ -1,13 +1,19 @@
 #!/usr/bin/env node
 /**
- * Sync static files from root → api/public/
- * Run before deploy: node scripts/sync-public.js
+ * Sync static files from root → api/public/ + backend/static/
+ * Run BEFORE deploy: node scripts/sync-public.js
+ *
+ * Root/ is the single source of truth for frontend files.
+ * Both api/public/ (Vercel) and backend/static/ (local Python server) must be in sync.
  */
 const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const DEST = path.join(ROOT, 'api', 'public');
+const DESTINATIONS = [
+  path.join(ROOT, 'api', 'public'),
+  path.join(ROOT, 'backend', 'static'),
+];
 
 function copyDirSync(src, dst) {
   fs.mkdirSync(dst, { recursive: true });
@@ -22,7 +28,6 @@ function copyDirSync(src, dst) {
   }
 }
 
-let count = 0;
 function countFiles(dir) {
   let n = 0;
   for (const item of fs.readdirSync(dir)) {
@@ -32,21 +37,31 @@ function countFiles(dir) {
   return n;
 }
 
-// Sync css, js, img directories (recursive)
-for (const dir of ['css', 'js', 'img']) {
-  const src = path.join(ROOT, dir);
-  if (!fs.existsSync(src)) continue;
-  copyDirSync(src, path.join(DEST, dir));
-  count += countFiles(path.join(DEST, dir));
-}
+let total = 0;
 
-// Sync root HTML files
-for (const f of ['index.html', 'blog.html']) {
-  const src = path.join(ROOT, f);
-  if (fs.existsSync(src)) {
-    fs.copyFileSync(src, path.join(DEST, f));
-    count++;
+for (const DEST of DESTINATIONS) {
+  console.log(`\n--- Syncing to ${path.relative(ROOT, DEST)}/ ---`);
+
+  // Sync css, js, img directories (recursive)
+  for (const dir of ['css', 'js', 'img']) {
+    const src = path.join(ROOT, dir);
+    if (!fs.existsSync(src)) continue;
+    copyDirSync(src, path.join(DEST, dir));
+    const n = countFiles(path.join(DEST, dir));
+    console.log(`  ${dir}/ → ${n} files`);
+    total += countFiles(src);
   }
+
+  // Sync root HTML files
+  for (const f of ['index.html', 'blog.html', 'admin.html']) {
+    const src = path.join(ROOT, f);
+    if (fs.existsSync(src)) {
+      fs.copyFileSync(src, path.join(DEST, f));
+      total++;
+    }
+  }
+
+  console.log(`  HTML → index.html, blog.html, admin.html`);
 }
 
-console.log(`✓ Synced ${count} files → api/public/`);
+console.log(`\n✓ Synced ${total} files to both api/public/ and backend/static/`);

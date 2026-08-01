@@ -21,7 +21,7 @@ logger = logging.getLogger("obsidian-chatbot.llm")
 LLM_API_KEY: str = os.getenv("LLM_API_KEY", os.getenv("OPENROUTER_KEY", ""))
 LLM_API_BASE_URL: str = os.getenv("LLM_API_BASE_URL", "")
 LLM_MODEL: str = os.getenv("LLM_MODEL", "")
-LLM_MAX_TOKENS: int = int(os.getenv("LLM_MAX_TOKENS", "2048"))
+LLM_MAX_TOKENS: int = int(os.getenv("LLM_MAX_TOKENS", "4096"))
 LLM_TEMPERATURE: float = float(os.getenv("LLM_TEMPERATURE", "0.0"))
 
 # Stream timeout: 30s giữa các token

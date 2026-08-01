@@ -26,6 +26,7 @@ from blog import router as blog_router
 from ingestion import ingest_local
 from search_engine import search, rebuild
 from llm_client import stream_answer
+from audit_routes import router as audit_router
 
 load_dotenv()
 
@@ -60,6 +61,7 @@ async def rate_limit_middleware(request: Request, call_next: Any) -> Any:
 
 app = FastAPI(title="Obsidian RAG Chatbox", version="0.4.0")
 app.include_router(blog_router)
+app.include_router(audit_router)
 
 
 @app.on_event("startup")

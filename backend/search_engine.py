@@ -31,7 +31,7 @@ _STOPWORDS = {
     "theo", "tại", "từ", "để", "khi", "nào", "bao", "nhiêu", "làm", "sao", "thế",
     "nào", "mấy", "đó", "này", "như", "về", "còn", "đã", "sẽ", "đang", "bị", "không",
     "những", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín", "mười",
-    "ngày", "tháng", "người", "cá", "nhân", "thu", "chi", "tiền", "đồng", "mức",
+    "ngày", "tháng", "chi", "đồng", "mức",
 }
 
 _TOPIC_KEYWORDS = {
@@ -101,6 +101,9 @@ _TOPIC_KEYWORDS = {
     "quà tặng": "quà tặng chịu thuế",
     "chứng khoán": "chứng khoán",
     "tiền lương": "tiền lương thu nhập",
+    "tiền công": "tiền lương thu nhập",
+    "thu nhập tiền công": "tiền lương thu nhập",
+    "đóng thuế": "số thuế phải nộp",
     "bảo hiểm nhân thọ": "bảo hiểm nhân thọ",
     "nhân lực công nghệ cao": "nhân lực công nghệ cao",
     "chip bán dẫn": "chip bán dẫn",
@@ -177,6 +180,8 @@ _TOPIC_KEYWORDS = {
     "tài sản mã hóa": "tài sản mã hóa",
     "tiền lương làm đêm": "tiền lương làm đêm",
     "làm đêm": "làm đêm",
+    "thu nhập": "thu nhập",
+    "thu nhập tiền công": "thu nhập từ tiền lương",
     "thu nhập từ tiền lương": "thu nhập từ tiền lương",
     "quyết toán thuế tncn": "quyết toán thuế tncn",
     "ủy quyền quyết toán": "ủy quyền quyết toán",
@@ -304,8 +309,11 @@ def _extract_query_terms(query: str) -> list[str]:
 
     # 2) Các từ còn lại: tokenize, lọc stopword + từ ngắn (len <= 2)
     #    Dùng q (gốc, KHÔNG phải q_work đã bị xoá) để giữ đủ term
+    #    Số (có chứa digit) KHÔNG bị lọc độ dài vì là giá trị quan trọng trong câu hỏi thuế
     for tok in _tokenize(q):
-        if tok in _STOPWORDS or len(tok) <= 2:
+        if tok in _STOPWORDS:
+            continue
+        if len(tok) <= 2 and not any(c.isdigit() for c in tok):
             continue
         terms.append(tok)
 
@@ -459,7 +467,48 @@ class SearchEngine:
             return key
 
         results.sort(key=_rerank_key, reverse=True)
-        return results[:top_k]
+
+        # ====== Force phase: giữ ít nhất 1 chunk TNCN + 1 chunk HKD nếu có trong câu hỏi ======
+        # Tìm trong full self._chunks (không chỉ results) vì file HKD/TNCN có thể không nằm
+        # trong BM25 top candidates
+        q_lower = query.lower()
+        final_results = results[:top_k]
+        seen_fpaths = {r.get("file_path", "") for r in final_results}
+
+        def _force_chunk(pattern: str) -> None:
+            """Tìm chunk từ full chunks, thêm vào final_results nếu chưa có."""
+            for c in self._chunks:
+                fp = ((c.get("file_path") or "") or "").lower()
+                if pattern in fp and fp not in seen_fpaths:
+                    final_results.append({
+                        "text": c.get("text", ""),
+                        "title": c.get("title", ""),
+                        "file_path": c.get("file_path", ""),
+                        "heading": c.get("heading", ""),
+                        "score": 1.0,
+                    })
+                    seen_fpaths.add(fp)
+                    break
+
+        # TNCN
+        if any(w in q_lower for w in ["thu nhập", "tncn", "tiền công", "tiền lương", "người phụ thuộc"]):
+            tncn_patterns = ["tncn", "luat-109", "nd-253"]
+            if not any(any(p in ((r.get("file_path") or "") or "").lower() for p in tncn_patterns) for r in final_results):
+                for p in tncn_patterns:
+                    _force_chunk(p)
+                    if any(p in ((r.get("file_path") or "") or "").lower() for r in final_results):
+                        break
+
+        # HKD
+        if any(w in q_lower for w in ["hkd", "hộ kinh doanh", "kinh doanh", "may mặc", "bán hàng"]):
+            hkd_patterns = ["hkd", "nd-68-2026"]
+            if not any(any(p in ((r.get("file_path") or "") or "").lower() for p in hkd_patterns) for r in final_results):
+                for p in hkd_patterns:
+                    _force_chunk(p)
+                    if any(p in ((r.get("file_path") or "") or "").lower() for r in final_results):
+                        break
+
+        return final_results[:top_k]
 
 
 _engine = SearchEngine()
