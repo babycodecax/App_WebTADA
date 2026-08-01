@@ -358,6 +358,10 @@ def _topic_boost(chunk: dict[str, Any], terms: list[str]) -> float:
     if fname.startswith("_cheatsheet") or fname.startswith("_index") or fname == "glossary":
         boost += 1.0
 
+    # Thưởng tài liệu vừa upload qua admin (nội dung mới cần ưu tiên)
+    if (chunk.get("file_path") or "").startswith("upload/"):
+        boost += 1.0
+
     return min(boost, 3.0)  # tối đa 3.0 để boost áp đảo BM25 noise
 
 
@@ -456,6 +460,11 @@ class SearchEngine:
                     key += 0.8
                 if term in r_text:
                     key += 0.2
+
+            # 2b) Tài liệu vừa upload qua admin (prefix upload/) được ưu tiên
+            #     — nội dung mới cần lên trên cheatsheet khi cùng chủ đề
+            if (r.get("file_path") or "").startswith("upload/"):
+                key += 2.0
 
             # 3) Giá trị cụ thể
             n_vals = len(_VALUE_PATTERN.findall(r_text))

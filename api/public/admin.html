@@ -6,6 +6,7 @@
   <title>Quản lý Blog — TADA</title>
   <link rel="stylesheet" href="static/css/styles.css">
   <link rel="stylesheet" href="static/css/blog-admin.css">
+  <link rel="stylesheet" href="static/css/admin-upload.css">
 </head>
 <body class="admin-body">
   <header class="admin-header">
@@ -33,6 +34,9 @@
       </button>
       <button class="admin-nav-btn" data-view="list">
         <span>📋</span> Bài viết
+      </button>
+      <button class="admin-nav-btn" data-view="upload">
+        <span>📤</span> Upload tài liệu
       </button>
     </aside>
 
@@ -86,10 +90,51 @@
         <div id="post-list"></div>
       </div>
     </section>
+
+    <!-- Upload tài liệu vào tri thức chatbox -->
+    <section class="admin-view" id="view-upload">
+      <!-- 1. Kết nối quản trị (ADMIN_PASSWORD) — tách bạch khỏi login Google blog -->
+      <div class="admin-card" id="upload-conn-card">
+        <h2>📤 Upload tài liệu vào tri thức</h2>
+        <div class="upload-conn-row">
+          <input type="password" id="upload-password" class="form-input" placeholder="Nhập mật khẩu quản trị (ADMIN_PASSWORD)" autocomplete="current-password">
+          <button type="button" class="btn btn-primary" id="upload-connect-btn">Kết nối</button>
+        </div>
+        <div class="upload-conn-status" id="upload-conn-status" style="display:none">
+          <span class="upload-conn-badge">Đã kết nối</span>
+          <button type="button" class="btn btn-outline btn-sm" id="upload-logout-btn">Đăng xuất</button>
+        </div>
+        <div id="upload-conn-msg" class="form-msg"></div>
+      </div>
+
+      <!-- 2. Form upload file -->
+      <div class="admin-card" id="upload-form-card" style="display:none">
+        <h3>Upload tài liệu mới</h3>
+        <div class="form-group">
+          <label>Chọn file <small>hỗ trợ .docx, .pdf, .txt, .md — tối đa 4 MB</small></label>
+          <input type="file" id="upload-file" class="form-input" accept=".docx,.pdf,.txt,.md">
+        </div>
+        <div class="form-group">
+          <label>Tiêu đề <small>tùy chọn — mặc định lấy tên file</small></label>
+          <input type="text" id="upload-title" class="form-input" placeholder="vd: Hướng dẫn kê khai thuế 2026">
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-primary" id="upload-btn">Upload &amp; cập nhật tri thức</button>
+        </div>
+        <div id="upload-msg" class="form-msg"></div>
+      </div>
+
+      <!-- 3. Danh sách tài liệu đã upload -->
+      <div class="admin-card" id="upload-docs-card" style="display:none">
+        <h3>Danh sách tài liệu đã upload</h3>
+        <div id="upload-docs-list"></div>
+      </div>
+    </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script src="static/js/blog-admin.js"></script>
+  <script src="static/js/admin-upload.js"></script>
 </body>
 </html>

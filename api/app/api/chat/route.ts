@@ -181,13 +181,24 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
     } catch (_) {}
   }
 
-  // Load all chunks from Supabase (cached in Vercel edge)
-  const { data, error } = await getSupabase()
-    .from('knowledge_chunks')
-    .select('id, content, title, heading, file_path, chunk_index')
-    .limit(2000);
+  // Load chunks: page 1 (Supabase giới hạn 1000/request) + riêng các chunk upload/
+  // để tài liệu admin upload mới luôn được xét — dù nằm ngoài 1000 chunks đầu.
+  const [page1, uploadRows] = await Promise.all([
+    getSupabase()
+      .from('knowledge_chunks')
+      .select('id, content, title, heading, file_path, chunk_index')
+      .limit(1000),
+    getSupabase()
+      .from('knowledge_chunks')
+      .select('id, content, title, heading, file_path, chunk_index')
+      .like('file_path', 'upload/%')
+      .limit(1000)
+  ]);
 
-  if (error || !data || !data.length) {
+  const error = page1.error || uploadRows.error;
+  const data = [...(page1.data || []), ...(uploadRows.data || [])];
+
+  if (error || !data.length) {
     console.warn('Knowledge load error:', error);
     return [];
   }
@@ -206,6 +217,12 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
     // Cheatsheet +8
     if (title.toLowerCase().includes('cheatsheet') || title.toLowerCase().includes('_cheatsheet')) {
       score += 8.0;
+    }
+    // Tài liệu admin upload: boost cao để tài liệu mới (nội bộ) không bị file luật cũ lấn át
+    // — vì upload chunk thường ngắn, match term ít hơn file luật dài nhưng ý chính xác hơn
+    if ((row.file_path || '').startsWith('upload/')) {
+      score += 4.0;
+      if (matchCount > 0) score += Math.min(matchCount * 0.5, 2.0); // match càng nhiều càng ưu tiên
     }
     // Số liệu cụ thể
     const numMatches = (content.match(/\d{1,3}(?:[.,]\d+)?\s*(tỷ|triệu|tr|nghìn|%|đồng)/gi) || []).length;

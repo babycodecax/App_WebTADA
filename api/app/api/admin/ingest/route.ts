@@ -1,58 +1,82 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
-import { embedText } from '@/lib/claude';
+import { isAdmin } from '@/lib/adminAuth';
+import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker';
+import { sanitizeTitle } from '@/lib/parseFile';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-const CHUNK_SIZE = 1200; // characters per chunk
-const CHUNK_OVERLAP = 150;
+const INSERT_BATCH = 50;
 
-function chunkText(text: string): string[] {
-  const clean = text.replace(/\s+/g, ' ').trim();
-  if (clean.length <= CHUNK_SIZE) return [clean];
-  const chunks: string[] = [];
-  let start = 0;
-  while (start < clean.length) {
-    const end = Math.min(start + CHUNK_SIZE, clean.length);
-    chunks.push(clean.slice(start, end));
-    start += CHUNK_SIZE - CHUNK_OVERLAP;
+/** Xóa toàn bộ answer_cache — đảm bảo chatbox không trả câu trả lời cũ sau ingest. */
+async function clearAnswerCache(): Promise<void> {
+  try {
+    await getSupabase()
+      .from('answer_cache')
+      .delete()
+      .neq('id', '00000000-0000-0000-0000-000000000000');
+  } catch (e) {
+    // Cache không xóa được không chặn ingest (best-effort)
   }
-  return chunks;
 }
 
 export async function POST(req: NextRequest) {
-  const auth = req.headers.get('authorization');
-  if (!ADMIN_PASSWORD || auth !== `Bearer ${ADMIN_PASSWORD}`) {
+  if (!isAdmin(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { title, content, source = '', tag = '', sourceHash = '' } = await req.json();
-  if (!title || !content) {
-    return NextResponse.json({ error: 'Missing title or content' }, { status: 400 });
+  const body = await req.json().catch(() => null);
+  if (!body || !body.content) {
+    return NextResponse.json({ error: 'Thiếu title hoặc content' }, { status: 400 });
   }
 
-  const chunks = chunkText(content);
-  const records = [];
-
-  for (let i = 0; i < chunks.length; i++) {
-    const embedding = await embedText(chunks[i]);
-    records.push({
-      content: chunks[i],
-      title,
-      source,
-      tag,
-      chunk_index: i,
-      source_hash: sourceHash,
-      embedding,
-    });
+  const title = (body.title as string)?.trim() || '';
+  if (!title) {
+    return NextResponse.json({ error: 'Thiếu title hoặc content' }, { status: 400 });
   }
 
-  const { error } = await getSupabase().from('documents').insert(records);
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
+  // source giữ nguyên nếu truyền (backward compat) → chuẩn hóa về prefix upload/
+  const source = (body.source as string)?.trim() || '';
+  const filePath = source ? `upload/${sanitizeTitle(source)}` : `upload/${sanitizeTitle(title)}`;
 
-  return NextResponse.json({ ok: true, chunks: records.length });
+  try {
+    const content = String(body.content);
+    // Markdown → giữ heading; plain text → heading=''
+    const fm = parseFrontmatter(content);
+    const hasHeading = /^(#{1,6})\s+/.test(fm.body);
+    const chunks = hasHeading ? chunkByHeading(fm.body) : chunkPlainText(content);
+    if (!chunks.length) {
+      return NextResponse.json({ error: 'File rỗng hoặc không đọc được nội dung' }, { status: 400 });
+    }
+
+    // Idempotent: xóa cũ rồi insert lại chunks cho file_path này
+    const { error: delErr } = await getSupabase()
+      .from('knowledge_chunks')
+      .delete()
+      .eq('file_path', filePath);
+    if (delErr) return NextResponse.json({ error: delErr.message }, { status: 500 });
+
+    let inserted = 0;
+    for (let i = 0; i < chunks.length; i += INSERT_BATCH) {
+      const batch = chunks.slice(i, i + INSERT_BATCH).map((c, idx) => ({
+        content: c.text,
+        title,
+        heading: c.heading,
+        file_path: filePath,
+        chunk_index: i + idx,
+      }));
+      const { error: insErr } = await getSupabase().from('knowledge_chunks').insert(batch);
+      if (insErr) return NextResponse.json({ error: insErr.message }, { status: 500 });
+      inserted += batch.length;
+    }
+
+    // Xóa cache câu trả lời cũ để chatbox thấy dữ liệu mới ngay
+    await clearAnswerCache();
+
+    return NextResponse.json({ ok: true, chunks: inserted, file_path: filePath });
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : 'Lỗi không xác định';
+    return NextResponse.json({ error: `Lỗi xử lý ingest: ${msg}` }, { status: 500 });
+  }
 }

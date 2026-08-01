@@ -6,3 +6,5 @@ requests
 pydantic
 underthesea
 python-dotenv
+python-docx
+pypdf
