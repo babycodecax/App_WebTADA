@@ -3,6 +3,7 @@ import { getSupabase } from '@/lib/supabase';
 import { isAdmin } from '@/lib/adminAuth';
 import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker';
 import { ALLOWED_EXTENSIONS, extractText, sanitizeTitle } from '@/lib/parseFile';
+import { invalidateStructuredCache } from '@/lib/structured';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -37,19 +38,26 @@ async function clearAnswerCache(): Promise<void> {
   }
 }
 
-/** Xóa chunks cũ + insert chunks mới cho 1 file_path (idempotent, re-upload thay thế). */
+/** Lỗi 42P10: DB chưa có UNIQUE constraint (file_path, chunk_index) — xảy ra
+ *  khi bảng chưa chạy migration 2026-08-01. PostgREST không ảo hoá constraint
+ *  nên upsert onConflict fail hoàn toàn → fallback delete-cũ-trước + insert thuần. */
+function isMissingConstraint(err: { code?: string; message?: string } | null): boolean {
+  if (!err) return false;
+  return err.code === '42P10' || (err.message || '').includes('ON CONFLICT');
+}
+
+/** Thay thế chunks cho 1 file_path — insert trước rồi delete (M4): nếu insert
+ *  fail (mạng, Supabase) thì dữ liệu cũ vẫn còn, không mất file khỏi tri thức.
+ *  Dùng batch upsert theo (file_path, chunk_index) để re-upload không tạo trùng.
+ *  Nếu DB chưa có UNIQUE constraint (C1) → fallback: xóa hết chunks cũ của
+ *  file rồi insert thuần — upload không gãy trên DB chưa migrate. */
 async function replaceChunks(
   filePath: string,
   title: string,
   chunks: { text: string; heading: string }[],
 ): Promise<number> {
-  const { error: delErr } = await getSupabase()
-    .from('knowledge_chunks')
-    .delete()
-    .eq('file_path', filePath);
-  if (delErr) throw new Error(delErr.message);
-
   let inserted = 0;
+  let plainInsert = false; // fallback khi DB thiếu constraint
   for (let i = 0; i < chunks.length; i += INSERT_BATCH) {
     const batch = chunks.slice(i, i + INSERT_BATCH).map((c, idx) => ({
       content: c.text,
@@ -58,10 +66,40 @@ async function replaceChunks(
       file_path: filePath,
       chunk_index: i + idx,
     }));
-    const { error: insErr } = await getSupabase().from('knowledge_chunks').insert(batch);
-    if (insErr) throw new Error(insErr.message);
+    if (plainInsert) {
+      const { error } = await getSupabase().from('knowledge_chunks').insert(batch);
+      if (error) throw new Error(error.message);
+    } else {
+      const { error: insErr } = await getSupabase()
+        .from('knowledge_chunks')
+        .upsert(batch, { onConflict: 'file_path,chunk_index' });
+      if (isMissingConstraint(insErr)) {
+        console.warn(
+          '[admin-upload] DB thiếu UNIQUE(file_path,chunk_index) — fallback delete+insert (chạy migration 2026-08-01)',
+        );
+        const { error: delErr } = await getSupabase()
+          .from('knowledge_chunks')
+          .delete()
+          .eq('file_path', filePath);
+        if (delErr) throw new Error(delErr.message);
+        const { error: retryErr } = await getSupabase().from('knowledge_chunks').insert(batch);
+        if (retryErr) throw new Error(retryErr.message);
+        plainInsert = true;
+      } else if (insErr) {
+        throw new Error(insErr.message);
+      }
+    }
     inserted += batch.length;
   }
+
+  // Insert xong mới xóa phần dư (trường hợp chunks mới ít hơn chunks cũ)
+  const { error: delErr } = await getSupabase()
+    .from('knowledge_chunks')
+    .delete()
+    .eq('file_path', filePath)
+    .gte('chunk_index', chunks.length);
+  if (delErr) throw new Error(delErr.message);
+
   return inserted;
 }
 
@@ -157,6 +195,8 @@ export async function POST(req: NextRequest) {
     // Đồng bộ bảng documents (BM25 backend local đọc khi reindex) — best-effort
     await upsertDocument(filePath, title, chunks);
     await clearAnswerCache();
+    // Số liệu structured (moc_mien_thue_tncn_2026...) có thể đổi theo tài liệu mới
+    invalidateStructuredCache();
 
     return NextResponse.json({ ok: true, chunks: inserted, title, file_path: filePath });
   } catch (e: unknown) {

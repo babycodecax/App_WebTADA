@@ -232,8 +232,12 @@ async def admin_upload(request: Request, file: UploadFile = File(...), title: st
 
     client = get_client()
 
-    # 1) Idempotent: xóa chunks cũ + insert knowledge_chunks (batch 50)
-    client.table("knowledge_chunks").delete().eq("file_path", file_path).execute()
+    # 1) Idempotent: insert (upsert theo file_path+chunk_index) TRƯỚC rồi xóa
+    #    phần dư SAU (M4) — nếu insert fail (mạng/Supabase) thì chunks cũ vẫn
+    #    còn, không mất file khỏi tri thức dù API báo 500.
+    #    Nếu DB chưa có UNIQUE(file_path,chunk_index) (42P10) → fallback
+    #    delete-cũ-trước + insert thuần để upload không gãy trên DB chưa migrate.
+    plain_insert = False
     for i in range(0, len(chunks), INSERT_BATCH):
         batch = chunks[i : i + INSERT_BATCH]
         records = [
@@ -246,7 +250,29 @@ async def admin_upload(request: Request, file: UploadFile = File(...), title: st
             }
             for idx, c in enumerate(batch)
         ]
-        client.table("knowledge_chunks").insert(records).execute()
+        if plain_insert:
+            client.table("knowledge_chunks").insert(records).execute()
+            continue
+        try:
+            client.table("knowledge_chunks").upsert(
+                records, on_conflict="file_path,chunk_index"
+            ).execute()
+        except Exception as exc:  # noqa: BLE001
+            code = getattr(exc, "code", None)
+            if code != "42P10" and "ON CONFLICT" not in str(exc):
+                raise
+            logger.warning(
+                "DB thiếu UNIQUE(file_path,chunk_index) — fallback delete+insert (chạy migration 2026-08-01): %s",
+                exc,
+            )
+            client.table("knowledge_chunks").delete().eq("file_path", file_path).execute()
+            client.table("knowledge_chunks").insert(records).execute()
+            plain_insert = True
+
+    # Xóa các chunk dư (chunks mới ít hơn chunks cũ)
+    client.table("knowledge_chunks").delete().eq("file_path", file_path).gte(
+        "chunk_index", len(chunks)
+    ).execute()
 
     # 2) Ghi documents (BM25 local đọc) + rebuild index
     try:
