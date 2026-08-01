@@ -265,39 +265,6 @@ function rerank(query: string, terms: string[], chunks: any[], topK: number) {
   return scored.slice(0, topK);
 }
 
-// ─── Answer cache ───
-import crypto from 'crypto';
-
-function hashQuestion(q: string): string {
-  return crypto.createHash('sha256').update(q.toLowerCase().trim()).digest('hex').slice(0, 16);
-}
-
-async function getCachedAnswer(question: string): Promise<string | null> {
-  const hash = hashQuestion(question);
-  const { data } = await getSupabase()
-    .from('answer_cache')
-    .select('answer')
-    .eq('question_hash', hash)
-    .single();
-  return data?.answer || null;
-}
-
-async function setCachedAnswer(question: string, answer: string, sources: any[]) {
-  const hash = hashQuestion(question);
-  try {
-    await getSupabase()
-      .from('answer_cache')
-      .upsert({
-        question_hash: hash,
-        question: question,
-        answer,
-        sources_json: JSON.stringify(sources),
-      }, { onConflict: 'question_hash' });
-  } catch (e) {
-    // Cache write failure = not critical
-  }
-}
-
 // ─── Main chat handler ───
 export async function POST(req: NextRequest) {
   try {
@@ -307,24 +274,8 @@ export async function POST(req: NextRequest) {
     }
     const question = body.question.trim();
 
-    // 1. Check cache
-    const cached = await getCachedAnswer(question);
-    if (cached) {
-      const encoder = new TextEncoder();
-      const stream = new ReadableStream({
-        start(controller) {
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'sources', data: [] })}\n\n`));
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'token', data: cached })}\n\n`));
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'done' })}\n\n`));
-          controller.close();
-        },
-      });
-      return new Response(stream, {
-        headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', Connection: 'keep-alive' },
-      });
-    }
-
-    // 2. Search knowledge
+    // 1. Search knowledge (không dùng cache câu trả lời — luôn tính toán mới
+    //    để căn cứ tài liệu mới nhất, tránh trả câu trả lời cũ)
     const contexts = await searchKnowledge(question, TOP_K);
     let sources: any[] = [];
 
@@ -428,9 +379,8 @@ export async function POST(req: NextRequest) {
             `data: ${JSON.stringify({ type: 'error', data: e.message || 'LLM error' })}\n\n`
           ));
         } finally {
-          // Cache the answer
           if (fullAnswer) {
-            await setCachedAnswer(question, fullAnswer, sources);
+            // không cache — mỗi lần hỏi tính toán mới, dùng tài liệu mới nhất
           } else if (contexts.length > 0) {
             // Có sources nhưng LLM ko trả lời → gửi fallback
             controller.enqueue(encoder.encode(
