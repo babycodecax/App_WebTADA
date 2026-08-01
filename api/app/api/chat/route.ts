@@ -415,9 +415,11 @@ export async function POST(req: NextRequest) {
       // Ưu tiên: nếu có chunk upload/ match → đưa hết chunks upload vào TRƯỚC
       // (file bổ sung là nguồn chính xác nhất, LLM cần đọc trước các luật cũ
       // để không bị luat-109 "2%" hay "0,1%" lấn át).
+      // KHÔNG giới hạn 6 — vì upload file có thể 40-50 chunks, chunk đúng chủ đề
+      // (VD: rượu 65%) có thể nằm ngoài top 6 nhưng vẫn cần đưa vào context.
       const uploadChunks = contexts.filter(c => (c.file_path || '').startsWith('upload/'));
       for (const uc of uploadChunks) {
-        if (diverseSources.length >= 6) break;
+        if (diverseSources.length >= 30) break; // đưa tối đa 30 upload chunks vào context
         diverseSources.push(uc);
       }
       for (let round = 0; round < maxChunksPerFile && diverseSources.length < 6; round++) {
