@@ -311,7 +311,11 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
   }
 
   scored.sort((a, b) => (b.score || 0) - (a.score || 0));
-  const top = scored.slice(0, topK);
+  // Luôn giữ TẤT CẢ upload chunks (file bổ sung kiến thức) trong top —
+  // không cắt ở topK — vì chunk đúng chủ đề (VD: gôn, nước sạch) có thể có
+  // score thấp do ngắn/ít term nhưng vẫn là nguồn chính xác nhất.
+  const uploadOnly = scored.filter(c => (c.file_path || '').startsWith('upload/'));
+  const top = [...uploadOnly, ...scored.filter(c => !(c.file_path || '').startsWith('upload/')).slice(0, topK)];
   // Merge forcedChunks vào cuối nếu chưa có trong top
   // topK + 6 vì có thể có tới 6 chunks force theo nội dung (giảm trừ / 01 tỷ / 50.000)
   for (const fc of forcedChunks) {
@@ -419,7 +423,7 @@ export async function POST(req: NextRequest) {
       // (VD: rượu 65%) có thể nằm ngoài top 6 nhưng vẫn cần đưa vào context.
       const uploadChunks = contexts.filter(c => (c.file_path || '').startsWith('upload/'));
       for (const uc of uploadChunks) {
-        if (diverseSources.length >= 30) break; // đưa tối đa 30 upload chunks vào context
+        if (diverseSources.length >= 60) break; // đưa tối đa 60 upload chunks vào context
         diverseSources.push(uc);
       }
       for (let round = 0; round < maxChunksPerFile && diverseSources.length < 6; round++) {
