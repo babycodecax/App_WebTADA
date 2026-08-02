@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tada.vn/schemas/compliance-record.json",
+  "title": "ComplianceRecord",
+  "description": "Bản ghi quy định thuế/kế toán đã được cấu trúc hoá từ văn bản pháp luật (kiểu Hyper-Extract). Số liệu/mốc tách riêng field để LLM đọc trực tiếp thay vì tự suy luận.",
+  "type": "object",
+  "required": ["topic", "regulation", "numeric_values", "conditions", "legal_basis", "effective_date", "raw_chunk"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "UUID (Supabase cấp khi insert; optional lúc extract)"
+    },
+    "source_file": {
+      "type": "string",
+      "description": "Tên file nguồn trong vault, ví dụ nd-141-2026-ho-kinh-doanh-tndn.md"
+    },
+    "topic": {
+      "type": "string",
+      "description": "Chủ đề ngắn, chuẩn hoá. Ví dụ: 'Thuế TNCN - Biểu thuế lũy tiến'"
+    },
+    "regulation": {
+      "type": "string",
+      "description": "Mô tả ngắn, chuẩn hoá của quy định — bắt buộc, dùng làm text index BM25"
+    },
+    "numeric_values": {
+      "type": "array",
+      "description": "Số liệu/mốc tách riêng khỏi câu chữ — LLM không cần tự suy luận",
+      "items": {
+        "type": "object",
+        "required": ["label", "value", "unit"],
+        "properties": {
+          "label": { "type": "string", "description": "Ý nghĩa số liệu, ví dụ 'ngưỡng doanh thu miễn thuế'" },
+          "value": { "type": ["number", "string"], "description": "Giá trị số (giữ nguyên chữ số như văn bản, ví dụ '15,5' hoặc 15000000)" },
+          "unit": { "type": "string", "description": "Đơn vị, ví dụ 'tỷ đồng', 'triệu đồng/tháng', 'ngày', '%'" },
+          "operator": { "type": "string", "description": "Quan hệ so sánh: '>', '<', '>=', '<=', '=', ''", "enum": [">", "<", ">=", "<=", "=", ""] }
+        }
+      }
+    },
+    "conditions": {
+      "type": "string",
+      "description": "Điều kiện áp dụng / ngoại lệ / trường hợp loại trừ"
+    },
+    "legal_basis": {
+      "type": "string",
+      "description": "Căn cứ pháp lý: điều, khoản, luật/nghị định. Ví dụ 'Khoản 15 Điều 4 NĐ 320/2025'"
+    },
+    "effective_date": {
+      "type": "string",
+      "description": "Ngày hiệu lực (DD/MM/YYYY hoặc rỗng nếu không rõ)"
+    },
+    "raw_chunk": {
+      "type": "string",
+      "description": "Đoạn text gốc từ văn bản — dùng làm field index BM25"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "Thời điểm upsert (Supabase cấp)"
+    }
+  }
+}

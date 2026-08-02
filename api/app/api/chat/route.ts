@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
 import { getClient } from '@/lib/claude';
 import { getStructuredKnowledge } from '@/lib/structured';
+import { isNumericQuery, searchCompliance, formatComplianceContext } from '@/lib/compliance';
 
 export const runtime = 'nodejs';
 export const maxDuration = 120;
@@ -369,6 +370,20 @@ export async function POST(req: NextRequest) {
     const contexts = await searchKnowledge(question, TOP_K);
     let sources: any[] = [];
 
+    // 1b. Compliance records (số liệu/mốc có cấu trúc) — khi câu hỏi có số
+    //     liệu: ưu tiên chèn bản ghi extract lên đầu context để LLM đọc số
+    //     liệu trích sẵn thay vì tự suy luận (fix HIGH: proxy Next.js trước
+    //     đây không có compliance — hệ thống chỉ chạy khi gọi thẳng Python).
+    let complianceContext = '';
+    if (isNumericQuery(question)) {
+      try {
+        const records = await searchCompliance(question);
+        if (records.length) complianceContext = formatComplianceContext(records);
+      } catch (e) {
+        console.warn('Compliance search failed (skip):', e);
+      }
+    }
+
     // 3. Build context + sources
     let ctxText = '';
     if (contexts.length === 0) {
@@ -416,21 +431,34 @@ export async function POST(req: NextRequest) {
         for (const [fp, chunks] of byFileArr) byFile.set(fp, chunks);
       }
       const diverseSources: typeof contexts = [];
-      // Ưu tiên: nếu có chunk upload/ match → đưa hết chunks upload vào TRƯỚC
+      // Ưu tiên: nếu có chunk upload/ match → đưa chunks upload vào TRƯỚC
       // (file bổ sung là nguồn chính xác nhất, LLM cần đọc trước các luật cũ
       // để không bị luat-109 "2%" hay "0,1%" lấn át).
       // KHÔNG giới hạn 6 — vì upload file có thể 40-50 chunks, chunk đúng chủ đề
       // (VD: rượu 65%) có thể nằm ngoài top 6 nhưng vẫn cần đưa vào context.
+      // NHƯNG giới hạn theo TỶ LỆ (fix MEDIUM): all-upload-first với 40-60 chunks
+      // đẩy toàn bộ kết quả vault (luật/nd/tt) ra khỏi context khi câu hỏi chỉ
+      // chạm upload 1 cách tương đối. Tối đa 30 upload chunks HOẶC 50% sức chứa.
+      const UPLOAD_MAX = 30;
+      const UPLOAD_CAP = Math.floor(60 / 2); // 50% của 60 slots
       const uploadChunks = contexts.filter(c => (c.file_path || '').startsWith('upload/'));
-      for (const uc of uploadChunks) {
-        if (diverseSources.length >= 60) break; // đưa tối đa 60 upload chunks vào context
-        diverseSources.push(uc);
+      const uploadBudget = Math.min(uploadChunks.length, UPLOAD_MAX, UPLOAD_CAP);
+      for (let i = 0; i < uploadBudget; i++) {
+        diverseSources.push(uploadChunks[i]);
       }
-      for (let round = 0; round < maxChunksPerFile && diverseSources.length < 6; round++) {
+      // Round-robin các file KHÔNG upload: luôn dành tối đa 6 slots kể cả khi
+      // có nhiều upload chunks (fix MEDIUM: trước đây vòng lặp chặn theo
+      // diverseSources.length < 6 → upload ≥ 6 chunks khiến luật/nd/tt điểm cao
+      // không bao giờ vào context dù câu hỏi chạm upload chỉ tương đối).
+      let vaultSlots = 0;
+      for (let round = 0; round < maxChunksPerFile && vaultSlots < 6; round++) {
         for (const chunks of byFile.values()) {
-          if (diverseSources.length >= 6) break; // chỉ 6 sources
+          if (vaultSlots >= 6) break; // chỉ 6 sources ngoài upload
           const chunk = chunks[round]; // chunk thứ `round` của file (nếu có)
-          if (chunk && !diverseSources.includes(chunk)) diverseSources.push(chunk);
+          if (chunk && !(chunk.file_path || '').startsWith('upload/') && !diverseSources.includes(chunk)) {
+            diverseSources.push(chunk);
+            vaultSlots++;
+          }
         }
       }
       // Force thêm 1 chunk TNCN từ data gốc nếu query có liên quan
@@ -495,9 +523,18 @@ export async function POST(req: NextRequest) {
           ]
         : []),
       structuredPrompt,
+      ...(complianceContext
+        ? [
+            ``,
+            `ƯU TIÊN TUYỆT ĐỐI: các khối [DỮ LIỆU CÓ CẤU TRÚC - ƯU TIÊN] chứa số liệu trích sẵn từ văn bản luật. Khi câu hỏi yêu cầu so sánh số (vd 6 triệu có vượt 5 triệu không, 91 ngày có lớn hơn 90 ngày không): so sánh trực tiếp giá trị SỐ trong các khối đó, trích nguyên văn số liệu + đơn vị + điều kiện (>, <, <=, >=). Chỉ khi dữ liệu có cấu trúc KHÔNG đủ trả lời mới dùng phần Tai lieu tham khao phía dưới.`,
+          ]
+        : []),
     ].filter(Boolean).join('\n');
 
-    const user = `Tai lieu tham khao:\n${ctxText}\n\nCau hoi: ${question}`;
+    // Câu hỏi có số liệu/mốc → chèn compliance records lên đầu context
+    const user = complianceContext
+      ? `${complianceContext}\n\nTai lieu tham khao:\n${ctxText}\n\nCau hoi: ${question}`
+      : `Tai lieu tham khao:\n${ctxText}\n\nCau hoi: ${question}`;
 
     // 6. Stream LLM
     const encoder = new TextEncoder();

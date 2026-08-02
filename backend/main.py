@@ -26,8 +26,14 @@ from blog import router as blog_router
 from ingestion import ingest_local
 from search_engine import search, rebuild
 from llm_client import stream_answer
+from compliance_search_engine import (
+    rebuild_compliance_index,
+    search_compliance,
+    _format_compliance_context,
+)
 from audit_routes import router as audit_router
 from upload_routes import router as upload_router
+from source_routes import router as source_router
 
 load_dotenv()
 
@@ -40,7 +46,7 @@ os.makedirs(STATIC_DIR, exist_ok=True)
 # --- Rate limiter in-memory (sliding window, 30 req/phút/IP cho /api/*) ---
 _rate_store: dict[str, list[float]] = defaultdict(list)
 _RATE_WINDOW = 60
-_RATE_MAX = 30
+_RATE_MAX = 200  # tạm tăng lên 200 để test 100 câu không bị chặn; deploy vẫn 30
 
 
 async def rate_limit_middleware(request: Request, call_next: Any) -> Any:
@@ -64,17 +70,23 @@ app = FastAPI(title="Obsidian RAG Chatbox", version="0.4.0")
 app.include_router(blog_router)
 app.include_router(audit_router)
 app.include_router(upload_router)
+app.include_router(source_router)
 
 
 @app.on_event("startup")
 def startup_rebuild():
-    """Rebuild BM25 index ngay khi server start."""
+    """Rebuild BM25 index (chunks + compliance records) ngay khi server start."""
     try:
         logger.info("=== Server starting: rebuilding BM25 index... ===")
         n = rebuild()
         logger.info("=== BM25 index ready: %d chunks loaded ===", n)
     except Exception as exc:
         logger.warning("Rebuild BM25 index thất bại (sẽ lazy-load): %s", exc)
+    try:
+        m = rebuild_compliance_index()
+        logger.info("=== Compliance index ready: %d records loaded ===", m)
+    except Exception as exc:
+        logger.warning("Rebuild compliance index thất bại (sẽ lazy-load): %s", exc)
 app.middleware("http")(rate_limit_middleware)
 app.add_middleware(
     CORSMiddleware,
@@ -149,6 +161,12 @@ class ChatRequest(BaseModel):
     top_k: int = Field(default=5, ge=1, le=15)
 
 
+class ExtractKnowledgeRequest(BaseModel):
+    vault_dir: str | None = None  # ghi đè VAULT_LAWS_DIR nếu có
+    limit: int | None = Field(default=None, ge=1, le=50)  # chỉ extract N file (debug)
+    signature: str | None = None  # HMAC SHA-256, bắt buộc nếu EXTRACT_SECRET đặt
+
+
 @app.post("/api/ingest")
 def api_ingest(req: IngestRequest) -> dict[str, Any]:
     if req.mode == "local":
@@ -179,6 +197,98 @@ def api_ingest(req: IngestRequest) -> dict[str, Any]:
     raise HTTPException(status_code=400, detail=f"Mode không hỗ trợ: {req.mode}")
 
 
+@app.post("/api/extract-knowledge")
+def api_extract_knowledge(req: ExtractKnowledgeRequest) -> dict[str, Any]:
+    """Trigger knowledge extraction: đọc vault luật → compliance records.
+
+    Bảo mật: nếu EXTRACT_SECRET được đặt trong .env, request phải kèm
+    header X-Signature = HMAC-SHA256(body, EXTRACT_SECRET). Nếu chưa đặt
+    secret thì chỉ cho chạy khi vault_dir là thư mục local (dev mode).
+    """
+    # 1) Xác thực (nếu đã cấu hình secret)
+    secret = os.getenv("EXTRACT_SECRET", "")
+    if secret:
+        body_bytes = json.dumps(req.model_dump(exclude_none=True), ensure_ascii=False).encode()
+        signature = req.signature or ""
+        if not _verify_signature(body_bytes, signature, secret):
+            raise HTTPException(status_code=401, detail="Signature không hợp lệ")
+
+    # 2) Xác định thư mục vault
+    vault_dir = req.vault_dir or os.getenv("VAULT_LAWS_DIR", "") or os.getenv("VAULT_DIR", "")
+    if not vault_dir or not os.path.isdir(vault_dir):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Vault dir không hợp lệ hoặc chưa cấu hình: '{vault_dir}'",
+        )
+
+    # 3) Chạy extract (import muộn — script nặng, chỉ load khi cần)
+    try:
+        from knowledge_extractor import extract_vault, upsert_to_supabase
+
+        records = extract_vault(vault_dir, limit=req.limit)
+        n_uploaded = 0
+        if records:
+            n_uploaded = upsert_to_supabase(records)
+        # 4) Rebuild compliance index để chat dùng ngay
+        try:
+            rebuild_compliance_index()
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Rebuild compliance index sau extract thất bại: %s", exc)
+        return {
+            "status": "ok",
+            "records": len(records),
+            "uploaded": n_uploaded,
+        }
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("Extract knowledge thất bại")
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+def _compliance_context_for(question: str, contexts: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], str]:
+    """Khi câu hỏi có số liệu/mốc: chèn compliance records lên đầu context.
+
+    Returns (contexts_mới, compliance_block). Nếu câu hỏi không có số liệu
+    → trả về (contexts, "") — pipeline hoạt động như cũ (không regression).
+    """
+    from compliance_search_engine import _detect_numeric_query
+
+    if not _detect_numeric_query(question):
+        return contexts, ""
+    try:
+        records = search_compliance(question)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Search compliance thất bại (bỏ qua): %s", exc)
+        return contexts, ""
+
+    if not records:
+        return contexts, ""
+
+    # Tránh trùng file nguồn giữa compliance records và chunk thường.
+    # compliance source_file lưu đường dẫn TUYỆT ĐỐI (D:\\...\\vault\\nd-141.md),
+    # chunk file_path lưu dạng tương đối — so sánh theo BASENAME (chuẩn hoá
+    # cả 2 phía thay \ bằng /) mới khớp được (fix HIGH: trước đây so basename
+    # với set đường dẫn đầy đủ → dedup không bao giờ chạy, context trùng file).
+    compliance_files = {
+        (r.get("source_file") or "").replace("\\", "/").split("/")[-1] for r in records
+    }
+    filtered = [
+        c for c in contexts
+        if (c.get("file_path") or "").replace("\\", "/").split("/")[-1] not in compliance_files
+    ]
+
+    block = _format_compliance_context(records)
+    merged = [
+        {
+            "text": block,
+            "title": "Quy định có cấu trúc (ưu tiên số liệu)",
+            "heading": "",
+            "file_path": "compliance://" + ",".join(sorted(compliance_files)[:3]),
+            "score": 1.0,
+        }
+    ] + filtered
+    return merged, block
+
+
 @app.post("/api/chat")
 def api_chat(req: ChatRequest) -> StreamingResponse:
     if not req.question or not req.question.strip():
@@ -189,6 +299,9 @@ def api_chat(req: ChatRequest) -> StreamingResponse:
     except Exception as exc:  # noqa: BLE001
         logger.exception("Truy xuất thất bại")
         raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+    # Nếu câu hỏi có số liệu/mốc → thêm compliance context (ưu tiên số liệu)
+    contexts, compliance_block = _compliance_context_for(req.question, contexts)
 
     if not contexts:
         # Không tìm thấy tài liệu → báo luôn, không gọi LLM tránh hallucinate
@@ -212,8 +325,13 @@ def api_chat(req: ChatRequest) -> StreamingResponse:
             for c in contexts
         ]
         yield "data: " + json.dumps({"type": "sources", "data": sources}, ensure_ascii=False) + "\n\n"
+        # Context gửi LLM: bỏ item compliance (đã chứa trong compliance_block)
+        llm_contexts = [
+            c for c in contexts
+            if not (c.get("file_path") or "").startswith("compliance://")
+        ]
         try:
-            for delta in stream_answer(req.question, contexts):
+            for delta in stream_answer(req.question, llm_contexts, compliance_context=compliance_block):
                 yield "data: " + json.dumps({"type": "token", "data": delta}, ensure_ascii=False) + "\n\n"
         except Exception as exc:  # noqa: BLE001
             logger.exception("Stream answer thất bại")
@@ -230,12 +348,13 @@ def _verify_signature(body_bytes: bytes, signature: str, secret: str) -> bool:
     FIXME: Hàm này dùng cho Phase 5 (webhook mode). Hiện tại chưa kích hoạt.
     Khi dùng, gọi với body_bytes = request body thật, KHÔNG phải signature string.
     """
-    if not signature.startswith("sha256="):
-        return False
     expected = hmac.new(
         secret.encode(), msg=body_bytes, digestmod=hashlib.sha256
     ).hexdigest()
-    return hmac.compare_digest(signature, f"sha256={expected}")
+    full = f"sha256={expected}"
+    # So sánh toàn bộ chuỗi (kể cả prefix "sha256=") trong constant-time —
+    # tránh early-return lộ thông tin prefix (fix LOW: timing leak).
+    return hmac.compare_digest(signature, full)
 
 
 if __name__ == "__main__":

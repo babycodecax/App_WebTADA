@@ -4,6 +4,7 @@ import { isAdmin } from '@/lib/adminAuth';
 import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker';
 import { ALLOWED_EXTENSIONS, extractText, sanitizeTitle } from '@/lib/parseFile';
 import { invalidateStructuredCache } from '@/lib/structured';
+import { invalidateComplianceCache } from '@/lib/compliance';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -195,8 +196,10 @@ export async function POST(req: NextRequest) {
     // Đồng bộ bảng documents (BM25 backend local đọc khi reindex) — best-effort
     await upsertDocument(filePath, title, chunks);
     await clearAnswerCache();
-    // Số liệu structured (moc_mien_thue_tncn_2026...) có thể đổi theo tài liệu mới
+    // Số liệu structured (moc_mien_thue_tncn_2026...) + compliance records có
+    // thể đổi theo tài liệu mới → invalidate cả 2 cache
     invalidateStructuredCache();
+    invalidateComplianceCache();
 
     return NextResponse.json({ ok: true, chunks: inserted, title, file_path: filePath });
   } catch (e: unknown) {

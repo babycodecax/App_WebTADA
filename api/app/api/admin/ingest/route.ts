@@ -4,6 +4,7 @@ import { isAdmin } from '@/lib/adminAuth';
 import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker';
 import { sanitizeTitle } from '@/lib/parseFile';
 import { invalidateStructuredCache } from '@/lib/structured';
+import { invalidateComplianceCache } from '@/lib/compliance';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -99,6 +100,7 @@ export async function POST(req: NextRequest) {
     // Xóa cache câu trả lời cũ để chatbox thấy dữ liệu mới ngay
     await clearAnswerCache();
     invalidateStructuredCache();
+    invalidateComplianceCache();
 
     return NextResponse.json({ ok: true, chunks: inserted, file_path: filePath });
   } catch (e: unknown) {

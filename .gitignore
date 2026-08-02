@@ -73,3 +73,10 @@ tools/memory/
 .vercel
 
 .env*
+
+# === Log files ===
+backend/backend_run*.log
+backend/extract_vault*.log
+tools/DataTest/test2_result*.log
+tools/DataTest/sync_run*.log
+backend/pip_out.txt

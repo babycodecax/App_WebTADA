@@ -121,7 +121,25 @@ def _has_forbidden_phrases(text: str) -> bool:
     return False
 
 
-def _build_messages(question: str, contexts: list[dict], is_retry: bool = False) -> list[dict]:
+def _compliance_instruction() -> str:
+    """Chỉ dẫn đặc biệt khi context có compliance records (số liệu có cấu trúc)."""
+    return (
+        "=== DỮ LIỆU CÓ CẤU TRÚC (ƯU TIÊN TUYỆT ĐỐI) ===\n"
+        "Các khối [DỮ LIỆU CÓ CẤU TRÚC - ƯU TIÊN] chứa số liệu đã được trích sẵn từ văn bản luật.\n"
+        "1. ĐỌC KỸ số liệu trong các khối này trước — đây là nguồn chính xác nhất.\n"
+        "2. Nếu câu hỏi yêu cầu SO SÁNH số (ví dụ 6 triệu có vượt 5 triệu không, 91 ngày có lớn hơn 90 ngày không):\n"
+        "   so sánh trực tiếp hai giá trị SỐ trong numeric_values, KHÔNG đoán, KHÔNG bịa.\n"
+        "3. Trích NGUYÊN VĂN số liệu, đơn vị, điều kiện (>, <, <=, >=) từ dữ liệu có cấu trúc.\n"
+        "4. Chỉ khi dữ liệu có cấu trúc KHÔNG đủ trả lời mới dùng phần Tài liệu tham khảo phía dưới."
+    )
+
+
+def _build_messages(
+    question: str,
+    contexts: list[dict],
+    is_retry: bool = False,
+    compliance_context: str = "",
+) -> list[dict]:
     ctx_lines = []
     for i, c in enumerate(contexts):
         is_internal = bool(_INTERNAL_SOURCE_RE.search(c.get("file_path", "")))
@@ -157,8 +175,25 @@ def _build_messages(question: str, contexts: list[dict], is_retry: bool = False)
         user = f"Tai lieu tham khao:\n{ctx_text}\n\nCau hoi: {question}{retry_instruction}"
     else:
         user = f"Tai lieu tham khao:\n{ctx_text}\n\nCau hoi: {question}"
+
+    if compliance_context:
+        user = (
+            f"{compliance_context}\n\n{_compliance_instruction()}\n\n"
+            f"Tai lieu tham khao:\n{ctx_text}\n\nCau hoi: {question}"
+        )
+        if is_retry:
+            user += retry_instruction
+        # Nhấn mạnh ưu tiên dữ liệu có cấu trúc ở system prompt
+        system = SYSTEM_PROMPT + (
+            "\n\nƯU TIÊN TUYỆT ĐỐI: các khối [DỮ LIỆU CÓ CẤU TRÚC - ƯU TIÊN] chứa số liệu "
+            "trích sẵn từ văn bản luật. Khi câu hỏi yêu cầu so sánh số (vd 6 triệu có vượt "
+            "5 triệu không, 91 ngày có lớn hơn 90 ngày không): so sánh trực tiếp giá trị SỐ "
+            "trong các khối đó, trích nguyên văn số liệu + đơn vị + điều kiện (>, <, <=, >=)."
+        )
+    else:
+        system = SYSTEM_PROMPT
     return [
-        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "system", "content": system},
         {"role": "user", "content": user},
     ]
 
@@ -266,9 +301,15 @@ def _call_llm_stream_raw(messages: list[dict]) -> tuple[str, list[str]]:
     return full_text, chunks
 
 
-def stream_answer(question: str, contexts: list[dict]) -> Iterator[str]:
+def stream_answer(
+    question: str,
+    contexts: list[dict],
+    compliance_context: str = "",
+) -> Iterator[str]:
     """Streaming LLM call, 2 attempts, tổng timeout 30s wall-clock.
     Thu gom token trước, yield sau khi quality pass.
+    compliance_context: chuỗi dữ liệu có cấu trúc (ưu tiên số liệu) — thường
+    là output của compliance_search_engine._format_compliance_context.
     """
     if not LLM_API_KEY:
         raise RuntimeError(
@@ -285,7 +326,9 @@ def stream_answer(question: str, contexts: list[dict]) -> Iterator[str]:
             yield _TIMEOUT_MSG
             return
 
-        msg = _build_messages(question, contexts, is_retry=(attempt > 0))
+        msg = _build_messages(
+            question, contexts, is_retry=(attempt > 0), compliance_context=compliance_context
+        )
 
         try:
             resp = requests.post(

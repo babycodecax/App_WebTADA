@@ -12,17 +12,23 @@ Luồng upload:
   2) Upsert documents (bảng BM25 local đọc) → rebuild() để search thấy ngay
   3) Xóa toàn bộ answer_cache — tránh chatbox trả câu trả lời cũ
 """
-import hmac
 import logging
 import os
 import re
 from io import BytesIO
 from typing import Any
 
-from fastapi import APIRouter, File, HTTPException, Request, UploadFile
+from fastapi import APIRouter, BackgroundTasks, File, HTTPException, Request, UploadFile
 from fastapi.responses import JSONResponse
 
-from db import get_client, upsert_document
+from admin_auth import check_admin
+from db import (
+    delete_compliance_records_by_source,
+    get_client,
+    upsert_compliance_records,
+    upsert_document,
+    upsert_source_document,
+)
 from search_engine import rebuild
 
 logger = logging.getLogger("upload_routes")
@@ -41,20 +47,6 @@ MAX_CHUNK_TOKENS = 1500
 
 # Ký tự không hợp lệ trong file_path → thay bằng '-'
 SANITIZE_RE = re.compile(r"[\\/:*?\"<>|\s]+")
-
-_ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "")
-
-
-def _check_admin(request: Request) -> None:
-    """Xác thực Bearer token so với ADMIN_PASSWORD (chống timing attack)."""
-    if not _ADMIN_PASSWORD:
-        raise HTTPException(status_code=401, detail="ADMIN_PASSWORD chưa được cấu hình")
-    auth = request.headers.get("Authorization", "")
-    if not auth.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Cần token quản trị")
-    token = auth.replace("Bearer ", "", 1)
-    if not hmac.compare_digest(token, _ADMIN_PASSWORD):
-        raise HTTPException(status_code=401, detail="Token quản trị không hợp lệ")
 
 
 def sanitize_title(title: str) -> str:
@@ -187,10 +179,36 @@ def _clear_answer_cache(client: Any) -> None:
         logger.warning("Xóa answer_cache thất bại: %s", exc)
 
 
+def _background_auto_extract(file_path: str, body: str) -> None:
+    """Auto-extract compliance records từ file vừa upload (chạy SAU khi HTTP
+    đã trả response — fix MEDIUM: trước đây extract đồng bộ 30-60s làm user
+    chờ). Lỗi extract KHÔNG fail luồng upload (chunks đã lưu an toàn)."""
+    try:
+        from knowledge_extractor import extract_from_text
+
+        records = extract_from_text(file_path, body)
+        if records:
+            # Xoá records cũ TRƯỚC (có thể hết hiệu lực), upsert mới SAU
+            delete_compliance_records_by_source(file_path)
+            n_uploaded = upsert_compliance_records(records)
+            logger.info("Auto-extract %s → %d records (%d uploaded)", file_path, len(records), n_uploaded)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Auto-extract thất bại cho %s (upload vẫn thành công): %s", file_path, exc)
+
+
 @router.post("/upload")
-async def admin_upload(request: Request, file: UploadFile = File(...), title: str = ""):
-    """Upload tài liệu → chunk → ingest knowledge_chunks + documents → rebuild BM25."""
-    _check_admin(request)
+async def admin_upload(
+    request: Request,
+    file: UploadFile = File(...),
+    title: str = "",
+    background_tasks: BackgroundTasks = BackgroundTasks(),
+):
+    """Upload tài liệu → chunk → ingest knowledge_chunks + documents → rebuild BM25.
+
+    Auto-extract compliance được đẩy vào BackgroundTasks (chạy sau khi trả
+    response) — user không phải chờ LLM extract 30-60s.
+    """
+    check_admin(request)
 
     filename = file.filename or ""
     ext = os.path.splitext(filename)[1].lower()
@@ -281,7 +299,27 @@ async def admin_upload(request: Request, file: UploadFile = File(...), title: st
     except Exception as exc:  # noqa: BLE001
         logger.warning("Ghi documents/rebuild thất bại (chunks vẫn đã lưu): %s", exc)
 
-    # 3) Xóa cache câu trả lời cũ
+    # 3) Auto-extract compliance records từ file vừa upload — chạy NỀN sau
+    #    khi trả response (fix MEDIUM: extract LLM 30-60s không được chặn
+    #    HTTP). Lỗi extract KHÔNG fail luồng upload (chunks đã lưu an toàn).
+    background_tasks.add_task(_background_auto_extract, file_path, body)
+
+    # 4) Ghi source_documents (kho nguồn) + rebuild compliance BM25
+    try:
+        upsert_source_document(
+            file_path=file_path,
+            title=doc_title,
+            doc_type="other",
+            effective_date="",
+            source_origin="upload",
+        )
+        from compliance_search_engine import rebuild_compliance_index
+
+        rebuild_compliance_index()
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Upsert source_documents/rebuild compliance thất bại: %s", exc)
+
+    # 5) Xóa cache câu trả lời cũ
     _clear_answer_cache(client)
 
     logger.info("Upload xong: %s (%d chunks)", file_path, len(chunks))
@@ -293,14 +331,14 @@ async def admin_upload(request: Request, file: UploadFile = File(...), title: st
 @router.get("/check")
 async def admin_check(request: Request):
     """Kiểm tra ADMIN_PASSWORD hợp lệ."""
-    _check_admin(request)
+    check_admin(request)
     return {"ok": True}
 
 
 @router.get("/knowledge")
 async def admin_knowledge(request: Request):
     """Danh sách tài liệu đã upload (prefix upload/) + số chunks."""
-    _check_admin(request)
+    check_admin(request)
     client = get_client()
     res = (
         client.table("knowledge_chunks")
@@ -340,7 +378,7 @@ async def admin_knowledge(request: Request):
 @router.post("/delete")
 async def admin_delete(request: Request):
     """Xóa tài liệu theo file_path (eq/ilike) hoặc title; đồng bộ xóa cache."""
-    _check_admin(request)
+    check_admin(request)
     body = await request.json()
     file_path = body.get("file_path") or body.get("source") or ""
     title = body.get("title") or ""

@@ -23,7 +23,12 @@ if hasattr(sys.stderr, "reconfigure"):
 
 MIGRATIONS = [
     "migrations/2026-08-01-knowledge-chunks-unique.sql",
+    "migrations/002_compliance_records.sql",
+    "migrations/003_source_documents.sql",
 ]
+
+# Lưu ý: migrations 002/003 dùng gen_random_uuid() (pgcrypto — có sẵn trong
+# Supabase, bật mặc định). KHÔNG cần cài uuid-ossp extension thủ công.
 
 # Tùy chọn: SUPABASE_PSQL="postgresql://postgres.<ref>:<password>@aws-0-<region>.pooler.supabase.com:6543/postgres"
 CONN_STR = os.getenv("SUPABASE_PSQL", "")
