@@ -106,6 +106,32 @@ async function replaceChunks(
   return inserted;
 }
 
+/** Upsert bảng source_documents (kho nguồn — đồng bộ với backend Python).
+ *  Best-effort, lỗi không chặn upload. */
+async function upsertSourceDocument(filePath: string, title: string): Promise<void> {
+  try {
+    const { error } = await getSupabase()
+      .from('source_documents')
+      .upsert(
+        {
+          file_path: filePath,
+          title,
+          doc_type: 'other',
+          effective_date: '',
+          status: 'ready',
+          source_origin: 'upload',
+        },
+        { onConflict: 'file_path' },
+      );
+    if (error) {
+      // Bảng source_documents có thể chưa có (migration 003 chưa chạy) — bỏ qua
+      console.warn(`[admin-upload] upsert source_documents bỏ qua: ${error.message}`);
+    }
+  } catch (e) {
+    // Best-effort: không để lỗi này chặn upload
+  }
+}
+
 /** Upsert bảng documents (BM25 backend local đọc) — best-effort, lỗi không chặn upload. */
 async function upsertDocument(
   filePath: string,
@@ -198,6 +224,8 @@ export async function POST(req: NextRequest) {
     const inserted = await replaceChunks(filePath, title, chunks);
     // Đồng bộ bảng documents (BM25 backend local đọc khi reindex) — best-effort
     await upsertDocument(filePath, title, chunks);
+    // Đồng bộ kho nguồn source_documents (migration 003) — best-effort
+    await upsertSourceDocument(filePath, title);
     await clearAnswerCache();
     // Số liệu structured (moc_mien_thue_tncn_2026...) + compliance records có
     // thể đổi theo tài liệu mới → invalidate cả 2 cache
