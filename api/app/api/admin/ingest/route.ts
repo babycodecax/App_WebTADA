@@ -5,7 +5,7 @@ import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker'
 import { sanitizeTitle } from '@/lib/parseFile';
 import { invalidateStructuredCache } from '@/lib/structured';
 import { invalidateComplianceCache } from '@/lib/compliance';
-import { autoExtractComplianceBounded } from '@/lib/autoComplianceExtract';
+import { autoExtractComplianceBounded, extractHeuristicThenUpsert } from '@/lib/autoComplianceExtract';
 import { waitUntil } from '@vercel/functions';
 
 export const runtime = 'nodejs';
@@ -103,10 +103,10 @@ export async function POST(req: NextRequest) {
     await clearAnswerCache();
     invalidateStructuredCache();
     invalidateComplianceCache();
-    // Tự động extract compliance records từ tài liệu vừa ingest — production Vercel
-    // trước đây chỉ có ở backend Python. Dùng waitUntil() để chạy NỀN SAU khi
-    // trả response — user không chờ, không đốt budget maxDuration. Truyền
-    // fm.body (đã strip frontmatter) — khớp nguồn chunk hoá.
+    // Tự động extract compliance records từ tài liệu vừa ingest — 2 tầng như
+    // upload route: heuristic NGAY (chắc chắn có records) + LLM refine nền qua
+    // waitUntil (best-effort). Truyền fm.body (đã strip frontmatter).
+    await extractHeuristicThenUpsert(filePath, fm.body);
     waitUntil(
       (async () => {
         const ac = new AbortController();

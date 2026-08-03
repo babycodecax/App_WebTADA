@@ -5,7 +5,7 @@ import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker'
 import { ALLOWED_EXTENSIONS, extractText, sanitizeTitle } from '@/lib/parseFile';
 import { invalidateStructuredCache } from '@/lib/structured';
 import { invalidateComplianceCache } from '@/lib/compliance';
-import { autoExtractComplianceBounded } from '@/lib/autoComplianceExtract';
+import { autoExtractComplianceBounded, extractHeuristicThenUpsert } from '@/lib/autoComplianceExtract';
 import { waitUntil } from '@vercel/functions';
 
 export const runtime = 'nodejs';
@@ -203,11 +203,14 @@ export async function POST(req: NextRequest) {
     // thể đổi theo tài liệu mới → invalidate cả 2 cache
     invalidateStructuredCache();
     invalidateComplianceCache();
-    // Tự động extract compliance records (số liệu/mốc có cấu trúc) từ tài liệu
-    // vừa upload — production Vercel trước đây không có bước này (chỉ có backend
-    // Python). Dùng waitUntil() (@vercel/functions) để chạy NỀN SAU khi trả
-    // response — không await trong request (user không chờ, không đốt 60s
-    // maxDuration). Fire-and-forget thuần không được Vercel giữ promise nền.
+    // TỰ ĐỘNG EXTRACT COMPLIANCE — 2 tầng:
+    //  1) Heuristic NGAY trong request (không LLM, <1s): chắc chắn có records
+    //     cho tài liệu mới — kể cả nếu Vercel kill mọi thứ sau khi trả response.
+    //     (waitUntil đôi khi không được giữ trong route handler App Router.)
+    //  2) LLM refine chạy NỀN qua waitUntil: call LLM cho chunks đầu để ghi
+    //     records chất lượng hơn (retry, abort, best-effort) — best-effort,
+    //     nếu nền bị kill thì vẫn còn records heuristic ở tầng 1.
+    await extractHeuristicThenUpsert(filePath, body);
     waitUntil(
       (async () => {
         const ac = new AbortController();

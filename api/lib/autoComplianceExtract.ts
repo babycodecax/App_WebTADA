@@ -173,6 +173,57 @@ function heuristicRecords(sourceFile: string, text: string): ComplianceRecord[] 
   return records;
 }
 
+// ─── Upsert records + invalidate cache (dùng chung) ───
+/** Xoá records cũ theo source_file + upsert records mới. Trả số ghi được. */
+export async function upsertComplianceRecords(
+  filePath: string,
+  records: ComplianceRecord[]
+): Promise<number> {
+  if (!records.length) return 0;
+  try {
+    const { error: delErr } = await getSupabase().from('compliance_records').delete().eq('source_file', filePath);
+    if (delErr) {
+      console.warn(`[auto-extract] delete compliance cũ thất bại cho ${filePath}: ${delErr.message}`);
+      invalidateStructuredCache();
+      invalidateComplianceCache();
+      return 0;
+    }
+    const { error } = await getSupabase().from('compliance_records').upsert(records, {
+      onConflict: 'source_file,regulation',
+    });
+    if (error) throw new Error(error.message);
+    invalidateStructuredCache();
+    invalidateComplianceCache();
+    console.log(`[auto-extract] ${filePath}: ${records.length} compliance records`);
+    return records.length;
+  } catch (e) {
+    console.warn(`[auto-extract] upsert ${filePath} thất bại: ${e instanceof Error ? e.message : e}`);
+    invalidateStructuredCache();
+    invalidateComplianceCache();
+    return 0;
+  }
+}
+
+/** Extract nhanh chỉ bằng heuristic (không LLM) + upsert — dùng trong request
+ * để chắc chắn có records cho tài liệu mới, trước khi LLM refine nền bổ sung. */
+export async function extractHeuristicThenUpsert(filePath: string, content: string): Promise<number> {
+  try {
+    if (!content || !content.trim()) return 0;
+    const records = heuristicRecords(filePath, content);
+    if (!records.length) {
+      invalidateStructuredCache();
+      invalidateComplianceCache();
+      return 0;
+    }
+    return upsertComplianceRecords(filePath, records);
+  } catch (e) {
+    console.warn(`[auto-extract] heuristic ${filePath} thất bại: ${e instanceof Error ? e.message : e}`);
+    invalidateStructuredCache();
+    invalidateComplianceCache();
+    return 0;
+  }
+}
+
 // Gọi LLM tối đa MAX_LLM_RETRIES lần. Model reasoning (deepseek-v4-flash) hay
 // trả content rỗng (finish_reason=length) nên phải retry như Python
 // _call_llm_with_retry. Trả về (raw, aborted): aborted=true khi bị huỷ — khác
@@ -270,30 +321,7 @@ export async function autoExtractComplianceBounded(
     const records = await extractChunksBounded(filePath, content, opts.signal);
     // Bị huỷ (timeout) → KHÔNG ghi đè records cũ bằng kết quả heuristic dở
     if (opts.signal?.aborted) return 0;
-    if (!records.length) {
-      invalidateStructuredCache();
-      invalidateComplianceCache();
-      return 0;
-    }
-
-    // Xoá records cũ của file này (re-upload) rồi upsert mới — check error
-    const { error: delErr } = await getSupabase().from('compliance_records').delete().eq('source_file', filePath);
-    if (delErr) {
-      console.warn(`[auto-extract] delete compliance cũ thất bại cho ${filePath}: ${delErr.message}`);
-      invalidateStructuredCache();
-      invalidateComplianceCache();
-      return 0;
-    }
-    const { error } = await getSupabase().from('compliance_records').upsert(records, {
-      onConflict: 'source_file,regulation',
-    });
-    if (error) throw new Error(error.message);
-
-    // Dữ liệu có cấu trúc thay đổi → xoá cache để lần hỏi sau đọc mới
-    invalidateStructuredCache();
-    invalidateComplianceCache();
-    console.log(`[auto-extract] ${filePath}: ${records.length} compliance records`);
-    return records.length;
+    return upsertComplianceRecords(filePath, records);
   } catch (e) {
     // Best-effort: không để extract lỗi chặn upload
     console.warn(`[auto-extract] ${filePath} thất bại: ${e instanceof Error ? e.message : e}`);
