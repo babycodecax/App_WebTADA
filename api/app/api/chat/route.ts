@@ -197,6 +197,18 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
       if (rdRows) forcedChunks = [...forcedChunks, ...rdRows];
     } catch (_) {}
   }
+  // Force chunks GloBE/chống xói mòn cơ sở thuế: chunk bổ sung nói về thuế
+  // tối thiểu toàn cầu thường không match từ khóa truy vấn dài do BM25 yếu.
+  if (/xói mòn cơ sở thuế|globe|tối thiểu toàn cầu|pillar two/.test(qLow)) {
+    try {
+      const { data: globeRows } = await getSupabase()
+        .from('knowledge_chunks')
+        .select('id, content, title, heading, file_path, chunk_index')
+        .like('content', '%xói mòn%')
+        .limit(2);
+      if (globeRows) forcedChunks = [...forcedChunks, ...globeRows];
+    } catch (_) {}
+  }
 
   // Load chunks: page 1 (Supabase giới hạn 1000/request) + riêng các chunk upload/
   // để tài liệu admin upload mới luôn được xét — dù nằm ngoài 1000 chunks đầu.
@@ -307,6 +319,11 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
     // cộng thêm — ưu tiên mạnh để không bị cheatsheet (10% quỹ R&D) lấn át.
     if (/r&d|nghiên cứu|kh&cn/.test(qLow)) {
       if (/200%|kh&cn|nghiên cứu/.test(haystack)) score += 3.0;
+    }
+    // Boost GloBE / chống xói mòn cơ sở thuế: chunk bổ sung có từ khóa này
+    // được cộng lớn để vào uploadBudget trước — file bổ sung là nguồn chính xác.
+    if (/xói mòn|globe|tối thiểu toàn cầu|pillar two/.test(qLow)) {
+      if (/xói mòn|globe|tối thiểu toàn cầu/.test(haystack)) score += 10.0;
     }
 
     scored.push({ ...row, score });
