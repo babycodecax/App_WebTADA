@@ -6,6 +6,7 @@ import { ALLOWED_EXTENSIONS, extractText, sanitizeTitle } from '@/lib/parseFile'
 import { invalidateStructuredCache } from '@/lib/structured';
 import { invalidateComplianceCache } from '@/lib/compliance';
 import { autoExtractComplianceBounded } from '@/lib/autoComplianceExtract';
+import { waitUntil } from '@vercel/functions';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -204,24 +205,22 @@ export async function POST(req: NextRequest) {
     invalidateComplianceCache();
     // Tự động extract compliance records (số liệu/mốc có cấu trúc) từ tài liệu
     // vừa upload — production Vercel trước đây không có bước này (chỉ có backend
-    // Python). Chạy NỀN (fire-and-forget): không await trong request để:
-    //  - user không chờ LLM 20-40s
-    //  - không đốt budget maxDuration 60s của request upload
-    // Node runtime giữ promise đã khởi động chạy nốt sau khi trả response.
-    // Best-effort: mọi lỗi được nuốt trong autoExtractComplianceBounded.
-    const extractJob = (async () => {
-      const ac = new AbortController();
-      const t = setTimeout(() => ac.abort(), 55000); // dưới maxDuration 60s
-      try {
-        await autoExtractComplianceBounded(filePath, body, { signal: ac.signal });
-      } catch {
-        // Extract lỗi không được chặn upload (best-effort)
-      } finally {
-        clearTimeout(t);
-      }
-    })();
-    // Giữ tham chiếu để tránh GC — không await
-    void extractJob;
+    // Python). Dùng waitUntil() (@vercel/functions) để chạy NỀN SAU khi trả
+    // response — không await trong request (user không chờ, không đốt 60s
+    // maxDuration). Fire-and-forget thuần không được Vercel giữ promise nền.
+    waitUntil(
+      (async () => {
+        const ac = new AbortController();
+        const t = setTimeout(() => ac.abort(), 55000); // dưới maxDuration 60s
+        try {
+          await autoExtractComplianceBounded(filePath, body, { signal: ac.signal });
+        } catch {
+          // Extract lỗi không được chặn upload (best-effort)
+        } finally {
+          clearTimeout(t);
+        }
+      })()
+    );
 
     return NextResponse.json({ ok: true, chunks: inserted, title, file_path: filePath });
   } catch (e: unknown) {
