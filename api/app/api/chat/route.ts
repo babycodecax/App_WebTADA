@@ -212,6 +212,7 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
     '%luat-thue-tncn%', '%nq-198%', '%luat-67%', '%tt-20-2026%',
     '%luat-48%', '%luat-66%', '%nd-320%', '%tt-32%', '%luat-108%', '%nd-252%',
     '%nd-253%', '%luat-09%', '%nd-360%', '%luat-41%', '%tt-90%',
+    '%bo-sung-kien-thuc-2026%',
   ];
   const VITAL_LIMIT = 200; // mỗi file chunk nhỏ, 200 đủ
 
