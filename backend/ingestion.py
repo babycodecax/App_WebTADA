@@ -13,7 +13,7 @@ import os
 import re
 from typing import Any
 
-from db import upsert_document
+from db import get_client, upsert_document
 
 logger = logging.getLogger("obsidian-chatbot.ingestion")
 
@@ -135,12 +135,33 @@ def chunk_document(path: str) -> dict[str, Any]:
 
 
 def ingest_local(vault_dir: str) -> dict[str, Any]:
-    """Đệ quy đọc toàn bộ vault .md và upsert từng file lên Supabase."""
+    """Đệ quy đọc toàn bộ vault .md và upsert từng file lên Supabase.
+
+    Bỏ qua các nguồn đã bị xóa qua admin (status='deleted' trong
+    source_documents) — chống kiến thức cũ tái sử dụng khi chạy lại ingest.
+    """
     md_files: list[str] = []
     for root, _dirs, files in os.walk(vault_dir):
         for fn in files:
             if fn.lower().endswith(".md"):
                 md_files.append(os.path.join(root, fn))
+
+    # Nguồn soft-deleted qua admin — không re-ingest
+    deleted_paths: set[str] = set()
+    try:
+        client = get_client()
+        res = client.table("source_documents").select("file_path").eq("status", "deleted").execute()
+        deleted_paths = {r.get("file_path", "") for r in (res.data or [])}
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Không lấy được danh sách nguồn deleted (bỏ qua skip): %s", exc)
+
+    if deleted_paths:
+        before = len(md_files)
+        md_files = [
+            p for p in md_files
+            if not any(p.replace("\\", "/").endswith(dp) for dp in deleted_paths)
+        ]
+        logger.info("Bỏ qua %d nguồn deleted: %s", before - len(md_files), sorted(deleted_paths))
 
     total = len(md_files)
     done = 0

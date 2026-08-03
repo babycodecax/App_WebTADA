@@ -25,6 +25,7 @@ MIGRATIONS = [
     "migrations/2026-08-01-knowledge-chunks-unique.sql",
     "migrations/002_compliance_records.sql",
     "migrations/003_source_documents.sql",
+    "migrations/004_source_status_deleted.sql",
 ]
 
 # Lưu ý: migrations 002/003 dùng gen_random_uuid() (pgcrypto — có sẵn trong

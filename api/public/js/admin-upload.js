@@ -160,11 +160,12 @@
 
         el.docsList.querySelectorAll('.upload-doc-delete').forEach(function (btn) {
           btn.addEventListener('click', function () {
-            openDeleteConfirm({
-              file_path: btn.dataset.fp,
-              title: btn.dataset.title,
-              chunk_count: btn.dataset.chunks
-            });
+            if (window.TADAAdminDelete) {
+              window.TADAAdminDelete.open(
+                { file_path: btn.dataset.fp, title: btn.dataset.title, chunks: btn.dataset.chunks },
+                function (fp) { deleteDoc(fp); }
+              );
+            }
           });
         });
       })
@@ -175,35 +176,7 @@
   }
 
   /* ===== Xóa tài liệu — dialog xác nhận an toàn (gõ XÓA) ===== */
-  var pendingDeleteDoc = null;
-
-  function openDeleteConfirm(doc) {
-    if (!el.deleteOverlay) return;
-    pendingDeleteDoc = doc;
-    el.deleteTitleText.textContent = doc.title || '(không tên)';
-    el.deleteFpText.textContent = doc.file_path + ' — ' + (doc.chunk_count || 0) + ' chunks';
-    el.deleteInput.value = '';
-    el.deleteInput.classList.remove('has-error');
-    el.deleteOk.disabled = true;
-    el.deleteOverlay.style.display = 'flex';
-    el.deleteInput.focus();
-  }
-
-  function closeDeleteConfirm() {
-    if (!el.deleteOverlay) return;
-    el.deleteOverlay.style.display = 'none';
-    pendingDeleteDoc = null;
-    el.deleteInput.value = '';
-    el.deleteOk.disabled = true;
-  }
-
-  function onDeleteInput() {
-    var v = el.deleteInput.value.trim().toUpperCase();
-    var ok = (v === 'XÓA' || v === 'XOA');
-    el.deleteOk.disabled = !ok;
-    el.deleteInput.classList.toggle('has-error', v !== '' && !ok);
-  }
-
+  // Dùng chung dialog xác nhận qua window.TADAAdminDelete (admin-sources.js cũng dùng)
   function deleteDoc(filePath) {
     fetch(API + '/api/admin/delete', {
       method: 'POST',
@@ -220,7 +193,6 @@
       .then(function (data) {
         if (!data.ok) throw new Error(data.error || 'Xoá thất bại');
         showMsg(el.uploadMsg, 'Đã xoá ' + (data.deleted || 0) + ' chunks và toàn bộ kiến thức liên quan', 'success');
-        closeDeleteConfirm();
         loadDocs();
       })
       .catch(function (err) {
@@ -250,38 +222,16 @@
     el.uploadBtn = document.getElementById('upload-btn');
     el.uploadMsg = document.getElementById('upload-msg');
     el.docsList = document.getElementById('upload-docs-list');
-    el.deleteOverlay = document.getElementById('delete-confirm-overlay');
-    el.deleteTitleText = document.getElementById('delete-confirm-title-text');
-    el.deleteFpText = document.getElementById('delete-confirm-fp-text');
-    el.deleteInput = document.getElementById('delete-confirm-input');
-    el.deleteOk = document.getElementById('delete-confirm-ok');
-    el.deleteCancel = document.getElementById('delete-confirm-cancel');
 
     document.getElementById('upload-connect-btn')?.addEventListener('click', connect);
     document.getElementById('upload-logout-btn')?.addEventListener('click', logout);
     el.uploadBtn?.addEventListener('click', upload);
     el.password?.addEventListener('keydown', function (e) { if (e.key === 'Enter') connect(); });
-
-    // Dialog xác nhận xóa
-    el.deleteCancel?.addEventListener('click', closeDeleteConfirm);
-    el.deleteOk?.addEventListener('click', function () {
-      if (pendingDeleteDoc) deleteDoc(pendingDeleteDoc.file_path);
-    });
-    el.deleteInput?.addEventListener('input', onDeleteInput);
-    el.deleteInput?.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        if (!el.deleteOk.disabled && pendingDeleteDoc) deleteDoc(pendingDeleteDoc.file_path);
-      }
-      if (e.key === 'Escape') { e.preventDefault(); closeDeleteConfirm(); }
-    });
-    el.deleteOverlay?.addEventListener('click', function (e) {
-      if (e.target === el.deleteOverlay) closeDeleteConfirm();
-    });
   }
 
   function init() {
     bind();
+    if (window.TADAAdminDelete) window.TADAAdminDelete.bind();
     if (getToken()) {
       renderConnected(true);
       loadDocs();
@@ -293,4 +243,73 @@
   } else {
     init();
   }
+})();
+
+/* ===== Dialog xác nhận xóa dùng chung (admin-upload + admin-sources) =====
+ * Toàn cục: TADAAdminDelete.open(docInfo, onConfirm) — hiện dialog, gõ XÓA để xác nhận. */
+(function () {
+  'use strict';
+
+  var _overlay = null, _titleText = null, _fpText = null, _input = null, _okBtn = null, _cancelBtn = null;
+  var _pending = null;
+
+  function clearState() {
+    if (!_input) return;
+    _input.value = '';
+    _input.classList.remove('has-error');
+    _okBtn.disabled = true;
+  }
+
+  function openConfirm(doc, onConfirm) {
+    if (!_overlay) throw new Error('Dialog chưa khởi tạo — gọi bindDeleteDialog() trước');
+    _pending = { doc: doc, onConfirm: onConfirm };
+    _titleText.textContent = (doc && doc.title) || '(không tên)';
+    _fpText.textContent = (doc && doc.file_path || '') + ' — ' + (doc && doc.chunks != null ? doc.chunks : 0) + (doc && doc.note ? ' · ' + doc.note : '');
+    clearState();
+    _overlay.style.display = 'flex';
+    _input.focus();
+  }
+
+  function closeConfirm() {
+    if (!_overlay) return;
+    _overlay.style.display = 'none';
+    _pending = null;
+    clearState();
+  }
+
+  function onInput() {
+    var v = _input.value.trim().toUpperCase();
+    var ok = (v === 'XÓA' || v === 'XOA');
+    _okBtn.disabled = !ok;
+    _input.classList.toggle('has-error', v !== '' && !ok);
+  }
+
+  function confirm() {
+    if (!_pending || _okBtn.disabled) return;
+    var cb = _pending.onConfirm;
+    var filePath = _pending.doc.file_path;
+    closeConfirm();
+    if (cb) cb(filePath);
+  }
+
+  window.TADAAdminDelete = {
+    bind: function () {
+      _overlay = document.getElementById('delete-confirm-overlay');
+      _titleText = document.getElementById('delete-confirm-title-text');
+      _fpText = document.getElementById('delete-confirm-fp-text');
+      _input = document.getElementById('delete-confirm-input');
+      _okBtn = document.getElementById('delete-confirm-ok');
+      _cancelBtn = document.getElementById('delete-confirm-cancel');
+      _cancelBtn?.addEventListener('click', closeConfirm);
+      _okBtn?.addEventListener('click', confirm);
+      _input?.addEventListener('input', onInput);
+      _input?.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); confirm(); }
+        if (e.key === 'Escape') { e.preventDefault(); closeConfirm(); }
+      });
+      _overlay?.addEventListener('click', function (e) { if (e.target === _overlay) closeConfirm(); });
+    },
+    open: openConfirm,
+    close: closeConfirm
+  };
 })();

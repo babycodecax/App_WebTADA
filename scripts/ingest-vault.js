@@ -131,14 +131,33 @@ async function main() {
   walk(VAULT_DIR);
   console.log(`Found ${files.length} .md files`);
 
+  // 1b. Nguồn đã bị xóa qua admin (status='deleted') — KHÔNG re-ingest
+  //     (soft-delete trong source_documents — chống kiến thức cũ tái sử dụng)
+  const { data: deletedSources, error: delSrcErr } = await supabase
+    .from('source_documents')
+    .select('file_path')
+    .eq('status', 'deleted');
+  if (delSrcErr) console.warn('Load deleted sources warn:', delSrcErr.message);
+  const deletedPaths = new Set((deletedSources || []).map(r => r.file_path));
+  // So khớp theo BASENAME (file_path của source_documents vault được ghi bằng
+  // basename) — bắt cả file trong thư mục con (chung/, sources/...) như
+  // ingestion.py dùng endswith.
+  const filesFiltered = files.filter(f => {
+    const rel = path.relative(VAULT_DIR, f).replace(/\\/g, '/');
+    const base = path.basename(f);
+    return !deletedPaths.has(rel) && !deletedPaths.has(base);
+  });
+  if (deletedPaths.size) console.log(`Skipping ${deletedPaths.size} deleted source(s): ${[...deletedPaths].join(', ')}`);
+  console.log(`Will ingest ${filesFiltered.length} files (bỏ ${files.length - filesFiltered.length} nguồn deleted)`);
+
   // 2. Delete old chunks
   const { error: delErr } = await supabase.from('knowledge_chunks').delete().neq('id', '00000000-0000-0000-0000-000000000000');
   if (delErr) console.warn('Delete old chunks warn:', delErr.message);
 
   // 3. Process each file (insert without embedding)
   let total = 0, errors = 0;
-  for (let fi = 0; fi < files.length; fi++) {
-    const fpath = files[fi];
+  for (let fi = 0; fi < filesFiltered.length; fi++) {
+    const fpath = filesFiltered[fi];
     try {
       const content = fs.readFileSync(fpath, 'utf-8');
       const { title, body } = parseFrontmatter(content);
@@ -164,7 +183,7 @@ async function main() {
           total += records.length;
         }
       }
-      if ((fi + 1) % 20 === 0) console.log(`  ${fi + 1}/${files.length} files, ${total} chunks`);
+      if ((fi + 1) % 20 === 0) console.log(`  ${fi + 1}/${filesFiltered.length} files, ${total} chunks`);
     } catch (e) {
       console.error(`Error processing ${fpath}: ${e.message}`);
       errors++;

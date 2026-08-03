@@ -38,6 +38,9 @@
       <button class="admin-nav-btn" data-view="upload">
         <span>📤</span> Upload tài liệu
       </button>
+      <button class="admin-nav-btn" data-view="sources">
+        <span>📚</span> Quản lý nguồn
+      </button>
     </aside>
 
     <!-- Editor -->
@@ -130,12 +133,44 @@
         <div id="upload-docs-list"></div>
       </div>
     </section>
+
+    <!-- Quản lý nguồn tri thức (vault + upload) -->
+    <section class="admin-view" id="view-sources">
+      <div class="admin-card">
+        <h3>Quản lý nguồn tri thức</h3>
+        <div class="sources-toolbar">
+          <select id="sources-origin" class="form-input">
+            <option value="">Tất cả nguồn</option>
+            <option value="vault">Vault (văn bản luật)</option>
+            <option value="upload">Upload</option>
+          </select>
+          <input type="text" id="sources-q" class="form-input" placeholder="Tìm theo tiêu đề / file_path...">
+        </div>
+        <div id="sources-list" class="sources-list"></div>
+      </div>
+    </section>
   </main>
+
+  <!-- Modal xem nội dung nguồn -->
+  <div class="source-view-overlay" id="source-view-overlay" style="display:none">
+    <div class="source-view-dialog admin-card" role="dialog" aria-modal="true">
+      <div class="source-view-head">
+        <h3 id="source-view-title"></h3>
+        <button type="button" class="source-view-close" id="source-view-close-btn" aria-label="Đóng">×</button>
+      </div>
+      <div class="source-view-body" id="source-view-body"></div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-primary" id="source-view-download">Tải về</button>
+        <button type="button" class="btn btn-outline" id="source-view-cancel">Đóng</button>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script src="static/js/blog-admin.js"></script>
   <script src="static/js/admin-upload.js"></script>
+  <script src="static/js/admin-sources.js"></script>
 
   <!-- Dialog xác nhận xóa tài liệu (an toàn — gõ XÓA để xác nhận) -->
   <div class="delete-confirm-overlay" id="delete-confirm-overlay" style="display:none">
