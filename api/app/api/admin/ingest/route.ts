@@ -102,18 +102,23 @@ export async function POST(req: NextRequest) {
     await clearAnswerCache();
     invalidateStructuredCache();
     invalidateComplianceCache();
-    // Tự động extract compliance records từ tài liệu vừa ingest — mới:
-    // production Vercel trước đây chỉ có ở backend Python. Best-effort.
-    // Truyền fm.body (đã strip frontmatter) — khớp nguồn chunk hoá.
-    const ac = new AbortController();
-    const t = setTimeout(() => ac.abort(), 40000);
-    try {
-      await autoExtractComplianceBounded(filePath, fm.body, { signal: ac.signal });
-    } catch {
-      // Extract lỗi không được chặn ingest
-    } finally {
-      clearTimeout(t);
-    }
+    // Tự động extract compliance records từ tài liệu vừa ingest — production Vercel
+    // trước đây chỉ có ở backend Python. Chạy NỀN (fire-and-forget) sau khi trả
+    // response để không tốn budget maxDuration và user không chờ. Truyền
+    // fm.body (đã strip frontmatter) — khớp nguồn chunk hoá.
+    const extractJob = (async () => {
+      const ac = new AbortController();
+      const t = setTimeout(() => ac.abort(), 55000); // dưới maxDuration 60s
+      try {
+        await autoExtractComplianceBounded(filePath, fm.body, { signal: ac.signal });
+      } catch {
+        // Extract lỗi không được chặn ingest (best-effort)
+      } finally {
+        clearTimeout(t);
+      }
+    })();
+    // Giữ tham chiếu để tránh GC — không await
+    void extractJob;
 
     return NextResponse.json({ ok: true, chunks: inserted, file_path: filePath });
   } catch (e: unknown) {
