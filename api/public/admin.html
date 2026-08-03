@@ -136,5 +136,29 @@
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script src="static/js/blog-admin.js"></script>
   <script src="static/js/admin-upload.js"></script>
+
+  <!-- Dialog xác nhận xóa tài liệu (an toàn — gõ XÓA để xác nhận) -->
+  <div class="delete-confirm-overlay" id="delete-confirm-overlay" style="display:none">
+    <div class="delete-confirm-dialog admin-card" role="dialog" aria-modal="true" aria-labelledby="delete-confirm-title">
+      <h3 id="delete-confirm-title">⚠️ Xóa tài liệu khỏi tri thức?</h3>
+      <div class="delete-confirm-body">
+        <p><strong id="delete-confirm-title-text"></strong></p>
+        <p class="upload-doc-meta" id="delete-confirm-fp-text"></p>
+        <p class="delete-confirm-warning">
+          Việc xóa sẽ <strong>dọn toàn bộ kiến thức liên quan</strong> của tài liệu này:
+          nội dung trích (chunks), dữ liệu số/mốc (compliance), kho nguồn (source), bộ nhớ đệm câu trả lời.<br>
+          <strong>Không thể hoàn tác.</strong>
+        </p>
+        <div class="form-group">
+          <label>Gõ chữ <strong>XÓA</strong> để xác nhận:</label>
+          <input type="text" id="delete-confirm-input" class="form-input" autocomplete="off" placeholder="XÓA">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" id="delete-confirm-cancel">Hủy</button>
+        <button type="button" class="btn btn-danger" id="delete-confirm-ok" disabled>Xóa vĩnh viễn</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

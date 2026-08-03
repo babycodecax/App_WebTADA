@@ -65,3 +65,51 @@
   background: #c0392b;
   color: #fff;
 }
+
+/* Dialog xác nhận xóa tài liệu (an toàn — gõ XÓA) */
+.delete-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+.delete-confirm-dialog {
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+.delete-confirm-body { margin: 12px 0 4px; }
+.delete-confirm-warning {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: #fdecea;
+  border-left: 4px solid #c0392b;
+  border-radius: 6px;
+  color: #7b241c;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.btn-danger {
+  background: #c0392b;
+  border: 1px solid #c0392b;
+  color: #fff;
+}
+.btn-danger:hover:not(:disabled) {
+  background: #a93226;
+  border-color: #a93226;
+  color: #fff;
+}
+.btn-danger:disabled {
+  background: #d7b2ad;
+  border-color: #d7b2ad;
+  color: #fff;
+  cursor: not-allowed;
+}
+.form-input.has-error {
+  border-color: #c0392b;
+  background: #fdecea;
+}

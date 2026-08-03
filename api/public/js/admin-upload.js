@@ -16,7 +16,13 @@
     title: null,
     uploadBtn: null,
     uploadMsg: null,
-    docsList: null
+    docsList: null,
+    deleteOverlay: null,
+    deleteTitleText: null,
+    deleteFpText: null,
+    deleteInput: null,
+    deleteOk: null,
+    deleteCancel: null
   };
 
   function getToken() {
@@ -148,13 +154,17 @@
               '<div class="upload-doc-title">' + escHtml(d.title) + '</div>' +
               '<div class="upload-doc-meta">' + escHtml(d.file_path) + ' — ' + (d.chunk_count || 0) + ' chunks</div>' +
             '</div>' +
-            '<button type="button" class="upload-doc-delete" data-fp="' + escHtml(d.file_path) + '">Xoá</button>';
+            '<button type="button" class="upload-doc-delete" data-fp="' + escHtml(d.file_path) + '" data-title="' + escHtml(d.title || '') + '" data-chunks="' + (d.chunk_count || 0) + '">Xoá</button>';
           el.docsList.appendChild(item);
         });
 
         el.docsList.querySelectorAll('.upload-doc-delete').forEach(function (btn) {
           btn.addEventListener('click', function () {
-            if (confirm('Xoá tài liệu này khỏi tri thức chatbox?')) deleteDoc(btn.dataset.fp);
+            openDeleteConfirm({
+              file_path: btn.dataset.fp,
+              title: btn.dataset.title,
+              chunk_count: btn.dataset.chunks
+            });
           });
         });
       })
@@ -162,6 +172,36 @@
         if (/hết hạn/i.test(err.message || '')) return;
         el.docsList.innerHTML = '<div class="blog-error">Không thể tải danh sách.</div>';
       });
+  }
+
+  /* ===== Xóa tài liệu — dialog xác nhận an toàn (gõ XÓA) ===== */
+  var pendingDeleteDoc = null;
+
+  function openDeleteConfirm(doc) {
+    if (!el.deleteOverlay) return;
+    pendingDeleteDoc = doc;
+    el.deleteTitleText.textContent = doc.title || '(không tên)';
+    el.deleteFpText.textContent = doc.file_path + ' — ' + (doc.chunk_count || 0) + ' chunks';
+    el.deleteInput.value = '';
+    el.deleteInput.classList.remove('has-error');
+    el.deleteOk.disabled = true;
+    el.deleteOverlay.style.display = 'flex';
+    el.deleteInput.focus();
+  }
+
+  function closeDeleteConfirm() {
+    if (!el.deleteOverlay) return;
+    el.deleteOverlay.style.display = 'none';
+    pendingDeleteDoc = null;
+    el.deleteInput.value = '';
+    el.deleteOk.disabled = true;
+  }
+
+  function onDeleteInput() {
+    var v = el.deleteInput.value.trim().toUpperCase();
+    var ok = (v === 'XÓA' || v === 'XOA');
+    el.deleteOk.disabled = !ok;
+    el.deleteInput.classList.toggle('has-error', v !== '' && !ok);
   }
 
   function deleteDoc(filePath) {
@@ -179,7 +219,8 @@
       })
       .then(function (data) {
         if (!data.ok) throw new Error(data.error || 'Xoá thất bại');
-        showMsg(el.uploadMsg, 'Đã xoá ' + (data.deleted || 0) + ' chunks', 'success');
+        showMsg(el.uploadMsg, 'Đã xoá ' + (data.deleted || 0) + ' chunks và toàn bộ kiến thức liên quan', 'success');
+        closeDeleteConfirm();
         loadDocs();
       })
       .catch(function (err) {
@@ -209,11 +250,34 @@
     el.uploadBtn = document.getElementById('upload-btn');
     el.uploadMsg = document.getElementById('upload-msg');
     el.docsList = document.getElementById('upload-docs-list');
+    el.deleteOverlay = document.getElementById('delete-confirm-overlay');
+    el.deleteTitleText = document.getElementById('delete-confirm-title-text');
+    el.deleteFpText = document.getElementById('delete-confirm-fp-text');
+    el.deleteInput = document.getElementById('delete-confirm-input');
+    el.deleteOk = document.getElementById('delete-confirm-ok');
+    el.deleteCancel = document.getElementById('delete-confirm-cancel');
 
     document.getElementById('upload-connect-btn')?.addEventListener('click', connect);
     document.getElementById('upload-logout-btn')?.addEventListener('click', logout);
     el.uploadBtn?.addEventListener('click', upload);
     el.password?.addEventListener('keydown', function (e) { if (e.key === 'Enter') connect(); });
+
+    // Dialog xác nhận xóa
+    el.deleteCancel?.addEventListener('click', closeDeleteConfirm);
+    el.deleteOk?.addEventListener('click', function () {
+      if (pendingDeleteDoc) deleteDoc(pendingDeleteDoc.file_path);
+    });
+    el.deleteInput?.addEventListener('input', onDeleteInput);
+    el.deleteInput?.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (!el.deleteOk.disabled && pendingDeleteDoc) deleteDoc(pendingDeleteDoc.file_path);
+      }
+      if (e.key === 'Escape') { e.preventDefault(); closeDeleteConfirm(); }
+    });
+    el.deleteOverlay?.addEventListener('click', function (e) {
+      if (e.target === el.deleteOverlay) closeDeleteConfirm();
+    });
   }
 
   function init() {
