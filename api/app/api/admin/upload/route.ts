@@ -5,6 +5,7 @@ import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker'
 import { ALLOWED_EXTENSIONS, extractText, sanitizeTitle } from '@/lib/parseFile';
 import { invalidateStructuredCache } from '@/lib/structured';
 import { invalidateComplianceCache } from '@/lib/compliance';
+import { autoExtractComplianceBounded } from '@/lib/autoComplianceExtract';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -180,12 +181,13 @@ export async function POST(req: NextRequest) {
     const filePath = 'upload/' + sanitizeTitle(title);
 
     // .md → giữ heading; docx/pdf/txt → plain text (heading='')
+    // body gốc (đã strip frontmatter nếu .md) — dùng chung cho chunk + auto-extract
+    const body = extracted.isMarkdown ? parseFrontmatter(extracted.body).body : extracted.body;
     let chunks: { text: string; heading: string }[];
     if (extracted.isMarkdown) {
-      const { body } = parseFrontmatter(extracted.body);
       chunks = chunkByHeading(body);
     } else {
-      chunks = chunkPlainText(extracted.body);
+      chunks = chunkPlainText(body);
     }
     if (!chunks.length) {
       return NextResponse.json({ error: 'File rỗng hoặc không đọc được nội dung' }, { status: 400 });
@@ -200,6 +202,19 @@ export async function POST(req: NextRequest) {
     // thể đổi theo tài liệu mới → invalidate cả 2 cache
     invalidateStructuredCache();
     invalidateComplianceCache();
+    // Tự động extract compliance records (số liệu/mốc có cấu trúc) từ tài liệu
+    // vừa upload — mới: production Vercel trước đây không có bước này (chỉ có
+    // backend Python). Best-effort, không chặn upload. Điều khiển timeout bởi
+    // controller + abort signal riêng.
+    const ac = new AbortController();
+    const t = setTimeout(() => ac.abort(), 40000);
+    try {
+      await autoExtractComplianceBounded(filePath, body, { signal: ac.signal });
+    } catch {
+      // Extract lỗi không được chặn upload
+    } finally {
+      clearTimeout(t);
+    }
 
     return NextResponse.json({ ok: true, chunks: inserted, title, file_path: filePath });
   } catch (e: unknown) {

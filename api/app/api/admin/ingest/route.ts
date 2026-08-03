@@ -5,6 +5,7 @@ import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker'
 import { sanitizeTitle } from '@/lib/parseFile';
 import { invalidateStructuredCache } from '@/lib/structured';
 import { invalidateComplianceCache } from '@/lib/compliance';
+import { autoExtractComplianceBounded } from '@/lib/autoComplianceExtract';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -101,6 +102,18 @@ export async function POST(req: NextRequest) {
     await clearAnswerCache();
     invalidateStructuredCache();
     invalidateComplianceCache();
+    // Tự động extract compliance records từ tài liệu vừa ingest — mới:
+    // production Vercel trước đây chỉ có ở backend Python. Best-effort.
+    // Truyền fm.body (đã strip frontmatter) — khớp nguồn chunk hoá.
+    const ac = new AbortController();
+    const t = setTimeout(() => ac.abort(), 40000);
+    try {
+      await autoExtractComplianceBounded(filePath, fm.body, { signal: ac.signal });
+    } catch {
+      // Extract lỗi không được chặn ingest
+    } finally {
+      clearTimeout(t);
+    }
 
     return NextResponse.json({ ok: true, chunks: inserted, file_path: filePath });
   } catch (e: unknown) {
