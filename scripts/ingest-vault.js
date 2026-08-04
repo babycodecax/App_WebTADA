@@ -26,6 +26,23 @@ const HEADING_RE = /^(#{1,6})\s+(.*)$/m;
 const PARA_SPLIT_RE = /\n\s*\n/;
 const MAX_CHUNK_TOKENS = 1500;
 
+// Section không có tri thức (footer/nav) — bỏ khi ingest để DB gọn, chatbox sạch.
+// Các note Obsidian mỗi điều có: Tóm tắt (>), Nội dung, Nguồn (Source gốc), Liên kết ([[_index]])
+function isJunkChunk(chunk) {
+  const text = (chunk.text || '').trim();
+  const head = (chunk.heading || '').toLowerCase();
+  if (!text) return true;
+  // Chỉ chứa footer/nav
+  if (/^- source gốc:/i.test(text) && text.length < 100) return true;
+  if (/^-\s*\[\[_index\|/.test(text) && text.length < 100) return true;
+  if (text.length < 15) return true; // quá ngắn, không có giá trị
+  // Heading section không có tri thức
+  if (/^(nguồn|liên kết)$/.test(head.split('>').pop().trim())) {
+    if (text.length < 120) return true; // footer ngắn
+  }
+  return false;
+}
+
 function countTokens(text) { return text.split(/\s+/).length; }
 
 function chunkByHeading(body) {
@@ -143,11 +160,16 @@ async function main() {
   //  - khớp basename (file_path vault ghi bằng basename, vd tt-94-2026.md)
   //  - file con trong chung/<vb>/ — skip nếu root <vb>.md bị deleted
   const deletedBases = new Set([...deletedPaths].map(p => p.replace(/\.md$/, '')));
+  // 7 văn bản có thư mục con chung/ — file root chỉ là BẢN ĐỒ chỉ mục (wikilink),
+  // không có tri thức thật → BỎ root, chỉ ingest file con chi tiết gắn root.
+  const ROOT_MAP_ONLY = new Set(['nd-181-2025', 'tt-18-2026', 'tt-89-2026', 'tt-90-2026', 'tt-91-2026', 'tt-94-2026', 'tt-99-2025']);
   const filesFiltered = files.filter(f => {
     const rel = path.relative(VAULT_DIR, f).replace(/\\/g, '/');
     const base = path.basename(f);
     if (deletedPaths.has(rel) || deletedPaths.has(base)) return false;
     const relDir = path.relative(VAULT_DIR, path.dirname(f)).split(path.sep).join('/');
+    // Bỏ file root bản đồ (vd tt-90-2026.md) nếu có thư mục con chung/tt-90-2026/
+    if (ROOT_MAP_ONLY.has(base.replace(/\.md$/, '')) && !relDir.startsWith('chung/')) return false;
     if (relDir.startsWith('chung/')) {
       const vbName = relDir.split('/')[1] || '';
       if (vbName && deletedBases.has(vbName)) return false; // root bị xóa → skip cả con
@@ -164,14 +186,19 @@ async function main() {
   // 3. Process each file (insert without embedding)
   //    file_path chuẩn hóa GẮN ROOT: file con trong chung/<vb>/<vb>-dieu-N.md
   //    gắn về file_path = '<vb>.md' (root) — để admin xóa 1 nguồn → sạch cả con.
+  //    QUAN TRỌNG: chunk_index phải LIÊN TỤC giữa các file con cùng root —
+  //    mỗi file con cộng dồn offset, tránh upsert (file_path+chunk_index) đè nhau.
   let total = 0, errors = 0;
+  const rootOffset = {}; // file_path → offset chunk_index hiện tại
   for (let fi = 0; fi < filesFiltered.length; fi++) {
     const fpath = filesFiltered[fi];
     try {
       const content = fs.readFileSync(fpath, 'utf-8');
       const { title, body } = parseFrontmatter(content);
       const fileTitle = title || path.basename(fpath, '.md');
-      const chunks = chunkByHeading(body);
+      let chunks = chunkByHeading(body);
+      // Lọc chunk rác (footer/nav 'Source gốc', '[[_index]]', section quá ngắn)
+      chunks = chunks.filter(c => !isJunkChunk(c));
       // file_path: nếu file nằm trong chung/<vb>/ → gắn root <vb>.md
       const relDir = path.relative(VAULT_DIR, path.dirname(fpath)).split(path.sep).join('/');
       let relativePath = path.relative(VAULT_DIR, fpath).split(path.sep).join('/');
@@ -179,6 +206,9 @@ async function main() {
         const vbName = relDir.split('/')[1] || '';
         if (vbName) relativePath = vbName + '.md';
       }
+      // Offset tích lũy theo file_path (đảm bảo chunk_index unique giữa các file con)
+      const offset = rootOffset[relativePath] || 0;
+      rootOffset[relativePath] = offset + chunks.length;
 
       // Insert in batches of 10
       for (let ci = 0; ci < chunks.length; ci += 10) {
@@ -188,7 +218,7 @@ async function main() {
           title: fileTitle,
           heading: chunk.heading,
           file_path: relativePath,
-          chunk_index: ci + idx,
+          chunk_index: offset + ci + idx,
         }));
         const { error: insErr } = await supabase.from('knowledge_chunks').insert(records);
         if (insErr) {

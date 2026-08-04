@@ -174,6 +174,17 @@ def ingest_local(vault_dir: str) -> dict[str, Any]:
         md_files = kept
         logger.info("Bỏ qua %d nguồn deleted: %s", before - len(md_files), sorted(deleted_paths))
 
+    # 7 văn bản có thư mục con chung/ — file root chỉ là BẢN ĐỒ chỉ mục (wikilink),
+    # không có tri thức thật → BỎ root, chỉ ingest file con chi tiết gắn root.
+    ROOT_MAP_ONLY = {"nd-181-2025", "tt-18-2026", "tt-89-2026", "tt-90-2026", "tt-91-2026", "tt-94-2026", "tt-99-2025"}
+    md_files = [
+        p for p in md_files
+        if not (
+            os.path.basename(p).replace(".md", "") in ROOT_MAP_ONLY
+            and "chung" not in p.replace("\\", "/").split("/")
+        )
+    ]
+
     total = len(md_files)
     done = 0
     errors: list[dict[str, str]] = []
