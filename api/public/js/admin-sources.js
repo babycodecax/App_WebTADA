@@ -73,7 +73,7 @@
     }
 
     var html = '<table class="sources-table"><thead><tr>' +
-      '<th>Tiêu đề</th><th>Loại</th><th>Số liệu</th><th>Trạng thái</th><th>Cập nhật</th><th>Thao tác</th>' +
+      '<th>STT</th><th>Tiêu đề</th><th>Loại</th><th>Số liệu</th><th>Trạng thái</th><th>Cập nhật</th><th>Thao tác</th>' +
       '</tr></thead><tbody>';
 
     for (var i = 0; i < sources.length; i++) {
@@ -85,6 +85,7 @@
         : '<span class="src-status src-ready">Sẵn sàng</span>';
 
       html += '<tr class="' + (s.status === 'deleted' ? 'src-row-deleted' : '') + '">' +
+        '<td class="src-stt">' + (i + 1) + '</td>' +
         '<td><div class="src-title">' + escHtml(s.title || s.file_path) + '</div>' +
           '<div class="src-path">' + escHtml(s.file_path) + '</div></td>' +
         '<td>' + originLabel + '</td>' +
@@ -115,17 +116,18 @@
     });
   }
 
-  /* ===== Xem nội dung ===== */
+  /* ===== Xem nội dung file word gốc (hoặc fallback chunks md) ===== */
   function viewSource(filePath, title) {
     var overlay = document.getElementById('source-view-overlay');
     var body = document.getElementById('source-view-body');
     var titleEl = document.getElementById('source-view-title');
     if (!overlay) return;
     titleEl.textContent = title || filePath;
-    body.innerHTML = '<div class="blog-empty">Đang tải nội dung...</div>';
+    body.innerHTML = '<div class="blog-empty">Đang tải nội dung file word...</div>';
     overlay.style.display = 'flex';
 
-    fetch(API + '/api/admin/sources/content?file_path=' + encodeURIComponent(filePath), {
+    // Ưu tiên: đọc file word gốc từ Storage (docx route)
+    fetch(API + '/api/admin/sources/docx?file_path=' + encodeURIComponent(filePath), {
       headers: { 'Authorization': 'Bearer ' + getToken() }
     })
       .then(function (r) {
@@ -134,8 +136,13 @@
       })
       .then(function (data) {
         if (data.error) throw new Error(data.error);
+        // Nếu có note (chưa upload file word) → fallback hiển thị chunks md
+        if (data.note && !data.content) {
+          body.innerHTML = '<div class="blog-empty">' + escHtml(data.note) + '</div>' +
+            '<div class="src-fallback-hint">Hiển thị nội dung từ chunks đã xử lý:</div>';
+          return loadContentFallback(filePath, title, body);
+        }
         var content = data.content || '';
-        // Render markdown nếu có marked; ngược lại hiển thị text thô
         if (window.marked && /[#*|`\[\]]/.test(content)) {
           body.innerHTML = '<div class="source-view-md">' + window.marked.parse(content) + '</div>';
         } else {
@@ -143,31 +150,75 @@
         }
         body.dataset.fp = filePath;
         body.dataset.title = title || '';
+        body.dataset.hasDocx = '1';
       })
       .catch(function (err) {
-        body.innerHTML = '<div class="blog-error">' + escHtml(err.message || 'Lỗi tải nội dung') + '</div>';
+        // Fallback: hiển thị chunks md nếu docx route lỗi
+        body.innerHTML = '<div class="blog-empty">Không tải được file word gốc. Thử nội dung chunks:</div>';
+        loadContentFallback(filePath, title, body);
       });
   }
 
-  /* ===== Tải về ===== */
-  function downloadSource(filePath, title) {
+  function loadContentFallback(filePath, title, body) {
     fetch(API + '/api/admin/sources/content?file_path=' + encodeURIComponent(filePath), {
       headers: { 'Authorization': 'Bearer ' + getToken() }
     })
       .then(function (r) { return r.json(); })
       .then(function (data) {
         if (data.error) throw new Error(data.error);
-        var blob = new Blob([data.content || ''], { type: 'text/markdown;charset=utf-8' });
+        var content = data.content || '';
+        if (window.marked && /[#*|`\[\]]/.test(content)) {
+          body.innerHTML += '<div class="source-view-md">' + window.marked.parse(content) + '</div>';
+        } else {
+          body.innerHTML += '<pre class="source-view-pre">' + escHtml(content) + '</pre>';
+        }
+        body.dataset.fp = filePath;
+        body.dataset.title = title || '';
+      })
+      .catch(function (err2) {
+        body.innerHTML = '<div class="blog-error">' + escHtml(err2.message || 'Lỗi tải nội dung') + '</div>';
+      });
+  }
+
+  /* ===== Tải về file word gốc (hoặc fallback markdown) ===== */
+  function downloadSource(filePath, title) {
+    // Thử tải raw .docx từ download route (Storage)
+    fetch(API + '/api/admin/sources/download?file_path=' + encodeURIComponent(filePath), {
+      headers: { 'Authorization': 'Bearer ' + getToken() }
+    })
+      .then(function (r) {
+        if (!r.ok) throw new Error('not found');
+        return r.blob();
+      })
+      .then(function (blob) {
         var a = document.createElement('a');
-        var name = (title || filePath.split('/').pop() || 'nguon').replace(/[^\w.\-]/g, '_') + '.md';
+        var name = (title || filePath.split('/').pop() || 'nguon').replace(/[^\w.\-]/g, '_') + '.docx';
         a.href = URL.createObjectURL(blob);
         a.download = name;
         document.body.appendChild(a);
         a.click();
         setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
       })
-      .catch(function (err) {
-        alert('Tải thất bại: ' + (err.message || 'lỗi'));
+      .catch(function () {
+        // Fallback: tải markdown từ content route
+        fetch(API + '/api/admin/sources/content?file_path=' + encodeURIComponent(filePath), {
+          headers: { 'Authorization': 'Bearer ' + getToken() }
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data.error) throw new Error(data.error);
+            var blob = new Blob([data.content || ''], { type: 'text/markdown;charset=utf-8' });
+            var a = document.createElement('a');
+            var name2 = (title || filePath.split('/').pop() || 'nguon').replace(/[^\w.\-]/g, '_') + '.md';
+            a.href = URL.createObjectURL(blob);
+            a.download = name2;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+          })
+          .catch(function (err) {
+            alert('Tải thất bại: ' + (err.message || 'lỗi'));
+          });
       });
   }
 

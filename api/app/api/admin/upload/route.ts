@@ -106,25 +106,60 @@ async function replaceChunks(
   return inserted;
 }
 
+const BUCKET = 'vault-sources';
+
+/** Tạo bucket Storage nếu chưa có (idempotent). */
+async function ensureBucket(): Promise<void> {
+  try {
+    await getSupabase().storage.createBucket(BUCKET, { public: false });
+  } catch {
+    // Bucket đã tồn tại hoặc lỗi — bỏ qua (best-effort)
+  }
+}
+
+/** Upload file lên Supabase Storage (best-effort). Trả storage_path (vd 'upload/filename.docx') hoặc ''. */
+async function uploadFileToStorage(file: File, filePath: string): Promise<string> {
+  try {
+    await ensureBucket();
+    const ext = '.' + ((file.name || '').split('.').pop() || '').toLowerCase();
+    const storageKey = filePath.replace(/\.md$/, '') + ext; // vd: upload/Source-File.docx
+    const buf = Buffer.from(await file.arrayBuffer());
+    const mimeMap: Record<string, string> = {
+      '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      '.pdf': 'application/pdf',
+      '.txt': 'text/plain',
+      '.md': 'text/markdown',
+    };
+    const { error } = await getSupabase().storage
+      .from(BUCKET)
+      .upload(storageKey, buf, { contentType: mimeMap[ext] || 'application/octet-stream', upsert: true });
+    if (error) {
+      console.warn(`[admin-upload] upload Storage bỏ qua: ${error.message}`);
+      return '';
+    }
+    return storageKey;
+  } catch {
+    return '';
+  }
+}
+
 /** Upsert bảng source_documents (kho nguồn — đồng bộ với backend Python).
  *  Best-effort, lỗi không chặn upload. */
-async function upsertSourceDocument(filePath: string, title: string): Promise<void> {
+async function upsertSourceDocument(filePath: string, title: string, storagePath: string = ''): Promise<void> {
   try {
+    const row: Record<string, string> = {
+      file_path: filePath,
+      title,
+      doc_type: 'other',
+      effective_date: '',
+      status: 'ready',
+      source_origin: 'upload',
+    };
+    if (storagePath) row.storage_path = storagePath;
     const { error } = await getSupabase()
       .from('source_documents')
-      .upsert(
-        {
-          file_path: filePath,
-          title,
-          doc_type: 'other',
-          effective_date: '',
-          status: 'ready',
-          source_origin: 'upload',
-        },
-        { onConflict: 'file_path' },
-      );
+      .upsert(row, { onConflict: 'file_path' });
     if (error) {
-      // Bảng source_documents có thể chưa có (migration 003 chưa chạy) — bỏ qua
       console.warn(`[admin-upload] upsert source_documents bỏ qua: ${error.message}`);
     }
   } catch (e) {
@@ -224,8 +259,9 @@ export async function POST(req: NextRequest) {
     const inserted = await replaceChunks(filePath, title, chunks);
     // Đồng bộ bảng documents (BM25 backend local đọc khi reindex) — best-effort
     await upsertDocument(filePath, title, chunks);
-    // Đồng bộ kho nguồn source_documents (migration 003) — best-effort
-    await upsertSourceDocument(filePath, title);
+    // Upload file gốc lên Supabase Storage (best-effort) + đồng bộ source_documents
+    const storagePath = await uploadFileToStorage(file, filePath);
+    await upsertSourceDocument(filePath, title, storagePath);
     await clearAnswerCache();
     // Số liệu structured (moc_mien_thue_tncn_2026...) + compliance records có
     // thể đổi theo tài liệu mới → invalidate cả 2 cache

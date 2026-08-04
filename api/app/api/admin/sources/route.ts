@@ -6,7 +6,7 @@ import { deleteSourceCascade } from '@/lib/deleteCascade';
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
-const SOURCE_FIELDS = 'file_path,title,doc_type,effective_date,status,source_origin,updated_at';
+const SOURCE_FIELDS = 'file_path,title,doc_type,effective_date,status,source_origin,updated_at,storage_path';
 
 /**
  * GET /api/admin/sources — danh sách toàn bộ nguồn từ source_documents

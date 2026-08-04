@@ -26,6 +26,7 @@ MIGRATIONS = [
     "migrations/002_compliance_records.sql",
     "migrations/003_source_documents.sql",
     "migrations/004_source_status_deleted.sql",
+    "migrations/005_source_documents_storage_path.sql",
 ]
 
 # Lưu ý: migrations 002/003 dùng gen_random_uuid() (pgcrypto — có sẵn trong

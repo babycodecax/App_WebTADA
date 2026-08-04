@@ -141,6 +141,7 @@
   font-size: 12px;
   text-transform: uppercase;
 }
+.src-stt { text-align: center; font-weight: 700; color: var(--text-muted); width: 36px; }
 .src-title { font-weight: 600; color: var(--text-dark); word-break: break-word; }
 .src-path { font-size: 11px; color: var(--text-muted-light); word-break: break-all; margin-top: 2px; }
 .src-row-deleted { opacity: 0.55; }
