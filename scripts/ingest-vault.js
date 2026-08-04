@@ -139,13 +139,20 @@ async function main() {
     .eq('status', 'deleted');
   if (delSrcErr) console.warn('Load deleted sources warn:', delSrcErr.message);
   const deletedPaths = new Set((deletedSources || []).map(r => r.file_path));
-  // So khớp theo BASENAME (file_path của source_documents vault được ghi bằng
-  // basename) — bắt cả file trong thư mục con (chung/, sources/...) như
-  // ingestion.py dùng endswith.
+  // Skip nguồn deleted:
+  //  - khớp basename (file_path vault ghi bằng basename, vd tt-94-2026.md)
+  //  - file con trong chung/<vb>/ — skip nếu root <vb>.md bị deleted
+  const deletedBases = new Set([...deletedPaths].map(p => p.replace(/\.md$/, '')));
   const filesFiltered = files.filter(f => {
     const rel = path.relative(VAULT_DIR, f).replace(/\\/g, '/');
     const base = path.basename(f);
-    return !deletedPaths.has(rel) && !deletedPaths.has(base);
+    if (deletedPaths.has(rel) || deletedPaths.has(base)) return false;
+    const relDir = path.relative(VAULT_DIR, path.dirname(f)).split(path.sep).join('/');
+    if (relDir.startsWith('chung/')) {
+      const vbName = relDir.split('/')[1] || '';
+      if (vbName && deletedBases.has(vbName)) return false; // root bị xóa → skip cả con
+    }
+    return true;
   });
   if (deletedPaths.size) console.log(`Skipping ${deletedPaths.size} deleted source(s): ${[...deletedPaths].join(', ')}`);
   console.log(`Will ingest ${filesFiltered.length} files (bỏ ${files.length - filesFiltered.length} nguồn deleted)`);
@@ -155,6 +162,8 @@ async function main() {
   if (delErr) console.warn('Delete old chunks warn:', delErr.message);
 
   // 3. Process each file (insert without embedding)
+  //    file_path chuẩn hóa GẮN ROOT: file con trong chung/<vb>/<vb>-dieu-N.md
+  //    gắn về file_path = '<vb>.md' (root) — để admin xóa 1 nguồn → sạch cả con.
   let total = 0, errors = 0;
   for (let fi = 0; fi < filesFiltered.length; fi++) {
     const fpath = filesFiltered[fi];
@@ -163,7 +172,13 @@ async function main() {
       const { title, body } = parseFrontmatter(content);
       const fileTitle = title || path.basename(fpath, '.md');
       const chunks = chunkByHeading(body);
-      const relativePath = path.relative(VAULT_DIR, fpath);
+      // file_path: nếu file nằm trong chung/<vb>/ → gắn root <vb>.md
+      const relDir = path.relative(VAULT_DIR, path.dirname(fpath)).split(path.sep).join('/');
+      let relativePath = path.relative(VAULT_DIR, fpath).split(path.sep).join('/');
+      if (relDir.startsWith('chung/')) {
+        const vbName = relDir.split('/')[1] || '';
+        if (vbName) relativePath = vbName + '.md';
+      }
 
       // Insert in batches of 10
       for (let ci = 0; ci < chunks.length; ci += 10) {

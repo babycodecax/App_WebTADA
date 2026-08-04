@@ -146,7 +146,7 @@ def ingest_local(vault_dir: str) -> dict[str, Any]:
             if fn.lower().endswith(".md"):
                 md_files.append(os.path.join(root, fn))
 
-    # Nguồn soft-deleted qua admin — không re-ingest
+    # Nguồn soft-deleted qua admin — không re-ingest (chống kiến thức cũ tái sử dụng)
     deleted_paths: set[str] = set()
     try:
         client = get_client()
@@ -156,11 +156,22 @@ def ingest_local(vault_dir: str) -> dict[str, Any]:
         logger.warning("Không lấy được danh sách nguồn deleted (bỏ qua skip): %s", exc)
 
     if deleted_paths:
+        deleted_bases = {p.replace(".md", "") for p in deleted_paths}
         before = len(md_files)
-        md_files = [
-            p for p in md_files
-            if not any(p.replace("\\", "/").endswith(dp) for dp in deleted_paths)
-        ]
+        kept: list[str] = []
+        for p in md_files:
+            rel = p.replace("\\", "/")
+            base = os.path.basename(p)
+            if any(rel.endswith(dp) for dp in deleted_paths) or base in deleted_paths:
+                continue  # khớp basename/đường dẫn deleted
+            # file con trong chung/<vb>/ — skip nếu root <vb>.md bị deleted
+            parts = rel.split("/")
+            if "chung" in parts:
+                i = parts.index("chung")
+                if i + 1 < len(parts) and parts[i + 1] in deleted_bases:
+                    continue
+            kept.append(p)
+        md_files = kept
         logger.info("Bỏ qua %d nguồn deleted: %s", before - len(md_files), sorted(deleted_paths))
 
     total = len(md_files)
@@ -171,6 +182,14 @@ def ingest_local(vault_dir: str) -> dict[str, Any]:
     for path in md_files:
         try:
             doc = chunk_document(path)
+            # Chuẩn hóa gắn root: file con trong chung/<vb>/<vb>-dieu-N.md
+            # → file_path = <vb>.md (chỉ khi đúng cấu trúc con <vb>-*)
+            rel = path.replace("\\", "/")
+            parts = rel.split("/")
+            if "chung" in parts:
+                i = parts.index("chung")
+                if i + 2 < len(parts) and parts[i + 2].startswith(parts[i + 1] + "-"):
+                    doc["file_path"] = parts[i + 1] + ".md"
             upsert_document(doc["file_path"], doc["title"], doc["content"], doc["chunks"])
             done += 1
             if done % 25 == 0:

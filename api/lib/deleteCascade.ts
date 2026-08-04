@@ -78,6 +78,38 @@ async function deleteComplianceByPaths(paths: string[]): Promise<void> {
 }
 
 /**
+ * Mở rộng danh sách paths: nguồn root (vd tt-94-2026.md) cũng phải xóa các
+ * chunks con trong thư mục chung/ (vd chung/tt-94-2026/tt-94-2026-dieu-1.md) —
+ * vì kiến thức của nguồn nằm cả ở đó. Trả về danh sách file_path cần xóa.
+ */
+async function expandChildPaths(paths: string[]): Promise<string[]> {
+  if (!paths.length) return [];
+  const out = [...paths];
+  try {
+    // Tìm chunks con: file_path bắt đầu 'chung/' và title khớp basename nguồn root
+    const { data: childRows } = await getSupabase()
+      .from('knowledge_chunks')
+      .select('file_path')
+      .like('file_path', 'chung/%')
+      .limit(5000);
+    const children = new Set<string>();
+    for (const c of childRows || []) {
+      const fp = (c.file_path as string) || '';
+      // Khớp nếu prefix 'chung/<base>/' (base = tên nguồn root không đuôi .md)
+      const match = paths.some((p) => {
+        const base = p.split('/').pop()?.replace(/\.md$/, '') || '';
+        return base && (fp.includes(`chung/${base}/`) || fp.includes(`chung/${base}-`));
+      });
+      if (match) children.add(fp);
+    }
+    out.push(...children);
+  } catch (e) {
+    console.warn(`[cascade] mở rộng chunks con thất bại: ${e instanceof Error ? e.message : e}`);
+  }
+  return [...new Set(out)];
+}
+
+/**
  * Cascade xóa kiến thức của 1 loạt file_path (dọn 5 bảng + invalidate cache).
  *
  * @param paths       danh sách file_path cần xóa (chunks sẽ được xóa theo paths)
@@ -89,7 +121,7 @@ export async function deleteSourceCascade(
   paths: string[],
   opts: { softDelete?: boolean } = {}
 ): Promise<{ chunks: number; sources: number }> {
-  const pathsList = paths.filter(Boolean);
+  const pathsList = await expandChildPaths(paths.filter(Boolean));
   const soft = !!opts.softDelete;
 
   // 1) Xóa knowledge_chunks theo paths (không xóa cả bảng — an toàn)
