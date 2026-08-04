@@ -39,6 +39,10 @@ export async function GET(req: NextRequest) {
         (r) => (r.title || '').toLowerCase().includes(q) || (r.file_path || '').toLowerCase().includes(q)
       );
     }
+    // Ẩn nguồn tóm tắt (không phải văn bản toàn văn) — giữ nguyên chunks trong DB
+    // để chatbox vẫn dùng được kiến thức. Thêm file_path vào set nếu cần ẩn thêm.
+    const HIDDEN_SOURCES = new Set(['luat-thue-tncn-2025.md']);
+    filtered = filtered.filter((r) => !HIDDEN_SOURCES.has(r.file_path));
 
     // Count compliance_records theo source_file (1 query)
     const filePaths = filtered.map((r) => r.file_path);
