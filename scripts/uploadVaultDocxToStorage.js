@@ -113,29 +113,42 @@ async function main() {
   // 2. Tạo bucket
   await createBucket();
 
-  // 3. Upload từng file docx lên Storage
+  // 3. Upload từng file docx lên Storage — key chuẩn hóa (bỏ dấu, an toàn)
+  const storageKeyOf = (f) => {
+    const norm = f.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
+    return `vault/${norm}`;
+  };
+  // Map tên gốc → storage key chuẩn hóa (để update source_documents khớp)
+  const docxKeyMap = {};
+  for (const f of docxFiles) docxKeyMap[f] = storageKeyOf(f);
+
   let uploaded = 0, errors = 0;
   for (const f of docxFiles) {
     const filePath = path.join(SOURCES_DIR, f);
     const content = fs.readFileSync(filePath);
-    const storageKey = `vault/${f}`;
-    try {
-      const { error } = await supabase.storage
-        .from(BUCKET)
-        .upload(storageKey, content, {
-          contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-          upsert: true,
-        });
-      if (error) {
-        console.error(`Upload ${f} thất bại:`, error.message);
-        errors++;
-      } else {
-        uploaded++;
-        if (uploaded % 10 === 0) console.log(`  Đã upload ${uploaded}/${docxFiles.length}`);
+    const storageKey = docxKeyMap[f];
+    let ok = false;
+    // Retry tối đa 3 lần cho lỗi mạng thoáng
+    for (let attempt = 1; attempt <= 3 && !ok; attempt++) {
+      try {
+        const { error } = await supabase.storage
+          .from(BUCKET)
+          .upload(storageKey, content, {
+            contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            upsert: true,
+          });
+        if (error) {
+          if (attempt === 3) { console.error(`Upload ${f} thất bại:`, error.message); errors++; }
+          else await new Promise(r => setTimeout(r, 1500 * attempt));
+        } else { ok = true; }
+      } catch (e) {
+        if (attempt === 3) { console.error(`Upload ${f} lỗi:`, e.message); errors++; }
+        else await new Promise(r => setTimeout(r, 1500 * attempt));
       }
-    } catch (e) {
-      console.error(`Upload ${f} lỗi:`, e.message);
-      errors++;
+    }
+    if (ok) {
+      uploaded++;
+      if (uploaded % 10 === 0) console.log(`  Đã upload ${uploaded}/${docxFiles.length}`);
     }
   }
   console.log(`Upload xong: ${uploaded} thành công, ${errors} lỗi`);
@@ -152,7 +165,7 @@ async function main() {
     const fp = src.file_path || '';
     const matched = matchDocx(fp, docxFiles);
     if (matched) {
-      const storagePath = `vault/${matched}`;
+      const storagePath = docxKeyMap[matched] || `vault/${matched}`; // key chuẩn hóa
       if (src.storage_path !== storagePath) {
         const { error } = await supabase
           .from('source_documents')
