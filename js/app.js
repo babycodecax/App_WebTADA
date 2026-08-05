@@ -59,35 +59,61 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Link nhóm Zalo (zalo.me/g/...) KHÔNG mở trên trình duyệt mobile
-  // (Zalo trả 302 self-redirect). Trên mobile: mở app Zalo qua deep link
-  // hoặc hiển thị hướng dẫn. Desktop: mở bình thường.
+  // (Zalo trả 302 self-redirect, không hiển thị). Trên mobile:
+  // - Mở app Zalo qua deep link zalo:// (nếu app đã cài)
+  // - Fallback: hiển thị hướng dẫn mở app / tìm nhóm
+  // Desktop: giữ hành vi mặc định (target="_blank").
   var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
   if (isMobile) {
+    var zaloGroupId = 'izers2awkn1hyqojzdfv';
     document.querySelectorAll('a[href*="zalo.me/g/"]').forEach(function (link) {
       link.addEventListener('click', function (e) {
         e.preventDefault();
-        // 1) Thử mở app Zalo qua deep link
-        var opened = false;
-        var deepLink = document.createElement('a');
-        deepLink.href = 'zalo://group?id=izers2awkn1hyqojzdfv';
-        document.body.appendChild(deepLink);
-        deepLink.click();
-        document.body.removeChild(deepLink);
 
-        // 2) Sau 1.2s nếu app không mở (page visibility không đổi),
-        //    hiển thị hướng dẫn mở app Zalo
-        var hiddenBefore = document.hidden;
+        // Lưu thời điểm để kiểm tra visibility sau khi thử mở app
+        var hiddenBefore = document.hidden || document.visibilityState === 'hidden';
+
+        // 1) Thử mở app Zalo qua deep link
+        //    Native Android: zalo://go/conversation/... ; group dùng link chuẩn
+        var isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        var deepUrl = isIos
+          ? 'zalo://conversation?type=group&id=' + zaloGroupId
+          : 'intent://zalo.me/g/' + zaloGroupId + '#Intent;scheme=http;package=com.zing.zalo;end';
+
+        var deepWindow = window.open(deepUrl, '_blank');
+        if (deepWindow) deepWindow.opener = null;
+
+        // 2) Sau 1s, nếu page vẫn visible (app không được mở) → hiển thị hướng dẫn
         setTimeout(function () {
-          if (document.hidden === hiddenBefore) {
-            var dst = '_blank';
-            window.open(link.href, dst);
-            // Nếu vẫn không mở được → hướng dẫn
-            setTimeout(function () {
-              alert('Nhóm Zalo chỉ mở được trong ứng dụng Zalo.\n\nVui lòng:\n1. Mở app Zalo trên điện thoại\n2. Chạm biểu tượng 🔍 (tìm kiếm)\n3. Nhập: "TADA Dịch Vụ Thuế Kế Toán"\n\nHoặc liên hệ Zalo: 0986.4242.86');
-            }, 500);
+          var hiddenNow = document.hidden || document.visibilityState === 'hidden';
+          if (!hiddenNow) {
+            showZaloGuide();
           }
-        }, 1200);
+        }, 1000);
       });
+    });
+  }
+
+  // Hướng dẫn mở nhóm Zalo trên điện thoại — thay alert bằng dialog đẹp hơn
+  function showZaloGuide() {
+    // Tạo overlay thông báo (tránh alert gây khó chịu)
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;';
+    var box = document.createElement('div');
+    box.style.cssText = 'background:#fff;border-radius:16px;padding:28px 24px;max-width:340px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.25);';
+    box.innerHTML =
+      '<div style="font-size:42px;margin-bottom:8px;">💬</div>' +
+      '<h3 style="margin:0 0 10px;font-size:18px;color:#1f2937;">Nhóm Zalo TADA</h3>' +
+      '<p style="margin:0 0 6px;font-size:14px;color:#6b7280;line-height:1.6;">Nhóm chỉ mở được trong <b>ứng dụng Zalo</b>.</p>' +
+      '<p style="margin:0 0 18px;font-size:13px;color:#9ca3af;text-align:left;line-height:1.7;">👉 Nếu app Zalo chưa mở: hãy mở <b>Zalo</b> rồi tìm nhóm <b>"TADA Dịch Vụ Thuế Kế Toán"</b>.<br>👉 Hoặc gọi Zalo <b>0986.4242.86</b> để được mời vào nhóm.</p>' +
+      '<button id="zalo-guide-close" style="background:#0b5fff;color:#fff;border:0;border-radius:10px;padding:12px 32px;font-size:15px;font-weight:600;cursor:pointer;">Đã hiểu</button>';
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+    box.querySelector('#zalo-guide-close').addEventListener('click', function () {
+      overlay.remove();
+    });
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) overlay.remove();
     });
   }
 
