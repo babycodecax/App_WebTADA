@@ -61,7 +61,17 @@ for (const DEST of DESTINATIONS) {
     }
   }
 
+  // Sync SEO files (robots.txt, sitemap.xml)
+  for (const f of ['robots.txt', 'sitemap.xml']) {
+    const src = path.join(ROOT, f);
+    if (fs.existsSync(src)) {
+      fs.copyFileSync(src, path.join(DEST, f));
+      total++;
+    }
+  }
+
   console.log(`  HTML → index.html, blog.html, admin.html`);
+  console.log(`  SEO → robots.txt, sitemap.xml`);
 }
 
 console.log(`\n✓ Synced ${total} files to both api/public/ and backend/static/`);

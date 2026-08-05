@@ -27,6 +27,10 @@
     flex: none;
     height: clamp(360px, 60vh, 560px);
     min-height: 360px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
 }
 

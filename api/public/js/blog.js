@@ -107,6 +107,30 @@
       });
   }
 
+  /** Inject JSON-LD ItemList — Google đọc cấu trúc danh sách bài viết. */
+  function injectItemListSchema(posts) {
+    try {
+      var items = (posts || []).slice(0, 100).map(function (p, i) {
+        return {
+          '@type': 'ListItem',
+          position: i + 1,
+          name: p.title,
+          url: 'https://api-nu-drab.vercel.app/blog?slug=' + encodeURIComponent(p.slug)
+        };
+      });
+      var schema = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Bài viết & Hướng dẫn Thuế Kế Toán — TADA',
+        itemListElement: items
+      };
+      var script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(schema);
+      document.head.appendChild(script);
+    } catch (e) { /* SEO bổ sung — lỗi không chặn render */ }
+  }
+
   function renderDetail(slug, container) {
     container.innerHTML = '<div class="blog-loading">Đang tải bài viết...</div>';
 
@@ -170,30 +194,6 @@
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(s));
     return div.innerHTML;
-  }
-
-  /** Inject JSON-LD ItemList — Google đọc cấu trúc danh sách bài viết. */
-  function injectItemListSchema(posts) {
-    try {
-      var items = (posts || []).slice(0, 100).map(function (p, i) {
-        return {
-          '@type': 'ListItem',
-          position: i + 1,
-          name: p.title,
-          url: 'https://api-nu-drab.vercel.app/blog?slug=' + encodeURIComponent(p.slug)
-        };
-      });
-      var schema = {
-        '@context': 'https://schema.org',
-        '@type': 'ItemList',
-        name: 'Bài viết & Hướng dẫn Thuế Kế Toán — TADA',
-        itemListElement: items
-      };
-      var script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.text = JSON.stringify(schema);
-      document.head.appendChild(script);
-    } catch (e) { /* SEO bổ sung — lỗi không chặn render */ }
   }
 
   if (document.readyState === 'loading') {

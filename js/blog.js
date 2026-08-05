@@ -98,10 +98,37 @@
             '<span class="blog-card-link">Đọc tiếp →</span>';
           grid.appendChild(card);
         });
+
+        // JSON-LD ItemList để Google hiểu cấu trúc danh sách bài
+        injectItemListSchema(posts);
       })
       .catch(function (err) {
         grid.innerHTML = '<div class="blog-error">Không thể tải bài viết: ' + escHtml(err.message) + '</div>';
       });
+  }
+
+  /** Inject JSON-LD ItemList — Google đọc cấu trúc danh sách bài viết. */
+  function injectItemListSchema(posts) {
+    try {
+      var items = (posts || []).slice(0, 100).map(function (p, i) {
+        return {
+          '@type': 'ListItem',
+          position: i + 1,
+          name: p.title,
+          url: 'https://api-nu-drab.vercel.app/blog?slug=' + encodeURIComponent(p.slug)
+        };
+      });
+      var schema = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Bài viết & Hướng dẫn Thuế Kế Toán — TADA',
+        itemListElement: items
+      };
+      var script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(schema);
+      document.head.appendChild(script);
+    } catch (e) { /* SEO bổ sung — lỗi không chặn render */ }
   }
 
   function renderDetail(slug, container) {

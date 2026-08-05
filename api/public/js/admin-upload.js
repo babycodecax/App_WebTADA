@@ -16,13 +16,7 @@
     title: null,
     uploadBtn: null,
     uploadMsg: null,
-    docsList: null,
-    deleteOverlay: null,
-    deleteTitleText: null,
-    deleteFpText: null,
-    deleteInput: null,
-    deleteOk: null,
-    deleteCancel: null
+    docsList: null
   };
 
   function getToken() {
@@ -154,18 +148,13 @@
               '<div class="upload-doc-title">' + escHtml(d.title) + '</div>' +
               '<div class="upload-doc-meta">' + escHtml(d.file_path) + ' — ' + (d.chunk_count || 0) + ' chunks</div>' +
             '</div>' +
-            '<button type="button" class="upload-doc-delete" data-fp="' + escHtml(d.file_path) + '" data-title="' + escHtml(d.title || '') + '" data-chunks="' + (d.chunk_count || 0) + '">Xoá</button>';
+            '<button type="button" class="upload-doc-delete" data-fp="' + escHtml(d.file_path) + '">Xoá</button>';
           el.docsList.appendChild(item);
         });
 
         el.docsList.querySelectorAll('.upload-doc-delete').forEach(function (btn) {
           btn.addEventListener('click', function () {
-            if (window.TADAAdminDelete) {
-              window.TADAAdminDelete.open(
-                { file_path: btn.dataset.fp, title: btn.dataset.title, chunks: btn.dataset.chunks },
-                function (fp) { deleteDoc(fp); }
-              );
-            }
+            if (confirm('Xoá tài liệu này khỏi tri thức chatbox?')) deleteDoc(btn.dataset.fp);
           });
         });
       })
@@ -175,8 +164,6 @@
       });
   }
 
-  /* ===== Xóa tài liệu — dialog xác nhận an toàn (gõ XÓA) ===== */
-  // Dùng chung dialog xác nhận qua window.TADAAdminDelete (admin-sources.js cũng dùng)
   function deleteDoc(filePath) {
     fetch(API + '/api/admin/delete', {
       method: 'POST',
@@ -192,7 +179,7 @@
       })
       .then(function (data) {
         if (!data.ok) throw new Error(data.error || 'Xoá thất bại');
-        showMsg(el.uploadMsg, 'Đã xoá ' + (data.deleted || 0) + ' chunks và toàn bộ kiến thức liên quan', 'success');
+        showMsg(el.uploadMsg, 'Đã xoá ' + (data.deleted || 0) + ' chunks', 'success');
         loadDocs();
       })
       .catch(function (err) {
@@ -231,7 +218,6 @@
 
   function init() {
     bind();
-    if (window.TADAAdminDelete) window.TADAAdminDelete.bind();
     if (getToken()) {
       renderConnected(true);
       loadDocs();
@@ -243,73 +229,4 @@
   } else {
     init();
   }
-})();
-
-/* ===== Dialog xác nhận xóa dùng chung (admin-upload + admin-sources) =====
- * Toàn cục: TADAAdminDelete.open(docInfo, onConfirm) — hiện dialog, gõ XÓA để xác nhận. */
-(function () {
-  'use strict';
-
-  var _overlay = null, _titleText = null, _fpText = null, _input = null, _okBtn = null, _cancelBtn = null;
-  var _pending = null;
-
-  function clearState() {
-    if (!_input) return;
-    _input.value = '';
-    _input.classList.remove('has-error');
-    _okBtn.disabled = true;
-  }
-
-  function openConfirm(doc, onConfirm) {
-    if (!_overlay) throw new Error('Dialog chưa khởi tạo — gọi bindDeleteDialog() trước');
-    _pending = { doc: doc, onConfirm: onConfirm };
-    _titleText.textContent = (doc && doc.title) || '(không tên)';
-    _fpText.textContent = (doc && doc.file_path || '') + ' — ' + (doc && doc.chunks != null ? doc.chunks : 0) + (doc && doc.note ? ' · ' + doc.note : '');
-    clearState();
-    _overlay.style.display = 'flex';
-    _input.focus();
-  }
-
-  function closeConfirm() {
-    if (!_overlay) return;
-    _overlay.style.display = 'none';
-    _pending = null;
-    clearState();
-  }
-
-  function onInput() {
-    var v = _input.value.trim().toUpperCase();
-    var ok = (v === 'XÓA' || v === 'XOA');
-    _okBtn.disabled = !ok;
-    _input.classList.toggle('has-error', v !== '' && !ok);
-  }
-
-  function confirm() {
-    if (!_pending || _okBtn.disabled) return;
-    var cb = _pending.onConfirm;
-    var filePath = _pending.doc.file_path;
-    closeConfirm();
-    if (cb) cb(filePath);
-  }
-
-  window.TADAAdminDelete = {
-    bind: function () {
-      _overlay = document.getElementById('delete-confirm-overlay');
-      _titleText = document.getElementById('delete-confirm-title-text');
-      _fpText = document.getElementById('delete-confirm-fp-text');
-      _input = document.getElementById('delete-confirm-input');
-      _okBtn = document.getElementById('delete-confirm-ok');
-      _cancelBtn = document.getElementById('delete-confirm-cancel');
-      _cancelBtn?.addEventListener('click', closeConfirm);
-      _okBtn?.addEventListener('click', confirm);
-      _input?.addEventListener('input', onInput);
-      _input?.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') { e.preventDefault(); confirm(); }
-        if (e.key === 'Escape') { e.preventDefault(); closeConfirm(); }
-      });
-      _overlay?.addEventListener('click', function (e) { if (e.target === _overlay) closeConfirm(); });
-    },
-    open: openConfirm,
-    close: closeConfirm
-  };
 })();
