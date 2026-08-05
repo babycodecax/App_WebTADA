@@ -26,6 +26,9 @@
     if (!grid) return;
 
     if (slug) {
+      // Ẩn H1 header danh sách khi xem chi tiết bài — chỉ còn 1 H1/trang (chuẩn Google)
+      var pageHeader = document.querySelector('.blog-header');
+      if (pageHeader) pageHeader.style.display = 'none';
       renderDetail(slug, grid);
     } else {
       renderList(grid);
