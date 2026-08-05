@@ -1736,11 +1736,16 @@ h1, h2, h3, h4, h5, h6 {
   .hero .container {
     padding: 0 20px;
   }
+  .grid-2 {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
   .hero-content,
-  .chatbox-wrap {
+  .chatbox-wrap,
+  .grid-2 > * {
     width: 100%;
     max-width: 100%;
-    min-width: 0;
+    min-width: 0; /* grid item mặc định min-width:auto — text dài đẩy tràn viewport */
     box-sizing: border-box;
   }
 
