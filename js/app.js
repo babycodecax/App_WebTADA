@@ -28,6 +28,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Dropdown "Kênh nền tảng" — hover chỉ hoạt động desktop,
+  // mobile/touch cần click để mở menu (toggle class .active)
+  var dropdown = document.querySelector('.nav-dropdown');
+  var dropdownTrigger = document.querySelector('.dropdown-trigger');
+  if (dropdown && dropdownTrigger) {
+    dropdownTrigger.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropdown.classList.toggle('active');
+    });
+
+    // Đóng dropdown khi click ra ngoài
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        dropdown.classList.remove('active');
+      }
+    });
+
+    // Đóng dropdown sau khi click 1 mục bên trong
+    dropdown.querySelectorAll('.dropdown-item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        dropdown.classList.remove('active');
+      });
+    });
+  }
+
   // 2. Services Tab Switcher
   var tabButtons = document.querySelectorAll('.tab-btn');
   var tabPanels = document.querySelectorAll('.tab-panel');

@@ -241,4 +241,31 @@
   .blog-mini-grid { grid-template-columns: 1fr; }
   .blog-detail h1 { font-size: 24px; }
   .blog-related-grid { grid-template-columns: 1fr; }
+
+  /* Mobile: thêm padding 2 bên + cải thiện đọc bài viết */
+  .blog-detail-wrap {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .blog-detail .content {
+    font-size: 17px;
+    line-height: 1.9;
+  }
+  .blog-detail .content p {
+    text-align: left; /* bỏ justify — dễ đọc trên màn nhỏ */
+  }
+  .blog-detail .content h2 { font-size: 21px; margin: 28px 0 10px; }
+  .blog-detail .content h3 { font-size: 18px; margin: 22px 0 8px; }
+  .blog-detail .content ul, .blog-detail .content ol { margin: 12px 0 16px 20px; }
+  .blog-detail .content li { margin-bottom: 8px; }
+  .blog-detail .content blockquote { padding: 14px 16px; }
+  .blog-detail .meta { margin-bottom: 24px; }
+}
+
+/* Màn rất nhỏ (<400px): tăng thêm thoáng */
+@media (max-width: 400px) {
+  .blog-detail-wrap {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
 }
