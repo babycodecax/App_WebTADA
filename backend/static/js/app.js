@@ -58,6 +58,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Link nhóm Zalo (zalo.me/g/...) KHÔNG mở trên trình duyệt mobile
+  // (Zalo trả 302 self-redirect). Trên mobile: mở app Zalo qua deep link
+  // hoặc hiển thị hướng dẫn. Desktop: mở bình thường.
+  var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  if (isMobile) {
+    document.querySelectorAll('a[href*="zalo.me/g/"]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        // 1) Thử mở app Zalo qua deep link
+        var opened = false;
+        var deepLink = document.createElement('a');
+        deepLink.href = 'zalo://group?id=izers2awkn1hyqojzdfv';
+        document.body.appendChild(deepLink);
+        deepLink.click();
+        document.body.removeChild(deepLink);
+
+        // 2) Sau 1.2s nếu app không mở (page visibility không đổi),
+        //    hiển thị hướng dẫn mở app Zalo
+        var hiddenBefore = document.hidden;
+        setTimeout(function () {
+          if (document.hidden === hiddenBefore) {
+            var dst = '_blank';
+            window.open(link.href, dst);
+            // Nếu vẫn không mở được → hướng dẫn
+            setTimeout(function () {
+              alert('Nhóm Zalo chỉ mở được trong ứng dụng Zalo.\n\nVui lòng:\n1. Mở app Zalo trên điện thoại\n2. Chạm biểu tượng 🔍 (tìm kiếm)\n3. Nhập: "TADA Dịch Vụ Thuế Kế Toán"\n\nHoặc liên hệ Zalo: 0986.4242.86');
+            }, 500);
+          }
+        }, 1200);
+      });
+    });
+  }
+
   // 2. Services Tab Switcher
   var tabButtons = document.querySelectorAll('.tab-btn');
   var tabPanels = document.querySelectorAll('.tab-panel');
