@@ -10,4 +10,24 @@
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
+  <url>
+    <loc>https://api-nu-drab.vercel.app/blog?slug=k-hoch-xut-ha-n-in-t-ng-quy-nh-nm-2026-v-l-trnh-g-b-ni-lo-x-pht</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://api-nu-drab.vercel.app/blog?slug=cch-g-lnh-tm-hon-xut-cnh-do-n-thu-doanh-nghip-nm-2026</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://api-nu-drab.vercel.app/blog?slug=l-tay-tip-bng-tin-cng-ty-cch-gii-cu-gim-c-khi-rc-ri-php-l</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://api-nu-drab.vercel.app/blog?slug=thu-gi-tn-gjm-c-chy-n-k-ton-nn-li-chu-trn-hay-rt-lui-m-p</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
