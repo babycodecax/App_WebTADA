@@ -158,6 +158,7 @@
             '<div class="content">' + contentHtml + '</div>' +
           '</article>';
         document.title = post.title + ' — TADA';
+        updateDetailSeo(post);
 
         // B�i vi?t li�n quan
         fetch(API + '/api/blog?limit=999')
@@ -178,6 +179,91 @@
           '<div class="blog-error">' + escHtml(err.message) + '</div>' +
           '<div style="text-align:center;margin-top:20px"><a href="/blog" class="btn btn-primary">← Quay lại danh sách</a></div>';
       });
+  }
+
+  /** Cập nhật SEO động cho trang chi tiết bài viết.
+      Google Starter Guide: mỗi trang cần title, description, canonical,
+      structured data riêng để index đúng nội dung. */
+  function updateDetailSeo(post) {
+    var base = 'https://api-nu-drab.vercel.app';
+    var slug = post.slug || '';
+    var url = base + '/blog?slug=' + encodeURIComponent(slug);
+    var author = post.author_email || 'Dịch Vụ Thuế Kế Toán TADA';
+
+    // 1) Meta description (động từ summary/content)
+    var desc = post.summary || '';
+    if (!desc) {
+      desc = (post.content || '').replace(/[#*`\-\[\]()!>|]/g, '')
+        .replace(/\s+/g, ' ').trim().substring(0, 155);
+    }
+    setMeta('description', desc);
+
+    // 2) Canonical — trỏ đúng URL bài viết (tránh trùng nội dung)
+    setLink('canonical', url);
+
+    // 3) Open Graph + Twitter
+    setMeta('og:title', post.title + ' — TADA');
+    setMeta('og:description', desc);
+    setMeta('og:url', url);
+    setMeta('og:type', 'article');
+    setMeta('article:published_time', post.published_at || '');
+    setMeta('twitter:title', post.title + ' — TADA');
+    setMeta('twitter:description', desc);
+
+    // 4) JSON-LD BlogPosting/Article — rich result cho Google
+    injectBlogPostingSchema(post, url, author);
+  }
+
+  function setMeta(name, content) {
+    // Ưu tiên dùng meta hiện có, tạo mới nếu chưa có
+    var el = document.querySelector('meta[property="' + name + '"], meta[name="' + name + '"]');
+    if (el) { el.setAttribute('content', content || ''); return; }
+    var m = document.createElement('meta');
+    if (name.indexOf(':') > -1) { m.setAttribute('property', name); }
+    else { m.setAttribute('name', name); }
+    m.setAttribute('content', content || '');
+    document.head.appendChild(m);
+  }
+
+  function setLink(rel, href) {
+    var el = document.querySelector('link[rel="' + rel + '"]');
+    if (el) { el.setAttribute('href', href); return; }
+    var l = document.createElement('link');
+    l.setAttribute('rel', rel);
+    l.setAttribute('href', href);
+    document.head.appendChild(l);
+  }
+
+  function injectBlogPostingSchema(post, url, author) {
+    try {
+      var base = 'https://api-nu-drab.vercel.app';
+      // Xoá schema BlogPosting cũ nếu có (tránh trùng khi đổi bài)
+      document.querySelectorAll('script[type="application/ld+json"][data-seo="blogposting"]')
+        .forEach(function (s) { s.remove(); });
+
+      var schema = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: post.title,
+        url: url,
+        datePublished: post.published_at || new Date().toISOString(),
+        dateModified: post.updated_at || post.published_at || new Date().toISOString(),
+        author: { '@type': 'Person', 'name': author },
+        publisher: {
+          '@type': 'Organization',
+          'name': 'Dịch Vụ Thuế Kế Toán TADA',
+          'logo': { '@type': 'ImageObject', 'url': base + '/static/img/logo.jpg' }
+        },
+        image: base + '/static/img/logo.jpg',
+        mainEntityOfPage: url,
+        inLanguage: 'vi'
+      };
+      var script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-seo', 'blogposting');
+      script.text = JSON.stringify(schema);
+      document.head.appendChild(script);
+    } catch (e) { /* SEO bổ sung — không chặn render */ }
   }
 
   function renderMarkdown(md) {
