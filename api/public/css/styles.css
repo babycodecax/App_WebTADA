@@ -1708,9 +1708,42 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   .header-actions {
-    display: none; /* Hide on mobile to keep space clean */
+    display: flex; /* Hiển thị trên mobile — nút CTA + Đăng nhập phải dùng được */
+    align-items: center;
+    gap: 6px;
+    margin-left: auto; /* đẩy actions về phải, hamburger giữ cuối cùng */
+    flex-wrap: nowrap;
   }
-  
+  .header-actions #header-cta {
+    padding: 8px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .header-actions #header-cta .btn-icon { display: none; } /* bỏ icon Zalo, chỉ giữ số */
+  .header-actions .btn-google {
+    padding: 8px 9px;
+    font-size: 12px;
+  }
+  .header-actions .btn-google .btn-icon { display: none; } /* bỏ icon Google, chỉ giữ chữ */
+  .header-container {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+  .header-container .logo-link { flex-shrink: 0; }
+  .logo-text { display: none; } /* Ẩn chữ logo trên mobile, giữ icon để tiết kiệm chỗ */
+
+  /* Fix tràn ngang mobile: hero-content + chatbox phải vừa viewport */
+  .hero .container {
+    padding: 0 20px;
+  }
+  .hero-content,
+  .chatbox-wrap {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
   .grid-3 {
     grid-template-columns: 1fr;
   }
