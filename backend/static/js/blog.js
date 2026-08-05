@@ -212,6 +212,9 @@
 
     // 4) JSON-LD BlogPosting/Article — rich result cho Google
     injectBlogPostingSchema(post, url, author);
+
+    // 5) BreadcrumbList — giúp Google hiểu vị trí trang trong cây
+    injectBreadcrumbSchema(url, post.title);
   }
 
   function setMeta(name, content) {
@@ -241,26 +244,62 @@
       document.querySelectorAll('script[type="application/ld+json"][data-seo="blogposting"]')
         .forEach(function (s) { s.remove(); });
 
+      // Mô tả ngắn 120-160 ký tự từ summary/content — chuẩn meta description
+      var desc = post.summary || '';
+      if (!desc) {
+        desc = (post.content || '')
+          .replace(/[#*`\-\[\]()!>|]/g, '')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .substring(0, 155);
+      }
+      var publisherName = 'Dịch Vụ Thuế Kế Toán TADA';
+      var logoUrl = base + '/static/img/logo.jpg';
       var schema = {
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',
         headline: post.title,
+        description: desc,
         url: url,
         datePublished: post.published_at || new Date().toISOString(),
         dateModified: post.updated_at || post.published_at || new Date().toISOString(),
         author: { '@type': 'Person', 'name': author },
         publisher: {
           '@type': 'Organization',
-          'name': 'Dịch Vụ Thuế Kế Toán TADA',
-          'logo': { '@type': 'ImageObject', 'url': base + '/static/img/logo.jpg' }
+          'name': publisherName,
+          'logo': { '@type': 'ImageObject', 'url': logoUrl }
         },
-        image: base + '/static/img/logo.jpg',
-        mainEntityOfPage: url,
+        image: logoUrl,
+        mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+        '@id': url,
         inLanguage: 'vi'
       };
       var script = document.createElement('script');
       script.type = 'application/ld+json';
       script.setAttribute('data-seo', 'blogposting');
+      script.text = JSON.stringify(schema);
+      document.head.appendChild(script);
+    } catch (e) { /* SEO bổ sung — không chặn render */ }
+  }
+
+  /** Inject JSON-LD BreadcrumbList — chuẩn Google Starter Guide cho trang con. */
+  function injectBreadcrumbSchema(url, postTitle) {
+    try {
+      document.querySelectorAll('script[type="application/ld+json"][data-seo="breadcrumb"]')
+        .forEach(function (s) { s.remove(); });
+
+      var schema = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: 'https://api-nu-drab.vercel.app/' },
+          { '@type': 'ListItem', position: 2, name: 'Bài viết & Hướng dẫn', item: 'https://api-nu-drab.vercel.app/blog' },
+          { '@type': 'ListItem', position: 3, name: postTitle, item: url }
+        ]
+      };
+      var script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-seo', 'breadcrumb');
       script.text = JSON.stringify(schema);
       document.head.appendChild(script);
     } catch (e) { /* SEO bổ sung — không chặn render */ }
