@@ -58,18 +58,55 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Link nhóm Zalo (zalo.me/g/...) — KHÔNG thêm listener JavaScript.
+  // Link nhóm Zalo (zalo.me/g/{code}) — xử lý riêng trên mobile
+  // để MỞ APP Zalo thay vì mở tab web (Zalo không hiển thị group trên web).
   //
-  // Tại sao KHÔNG can thiệp JS:
-  // Zalo server trả redirect 302 → Location: zalo://qr/g/{code}
-  // trên mobile. Trình duyệt mobile tự động:
-  //   1) Nhận redirect scheme zalo:// → mở app Zalo
-  //   2) App Zalo nhận group share code → mở đúng nhóm
-  //
-  // Nếu thêm JS (preventDefault/handmade deep link) sẽ PHÁ vỡ flow
-  // redirect tự nhiên này — dẫn đến app mở trang chủ thay vì vào nhóm.
-  //
-  // Chỉ cần link href = https://zalo.me/g/{code} là đủ, trình duyệt xử lý hết.
+  // Cách hoạt động:
+  // - Desktop: giữ href + target="_blank" mặc định (mở trang Zalo bình thường).
+  // - Mobile: khi chạm, chuyển hướng ngay trong TAB HIỆN TẠI (không mở popup)
+  //   tới deep link đúng nền tảng mà Zalo tự trả khi redirect mobile:
+  //     + iOS/other: zalo://qr/g/{code}
+  //     + Android:   intent://zalo.me/g/{code}#Intent;scheme=https;...
+  //   Bằng cách KHÔNG dùng popup, trình duyệt được phép mở scheme custom
+  //   → app Zalo khởi động và vào đúng nhóm.
+  //   Nếu app không mở được (chưa cài), sau ~900ms fallback mở trang web.
+  var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  if (isMobile) {
+    document.querySelectorAll('a[href*="zalo.me/g/"]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        var href = link.getAttribute('href');          // https://zalo.me/g/{code}
+        var code = href.split('/g/')[1];               // {code}
+        var isAndroid = /Android/i.test(navigator.userAgent);
+
+        // Deep link đúng theo redirect Zalo
+        var deepUrl;
+        if (isAndroid) {
+          deepUrl = 'intent://zalo.me/g/' + code +
+                    '#Intent;scheme=https;package=com.zing.zalo;' +
+                    'S.browser_fallback_url=' + encodeURIComponent(href) + ';end';
+        } else {
+          // iOS & others: chính là scheme Zalo trả redirect tới
+          deepUrl = 'zalo://qr/g/' + code;
+        }
+
+        // Trạng thái trước khi chuyển
+        var hiddenBefore = document.hidden || document.visibilityState === 'hidden';
+
+        // Chuyển hướng trong tab hiện tại → mở app
+        try { window.location.href = deepUrl; } catch (err) {}
+
+        // Fallback: sau 900ms nếu app chưa mở (page vẫn visible) → mở trang web
+        setTimeout(function () {
+          var hiddenNow = document.hidden || document.visibilityState === 'hidden';
+          if (hiddenNow === hiddenBefore) {
+            window.location.href = href;
+          }
+        }, 900);
+      });
+    });
+  }
 
   // 2. Services Tab Switcher
   var tabButtons = document.querySelectorAll('.tab-btn');
