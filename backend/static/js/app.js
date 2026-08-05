@@ -58,43 +58,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Link nhóm Zalo (zalo.me/g/...) — trên mobile, trình duyệt không
-  // hiển thị trang (Zalo trả 302). Cách đúng: mở CHÍNH link https://zalo.me/g/...
-  // qua cơ chế mở app — Zalo hỗ trợ deep link theo URL chuẩn nên app sẽ
-  // capture và mở đúng nhóm.
-  // Desktop: giữ hành vi mặc định (target="_blank").
+  // Link nhóm Zalo (zalo.me/g/...) — KHÔNG CHẶN click mặc định.
+  // Zalo server trả 302 → zalo://qr/g/{code} khi truy cập từ mobile,
+  // trình duyệt mobile tự chuyển tới app Zalo và mở ĐÚNG nhóm.
+  // Vì vậy để trình duyệt xử lý tự nhiên, khỏi preventDefault.
+  // Chỉ thêm fallback hướng dẫn nếu sau vài giây page vẫn hiển thị
+  // (tức app chưa được mở).
   var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
   if (isMobile) {
     document.querySelectorAll('a[href*="zalo.me/g/"]').forEach(function (link) {
-      link.addEventListener('click', function (e) {
-        e.preventDefault();
-        var groupUrl = link.getAttribute('href'); // https://zalo.me/g/...
+      link.addEventListener('click', function () {
+        // Không preventDefault — để trình duyệt tự xử lý redirect zalo://qr/...
 
-        var isAndroid = /Android/i.test(navigator.userAgent);
-        var isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-        // 1) Mở app Zalo qua link chuẩn:
-        //    - iOS: universal link https://zalo.me/g/...  (app Zalo tự bắt)
-        //    - Android: intent URL với package com.zing.zalo
-        var openUrl;
-        if (isAndroid) {
-          openUrl = 'intent://zalo.me/g/' + groupUrl.split('/').pop() +
-            '#Intent;scheme=https;package=com.zing.zalo;S.browser_fallback_url=' +
-            encodeURIComponent(groupUrl) + ';end';
-        } else {
-          openUrl = groupUrl; // iOS + desktop → mở thẳng
-        }
-
-        var deepWindow = window.open(openUrl, '_blank');
-        if (deepWindow) deepWindow.opener = null;
-
-        // 2) Sau 1.2s, nếu page vẫn visible (app không mở được) → hướng dẫn
+        // Kiểm tra sau 2.5s: nếu page vẫn hiển thị (app không mở)
+        // → hiển thị hướng dẫn mở app / tìm nhóm
+        var hiddenBefore = document.hidden || document.visibilityState === 'hidden';
         setTimeout(function () {
           var hiddenNow = document.hidden || document.visibilityState === 'hidden';
-          if (!hiddenNow) {
+          if (hiddenNow === hiddenBefore) {
             showZaloGuide();
           }
-        }, 1200);
+        }, 2500);
       });
     });
   }
