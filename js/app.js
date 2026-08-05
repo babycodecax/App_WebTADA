@@ -58,38 +58,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Link nhóm Zalo (zalo.me/g/...) KHÔNG mở trên trình duyệt mobile
-  // (Zalo trả 302 self-redirect, không hiển thị). Trên mobile:
-  // - Mở app Zalo qua deep link zalo:// (nếu app đã cài)
-  // - Fallback: hiển thị hướng dẫn mở app / tìm nhóm
+  // Link nhóm Zalo (zalo.me/g/...) — trên mobile, trình duyệt không
+  // hiển thị trang (Zalo trả 302). Cách đúng: mở CHÍNH link https://zalo.me/g/...
+  // qua cơ chế mở app — Zalo hỗ trợ deep link theo URL chuẩn nên app sẽ
+  // capture và mở đúng nhóm.
   // Desktop: giữ hành vi mặc định (target="_blank").
   var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
   if (isMobile) {
-    var zaloGroupId = 'izers2awkn1hyqojzdfv';
     document.querySelectorAll('a[href*="zalo.me/g/"]').forEach(function (link) {
       link.addEventListener('click', function (e) {
         e.preventDefault();
+        var groupUrl = link.getAttribute('href'); // https://zalo.me/g/...
 
-        // Lưu thời điểm để kiểm tra visibility sau khi thử mở app
-        var hiddenBefore = document.hidden || document.visibilityState === 'hidden';
-
-        // 1) Thử mở app Zalo qua deep link
-        //    Native Android: zalo://go/conversation/... ; group dùng link chuẩn
+        var isAndroid = /Android/i.test(navigator.userAgent);
         var isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-        var deepUrl = isIos
-          ? 'zalo://conversation?type=group&id=' + zaloGroupId
-          : 'intent://zalo.me/g/' + zaloGroupId + '#Intent;scheme=http;package=com.zing.zalo;end';
 
-        var deepWindow = window.open(deepUrl, '_blank');
+        // 1) Mở app Zalo qua link chuẩn:
+        //    - iOS: universal link https://zalo.me/g/...  (app Zalo tự bắt)
+        //    - Android: intent URL với package com.zing.zalo
+        var openUrl;
+        if (isAndroid) {
+          openUrl = 'intent://zalo.me/g/' + groupUrl.split('/').pop() +
+            '#Intent;scheme=https;package=com.zing.zalo;S.browser_fallback_url=' +
+            encodeURIComponent(groupUrl) + ';end';
+        } else {
+          openUrl = groupUrl; // iOS + desktop → mở thẳng
+        }
+
+        var deepWindow = window.open(openUrl, '_blank');
         if (deepWindow) deepWindow.opener = null;
 
-        // 2) Sau 1s, nếu page vẫn visible (app không được mở) → hiển thị hướng dẫn
+        // 2) Sau 1.2s, nếu page vẫn visible (app không mở được) → hướng dẫn
         setTimeout(function () {
           var hiddenNow = document.hidden || document.visibilityState === 'hidden';
           if (!hiddenNow) {
             showZaloGuide();
           }
-        }, 1000);
+        }, 1200);
       });
     });
   }
