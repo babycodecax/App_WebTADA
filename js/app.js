@@ -58,53 +58,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Link nhóm Zalo (zalo.me/g/...) — KHÔNG CHẶN click mặc định.
-  // Zalo server trả 302 → zalo://qr/g/{code} khi truy cập từ mobile,
-  // trình duyệt mobile tự chuyển tới app Zalo và mở ĐÚNG nhóm.
-  // Vì vậy để trình duyệt xử lý tự nhiên, khỏi preventDefault.
-  // Chỉ thêm fallback hướng dẫn nếu sau vài giây page vẫn hiển thị
-  // (tức app chưa được mở).
-  var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-  if (isMobile) {
-    document.querySelectorAll('a[href*="zalo.me/g/"]').forEach(function (link) {
-      link.addEventListener('click', function () {
-        // Không preventDefault — để trình duyệt tự xử lý redirect zalo://qr/...
-
-        // Kiểm tra sau 2.5s: nếu page vẫn hiển thị (app không mở)
-        // → hiển thị hướng dẫn mở app / tìm nhóm
-        var hiddenBefore = document.hidden || document.visibilityState === 'hidden';
-        setTimeout(function () {
-          var hiddenNow = document.hidden || document.visibilityState === 'hidden';
-          if (hiddenNow === hiddenBefore) {
-            showZaloGuide();
-          }
-        }, 2500);
-      });
-    });
-  }
-
-  // Hướng dẫn mở nhóm Zalo trên điện thoại — thay alert bằng dialog đẹp hơn
-  function showZaloGuide() {
-    // Tạo overlay thông báo (tránh alert gây khó chịu)
-    var overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;';
-    var box = document.createElement('div');
-    box.style.cssText = 'background:#fff;border-radius:16px;padding:28px 24px;max-width:340px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.25);';
-    box.innerHTML =
-      '<div style="font-size:42px;margin-bottom:8px;">💬</div>' +
-      '<h3 style="margin:0 0 10px;font-size:18px;color:#1f2937;">Nhóm Zalo TADA</h3>' +
-      '<p style="margin:0 0 6px;font-size:14px;color:#6b7280;line-height:1.6;">Nhóm chỉ mở được trong <b>ứng dụng Zalo</b>.</p>' +
-      '<p style="margin:0 0 18px;font-size:13px;color:#9ca3af;text-align:left;line-height:1.7;">👉 Nếu app Zalo chưa mở: hãy mở <b>Zalo</b> rồi tìm nhóm <b>"TADA Dịch Vụ Thuế Kế Toán"</b>.<br>👉 Hoặc gọi Zalo <b>0986.4242.86</b> để được mời vào nhóm.</p>' +
-      '<button id="zalo-guide-close" style="background:#0b5fff;color:#fff;border:0;border-radius:10px;padding:12px 32px;font-size:15px;font-weight:600;cursor:pointer;">Đã hiểu</button>';
-    overlay.appendChild(box);
-    document.body.appendChild(overlay);
-    box.querySelector('#zalo-guide-close').addEventListener('click', function () {
-      overlay.remove();
-    });
-    overlay.addEventListener('click', function (e) {
-      if (e.target === overlay) overlay.remove();
-    });
-  }
+  // Link nhóm Zalo (zalo.me/g/...) — KHÔNG thêm listener JavaScript.
+  //
+  // Tại sao KHÔNG can thiệp JS:
+  // Zalo server trả redirect 302 → Location: zalo://qr/g/{code}
+  // trên mobile. Trình duyệt mobile tự động:
+  //   1) Nhận redirect scheme zalo:// → mở app Zalo
+  //   2) App Zalo nhận group share code → mở đúng nhóm
+  //
+  // Nếu thêm JS (preventDefault/handmade deep link) sẽ PHÁ vỡ flow
+  // redirect tự nhiên này — dẫn đến app mở trang chủ thay vì vào nhóm.
+  //
+  // Chỉ cần link href = https://zalo.me/g/{code} là đủ, trình duyệt xử lý hết.
 
   // 2. Services Tab Switcher
   var tabButtons = document.querySelectorAll('.tab-btn');
