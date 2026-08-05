@@ -250,9 +250,9 @@
   .blog-detail .content {
     font-size: 17px;
     line-height: 1.9;
-  }
-  .blog-detail .content p {
-    text-align: left; /* bỏ justify — dễ đọc trên màn nhỏ */
+    /* Giữ text-align: justify (căn lề đều 2 bên) — đã có padding 2 bên nên
+       không bị dính sát màn hình, bố cục đẹp hơn */
+    text-align: justify;
   }
   .blog-detail .content h2 { font-size: 21px; margin: 28px 0 10px; }
   .blog-detail .content h3 { font-size: 18px; margin: 22px 0 8px; }

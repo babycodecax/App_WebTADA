@@ -20,7 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
       navMenu.classList.toggle('active');
     });
 
-    document.querySelectorAll('.nav-link').forEach(function (link) {
+    // Lưu ý: .dropdown-trigger cũng có class .nav-link — loại trừ nó khỏi
+    // listener đóng menu, nếu không click trigger sẽ tự đóng navMenu ngay.
+    document.querySelectorAll('.nav-link:not(.dropdown-trigger)').forEach(function (link) {
       link.addEventListener('click', function () {
         navToggle.classList.remove('active');
         navMenu.classList.remove('active');
@@ -35,7 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (dropdown && dropdownTrigger) {
     dropdownTrigger.addEventListener('click', function (e) {
       e.preventDefault();
-      e.stopPropagation();
+      // stopImmediatePropagation: chặn cả listener .nav-link còn lại
+      // (đóng menu) — không được để trigger tự đóng navMenu.
+      e.stopImmediatePropagation();
       dropdown.classList.toggle('active');
     });
 
