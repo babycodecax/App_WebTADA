@@ -81,6 +81,17 @@
     document.getElementById('btn-preview')?.addEventListener('click', function () {
       togglePreview();
     });
+
+    // Tự sinh slug khi gõ tiêu đề (nếu chưa sửa tay)
+    document.getElementById('post-title')?.addEventListener('input', autoSlugFromTitle);
+    document.getElementById('post-slug')?.addEventListener('input', function () {
+      slugUserEdited = true;
+    });
+    // Tự gen mô tả từ câu đầu nội dung
+    document.getElementById('post-content')?.addEventListener('input', autoSummaryFromContent);
+    document.getElementById('post-summary')?.addEventListener('input', function () {
+      summaryUserEdited = true;
+    });
   }
 
   /* ===== Auth UI ===== */
@@ -230,6 +241,9 @@
     document.getElementById('post-content').value = post.content || '';
     document.getElementById('post-status').value = post.status || 'published';
     document.getElementById('btn-save').textContent = 'Cập nhật';
+    // Khi sửa bài đã có: cho phép tự sinh lại nếu user xoá/đổi
+    slugUserEdited = false;
+    summaryUserEdited = false;
     document.querySelector('[data-view="editor"]').click();
   }
 
@@ -266,6 +280,9 @@
     document.getElementById('post-form').reset();
     document.getElementById('btn-save').textContent = 'Đăng bài';
     document.getElementById('preview-box').style.display = 'none';
+    // Reset cờ để lần viết kế tiếp tự sinh lại từ đầu
+    slugUserEdited = false;
+    summaryUserEdited = false;
   }
 
   function togglePreview() {
@@ -285,6 +302,58 @@
   }
 
   /* ===== Helpers ===== */
+  /** Từ nối không có ý nghĩa SEO — lọc khỏi slug */
+  var STOP_WORDS = ['cua','va','voi','cho','theo','trong','tai','cac','nhung','mot','khong','nhu','thu','la','da','se','dang','khi','sau','truoc','nen','neu','do','thi','bi','đuoc'];
+
+  /** Sinh slug chuẩn tiếng Việt: bỏ dấu (NFD) + lọc stop words → URL ngắn gọn */
+  function slugifyVN(text) {
+    if (!text) return '';
+    var s = text.toLowerCase();
+    if (s.normalize) s = s.normalize('NFD').replace(/[̀-ͯ]/g, '');
+    s = s.replace(/đ/g, 'd');
+    var words = s.split(/[^a-z0-9]+/).filter(function (w) {
+      return w && STOP_WORDS.indexOf(w) === -1;
+    });
+    return words.join('-').replace(/-{2,}/g, '-').replace(/^-+|-+$/g, '');
+  }
+
+  /** Mô tả ngắn (meta 120–160 ký tự): câu đầu tiên của nội dung, cắt tại từ đầy đủ */
+  function genSummary(content) {
+    if (!content) return '';
+    var clean = content.replace(/[#*`_>\-]+/g, ' ').replace(/\s+/g, ' ').trim();
+    var match = clean.match(/^.*?[.!?…](?=\s|$)/);
+    var first = (match ? match[0] : clean).trim();
+    if (first.length > 155) {
+      var cut = first.substring(0, 152);
+      var sp = cut.lastIndexOf(' ');
+      first = (sp > 40 ? cut.substring(0, sp) : cut).replace(/\s+$/, '') + '...';
+    }
+    return first;
+  }
+
+  /* Đánh dấu: ô đã được user tự sửa → không tự ghi đè */
+  var slugUserEdited = false;
+  var summaryUserEdited = false;
+
+  /** Tự điền slug từ tiêu đề (nếu user chưa sửa ô slug) */
+  function autoSlugFromTitle() {
+    var titleEl = document.getElementById('post-title');
+    var slugEl = document.getElementById('post-slug');
+    if (!titleEl || !slugEl) return;
+    if (slugUserEdited) return;
+    var auto = slugifyVN(titleEl.value || '');
+    if (auto !== slugEl.value) slugEl.value = auto;
+  }
+
+  /** Tự điền mô tả từ câu đầu nội dung (nếu user chưa sửa ô mô tả) */
+  function autoSummaryFromContent() {
+    var contentEl = document.getElementById('post-content');
+    var sumEl = document.getElementById('post-summary');
+    if (!contentEl || !sumEl) return;
+    if (summaryUserEdited) return;
+    var auto = genSummary(contentEl.value || '');
+    if (auto !== sumEl.value) sumEl.value = auto;
+  }
   function showMsg(text, type) {
     var el = document.getElementById('form-msg');
     if (!el) return;
