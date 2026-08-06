@@ -42,6 +42,9 @@
       <button class="admin-nav-btn" data-view="upload">
         <span>📤</span> Upload tài liệu
       </button>
+      <button class="admin-nav-btn" data-view="sources">
+        <span>🗂️</span> Nguồn tri thức
+      </button>
     </aside>
 
     <!-- Editor -->
@@ -134,11 +137,70 @@
         <div id="upload-docs-list"></div>
       </div>
     </section>
+
+    <!-- Quản lý nguồn tri thức (vault + upload) -->
+    <section class="admin-view" id="view-sources">
+      <div class="admin-card">
+        <h2>🗂️ Quản lý nguồn tri thức</h2>
+        <p style="color:var(--text-muted-dark,#6b7280);font-size:14px;margin:4px 0 16px">
+          Toàn bộ tài liệu đang phục vụ chatbox (từ vault và upload). Xem, tải, xóa, khôi phục nguồn.
+        </p>
+        <div class="sources-filter">
+          <select id="sources-origin" class="form-select">
+            <option value="">Tất cả nguồn</option>
+            <option value="vault">📚 Vault</option>
+            <option value="upload">📤 Upload</option>
+          </select>
+          <input type="text" id="sources-q" class="form-input" placeholder="Tìm theo tiêu đề / file path..." style="flex:1">
+        </div>
+        <div id="sources-list"><div class="blog-empty">Chọn nguồn để xem danh sách.</div></div>
+      </div>
+    </section>
   </main>
+
+  <!-- Modal xem nội dung nguồn -->
+  <div id="source-view-overlay" class="source-view-overlay" style="display:none">
+    <div class="source-view-dialog">
+      <div class="source-view-header">
+        <span class="source-view-title" id="source-view-title"></span>
+        <button type="button" class="src-btn" id="source-view-download">⬇ Tải</button>
+        <button type="button" class="src-btn src-btn-del" id="source-view-close-btn">✕ Đóng</button>
+      </div>
+      <div class="source-view-body" id="source-view-body"></div>
+      <div class="source-view-footer">
+        <button type="button" class="btn btn-secondary btn-sm" id="source-view-cancel">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog xác nhận xóa nguồn (an toàn — gõ XÓA để xác nhận) -->
+  <div class="delete-confirm-overlay" id="delete-confirm-overlay" style="display:none">
+    <div class="delete-confirm-dialog admin-card" role="dialog" aria-modal="true" aria-labelledby="delete-confirm-title">
+      <h3 id="delete-confirm-title">⚠️ Xóa nguồn khỏi tri thức?</h3>
+      <div class="delete-confirm-body">
+        <p><strong id="delete-confirm-title-text"></strong></p>
+        <p class="upload-doc-meta" id="delete-confirm-fp-text"></p>
+        <p class="delete-confirm-warning">
+          Việc xóa sẽ <strong>dọn toàn bộ kiến thức liên quan</strong> của nguồn này:
+          nội dung trích (chunks), dữ liệu số/mốc (compliance), kho nguồn (source), bộ nhớ đệm câu trả lời.<br>
+          <strong>Không thể hoàn tác.</strong>
+        </p>
+        <div class="form-group">
+          <label>Gõ chữ <strong>XÓA</strong> để xác nhận:</label>
+          <input type="text" id="delete-confirm-input" class="form-input" autocomplete="off" placeholder="XÓA">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" id="delete-confirm-cancel">Hủy</button>
+        <button type="button" class="btn btn-danger" id="delete-confirm-ok" disabled>Xóa vĩnh viễn</button>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script src="static/js/blog-admin.js"></script>
   <script src="static/js/admin-upload.js"></script>
+  <script src="static/js/admin-sources.js"></script>
 </body>
 </html>
