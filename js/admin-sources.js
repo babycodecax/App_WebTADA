@@ -101,7 +101,7 @@
         '</td></tr>';
     }
     html += '</tbody></table>';
-    el.list.innerHTML = html;
+    el.list.innerHTML = '<div class="sources-table-wrap">' + html + '</div>';
 
     // Bind thao tác
     el.list.querySelectorAll('button[data-act]').forEach(function (btn) {

@@ -9,6 +9,8 @@
 }
 .sources-filter .form-select { max-width: 220px; }
 
+/* Bọc bảng trong khung cuộn ngang — bảng 7 cột không làm tràn trang mobile */
+.sources-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; }
 .sources-table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .sources-table th {
   text-align: left; padding: 8px 10px; background: #f6f1ed;
@@ -61,9 +63,17 @@
 .src-fallback-hint { margin: 8px 0; color: #6b7280; font-size: 13px; }
 
 @media (max-width: 640px) {
-  .sources-table { font-size: 12.5px; }
+  .sources-table { font-size: 12.5px; min-width: 560px; }
   .sources-table th, .sources-table td { padding: 6px 6px; }
   .src-actions .src-btn { padding: 3px 7px; font-size: 12px; }
+  /* Trên mobile: cột Số liệu + Cập nhật ẩn để bảng gọn hơn khi cuộn ngang */
+  .sources-table th:nth-child(4), .sources-table td:nth-child(4),
+  .sources-table th:nth-child(6), .sources-table td:nth-child(6) { display: none; }
+  /* Cột thao tác ghim bên phải khi cuộn ngang */
+  .sources-table th:last-child, .sources-table td:last-child {
+    position: sticky; right: 0; background: #fff; box-shadow: -2px 0 4px rgba(0,0,0,0.06);
+  }
+  .sources-table tr:hover td:last-child { background: #fdfbfa; }
 }
 
 /* ===== Dialog xác nhận xóa an toàn (gõ XÓA) ===== */

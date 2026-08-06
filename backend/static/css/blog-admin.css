@@ -46,6 +46,8 @@
   padding-top: 24px;
   padding-bottom: 80px;
   min-height: 80vh;
+  /* Grid child cần min-width:0 để co theo viewport (bảng rộng không tràn) */
+  min-width: 0;
 }
 
 .admin-sidebar {
@@ -79,7 +81,7 @@
 }
 
 .admin-view { display: none; }
-.admin-view.active { display: block; }
+.admin-view.active { display: block; min-width: 0; }
 
 .admin-card {
   background: #fff;
@@ -87,6 +89,9 @@
   border-radius: var(--border-radius-md);
   padding: 32px;
   margin-bottom: 24px;
+  /* Grid/flex child không tự co (min-width:auto) → bảng rộng làm tràn mobile.
+     min-width:0 cho phép card co theo container, bảng cuộn trong wrap. */
+  min-width: 0;
 }
 .admin-card h2 {
   font-size: 22px;
