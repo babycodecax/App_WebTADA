@@ -1885,12 +1885,12 @@ h1, h2, h3, h4, h5, h6 {
   border: 2px solid var(--accent-gold);
   box-shadow: 0 2px 10px rgba(0,0,0,0.12);
 }
-.av-1 { background-image: url('../img/avatars/avatar-1.png'); }
-.av-2 { background-image: url('../img/avatars/avatar-2.png'); }
-.av-3 { background-image: url('../img/avatars/avatar-3.png'); }
-.av-4 { background-image: url('../img/avatars/avatar-4.png'); }
-.av-5 { background-image: url('../img/avatars/avatar-5.png'); }
-.av-6 { background-image: url('../img/avatars/avatar-6.png'); }
+.av-1 { background-image: url('../img/avatars/avatar-1.svg'); }
+.av-2 { background-image: url('../img/avatars/avatar-2.svg'); }
+.av-3 { background-image: url('../img/avatars/avatar-3.svg'); }
+.av-4 { background-image: url('../img/avatars/avatar-4.svg'); }
+.av-5 { background-image: url('../img/avatars/avatar-5.svg'); }
+.av-6 { background-image: url('../img/avatars/avatar-6.svg'); }
 
 .testimonial-name {
   font-weight: 700;
