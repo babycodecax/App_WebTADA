@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LIBRARY PAGE RIÊNG — /thu-vien
+   LIBRARY PAGE RIÊNG — /library
    Danh sách dọc 2 tab: Văn bản luật (toàn văn HTML từ landing_legal_docs,
    fallback chunks markdown) + Biểu mẫu (tải file). Dữ liệu từ /api/library.
    ========================================================================== */
