@@ -41,10 +41,12 @@ test('fetchLibrary — trả {forms, legal_documents} từ 2 bảng, không lỗ
               ],
               error: null,
             }
-          : {
-              data: [{ id: 'l1', title: 'Luật TNCN', doc_type: 'luat', effective_date: '01/01/2026', file_path: 'luat-109-2025-tncn.md', storage_path: '' }],
-              error: null,
-            }
+          : table === 'documents'
+            ? { data: [], error: null }
+            : {
+                data: [{ id: 'l1', title: 'Luật TNCN', doc_type: 'luat', effective_date: '01/01/2026', file_path: 'luat-109-2025-tncn.md', storage_path: '' }],
+                error: null,
+              }
       );
       return q;
     },
@@ -71,7 +73,7 @@ test('fetchLibrary — 2 query song song đúng bảng + filter', async () => {
     },
   };
   await lib.fetchLibrary(sb);
-  assert.deepEqual(tables, ['landing_forms', 'source_documents']);
+  assert.deepEqual(tables, ['landing_forms', 'source_documents', 'documents']);
   // landing_forms: is_active=true
   assert.ok(filters.some((f) => f === 'eq:is_active=true'));
   // source_documents: vault + ready + doc_type IN 5 loại luật

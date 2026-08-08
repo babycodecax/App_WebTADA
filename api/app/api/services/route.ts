@@ -25,14 +25,6 @@ export async function GET(_req: NextRequest) {
   try {
     const sb = getSupabase();
 
-    // DEBUG tạm: fingerprint service role key (chỉ hash 12 ký tự — không lộ key)
-    try {
-      const crypto = require('crypto');
-      const k = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
-      const fp = crypto.createHash('sha256').update(k).digest('hex').slice(0, 12);
-      console.error(`[services-debug] key-fp=${fp} url-host=${(process.env.SUPABASE_URL || '').replace(/^https:\/\//, '').split('.')[0]}`);
-    } catch { /* bỏ qua */ }
-
     const { data: row, error } = await sb
       .from('landing_services')
       .select('description')
