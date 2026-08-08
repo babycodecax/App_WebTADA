@@ -122,116 +122,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 3. Services — render động 2 nhóm dịch vụ từ /api/services.
-  //    Fallback: dữ liệu tĩnh nhúng sẵn nếu API lỗi/trống (trang vẫn hiển thị đầy đủ cho SEO).
-  var FALLBACK_SERVICES = [
-    {
-      name: 'Hộ kinh doanh & Doanh nghiệp',
-      emoji: '🏠',
-      items: [
-        { name: 'Kế toán dịch vụ trọn gói',
-          description: 'Thay mặt doanh nghiệp xử lý toàn bộ các công việc kế toán phát sinh hàng tháng, báo cáo cơ quan thuế định kỳ.',
-          features: ['Nhận, phân loại chứng từ hóa đơn', 'Ghi chép sổ sách kế toán trên phần mềm', 'Đóng vai trò kế toán trưởng làm việc với thuế'] },
-        { name: 'Thành lập & Giải thể Doanh nghiệp',
-          description: 'Hỗ trợ trọn gói các thủ tục pháp lý thành lập công ty mới hoặc thực hiện quy trình giải thể doanh nghiệp đúng luật, nhanh gọn.',
-          features: ['Soạn thảo hồ sơ đăng ký kinh doanh', 'Thay mặt doanh nghiệp nộp Sở KH&ĐT', 'Thủ tục giải thể, quyết toán thuế'] },
-        { name: 'Kê khai thuế TNCN / GTGT',
-          description: 'Thực hiện lập tờ khai, kiểm tra số liệu thuế Thu nhập cá nhân và Thuế Giá trị gia tăng định kỳ (tháng/quý) chính xác.',
-          features: ['Kê khai báo cáo thuế GTGT đầu ra, đầu vào', 'Khai thuế TNCN cho người lao động', 'Hạn chế tối đa sai sót và chậm trễ nộp tờ khai'] },
-        { name: 'Đăng ký HKD & Hóa đơn điện tử',
-          description: 'Trọn gói đăng ký hộ kinh doanh cá thể, thiết lập hệ thống sổ sách và đăng ký sử dụng hóa đơn điện tử lần đầu.',
-          features: ['Đăng ký giấy phép Hộ kinh doanh', 'Khởi tạo và đăng ký hóa đơn điện tử', 'Hướng dẫn sử dụng chi tiết, đúng luật'] },
-        { name: 'Kiểm toán & Lập BCTC, Fix lỗi Thuế',
-          description: 'Kiểm tra toàn bộ hệ thống sổ sách, lập báo cáo tài chính cuối năm và thực hiện sửa lỗi dữ liệu thuế lịch sử.',
-          features: ['Soát xét sổ sách kế toán nhiều năm', 'Khắc phục, điều chỉnh tờ khai sai sót', 'Hỗ trợ lên BCTC chuyên nghiệp chuẩn mực'] },
-        { name: 'Kê khai Bảo hiểm xã hội',
-          description: 'Thực hiện các thủ tục khai báo bảo hiểm, đăng ký tăng giảm lao động và giải quyết các chế độ BHXH định kỳ cho doanh nghiệp.',
-          features: ['Báo tăng, giảm lao động tham gia BHXH', 'Giải quyết các chế độ thai sản, ốm đau', 'Hồ sơ cấp thẻ BHYT nhanh chóng'] }
-      ]
-    },
-    {
-      name: 'Cá nhân/Người lao động',
-      emoji: '🌟',
-      items: [
-        { name: 'Hoàn thuế TNCN',
-          description: 'Hỗ trợ người nộp thuế lập hồ sơ quyết toán và xin hoàn lại số thuế TNCN nộp thừa một cách nhanh nhất, đúng quy định.',
-          features: ['Kiểm tra chứng từ khấu trừ thuế', 'Lập tờ khai quyết toán thuế TNCN điện tử', 'Theo dõi tiến độ hồ sơ cho đến khi nhận tiền'] },
-        { name: 'Giải quyết BHXH thất nghiệp',
-          description: 'Tư vấn hồ sơ và quy trình hưởng trợ cấp thất nghiệp của bảo hiểm xã hội, hỗ trợ chuẩn bị hồ sơ đầy đủ.',
-          features: ['Kiểm tra quá trình đóng và chốt sổ BHXH', 'Hướng dẫn quy trình nộp hồ sơ online/offline', 'Giải quyết các trường hợp vướng mắc'] },
-        { name: 'Thay đổi thông tin cá nhân (CCCD, địa chỉ, SĐT)',
-          description: 'Cập nhật thông tin CCCD mới, số điện thoại hoặc địa chỉ liên lạc với Cơ quan thuế và Bảo hiểm xã hội.',
-          features: ['Điều chỉnh mã số thuế theo CCCD mới', 'Cập nhật thông tin ứng dụng VssID', 'Hồ sơ đồng bộ dữ liệu cá nhân liên quan'] }
-      ]
-    }
-  ];
+  // 3. Services — hiển thị 1 khối văn bản nối tiếp (mỗi dòng 1 dịch vụ) từ /api/services.
+  //    Fallback: văn bản tĩnh nhúng sẵn nếu API lỗi/trống (trang vẫn hiển thị đầy đủ cho SEO).
+  var FALLBACK_CONTENT =
+    '🏠 Kế toán dịch vụ trọn gói\n' +
+    '🏠 Thành lập & Giải thể Doanh nghiệp\n' +
+    '🏠 Kê khai thuế TNCN / GTGT\n' +
+    '🏠 Đăng ký HKD & Hóa đơn điện tử\n' +
+    '🏠 Kiểm toán & Lập BCTC, Fix lỗi Thuế\n' +
+    '🏠 Kê khai Bảo hiểm xã hội\n' +
+    '🌟 Hoàn thuế TNCN\n' +
+    '🌟 Giải quyết BHXH thất nghiệp\n' +
+    '🌟 Thay đổi thông tin cá nhân (CCCD, địa chỉ, SĐT)';
 
-  // Escape HTML để render dữ liệu từ DB an toàn (chặn XSS qua tên/mô tả).
-  function escHtml(s) {
-    if (s == null) return '';
-    var d = document.createElement('div');
-    d.appendChild(document.createTextNode(String(s)));
-    return d.innerHTML;
-  }
-
-  function renderServices(groups) {
+  function renderServicesContent(text) {
     var content = document.getElementById('services-content');
     if (!content) return;
     content.innerHTML = '';
 
-    (groups || []).forEach(function (group) {
-      var wrap = document.createElement('div');
-      wrap.className = 'services-group';
-
-      var heading = document.createElement('h2');
-      heading.className = 'services-group-title';
-      heading.textContent = (group.emoji ? group.emoji + ' ' : '') + group.name;
-
-      var list = document.createElement('div');
-      list.className = 'services-group-list';
-
-      (group.items || []).forEach(function (item) {
-        var card = document.createElement('div');
-        card.className = 'service-card';
-
-        var body = document.createElement('div');
-        body.className = 'service-card-body';
-
-        var title = document.createElement('h3');
-        title.className = 'service-title';
-        title.textContent = item.name || '';
-
-        var desc = document.createElement('p');
-        desc.className = 'service-desc';
-        desc.textContent = item.description || '';
-
-        body.appendChild(title);
-        body.appendChild(desc);
-
-        if (Array.isArray(item.features) && item.features.length) {
-          var ul = document.createElement('ul');
-          ul.className = 'service-features-list';
-          item.features.forEach(function (feat) {
-            var li = document.createElement('li');
-            li.className = 'service-feat-item';
-            var bullet = document.createElement('span');
-            bullet.className = 'service-feat-bullet';
-            bullet.textContent = '✦';
-            li.appendChild(bullet);
-            li.appendChild(document.createTextNode(String(feat)));
-            ul.appendChild(li);
-          });
-          body.appendChild(ul);
-        }
-
-        card.appendChild(body);
-        list.appendChild(card);
-      });
-
-      wrap.appendChild(heading);
-      wrap.appendChild(list);
-      content.appendChild(wrap);
-    });
+    var block = document.createElement('div');
+    block.className = 'services-text-block';
+    block.textContent = text || '';
+    content.appendChild(block);
   }
 
   function loadServices() {
@@ -239,15 +151,169 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch(API + '/api/services')
       .then(function (r) { return r.json(); })
       .then(function (data) {
-        var groups = (data && data.groups && data.groups.length) ? data.groups : null;
-        if (!groups) throw new Error('empty');
-        renderServices(groups);
+        var content = (data && typeof data.content === 'string' && data.content.trim()) ? data.content : null;
+        if (!content) throw new Error('empty');
+        renderServicesContent(content);
       })
       .catch(function () {
-        // API lỗi/trống → fallback dữ liệu tĩnh
-        renderServices(FALLBACK_SERVICES);
+        // API lỗi/trống → fallback văn bản tĩnh
+        renderServicesContent(FALLBACK_CONTENT);
       });
   }
 
   loadServices();
+
+  // 4. Thư viện Biểu mẫu & Văn bản Luật — 2 tab, dữ liệu từ /api/library.
+  //    Fallback: danh sách văn bản luật tĩnh (SEO) nếu API lỗi.
+  var LEGAL_FALLBACK = [
+    { title: 'Luật Quản lý thuế 2019 (sửa đổi 2025)', doc_type: 'luat' },
+    { title: 'Luật Thuế TNCN 2007 (sửa đổi 2025)', doc_type: 'luat' },
+    { title: 'Luật Thuế GTGT (sửa đổi 2025)', doc_type: 'luat' },
+    { title: 'Nghị định 141/2026/NĐ-CP — hộ kinh doanh', doc_type: 'nd' },
+    { title: 'Nghị định 253/2026/NĐ-CP — hướng dẫn thuế TNCN', doc_type: 'nd' },
+    { title: 'Nghị định 254/2026/NĐ-CP — hóa đơn điện tử', doc_type: 'nd' },
+    { title: 'Thông tư 87/2026/TT-BTC — thuế TNCN', doc_type: 'tt' },
+    { title: 'Thông tư 20/2026/TT-BTC — quản lý thuế TNDN', doc_type: 'tt' },
+    { title: 'Văn bản hợp nhất Luật Doanh nghiệp', doc_type: 'vbhn' }
+  ];
+  var DOC_TYPE_LABEL = {
+    luat: 'Luật',
+    nd: 'Nghị định',
+    tt: 'Thông tư',
+    nq: 'Nghị quyết',
+    vbhn: 'VBHN'
+  };
+
+  function docTypeLabel(dt) {
+    return DOC_TYPE_LABEL[dt] || (dt ? dt.toUpperCase() : 'Văn bản');
+  }
+
+  function escHtml(s) {
+    if (s === null || s === undefined) return '';
+    var d = document.createElement('div');
+    d.appendChild(document.createTextNode(String(s)));
+    return d.innerHTML;
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return '';
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  }
+
+  function fmtSize(bytes) {
+    if (!bytes || bytes <= 0) return '';
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+  }
+
+  function legalCard(item, idx) {
+    var badge = docTypeLabel(item.doc_type);
+    var eff = item.effective_date || item.effective_from || '';
+    var meta =
+      '<span>📄 ' + escHtml(badge) + '</span>' +
+      (eff ? '<span>🗓 ' + escHtml(fmtDate(eff)) + '</span>' : '');
+    var btn = item.file_url
+      ? '<a class="library-card-btn" data-kind="legal" href="' + escHtml(item.file_url) + '"' +
+        ' target="_blank" rel="noopener nofollow">⬇ Xem / Tải</a>'
+      : '<span class="library-card-btn" data-kind="legal" style="cursor:default;opacity:.85">📄 Tra cứu trực tiếp</span>';
+    return (
+      '<article class="library-card" data-kind="legal" id="legal-item-' + idx + '">' +
+        '<div class="library-card-top">' +
+          '<span class="library-card-icon">⚖️</span>' +
+          '<div>' +
+            '<div class="library-card-badges"><span class="library-badge">' + escHtml(badge) + '</span></div>' +
+            '<h3>' + escHtml(item.title || item.file_path || 'Văn bản luật') + '</h3>' +
+          '</div>' +
+        '</div>' +
+        '<div class="library-card-meta">' + meta + '</div>' +
+        btn +
+      '</article>'
+    );
+  }
+
+  function formCard(item, idx) {
+    var size = fmtSize(item.file_size);
+    var meta = '<span>📎 ' + escHtml(item.file_name || 'File tải xuống') + '</span>' +
+      (size ? '<span>💾 ' + escHtml(size) + '</span>' : '');
+    return (
+      '<article class="library-card" data-kind="form" id="form-item-' + idx + '">' +
+        '<div class="library-card-top">' +
+          '<span class="library-card-icon">📄</span>' +
+          '<div>' +
+            '<div class="library-card-badges"><span class="library-badge">Biểu mẫu</span></div>' +
+            '<h3>' + escHtml(item.name) + '</h3>' +
+          '</div>' +
+        '</div>' +
+        (item.description ? '<p class="library-card-desc">' + escHtml(item.description) + '</p>' : '') +
+        '<div class="library-card-meta">' + meta + '</div>' +
+        (item.file_url
+          ? '<a class="library-card-btn" href="' + escHtml(item.file_url) + '" target="_blank" rel="noopener nofollow">⬇ Tải biểu mẫu</a>'
+          : '<span class="library-card-btn" style="cursor:default;opacity:.85">Chưa có file</span>') +
+      '</article>'
+    );
+  }
+
+  function renderLibraryGrid(container, items, cardFn) {
+    if (!container) return;
+    container.innerHTML = '';
+    if (!items || !items.length) {
+      container.innerHTML = '<div class="library-empty">Chưa có nội dung trong thư viện.</div>';
+      return;
+    }
+    items.forEach(function (item, idx) {
+      var el = document.createElement('div');
+      el.innerHTML = cardFn(item, idx);
+      container.appendChild(el.firstElementChild);
+    });
+  }
+
+  function loadLibrary() {
+    var API = window.LOCAL_API ? window.LOCAL_API : '';
+    var legalGrid = document.getElementById('library-legal');
+    var formsGrid = document.getElementById('library-forms');
+    var countLegal = document.getElementById('library-count-legal');
+    var countForms = document.getElementById('library-count-forms');
+    if (!legalGrid && !formsGrid) return;
+
+    fetch(API + '/api/library')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data || (data.error && !data.forms && !data.legal_documents)) throw new Error('empty');
+        var legal = Array.isArray(data.legal_documents) ? data.legal_documents : [];
+        var forms = Array.isArray(data.forms) ? data.forms : [];
+        if (!legal.length) legal = LEGAL_FALLBACK; // kho trống → fallback tĩnh (SEO)
+        renderLibraryGrid(legalGrid, legal, legalCard);
+        renderLibraryGrid(formsGrid, forms, formCard);
+        if (countLegal) countLegal.textContent = String(legal.length);
+        if (countForms) countForms.textContent = String(forms.length);
+      })
+      .catch(function () {
+        renderLibraryGrid(legalGrid, LEGAL_FALLBACK, legalCard);
+        renderLibraryGrid(formsGrid, [], formCard);
+        if (countLegal) countLegal.textContent = String(LEGAL_FALLBACK.length);
+        if (countForms) countForms.textContent = '0';
+      });
+  }
+
+  // Tab chuyển đổi
+  var legalGrid = document.getElementById('library-legal');
+  var formsGrid = document.getElementById('library-forms');
+  document.querySelectorAll('.library-tab-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.library-tab-btn').forEach(function (b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      var showLegal = btn.dataset.tab === 'legal';
+      if (legalGrid) legalGrid.hidden = !showLegal;
+      if (formsGrid) formsGrid.hidden = showLegal;
+    });
+  });
+
+  loadLibrary();
 });

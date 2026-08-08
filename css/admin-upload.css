@@ -180,77 +180,63 @@
   font-size: 13.5px;
   color: #4d0012;
 }
-.services-toolbar {
-  display: flex;
-  justify-content: flex-end;
-  margin: 12px 0;
-}
-.sv-check-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-  color: var(--text-dark, #1f1416);
-  cursor: pointer;
-}
-.sv-check-label input {
-  width: 18px;
-  height: 18px;
-  accent-color: #4d0012;
-}
 
-/* Modal thêm/sửa dịch vụ */
-.service-edit-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 5, 7, 0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 16px;
+/* Ô textarea nhập toàn bộ nội dung dịch vụ (mỗi dòng 1 dịch vụ) */
+.services-editor-wrap {
+  margin-top: 16px;
 }
-.service-edit-dialog {
-  background: #fff;
-  border-radius: 10px;
-  width: min(560px, 100%);
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+.services-editor-wrap .form-group {
+  margin-bottom: 14px;
 }
-.service-edit-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 14px 18px;
-  border-bottom: 1px solid #eee;
-}
-.service-edit-header h3 {
-  margin: 0;
-  font-size: 16px;
+.services-textarea {
+  width: 100%;
+  min-height: 420px;
+  font-size: 15px;
+  line-height: 1.7;
+  font-family: inherit;
+  padding: 14px 16px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius-sm);
+  background: #fbfaf9;
   color: #1f1416;
+  resize: vertical;
+  box-sizing: border-box;
 }
-.service-edit-dialog .services-edit-form {
-  flex: 1;
-  overflow-y: auto;
-  padding: 18px;
+.services-textarea:focus {
+  outline: none;
+  border-color: #4d0012;
+  box-shadow: 0 0 0 3px rgba(77, 0, 18, 0.12);
+  background: #fff;
 }
-.service-edit-dialog .form-actions {
+.services-editor-wrap .form-actions {
   display: flex;
+  justify-content: flex-start;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 12px;
 }
-.service-edit-dialog .form-actions .btn-primary {
+.services-editor-wrap .btn-primary {
   background: #4d0012;
   color: #fff;
+  border: none;
+  padding: 10px 22px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
 }
-.form-msg.hidden { display: none; }
+.services-editor-wrap .btn-primary:hover {
+  background: #6b0a20;
+}
+.services-editor-wrap .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.services-editor-wrap .btn-primary:active {
+  transform: scale(0.98);
+}
 
-@media (max-width: 640px) {
-  .service-edit-dialog {
-    width: 100%;
-    max-height: 92vh;
-  }
-}
+/* Dùng chung: .form-msg (2 trạng thái) — dùng cho cả upload + services */
+.form-msg.hidden { display: none; }
+.form-msg.error { color: #b3261e; }
+.form-msg.success { color: #116329; }

@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="static/css/styles.css">
   <link rel="stylesheet" href="static/css/blog-admin.css">
   <link rel="stylesheet" href="static/css/admin-upload.css">
+  <link rel="stylesheet" href="static/css/admin-forms.css">
 </head>
 <body class="admin-body">
   <header class="admin-header">
@@ -47,6 +48,9 @@
       </button>
       <button class="admin-nav-btn" data-view="services">
         <span>🔧</span> Dịch vụ
+      </button>
+      <button class="admin-nav-btn" data-view="forms">
+        <span>📋</span> Thư viện biểu mẫu
       </button>
     </aside>
 
@@ -165,7 +169,8 @@
       <div class="admin-card">
         <h2>🔧 Quản lý dịch vụ landing page</h2>
         <p style="color:var(--text-muted-dark,#6b7280);font-size:14px;margin:4px 0 16px">
-          Cập nhật tên nhóm, emoji, tên/mô tả dịch vụ, thứ tự hiển thị. Thay đổi lưu vào Supabase và hiển thị ngay trên trang chủ.
+          Nhập nội dung dịch vụ vào ô bên dưới — <strong>mỗi dòng 1 dịch vụ</strong>, có thể thêm emoji tùy ý.
+          Trang chủ sẽ hiển thị <strong>đúng y hệt</strong> những gì bạn nhập. Bấm <em>Lưu</em> để cập nhật lên trang chủ.
         </p>
 
         <!-- Kết nối quản trị (dùng chung ADMIN_PASSWORD với tab Upload) -->
@@ -186,58 +191,94 @@
         </div>
         <div id="services-msg" class="form-msg"></div>
 
-        <!-- Nút thêm dịch vụ mới -->
-        <div class="services-toolbar" id="services-toolbar" style="display:none">
-          <button type="button" class="btn btn-primary" id="services-add-btn">＋ Thêm dịch vụ mới</button>
+        <!-- Nội dung dịch vụ + nút Lưu (ẩn cho tới khi kết nối) -->
+        <div id="services-editor-wrap" class="services-editor-wrap" style="display:none">
+          <div class="form-group">
+            <label for="services-textarea">Nội dung dịch vụ <small>(mỗi dòng 1 dịch vụ — tối đa 50.000 ký tự)</small></label>
+            <textarea id="services-textarea" class="services-textarea" rows="20" maxlength="50000"
+              placeholder="🏠 Kế toán dịch vụ trọn gói&#10;🏠 Thành lập &amp; Giải thể Doanh nghiệp&#10;🌟 Hoàn thuế TNCN&#10;..."></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary" id="services-save-btn">💾 Lưu nội dung</button>
+          </div>
+          <div id="services-save-msg" class="form-msg"></div>
         </div>
+      </div>
+    </section>
 
-        <div id="services-list"><div class="blog-empty">Kết nối admin để quản lý dịch vụ.</div></div>
+    <!-- Thư viện biểu mẫu (admin thêm/sửa/xóa) + Văn bản luật (đọc-only từ kho nguồn) -->
+    <section class="admin-view" id="view-forms">
+      <div class="admin-card">
+        <h2>📋 Thư viện biểu mẫu &amp; văn bản luật</h2>
+        <p style="color:var(--text-muted-dark,#6b7280);font-size:14px;margin:4px 0 16px">
+          Thêm biểu mẫu tải xuống hiển thị trên trang chủ (mục <em>Thư viện</em>).
+          Văn bản luật ở dưới là <strong>chỉ đọc</strong> — tự lấy từ kho nguồn tri thức, cập nhật khi kho đổi.
+        </p>
+
+        <!-- Kết nối quản trị (dùng chung ADMIN_PASSWORD với tab Upload) -->
+        <div id="forms-conn" class="services-conn">
+          <div class="services-conn-note" id="forms-conn-note" style="display:none">
+            <span class="upload-conn-badge">Đã kết nối</span>
+            <button type="button" class="btn btn-outline btn-sm" id="forms-logout-btn">Đăng xuất</button>
+          </div>
+          <div class="services-conn-row">
+            <strong>Kết nối admin:</strong>
+            <span id="forms-conn-status">Chưa kết nối — nhập mật khẩu quản trị (ADMIN_PASSWORD):</span>
+          </div>
+        </div>
+        <div class="sources-filter">
+          <input type="password" id="forms-password" class="form-input" placeholder="Mật khẩu quản trị (ADMIN_PASSWORD)" autocomplete="current-password">
+          <button type="button" class="btn btn-primary" id="forms-connect-btn">Kết nối</button>
+        </div>
+        <div id="forms-msg" class="form-msg"></div>
       </div>
 
-      <!-- Modal thêm/sửa dịch vụ -->
-      <div class="service-edit-overlay" id="service-edit-overlay" style="display:none">
-        <div class="service-edit-dialog">
-          <div class="service-edit-header">
-            <h3 id="service-edit-title">Thêm dịch vụ mới</h3>
-            <button type="button" class="src-btn" id="service-edit-close">✕ Đóng</button>
-          </div>
-          <form id="service-edit-form" class="services-edit-form">
-            <div class="form-group">
-              <label>Tên nhóm</label>
-              <input type="text" id="sv-group-name" class="form-input" required placeholder="vd: Hộ kinh doanh & Doanh nghiệp">
-            </div>
-            <div class="form-group">
-              <label>Emoji nhóm</label>
-              <input type="text" id="sv-group-emoji" class="form-input" placeholder="vd: 🏠">
-            </div>
-            <div class="form-group">
-              <label>Tên dịch vụ</label>
-              <input type="text" id="sv-name" class="form-input" required placeholder="vd: Kế toán dịch vụ trọn gói">
-            </div>
-            <div class="form-group">
-              <label>Mô tả ngắn</label>
-              <textarea id="sv-description" class="form-textarea" rows="3" placeholder="Mô tả ngắn về dịch vụ..."></textarea>
-            </div>
-            <div class="form-group">
-              <label>Điểm nổi bật <small>mỗi dòng 1 ý</small></label>
-              <textarea id="sv-features" class="form-textarea" rows="4" placeholder="Mỗi dòng một đặc điểm:&#10;Nhận, phân loại chứng từ hóa đơn&#10;Ghi chép sổ sách kế toán"></textarea>
-            </div>
-            <div class="form-group">
-              <label>Thứ tự hiển thị</label>
-              <input type="number" id="sv-sort-order" class="form-input" value="0" min="0">
-            </div>
-            <div class="form-group">
-              <label class="sv-check-label">
-                <input type="checkbox" id="sv-active" checked> Hiển thị trên trang chủ
-              </label>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn btn-primary" id="sv-save-btn">Lưu</button>
-              <button type="button" class="btn btn-outline" id="sv-cancel-btn">Hủy</button>
-            </div>
-            <div id="sv-form-msg" class="form-msg"></div>
-          </form>
+      <!-- Thêm / sửa biểu mẫu (ẩn tới khi kết nối) -->
+      <div class="admin-card" id="forms-editor-card" style="display:none">
+        <h3 id="forms-editor-title">➕ Thêm biểu mẫu mới</h3>
+        <input type="hidden" id="forms-edit-id">
+        <div class="form-group">
+          <label for="forms-name">Tên biểu mẫu <span style="color:var(--accent-gold-dark,#aa8620)">*</span></label>
+          <input type="text" id="forms-name" class="form-input" placeholder="vd: Mẫu đơn xin hoàn thuế TNCN" maxlength="300">
         </div>
+        <div class="form-group">
+          <label for="forms-description">Mô tả ngắn <small>hiển thị trên thẻ biểu mẫu</small></label>
+          <input type="text" id="forms-description" class="form-input" placeholder="vd: Dùng cho cá nhân nộp hồ sơ hoàn thuế" maxlength="2000">
+        </div>
+        <div class="form-group">
+          <label for="forms-file">File tải xuống <small>PDF / DOCX / XLSX — tối đa 4 MB; để trống nếu chỉ sửa tên/mô tả</small></label>
+          <input type="file" id="forms-file" class="form-input" accept=".pdf,.docx,.doc,.xlsx,.xls,.txt,.md">
+        </div>
+        <div class="sources-filter" style="flex-wrap:wrap">
+          <div class="form-group" style="flex:1;min-width:160px">
+            <label for="forms-sort">Thứ tự sắp xếp <small>số nhỏ hiện trước</small></label>
+            <input type="number" id="forms-sort" class="form-input" value="0" min="0" step="1">
+          </div>
+          <div class="form-group" style="flex:1;min-width:160px">
+            <label for="forms-active">Trạng thái</label>
+            <select id="forms-active" class="form-select">
+              <option value="true">Hiển thị</option>
+              <option value="false">Ẩn</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-primary" id="forms-save-btn">💾 Lưu biểu mẫu</button>
+          <button type="button" class="btn btn-outline" id="forms-cancel-btn" style="display:none">Hủy sửa</button>
+        </div>
+        <div id="forms-save-msg" class="form-msg"></div>
+      </div>
+
+      <!-- Danh sách biểu mẫu -->
+      <div class="admin-card" id="forms-list-card" style="display:none">
+        <h3>Danh sách biểu mẫu</h3>
+        <div id="forms-list"><div class="blog-loading">Đang tải...</div></div>
+      </div>
+
+      <!-- Văn bản luật từ kho nguồn (chỉ đọc) -->
+      <div class="admin-card" id="forms-legal-card" style="display:none">
+        <h3>⚖️ Văn bản luật từ kho nguồn <small>(chỉ đọc — tự cập nhật khi kho đổi)</small></h3>
+        <div id="forms-legal-list"><div class="blog-loading">Đang tải...</div></div>
       </div>
     </section>
   </main>
@@ -287,5 +328,6 @@
   <script src="static/js/admin-upload.js"></script>
   <script src="static/js/admin-sources.js"></script>
   <script src="static/js/admin-services.js"></script>
+  <script src="static/js/admin-forms.js"></script>
 </body>
 </html>

@@ -40,33 +40,6 @@
       "addressCountry": "VN"
     },
     "areaServed": "VN",
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Dịch vụ thuế kế toán TADA",
-      "itemListElement": [
-        {
-          "@type": "OfferCatalog",
-          "name": "Hộ kinh doanh & Doanh nghiệp",
-          "itemListElement": [
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Kế toán dịch vụ trọn gói" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Thành lập & Giải thể Doanh nghiệp" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Kê khai thuế TNCN / GTGT" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Đăng ký HKD & Hóa đơn điện tử" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Kiểm toán & Lập BCTC, Fix lỗi Thuế" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Kê khai Bảo hiểm xã hội" } }
-          ]
-        },
-        {
-          "@type": "OfferCatalog",
-          "name": "Cá nhân/Người lao động",
-          "itemListElement": [
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Hoàn thuế TNCN" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Giải quyết BHXH thất nghiệp" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Thay đổi thông tin cá nhân (CCCD, địa chỉ, SĐT)" } }
-          ]
-        }
-      ]
-    },
     "sameAs": [
       "https://www.facebook.com/profile.php?id=61554857008824",
       "https://youtube.com/@dvthue-ketoan",
@@ -99,6 +72,7 @@
   <link rel="stylesheet" href="static/css/chatbox.css">
   <link rel="stylesheet" href="static/css/blog.css" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="static/css/audit.css">
+  <link rel="stylesheet" href="static/css/library.css">
 </head>
 <body>
 
@@ -119,6 +93,7 @@
         <a href="#hero" class="nav-link">Trang chủ</a>
         <a href="#blog" class="nav-link">Bài viết</a>
         <a href="#services" class="nav-link">Dịch vụ</a>
+        <a href="#library" class="nav-link">Thư viện</a>
         <div class="nav-dropdown">
           <a href="#" class="nav-link dropdown-trigger">Kênh nền tảng ▾</a>
           <div class="dropdown-menu">
@@ -336,12 +311,65 @@
     <div class="container">
       <div class="section-header center text-center">
         <span class="section-subtitle">DANH MỤC DỊCH VỤ</span>
-        <h2 class="section-title light">Dịch Vụ Thuế Kế Toán <span class="section-title-accent">TADA</span></h2>
-        <p class="section-desc light">Chúng tôi cung cấp giải pháp chuyên sâu cho từng đối tượng khách hàng<br>với tính chính xác tối đa và chi phí tối ưu.</p>
+        <h2 class="section-title">Dịch Vụ Thuế Kế Toán <span class="section-title-accent">TADA</span></h2>
+        <p class="section-desc">Chúng tôi cung cấp giải pháp chuyên sâu cho từng đối tượng khách hàng<br>với tính chính xác tối đa và chi phí tối ưu.</p>
       </div>
 
       <div id="services-content" class="services-content">
         <!-- Render động từ /api/services (js/app.js). Fallback tĩnh nếu API lỗi. -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       LIBRARY SECTION — Thư Viện Biểu Mẫu & Văn Bản Luật
+       ========================================== -->
+  <section class="library-section section-padding" id="library">
+    <div class="container">
+      <nav class="library-breadcrumb" aria-label="Breadcrumb">
+        <a href="#hero">Trang chủ</a>
+        <span class="sep">›</span>
+        <span aria-current="page">Thư viện biểu mẫu &amp; văn bản luật</span>
+      </nav>
+
+      <!-- BreadcrumbList schema (SEO) -->
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": "https://api-nu-drab.vercel.app/" },
+          { "@type": "ListItem", "position": 2, "name": "Thư viện biểu mẫu & văn bản luật", "item": "https://api-nu-drab.vercel.app/#library" }
+        ]
+      }
+      </script>
+
+      <div class="section-header center text-center">
+        <span class="section-subtitle">TÀI NGUYÊN</span>
+        <h2 class="section-title">Thư Viện Biểu Mẫu &amp; Văn Bản Luật</h2>
+        <p class="section-desc">
+          Tải ngay các văn bản luật thuế, kế toán mới nhất và biểu mẫu kê khai
+          phục vụ công việc của doanh nghiệp, hộ kinh doanh và cá nhân.
+        </p>
+      </div>
+
+      <div class="library-tabs" role="tablist" aria-label="Thư viện">
+        <button type="button" class="library-tab-btn active" data-tab="legal" role="tab" aria-selected="true">
+          ⚖️ Văn bản luật<span class="library-tab-count" id="library-count-legal">0</span>
+        </button>
+        <button type="button" class="library-tab-btn" data-tab="forms" role="tab" aria-selected="false">
+          📄 Biểu mẫu<span class="library-tab-count" id="library-count-forms">0</span>
+        </button>
+      </div>
+
+      <!-- Danh sách văn bản luật (render động từ /api/library qua js/app.js) -->
+      <div id="library-legal" class="library-grid" role="tabpanel" aria-label="Văn bản luật">
+        <div class="library-empty">Đang tải danh sách văn bản luật...</div>
+      </div>
+
+      <!-- Danh sách biểu mẫu -->
+      <div id="library-forms" class="library-grid" role="tabpanel" aria-label="Biểu mẫu" hidden>
+        <div class="library-empty">Đang tải danh sách biểu mẫu...</div>
       </div>
     </div>
   </section>
@@ -392,6 +420,7 @@
           <ul class="footer-links">
             <li><a href="#hero" class="footer-link">Trang chủ</a></li>
             <li><a href="#services" class="footer-link">Bảng dịch vụ</a></li>
+            <li><a href="#library" class="footer-link">Thư viện biểu mẫu &amp; luật</a></li>
             <li><a href="/blog" class="footer-link">Bài viết</a></li>
           </ul>
         </div>

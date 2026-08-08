@@ -4,75 +4,37 @@ import { getSupabase } from '@/lib/supabase';
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
-interface ServiceRow {
-  id: string;
-  group_name: string;
-  group_emoji: string;
-  sort_order: number;
-  name: string;
-  description: string;
-  features: string[] | unknown;
-}
-
-interface ServiceGroup {
-  name: string;
-  emoji: string;
-  items: Array<{
-    id: string;
-    name: string;
-    description: string;
-    features: string[];
-  }>;
-}
+/** Cột group_name của hàng sentinel chứa toàn bộ nội dung văn bản dịch vụ. */
+const SERVICES_CONTENT_ROW = '__services_content__';
 
 /**
- * GET /api/services — danh sách dịch vụ landing page (public, không cần auth).
+ * GET /api/services — nội dung dịch vụ landing page (public, không cần auth).
  *
- * Trả về các dịch vụ is_active = true, gom theo nhóm:
- * {
- *   "groups": [
- *     { "name": "Hộ kinh doanh & Doanh nghiệp", "emoji": "🏠", "items": [...] },
- *     { "name": "Cá nhân/Người lao động", "emoji": "🌟", "items": [...] }
- *   ]
- * }
- * Thứ tự: group theo sort_order của mục đầu tiên trong nhóm, item theo sort_order.
+ * Trả về toàn bộ nội dung dịch vụ dưới dạng 1 văn bản thuần (mỗi dòng 1 dịch vụ,
+ * admin tự viết, có thể kèm emoji). Trang chủ hiển thị đúng 1-1 theo nội dung này.
+ *
+ * Response: { "content": "🏠 Kế toán dịch vụ trọn gói\n..." }
+ * Không cache dài — mỗi lần mở trang chủ là lấy nội dung mới nhất.
  */
 export async function GET(_req: NextRequest) {
   try {
-    const { data: rows, error } = await getSupabase()
+    const { data: row, error } = await getSupabase()
       .from('landing_services')
-      .select('id,group_name,group_emoji,sort_order,name,description,features')
+      .select('description')
       .eq('is_active', true)
-      .order('sort_order', { ascending: true });
+      .eq('group_name', SERVICES_CONTENT_ROW)
+      .limit(1)
+      .maybeSingle();
 
     if (error) {
       return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
 
-    const groups = new Map<string, ServiceGroup>();
-    const groupOrder: string[] = [];
-
-    for (const row of (rows || []) as ServiceRow[]) {
-      let group = groups.get(row.group_name);
-      if (!group) {
-        group = { name: row.group_name, emoji: row.group_emoji || '', items: [] };
-        groups.set(row.group_name, group);
-        groupOrder.push(row.group_name);
-      }
-      group.items.push({
-        id: row.id,
-        name: row.name,
-        description: row.description || '',
-        features: Array.isArray(row.features) ? row.features : [],
-      });
-    }
-
-    const result = groupOrder.map((name) => groups.get(name)!);
-    return new Response(JSON.stringify({ groups: result }), {
-      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=300' },
+    return new Response(JSON.stringify({ content: row?.description || '' }), {
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
     });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : 'Lỗi không xác định';
-    return new Response(JSON.stringify({ error: `Lỗi lấy danh sách dịch vụ: ${msg}` }), { status: 500 });
+    return new Response(JSON.stringify({ error: `Lỗi lấy nội dung dịch vụ: ${msg}` }), { status: 500 });
   }
 }
