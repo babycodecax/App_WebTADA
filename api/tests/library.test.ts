@@ -73,13 +73,15 @@ test('fetchLibrary — 2 query song song đúng bảng + filter', async () => {
     },
   };
   await lib.fetchLibrary(sb);
-  assert.deepEqual(tables, ['landing_forms', 'source_documents', 'documents']);
+  assert.deepEqual(tables, ['landing_forms', 'source_documents', 'documents', 'landing_legal_docs']);
   // landing_forms: is_active=true
   assert.ok(filters.some((f) => f === 'eq:is_active=true'));
   // source_documents: vault + ready + doc_type IN 5 loại luật
   assert.ok(filters.some((f) => f === 'eq:source_origin=vault'));
   assert.ok(filters.some((f) => f === 'eq:status=ready'));
   assert.ok(filters.some((f) => f.includes('luat,nd,tt,nq,vbhn')));
+  // landing_legal_docs: is_active=true (bảng toàn văn HTML từ .docx)
+  assert.ok(filters.some((f) => f === 'eq:is_active=true'));
 });
 
 test('fetchLibrary — lỗi query forms → trả error, không throw', async () => {

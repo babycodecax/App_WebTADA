@@ -4,6 +4,15 @@ import { getSupabase } from '@/lib/supabase';
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
+/**
+ * force-dynamic — BẮT BUỘC chống static prerender:
+ * Trước đây route này bị Next.js tối ưu GET thành tĩnh (frozen tại build time,
+ * revalidate=false) vì handler không dùng req — nội dung admin vừa lưu KHÔNG
+ * BAO GIỜ hiển thị cho tới khi deploy lại. force-dynamic ép chạy trên mỗi
+ * request → admin lưu → F5 là thấy nội dung mới ngay.
+ */
+export const dynamic = 'force-dynamic';
+
 /** Cột group_name của hàng sentinel chứa toàn bộ nội dung văn bản dịch vụ. */
 const SERVICES_CONTENT_ROW = '__services_content__';
 
@@ -35,7 +44,10 @@ export async function GET(_req: NextRequest) {
 
     if (error) {
       console.error(`[services] Lỗi query is_active=true: ${error.message}`);
-      return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 500,
+        headers: RESPONSE_HEADERS,
+      });
     }
 
     // Fallback: row null (không tìm thấy hàng active) → thử query không filter is_active
@@ -49,7 +61,10 @@ export async function GET(_req: NextRequest) {
 
       if (fallbackErr) {
         console.error(`[services] Lỗi query fallback: ${fallbackErr.message}`);
-        return new Response(JSON.stringify({ error: fallbackErr.message }), { status: 500 });
+        return new Response(JSON.stringify({ error: fallbackErr.message }), {
+          status: 500,
+          headers: RESPONSE_HEADERS,
+        });
       }
       if (fallbackRow) {
         console.warn(
@@ -57,16 +72,34 @@ export async function GET(_req: NextRequest) {
         );
       }
       return new Response(JSON.stringify({ content: fallbackRow?.description || '' }), {
-        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+        headers: RESPONSE_HEADERS,
       });
     }
 
     return new Response(JSON.stringify({ content: row.description || '' }), {
-      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+      headers: RESPONSE_HEADERS,
     });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : 'Lỗi không xác định';
     console.error(`[services] Lỗi không xác định: ${msg}`);
-    return new Response(JSON.stringify({ error: `Lỗi lấy nội dung dịch vụ: ${msg}` }), { status: 500 });
+    return new Response(JSON.stringify({ error: `Lỗi lấy nội dung dịch vụ: ${msg}` }), {
+      status: 500,
+      headers: RESPONSE_HEADERS,
+    });
   }
 }
+
+/**
+ * Header phản hồi — chống cache ở mọi tầng:
+ *  - Cache-Control: no-store cho trình duyệt;
+ *  - Vercel-CDN-Cache-Control: no-cache cho CDN edge (Vercel tôn trọng header
+ *    riêng này với API routes; nếu bỏ qua, CDN có thể cache mặc định dù
+ *    response JSON nhỏ);
+ *  - X-Content-Type-Options: chuẩn bảo mật.
+ */
+const RESPONSE_HEADERS = {
+  'Content-Type': 'application/json',
+  'Cache-Control': 'no-store, max-age=0',
+  'Vercel-CDN-Cache-Control': 'no-cache',
+  'X-Content-Type-Options': 'nosniff',
+};

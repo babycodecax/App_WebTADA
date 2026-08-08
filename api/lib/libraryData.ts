@@ -4,13 +4,18 @@
  * Tách rời khỏi route handler để unit-test trực tiếp bằng node --test
  * (không cần môi trường Next.js, không cần .env — mock Supabase client).
  *
- * - fetchLibrary(): 2 query (landing_forms active + source_documents legal)
+ * - fetchLibrary(): 3 query (landing_forms active + source_documents legal
+ *   + landing_legal_docs — toàn văn HTML từ .docx)
  * - validateFormInput() / validateFormUpdate(): validate payload admin
  * - mapFormRow() / mapLegalRow(): shape trả về cho frontend
  * - generateLegalTitle(): sinh tiêu đề tiếng Việt đầy đủ từ nội dung văn bản
  *   (source_documents.title thường là tên file thô, vd 'tt-94-2026')
  */
 import type { SupabaseClient } from '@supabase/supabase-js';
+import {
+  fetchLegalDocs,
+  type LegalDocPublicRow,
+} from './legalDocIngest.ts';
 
 /** Loại văn bản luật được hiển thị trên landing (khớp CHECK constraint của source_documents). */
 export const LEGAL_DOC_TYPES = ['luat', 'nd', 'tt', 'nq', 'vbhn'] as const;
@@ -45,6 +50,8 @@ export interface LegalPublicRow {
 export interface LibraryResult {
   forms: FormPublicRow[];
   legal_documents: LegalPublicRow[];
+  /** Văn bản luật toàn văn HTML (bảng landing_legal_docs — parse .docx bằng mammoth). */
+  legal_docs: LegalDocPublicRow[];
   error: string | null;
 }
 
@@ -288,9 +295,14 @@ export async function fetchLibrary(sb: SupabaseClient): Promise<LibraryResult> {
     .select('file_path,title')
     .limit(2000);
 
-  const [formsRes, legalRes, docTitlesRes] = await Promise.all([formsQuery, legalQuery, docTitlesQuery]);
-  if (formsRes.error) return { forms: [], legal_documents: [], error: formsRes.error.message };
-  if (legalRes.error) return { forms: [], legal_documents: [], error: legalRes.error.message };
+  const [formsRes, legalRes, docTitlesRes, legalDocsRes] = await Promise.all([
+    formsQuery,
+    legalQuery,
+    docTitlesQuery,
+    fetchLegalDocs(sb),
+  ]);
+  if (formsRes.error) return { forms: [], legal_documents: [], legal_docs: [], error: formsRes.error.message };
+  if (legalRes.error) return { forms: [], legal_documents: [], legal_docs: [], error: legalRes.error.message };
 
   // Map basename(file_path) → title chuẩn tiếng Việt (documents dùng path tuyệt đối)
   const docTitleByBasename = new Map<string, string>();
@@ -321,6 +333,7 @@ export async function fetchLibrary(sb: SupabaseClient): Promise<LibraryResult> {
   return {
     forms: ((formsRes.data || []) as Record<string, unknown>[]).map(mapFormRow),
     legal_documents,
+    legal_docs: legalDocsRes,
     error: null,
   };
 }

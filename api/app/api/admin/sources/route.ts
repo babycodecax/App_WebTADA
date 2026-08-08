@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
 import { isAdmin } from '@/lib/adminAuth';
 import { deleteSourceCascade } from '@/lib/deleteCascade';
+import { deleteLegalDoc } from '@/lib/legalDocIngest';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -104,6 +105,12 @@ export async function DELETE(req: NextRequest) {
     }
 
     const result = await deleteSourceCascade(paths, { softDelete });
+    // Đồng bộ Thư viện: nếu nguồn xóa có file .docx gốc trong landing_legal_docs
+    // thì xóa luôn (best-effort — lỗi không chặn xóa nguồn chính).
+    for (const p of paths) {
+      const fileName = p.split('/').pop() || '';
+      if (fileName.toLowerCase().endsWith('.docx')) await deleteLegalDoc(getSupabase(), fileName);
+    }
     return NextResponse.json({ ok: true, ...result, status: softDelete ? 'deleted' : 'removed' });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : 'Lỗi không xác định';

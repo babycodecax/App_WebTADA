@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
 import { isAdmin } from '@/lib/adminAuth';
 import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker';
-import { ALLOWED_EXTENSIONS, extractText, sanitizeTitle } from '@/lib/parseFile';
+import { ALLOWED_EXTENSIONS, extractHtml, extractText, sanitizeTitle } from '@/lib/parseFile';
 import { invalidateStructuredCache } from '@/lib/structured';
 import { invalidateComplianceCache } from '@/lib/compliance';
 import { autoExtractComplianceBounded, extractHeuristicThenUpsert } from '@/lib/autoComplianceExtract';
+import { extractLegalTitleFromHtml, buildLegalDocRow, upsertLegalDoc } from '@/lib/legalDocIngest';
 import { waitUntil } from '@vercel/functions';
 
 export const runtime = 'nodejs';
@@ -167,6 +168,31 @@ async function upsertSourceDocument(filePath: string, title: string, storagePath
   }
 }
 
+/**
+ * TỰ ĐỘNG CẬP NHẬT THƯ VIỆN — admin upload .docx → parse mammoth (giữ bảng
+ * biểu) → upsert landing_legal_docs → văn bản xuất hiện ngay trong /thu-vien
+ * (không cần thêm thủ công). Best-effort: lỗi parse/upsert KHÔNG chặn upload.
+ */
+async function syncLegalDocToLibrary(file: File): Promise<void> {
+  try {
+    const html = await extractHtml(file); // mammoth convertToHtml — giữ bảng biểu
+    if (!html.trim()) return;
+
+    const meta = extractLegalTitleFromHtml(html, file.name);
+    const row = buildLegalDocRow({
+      html,
+      title: meta.title,
+      doc_type: meta.doc_type,
+      doc_number: meta.doc_number,
+      fileName: file.name,
+      fileUrl: '',
+    });
+    await upsertLegalDoc(getSupabase(), row);
+  } catch (e) {
+    // Best-effort — không để lỗi này chặn upload nguồn chính
+  }
+}
+
 /** Upsert bảng documents (BM25 backend local đọc) — best-effort, lỗi không chặn upload. */
 async function upsertDocument(
   filePath: string,
@@ -263,6 +289,8 @@ export async function POST(req: NextRequest) {
     const storagePath = await uploadFileToStorage(file, filePath);
     await upsertSourceDocument(filePath, title, storagePath);
     await clearAnswerCache();
+    // TỰ ĐỘNG CẬP NHẬT THƯ VIỆN — .docx → landing_legal_docs (best-effort, chạy nền)
+    waitUntil(syncLegalDocToLibrary(file));
     // Số liệu structured (moc_mien_thue_tncn_2026...) + compliance records có
     // thể đổi theo tài liệu mới → invalidate cả 2 cache
     invalidateStructuredCache();

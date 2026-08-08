@@ -5,6 +5,7 @@ const nextConfig = {
   async rewrites() {
     return [
       { source: '/static/:path*', destination: '/:path*' },
+      { source: '/thu-vien', destination: '/library.html' },
     ];
   },
 };

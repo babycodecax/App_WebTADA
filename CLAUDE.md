@@ -31,3 +31,9 @@ App_WebTADA/
 2. **Backend = `/backend/`** — chỉ chạy python từ thư mục này.
 3. **Không dùng vector DB/embedding** — chỉ BM25 + OpenRouter.
 4. **Chỉ gọi LLM qua OpenRouter** — https://openrouter.ai/api/v1/chat/completions.
+
+## Bộ nhớ dự án (Obsidian)
+
+- Vault: `D:/CodeApp/Projects/ai-second-brain/vault/claude-memory/App_WebTADA/`
+- Tri thức dùng chung: `D:/CodeApp/Projects/ai-second-brain/vault/claude-memory/_shared/`
+- **Quy tắc:** Trước khi code, đọc toàn bộ memory của dự án này trong vault + `_shared/` để nắm quyết định, bài học, pattern đã có.

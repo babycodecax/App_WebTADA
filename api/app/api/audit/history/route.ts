@@ -3,6 +3,10 @@ import { listCachedResults } from '@/lib/audit/cache';
 
 export const runtime = 'nodejs';
 
+// force-dynamic — danh sách kết quả kiểm toán thay đổi liên tục khi chạy
+// kiểm tra; static prerender tại build time làm lịch sử "đóng băng".
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const results = listCachedResults();

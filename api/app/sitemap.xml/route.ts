@@ -21,6 +21,7 @@ const escapeXml = (s: string): string =>
 export async function GET(_req: NextRequest) {
   const urls: string[] = [
     `  <url><loc>${SITE}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
+    `  <url><loc>${SITE}/thu-vien</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
     `  <url><loc>${SITE}/blog</loc><changefreq>daily</changefreq><priority>0.9</priority></url>`,
     `  <url><loc>${SITE}/privacy</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>`,
     `  <url><loc>${SITE}/terms</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>`,

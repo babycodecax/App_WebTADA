@@ -2,6 +2,7 @@
   "version": 2,
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
+    { "source": "/thu-vien", "destination": "/library.html" },
     { "source": "/blog", "destination": "/blog.html" },
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/privacy", "destination": "/privacy.html" },

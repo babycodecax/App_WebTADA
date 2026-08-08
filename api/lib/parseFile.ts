@@ -58,3 +58,22 @@ export async function extractText(file: File): Promise<ExtractedFile> {
   const body = await file.text();
   return { title: fallbackTitle, body, isMarkdown: ext === '.md' };
 }
+
+/**
+ * extractHtml — chuyển file .docx sang HTML bằng mammoth.convertToHtml.
+ * GIỮ NGUYÊN BẢNG BIỂU (khác extractRawText dùng cho search) — phục vụ
+ * hiển thị toàn văn trong Thư viện (landing_legal_docs.file_html).
+ * Trả '' nếu không phải .docx hoặc không đọc được.
+ */
+export async function extractHtml(file: File): Promise<string> {
+  const name = file.name || '';
+  if (!name.toLowerCase().endsWith('.docx')) return '';
+  try {
+    const mammoth = await import('mammoth');
+    const buf = Buffer.from(await file.arrayBuffer());
+    const { value } = await mammoth.convertToHtml({ buffer: buf });
+    return value || '';
+  } catch {
+    return '';
+  }
+}

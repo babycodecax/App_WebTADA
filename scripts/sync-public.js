@@ -53,7 +53,7 @@ for (const DEST of DESTINATIONS) {
   }
 
   // Sync root HTML files
-  for (const f of ['index.html', 'blog.html', 'admin.html', 'privacy.html', 'terms.html']) {
+  for (const f of ['index.html', 'blog.html', 'admin.html', 'privacy.html', 'terms.html', 'library.html']) {
     const src = path.join(ROOT, f);
     if (fs.existsSync(src)) {
       fs.copyFileSync(src, path.join(DEST, f));
