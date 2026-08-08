@@ -834,158 +834,43 @@ h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
 }
 
-.services-tabs-container {
-  margin-top: 40px;
-}
-
-/* Service Nav Tabs */
-.services-tabs-container {
-  position: relative;
-  z-index: 1;
-}
-
-.services-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 50px;
-  position: relative;
-  z-index: 2;
-}
-
-.tab-btn {
-  background-color: var(--bg-dark-alt);
-  border: 1px solid var(--border-dark);
-  color: var(--text-muted-light);
-  padding: 14px 28px;
-  font-size: 15px;
-  font-weight: 700;
-  font-family: var(--font-sans);
-  border-radius: 30px;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.tab-btn:hover {
-  color: var(--text-light);
-  border-color: var(--accent-gold);
-  background-color: rgba(212, 175, 55, 0.05);
-}
-
-.tab-btn.active {
-  background-color: var(--accent-gold);
-  color: var(--bg-dark);
-  border-color: var(--accent-gold);
-  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25);
-}
-
-.tab-btn-icon {
-  font-size: 18px;
-}
-
-/* Tab Panels */
-.tab-panel {
-  display: none;
-  animation: fadeIn 0.6s ease forwards;
-  overflow: hidden;
-}
-
-.tab-panel.active {
-  display: block;
-}
-
-/* ==========================================================================
-   MARQUEE - SERVICE CARDS AUTO-SCROLL
-   ========================================================================== */
-.marquee-container {
-  width: 100%;
-  overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-  padding: 12px 0;
-  pointer-events: none;
-}
-
-.marquee-track {
-  display: flex;
-  gap: 24px;
-  width: max-content;
-  will-change: transform;
-  animation: marquee-scroll 30s linear infinite;
-}
-
-.marquee-track .service-card {
-  width: 320px;
-  min-width: 280px;
-  flex-shrink: 0;
-  margin: 0;
-  pointer-events: auto;
-}
-
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-.marquee-track:hover {
-  animation-play-state: paused;
-}
-
-/* Testimonials marquee */
-.testimonials-marquee {
-  margin-top: 48px;
-  padding: 12px 0;
-}
-
-.testimonials-track .testimonial-card {
-  width: 380px;
-  min-width: 300px;
-  flex-shrink: 0;
-  margin: 0;
-}
-
-/* Stats marquee */
-.stats-marquee-container {
-  width: 100%;
-  overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-  padding: 12px 0;
-  pointer-events: none;
-}
-
-.stats-marquee-track {
-  display: flex;
-  gap: 24px;
-  width: max-content;
-  animation: marquee-scroll 25s linear infinite;
-}
-.stats-marquee-track:hover {
-  animation-play-state: paused;
-}
-.stats-marquee-track .stat-card {
-  width: 280px;
-  min-width: 250px;
-  flex-shrink: 0;
-  margin: 0;
-}
-
-@media (max-width: 480px) {
-  .marquee-track .service-card {
-    width: 260px;
-    min-width: 260px;
-  }
-}
-
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* ==========================================================================
+   SERVICES — DANH SÁCH TĨNH 2 NHÓM (không tabs, không marquee)
+   ========================================================================== */
+.services-content {
+  position: relative;
+  z-index: 1;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+}
+
+.services-group-title {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+.services-group-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
@@ -1757,203 +1642,49 @@ h1, h2, h3, h4, h5, h6 {
     grid-template-columns: 1fr;
   }
   
-  .services-tabs {
-    flex-wrap: wrap;
-  }
-  .tab-btn {
-    padding: 10px 20px;
-    font-size: 13px;
-  }
-  
   .stats-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .services-checkbox-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .estimator-box {
     padding: 24px;
   }
-  
+
   .footer-top {
     grid-template-columns: 1fr;
   }
   .footer-about {
     grid-column: span 1;
   }
-  .testimonials-grid {
-    grid-template-columns: 1fr;
-  }
-  .trust-bar {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-  }
-  .trust-divider {
-    width: 60px;
-    height: 1px;
-  }
 }
 
-/* ==========================================================================
-   TESTIMONIALS SECTION
-   ========================================================================== */
-.testimonials-section {
-  background-color: var(--bg-light);
-  position: relative;
-  overflow: hidden;
-}
-.testimonials-section::before {
-  content: '';
-  position: absolute;
-  top: -120px;
-  left: -120px;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(128, 0, 32, 0.05) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 48px;
-}
-
-.testimonial-card {
-  background: #fff;
-  border: 1px solid var(--border-light);
-  border-radius: 20px;
-  padding: 28px 26px 24px;
-  position: relative;
-  transition: var(--transition-smooth);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.testimonial-card::before {
-  content: '\201C';
-  position: absolute;
-  top: 16px;
-  right: 22px;
-  font-size: 72px;
-  line-height: 1;
-  color: var(--accent-gold);
-  opacity: 0.18;
-  font-family: Georgia, serif;
-  font-weight: 900;
-}
-.testimonial-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 48px rgba(128, 0, 32, 0.09);
-  border-color: rgba(212, 175, 55, 0.4);
-}
-
-.testimonial-stars {
-  color: var(--accent-gold);
-  font-size: 15px;
-  letter-spacing: 2px;
-}
-
-.testimonial-text {
-  font-size: 14.5px;
-  line-height: 1.8;
-  color: var(--text-medium);
-  flex: 1;
-}
-
-.testimonial-author {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-light);
-}
-
-/* Avatar — mỗi người một ảnh riêng */
-.testimonial-avatar {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border: 2px solid var(--accent-gold);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
-}
-.av-1 { background-image: url('../img/avatars/avatar-1.svg'); }
-.av-2 { background-image: url('../img/avatars/avatar-2.svg'); }
-.av-3 { background-image: url('../img/avatars/avatar-3.svg'); }
-.av-4 { background-image: url('../img/avatars/avatar-4.svg'); }
-.av-5 { background-image: url('../img/avatars/avatar-5.svg'); }
-.av-6 { background-image: url('../img/avatars/avatar-6.svg'); }
-
-.testimonial-name {
-  font-weight: 700;
-  font-size: 14.5px;
-  color: var(--text-dark);
-}
-.testimonial-role {
-  font-size: 12.5px;
-  color: var(--text-light);
-  margin-top: 2px;
-}
-
-/* Trust bar */
-.trust-bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 48px;
-  margin-top: 56px;
-  padding: 32px 48px;
-  background: linear-gradient(135deg, var(--primary-burgundy) 0%, #5c0015 100%);
-  border-radius: 20px;
-  color: #fff;
-}
-.trust-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-.trust-num {
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--accent-gold-light);
-  line-height: 1;
-}
-.trust-label {
-  font-size: 13px;
-  opacity: 0.85;
-  text-align: center;
-}
-.trust-divider {
-  width: 1px;
-  height: 50px;
-  background: rgba(255,255,255,0.2);
-}
-
-@media (max-width: 900px) {
-  .testimonials-grid {
+/* Services list — tablet 2 cột, mobile 1 cột, không tràn ngang */
+@media (max-width: 1024px) {
+  .services-group-list {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 @media (max-width: 600px) {
-  .testimonials-grid {
+  .services-group-list {
     grid-template-columns: 1fr;
   }
-  .trust-bar {
-    flex-direction: column;
-    gap: 20px;
+  .services-content {
+    gap: 36px;
+    margin-top: 32px;
   }
-  .trust-divider {
-    width: 60px;
-    height: 1px;
+  .services-group-title {
+    font-size: 20px;
+  }
+  .service-card {
+    padding: 24px 20px;
+  }
+  .service-title {
+    font-size: 18px;
   }
 }
+
 

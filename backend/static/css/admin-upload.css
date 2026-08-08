@@ -161,3 +161,96 @@
   background: #c0392b;
   color: #fff;
 }
+
+/* ===== Quản lý dịch vụ landing page (admin-services) ===== */
+.services-conn {
+  margin-bottom: 12px;
+}
+.services-conn-note {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #d4edda;
+  border-radius: var(--border-radius-sm);
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.services-conn-status-text {
+  font-size: 13.5px;
+  color: #4d0012;
+}
+.services-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 12px 0;
+}
+.sv-check-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--text-dark, #1f1416);
+  cursor: pointer;
+}
+.sv-check-label input {
+  width: 18px;
+  height: 18px;
+  accent-color: #4d0012;
+}
+
+/* Modal thêm/sửa dịch vụ */
+.service-edit-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 5, 7, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+.service-edit-dialog {
+  background: #fff;
+  border-radius: 10px;
+  width: min(560px, 100%);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.service-edit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #eee;
+}
+.service-edit-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #1f1416;
+}
+.service-edit-dialog .services-edit-form {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px;
+}
+.service-edit-dialog .form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+.service-edit-dialog .form-actions .btn-primary {
+  background: #4d0012;
+  color: #fff;
+}
+.form-msg.hidden { display: none; }
+
+@media (max-width: 640px) {
+  .service-edit-dialog {
+    width: 100%;
+    max-height: 92vh;
+  }
+}
