@@ -4,6 +4,12 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // Bật GFM (bảng | cột |, danh sách…) + breaks cho marked — văn bản luật
+  // có nhiều bảng biểu thuế, thiếu cấu hình này bảng bị render sai.
+  if (window.marked && window.marked.setOptions) {
+    window.marked.setOptions({ gfm: true, breaks: true });
+  }
+
   // 1. Sticky Header & Active Scroll
   var header = document.getElementById('header');
   window.addEventListener('scroll', function () {
@@ -165,6 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 4. Thư viện Biểu mẫu & Văn bản Luật — 2 tab, dữ liệu từ /api/library.
   //    Fallback: danh sách văn bản luật tĩnh (SEO) nếu API lỗi.
+  var allLegalItems = {}; // id card → item (file_path, title) để mở modal xem toàn văn
   var LEGAL_FALLBACK = [
     { title: 'Luật Quản lý thuế 2019 (sửa đổi 2025)', doc_type: 'luat' },
     { title: 'Luật Thuế TNCN 2007 (sửa đổi 2025)', doc_type: 'luat' },
@@ -270,6 +277,89 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ===== Xem toàn văn văn bản luật (modal public) =====
+  function escAttr(s) {
+    if (s === null || s === undefined) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function openLegalDetail(filePath, title) {
+    var API = window.LOCAL_API ? window.LOCAL_API : '';
+    var overlay = document.getElementById('legal-detail-overlay');
+    var body = document.getElementById('legal-detail-body');
+    var titleEl = document.getElementById('legal-detail-title');
+    if (!overlay || !body) return;
+
+    titleEl.textContent = title || filePath || 'Văn bản luật';
+    body.innerHTML = '<div class="library-empty">Đang tải nội dung văn bản...</div>';
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    fetch(API + '/api/library/legal-content?file_path=' + encodeURIComponent(filePath || ''))
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.error) throw new Error(data.error);
+        var content = data.content || '';
+        if (!content) {
+          body.innerHTML = '<div class="library-empty">Văn bản chưa có nội dung để hiển thị.</div>';
+          return;
+        }
+        body.innerHTML = window.marked && window.marked.parse
+          ? legalMarkdownHtml(content)
+          : '<pre class="source-view-pre">' + escHtml(content) + '</pre>';
+      })
+      .catch(function (err) {
+        body.innerHTML = '<div class="library-error">Không tải được nội dung văn bản: ' + escHtml(err.message || 'lỗi') + '</div>';
+      });
+  }
+
+  // Render markdown GFM; bọc mỗi bảng trong khung cuộn ngang (mobile không tràn).
+  function legalMarkdownHtml(content) {
+    var html = window.marked.parse(content);
+    // Sanitize chống XSS — marked không tự lọc HTML độc hại trong nội dung.
+    if (window.DOMPurify && window.DOMPurify.sanitize) {
+      html = window.DOMPurify.sanitize(html);
+    }
+    html = html.replace(/<table[\s\S]*?<\/table>/g, function (t) {
+      return '<div class="md-table-wrap">' + t + '</div>';
+    });
+    return '<div class="legal-detail-md">' + html + '</div>';
+  }
+
+  function closeLegalDetail() {
+    var overlay = document.getElementById('legal-detail-overlay');
+    if (!overlay) return;
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  // Click card văn bản luật → mở modal xem toàn văn (chỉ khi không phải click vào nút Tải).
+  document.querySelectorAll('.library-grid').forEach(function (grid) {
+    grid.addEventListener('click', function (e) {
+      var btn = e.target.closest('a.library-card-btn');
+      if (btn) return; // để link Tải/Xem hoạt động bình thường
+      var card = e.target.closest('.library-card[data-kind="legal"]');
+      if (!card) return;
+      var item = allLegalItems[card.id];
+      if (item && item.file_path) openLegalDetail(item.file_path, item.title);
+    });
+  });
+
+  var legalDetailCloseBtn = document.getElementById('legal-detail-close-btn');
+  var legalDetailCloseBtn2 = document.getElementById('legal-detail-close-btn-2');
+  var legalDetailOverlay = document.getElementById('legal-detail-overlay');
+  legalDetailCloseBtn?.addEventListener('click', closeLegalDetail);
+  legalDetailCloseBtn2?.addEventListener('click', closeLegalDetail);
+  legalDetailOverlay?.addEventListener('click', function (e) { if (e.target === legalDetailOverlay) closeLegalDetail(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && legalDetailOverlay && legalDetailOverlay.style.display !== 'none') closeLegalDetail();
+  });
+
   function loadLibrary() {
     var API = window.LOCAL_API ? window.LOCAL_API : '';
     var legalGrid = document.getElementById('library-legal');
@@ -282,15 +372,19 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(function (r) { return r.json(); })
       .then(function (data) {
         if (!data || (data.error && !data.forms && !data.legal_documents)) throw new Error('empty');
-        var legal = Array.isArray(data.legal_documents) ? data.legal_documents : [];
+            var legal = Array.isArray(data.legal_documents) ? data.legal_documents : [];
         var forms = Array.isArray(data.forms) ? data.forms : [];
         if (!legal.length) legal = LEGAL_FALLBACK; // kho trống → fallback tĩnh (SEO)
+        allLegalItems = {};
+        legal.forEach(function (it, idx) { allLegalItems['legal-item-' + idx] = it; });
         renderLibraryGrid(legalGrid, legal, legalCard);
         renderLibraryGrid(formsGrid, forms, formCard);
         if (countLegal) countLegal.textContent = String(legal.length);
         if (countForms) countForms.textContent = String(forms.length);
       })
       .catch(function () {
+        allLegalItems = {};
+        LEGAL_FALLBACK.forEach(function (it, idx) { allLegalItems['legal-item-' + idx] = it; });
         renderLibraryGrid(legalGrid, LEGAL_FALLBACK, legalCard);
         renderLibraryGrid(formsGrid, [], formCard);
         if (countLegal) countLegal.textContent = String(LEGAL_FALLBACK.length);

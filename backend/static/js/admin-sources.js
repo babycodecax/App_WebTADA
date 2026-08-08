@@ -7,6 +7,30 @@
   var el = { list: null, origin: null, q: null };
   var allSources = [];
 
+  // Bật GFM (bảng | cột |, gạch đầu dòng, strikethrough…) + breaks (xuống dòng
+  // đơn = <br>) cho marked — thiếu cấu hình này bảng markdown bị render sai.
+  if (window.marked && window.marked.setOptions) {
+    window.marked.setOptions({ gfm: true, breaks: true });
+  }
+
+  // Render markdown → HTML có GFM. Bọc mỗi <table> trong khung cuộn ngang
+  // (mobile không tràn, desktop giữ nguyên layout). Nếu marked chưa sẵn sàng
+  // → fallback hiển thị dạng pre thuần.
+  function mdHtml(content) {
+    if (!window.marked || !window.marked.parse) {
+      return '<pre class="source-view-pre">' + escHtml(content) + '</pre>';
+    }
+    var html = window.marked.parse(content);
+    // Sanitize chống XSS — marked không tự lọc HTML độc hại trong nội dung.
+    if (window.DOMPurify && window.DOMPurify.sanitize) {
+      html = window.DOMPurify.sanitize(html);
+    }
+    html = html.replace(/<table[\s\S]*?<\/table>/g, function (t) {
+      return '<div class="md-table-wrap">' + t + '</div>';
+    });
+    return '<div class="source-view-md">' + html + '</div>';
+  }
+
   function getToken() {
     try { return sessionStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; }
   }
@@ -143,8 +167,8 @@
           return loadContentFallback(filePath, title, body);
         }
         var content = data.content || '';
-        if (window.marked && /[#*|`\[\]]/.test(content)) {
-          body.innerHTML = '<div class="source-view-md">' + window.marked.parse(content) + '</div>';
+        if (/[#*|`\[\]]/.test(content)) {
+          body.innerHTML = mdHtml(content);
         } else {
           body.innerHTML = '<pre class="source-view-pre">' + escHtml(content) + '</pre>';
         }
@@ -167,8 +191,8 @@
       .then(function (data) {
         if (data.error) throw new Error(data.error);
         var content = data.content || '';
-        if (window.marked && /[#*|`\[\]]/.test(content)) {
-          body.innerHTML += '<div class="source-view-md">' + window.marked.parse(content) + '</div>';
+        if (/[#*|`\[\]]/.test(content)) {
+          body.innerHTML += mdHtml(content);
         } else {
           body.innerHTML += '<pre class="source-view-pre">' + escHtml(content) + '</pre>';
         }

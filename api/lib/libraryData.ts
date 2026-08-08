@@ -46,6 +46,23 @@ export interface LibraryResult {
   error: string | null;
 }
 
+export interface LegalContentRow {
+  title: string;
+  heading: string;
+  content: string;
+}
+
+export interface LegalContentResult {
+  file_path: string;
+  title: string;
+  content: string;
+  chunk_count: number;
+  error: string | null;
+}
+
+/** Giới hạn số chunks ghép lại cho 1 văn bản luật (đủ cho toàn bộ luật dài). */
+export const LEGAL_CONTENT_MAX_CHUNKS = 2000;
+
 export function mapFormRow(row: Record<string, unknown>): FormPublicRow {
   return {
     id: String(row.id || ''),
@@ -95,6 +112,51 @@ export async function fetchLibrary(sb: SupabaseClient): Promise<LibraryResult> {
     legal_documents: ((legalRes.data || []) as Record<string, unknown>[]).map(mapLegalRow),
     error: null,
   };
+}
+
+/**
+ * fetchLegalContent — nội dung toàn văn 1 văn bản luật cho public viewer.
+ *
+ * Ghép các chunks (knowledge_chunks) theo chunk_index thành 1 khối markdown:
+ *   - chunks có heading → tiêu đề phụ `## heading` (điều/khoản giữ cấu trúc);
+ *   - content giữ nguyên bảng markdown (| cột |) — không biến đổi gì.
+ * Không cần auth (public), không đọc file gốc — Vercel không có vault/.
+ *
+ * @returns LegalContentResult — error null khi thành công (content có thể rỗng).
+ */
+export async function fetchLegalContent(
+  sb: SupabaseClient,
+  filePath: string
+): Promise<LegalContentResult> {
+  const fp = filePath.trim();
+  if (!fp) {
+    return { file_path: fp, title: '', content: '', chunk_count: 0, error: 'Thiếu file_path' };
+  }
+
+  try {
+    const { data: chunks, error } = await sb
+      .from('knowledge_chunks')
+      .select('content, heading, title, chunk_index')
+      .eq('file_path', fp)
+      .order('chunk_index', { ascending: true })
+      .limit(LEGAL_CONTENT_MAX_CHUNKS);
+
+    if (error) return { file_path: fp, title: '', content: '', chunk_count: 0, error: error.message };
+
+    const list = (chunks || []) as LegalContentRow[];
+    const title = list[0]?.title || fp;
+
+    let body = '';
+    for (const c of list) {
+      const block = c.heading ? `## ${c.heading}\n\n${c.content}` : c.content;
+      body += block.trim() + '\n\n';
+    }
+
+    return { file_path: fp, title, content: body.trim(), chunk_count: list.length, error: null };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : 'Lỗi không xác định';
+    return { file_path: fp, title: '', content: '', chunk_count: 0, error: `Lỗi lấy nội dung: ${msg}` };
+  }
 }
 
 // =========================================================================

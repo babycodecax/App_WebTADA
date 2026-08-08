@@ -141,3 +141,88 @@ test('validateFormUpdate — thiếu id / is_active sai kiểu → lỗi', () =>
   assert.equal(lib.validateFormUpdate({ name: 'x' }).ok, false);
   assert.equal(lib.validateFormUpdate({ id: 'x', is_active: 'yes' }).ok, false);
 });
+
+// =========================================================================
+// fetchLegalContent — nội dung văn bản luật public (từ knowledge_chunks)
+// =========================================================================
+
+/** Mock Supabase trả chunks theo file_path, ghi log query vào calls[]. */
+function mockSbForChunks(rows: Record<string, unknown>[]) {
+  const calls: string[] = [];
+  const sb = {
+    from: (table: string) => {
+      calls.push(`from:${table}`);
+      const q: Record<string, unknown> = {};
+      q.select = () => q;
+      q.eq = (col: string, val: unknown) => { calls.push(`eq:${col}=${val}`); return q; };
+      q.order = (col: string, opts: unknown) => { calls.push(`order:${col}:${JSON.stringify(opts)}`); return q; };
+      q.limit = (n: number) => { calls.push(`limit:${n}`); return q; };
+      q.then = (onFulfilled: (v: unknown) => unknown) =>
+        Promise.resolve(rows.length ? { data: rows, error: null } : { data: [], error: null }).then(onFulfilled);
+      return q;
+    },
+  };
+  return { sb, calls };
+}
+
+test('fetchLegalContent — ghép chunks đúng thứ tự chunk_index, giữ bảng markdown nguyên vẹn', async () => {
+  const { sb } = mockSbForChunks([
+    { title: 'Luật Thuế TNCN', heading: 'Điều 22. Biểu thuế lũy tiến', content: '| Bậc | Thu nhập | Thuế suất |\n|---|---|---|\n| 1 | Đến 5 triệu | 5% |', chunk_index: 0 },
+    { title: 'Luật Thuế TNCN', heading: '', content: 'Hết biểu thuế.', chunk_index: 1 },
+  ]);
+  const result = await lib.fetchLegalContent(sb, 'luat-109-2025-tncn.md');
+  assert.equal(result.error, null);
+  assert.equal(result.file_path, 'luat-109-2025-tncn.md');
+  assert.equal(result.title, 'Luật Thuế TNCN');
+  assert.equal(result.chunk_count, 2);
+  assert.ok(result.content.includes('## Điều 22. Biểu thuế lũy tiến'));
+  assert.ok(result.content.includes('| Bậc | Thu nhập | Thuế suất |')); // bảng markdown giữ nguyên
+  assert.ok(result.content.indexOf('| Bậc |') < result.content.indexOf('Hết biểu thuế.'));
+});
+
+test('fetchLegalContent — heading trống → chỉ ghép content', async () => {
+  const { sb } = mockSbForChunks([
+    { title: 'VBHN', heading: '', content: 'Nội dung điều 1.', chunk_index: 0 },
+  ]);
+  const result = await lib.fetchLegalContent(sb, 'vbhn.md');
+  assert.equal(result.error, null);
+  assert.equal(result.title, 'VBHN');
+  assert.equal(result.content, 'Nội dung điều 1.');
+  assert.ok(!result.content.includes('## '));
+});
+
+test('fetchLegalContent — không có chunks → content rỗng, không lỗi', async () => {
+  const { sb } = mockSbForChunks([]);
+  const result = await lib.fetchLegalContent(sb, 'khong-co.md');
+  assert.equal(result.error, null);
+  assert.equal(result.chunk_count, 0);
+  assert.equal(result.content, '');
+  assert.equal(result.title, 'khong-co.md'); // fallback title = file_path
+});
+
+test('fetchLegalContent — query đúng bảng knowledge_chunks + filter file_path + order chunk_index + limit 2000', async () => {
+  const { sb, calls } = mockSbForChunks([]);
+  await lib.fetchLegalContent(sb, 'luat-109-2025-tncn.md');
+  assert.ok(calls.some((c) => c === 'from:knowledge_chunks'));
+  assert.ok(calls.some((c) => c === 'eq:file_path=luat-109-2025-tncn.md'));
+  assert.ok(calls.some((c) => c.includes('order:chunk_index')));
+  assert.ok(calls.some((c) => c === 'limit:2000'));
+});
+
+test('fetchLegalContent — lỗi Supabase → trả error, không throw', async () => {
+  const sb = {
+    from: () => {
+      const q: Record<string, unknown> = {};
+      q.select = () => q;
+      q.eq = () => q;
+      q.order = () => q;
+      q.limit = () => q;
+      q.then = (onFulfilled: (v: unknown) => unknown) =>
+        Promise.resolve({ data: null, error: { message: 'bang khong ton tai' } }).then(onFulfilled);
+      return q;
+    },
+  };
+  const result = await lib.fetchLegalContent(sb, 'x.md');
+  assert.equal(result.error, 'bang khong ton tai');
+  assert.equal(result.content, '');
+});

@@ -57,10 +57,71 @@
 .source-view-body { flex: 1; overflow: auto; padding: 16px; font-size: 14px; line-height: 1.7; }
 .source-view-footer { padding: 10px 16px; border-top: 1px solid #eee; text-align: right; }
 .source-view-pre { white-space: pre-wrap; word-break: break-word; background: #faf7f4; padding: 12px; border-radius: 8px; }
-.source-view-md h1, .source-view-md h2, .source-view-md h3 { margin-top: 14px; }
-.source-view-md table { border-collapse: collapse; width: 100%; }
-.source-view-md td, .source-view-md th { border: 1px solid #ddd; padding: 6px 10px; }
 .src-fallback-hint { margin: 8px 0; color: #6b7280; font-size: 13px; }
+
+/* ===== Markdown văn bản luật — chuẩn như bản Word nguồn (bảng, heading, danh sách) ===== */
+.source-view-md {
+  font-family: var(--font-sans, 'Be Vietnam Pro', system-ui, sans-serif);
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #1f1416;
+  word-break: break-word;
+}
+.source-view-md > :first-child { margin-top: 0; }
+.source-view-md > :last-child { margin-bottom: 0; }
+
+/* Heading — điều/khoản rõ ràng với màu burgundy */
+.source-view-md h1, .source-view-md h2, .source-view-md h3,
+.source-view-md h4, .source-view-md h5, .source-view-md h6 {
+  font-weight: 700;
+  color: #800020;
+  line-height: 1.35;
+  margin: 20px 0 8px;
+}
+.source-view-md h1 { font-size: 21px; border-bottom: 2px solid #f0e8e8; padding-bottom: 6px; }
+.source-view-md h2 { font-size: 18px; }
+.source-view-md h3 { font-size: 16px; }
+.source-view-md h4, .source-view-md h5, .source-view-md h6 { font-size: 15px; }
+
+/* Danh sách, đoạn, trích dẫn */
+.source-view-md p { margin: 8px 0; }
+.source-view-md ul, .source-view-md ol { margin: 8px 0; padding-left: 24px; }
+.source-view-md li { margin: 4px 0; }
+.source-view-md blockquote {
+  margin: 10px 0; padding: 6px 14px; color: #5b3a3f;
+  border-left: 3px solid #d4af37; background: #faf7f4; border-radius: 0 6px 6px 0;
+}
+.source-view-md hr { border: none; border-top: 1px solid #eee; margin: 18px 0; }
+
+/* Pre / code — nền nhạt, bo góc, cuộn ngang nếu quá dài */
+.source-view-md pre {
+  background: #faf7f4; border: 1px solid #eee; border-radius: 8px;
+  padding: 12px; overflow-x: auto; font-size: 13px; line-height: 1.6;
+}
+.source-view-md code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.92em;
+}
+.source-view-md :not(pre) > code {
+  background: #f6f1ed; border-radius: 4px; padding: 1px 5px; color: #800020;
+}
+
+/* Bảng markdown — border, header đậm, zebra, cuộn ngang khi cần */
+.md-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 12px 0; }
+.md-table-wrap table { margin: 0; }
+.source-view-md table {
+  border-collapse: collapse; width: 100%; margin: 12px 0;
+  font-size: 14px; line-height: 1.55;
+}
+.source-view-md th, .source-view-md td {
+  border: 1px solid #d4c8c8; padding: 8px 12px;
+  text-align: left; vertical-align: top;
+}
+.source-view-md thead th {
+  background: #f0e8e8; color: #4d0012; font-weight: 700; white-space: nowrap;
+}
+.source-view-md tbody tr:nth-child(even) { background: #faf7f4; }
+.source-view-md tbody tr:hover { background: #f6f1ed; }
 
 @media (max-width: 640px) {
   .sources-table { font-size: 12.5px; min-width: 560px; }

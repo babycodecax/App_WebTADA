@@ -211,6 +211,117 @@
 }
 
 /* ==========================================================================
+   MODAL XEM TOÀN VĂN VĂN BẢN LUẬT (public viewer)
+   ========================================================================== */
+.legal-detail-overlay {
+  position: fixed; inset: 0; z-index: 1200;
+  background: rgba(15, 5, 7, 0.55);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
+.legal-detail-dialog {
+  background: #fff; border-radius: 12px;
+  width: min(880px, 96vw);
+  max-height: 88vh;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 24px 64px rgba(15, 5, 7, 0.35);
+}
+.legal-detail-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-light, #eee);
+  background: var(--bg-light, #fff);
+}
+.legal-detail-title {
+  flex: 1; font-weight: 700; font-size: 16px;
+  color: var(--text-dark, #1f1416);
+  word-break: break-word;
+}
+.legal-detail-close {
+  flex: 0 0 auto;
+  border: none; background: rgba(128, 0, 32, 0.08);
+  color: var(--primary-burgundy, #800020);
+  width: 34px; height: 34px; border-radius: 50%;
+  font-size: 16px; cursor: pointer;
+  transition: var(--transition-fast, 0.15s);
+}
+.legal-detail-close:hover { background: var(--primary-burgundy, #800020); color: #fff; }
+.legal-detail-body {
+  flex: 1; overflow: auto; padding: 18px 20px;
+  font-size: 14.5px; line-height: 1.75;
+}
+.legal-detail-footer {
+  padding: 12px 18px;
+  border-top: 1px solid var(--border-light, #eee);
+  text-align: right;
+}
+
+/* Markdown văn bản luật — chuẩn như bản Word nguồn */
+.legal-detail-md {
+  font-family: var(--font-sans, 'Be Vietnam Pro', system-ui, sans-serif);
+  color: var(--text-dark, #1f1416);
+  word-break: break-word;
+}
+.legal-detail-md > :first-child { margin-top: 0; }
+.legal-detail-md > :last-child { margin-bottom: 0; }
+.legal-detail-md h1, .legal-detail-md h2, .legal-detail-md h3,
+.legal-detail-md h4, .legal-detail-md h5, .legal-detail-md h6 {
+  font-weight: 700; color: var(--primary-burgundy, #800020);
+  line-height: 1.35; margin: 20px 0 8px;
+}
+.legal-detail-md h1 { font-size: 21px; border-bottom: 2px solid #f0e8e8; padding-bottom: 6px; }
+.legal-detail-md h2 { font-size: 18px; }
+.legal-detail-md h3 { font-size: 16px; }
+.legal-detail-md h4, .legal-detail-md h5, .legal-detail-md h6 { font-size: 15px; }
+.legal-detail-md p { margin: 8px 0; }
+.legal-detail-md ul, .legal-detail-md ol { margin: 8px 0; padding-left: 24px; }
+.legal-detail-md li { margin: 4px 0; }
+.legal-detail-md blockquote {
+  margin: 10px 0; padding: 6px 14px;
+  border-left: 3px solid var(--accent-gold, #D4AF37);
+  background: var(--bg-light-alt, #faf7f4);
+  border-radius: 0 6px 6px 0;
+}
+.legal-detail-md hr { border: none; border-top: 1px solid #eee; margin: 18px 0; }
+.legal-detail-md pre {
+  background: var(--bg-light-alt, #faf7f4); border: 1px solid #eee;
+  border-radius: 8px; padding: 12px; overflow-x: auto; font-size: 13px; line-height: 1.6;
+}
+.legal-detail-md code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.92em;
+}
+.legal-detail-md :not(pre) > code {
+  background: #f6f1ed; border-radius: 4px; padding: 1px 5px;
+  color: var(--primary-burgundy, #800020);
+}
+
+/* Bảng markdown — border, header đậm, zebra, cuộn ngang trên mobile */
+.md-table-wrap {
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  margin: 12px 0;
+}
+.md-table-wrap table { margin: 0; }
+.legal-detail-md table {
+  border-collapse: collapse; width: 100%; margin: 12px 0;
+  font-size: 14px; line-height: 1.55;
+}
+.legal-detail-md th, .legal-detail-md td {
+  border: 1px solid #d4c8c8; padding: 8px 12px;
+  text-align: left; vertical-align: top;
+}
+.legal-detail-md thead th {
+  background: #f0e8e8; color: #4d0012; font-weight: 700; white-space: nowrap;
+}
+.legal-detail-md tbody tr:nth-child(even) { background: #faf7f4; }
+.legal-detail-md tbody tr:hover { background: #f6f1ed; }
+
+@media (max-width: 640px) {
+  .legal-detail-dialog { width: 100vw; max-height: 92vh; }
+  .legal-detail-body { padding: 14px 14px; font-size: 14px; }
+}
+
+/* ==========================================================================
    RESPONSIVE
    ========================================================================== */
 @media (max-width: 768px) {
