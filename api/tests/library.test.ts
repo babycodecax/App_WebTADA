@@ -22,7 +22,7 @@ const lib: any = await import(LIB);
  *  PostgrestFilterBuilder thật (await q → {data, error}). */
 function mockQueryBuilder(resolve: () => { data: unknown[]; error: unknown }) {
   const q: Record<string, unknown> = {};
-  for (const name of ['from', 'select', 'eq', 'in', 'order', 'limit']) {
+  for (const name of ['from', 'select', 'eq', 'in', 'order', 'limit', 'lt', 'maybeSingle']) {
     q[name] = () => q;
   }
   q['_resolve'] = resolve;
@@ -157,6 +157,7 @@ function mockSbForChunks(rows: Record<string, unknown>[]) {
       q.eq = (col: string, val: unknown) => { calls.push(`eq:${col}=${val}`); return q; };
       q.order = (col: string, opts: unknown) => { calls.push(`order:${col}:${JSON.stringify(opts)}`); return q; };
       q.limit = (n: number) => { calls.push(`limit:${n}`); return q; };
+      q.maybeSingle = () => q;
       q.then = (onFulfilled: (v: unknown) => unknown) =>
         Promise.resolve(rows.length ? { data: rows, error: null } : { data: [], error: null }).then(onFulfilled);
       return q;
@@ -180,13 +181,13 @@ test('fetchLegalContent — ghép chunks đúng thứ tự chunk_index, giữ b�
   assert.ok(result.content.indexOf('| Bậc |') < result.content.indexOf('Hết biểu thuế.'));
 });
 
-test('fetchLegalContent — heading trống → chỉ ghép content', async () => {
+test('fetchLegalContent — heading trống → chỉ ghép content, title từ chunk.title', async () => {
   const { sb } = mockSbForChunks([
-    { title: 'VBHN', heading: '', content: 'Nội dung điều 1.', chunk_index: 0 },
+    { title: 'VBHN Luật Doanh nghiệp 2025', heading: '', content: 'Nội dung điều 1.', chunk_index: 0 },
   ]);
-  const result = await lib.fetchLegalContent(sb, 'vbhn.md');
+  const result = await lib.fetchLegalContent(sb, 'vbhn-luat-doanh-nghiep-2025.md');
   assert.equal(result.error, null);
-  assert.equal(result.title, 'VBHN');
+  assert.equal(result.title, 'VBHN Luật Doanh nghiệp 2025');
   assert.equal(result.content, 'Nội dung điều 1.');
   assert.ok(!result.content.includes('## '));
 });
@@ -225,4 +226,138 @@ test('fetchLegalContent — lỗi Supabase → trả error, không throw', async
   const result = await lib.fetchLegalContent(sb, 'x.md');
   assert.equal(result.error, 'bang khong ton tai');
   assert.equal(result.content, '');
+});
+
+// =========================================================================
+// generateLegalTitle — tiêu đề tiếng Việt từ nội dung văn bản
+// =========================================================================
+
+test('generateLegalTitle — title DB đã chuẩn → giữ nguyên', () => {
+  const title = lib.generateLegalTitle('Luật 109/2025/QH15 - Thuế thu nhập cá nhân (TNCN)', [], 'luat-109-2025-tncn.md');
+  assert.equal(title, 'Luật 109/2025/QH15 - Thuế thu nhập cá nhân (TNCN)');
+});
+
+test('generateLegalTitle — title DB thô (tên file) → sinh từ frontmatter source', () => {
+  const chunks = [{ content: '---\ntitle: TT 94/2026 — Điều 1. Phạm vi điều chỉnh\ndomain: tax\nsource: Thông tư 94/2026/TT-BTC\nstatus: active\n---', heading: '' }];
+  const title = lib.generateLegalTitle('tt-94-2026', chunks, 'tt-94-2026.md');
+  assert.equal(title, 'Thông tư 94/2026/TT-BTC');
+});
+
+test('generateLegalTitle — không có frontmatter → sinh từ heading chunk đầu', () => {
+  const chunks = [
+    { content: '> Nâng ngưỡng doanh thu...', heading: 'NĐ 141/2026 — Sửa đổi thuế hộ KD, cá nhân KD và miễn thuế TNDN doanh nghiệp nhỏ > Tóm tắt' },
+    { content: '- Nội dung chi tiết', heading: 'NĐ 141/2026 — Sửa đổi thuế hộ KD, cá nhân KD và miễn thuế TNDN doanh nghiệp nhỏ > Chi tiết' },
+  ];
+  const title = lib.generateLegalTitle('nd-141-2026-ho-kinh-doanh-tndn', chunks, 'nd-141-2026-ho-kinh-doanh-tndn.md');
+  assert.equal(title, 'NĐ 141/2026 — Sửa đổi thuế hộ KD, cá nhân KD và miễn thuế TNDN doanh nghiệp nhỏ');
+});
+
+test('generateLegalTitle — frontmatter title chuẩn (có dấu tiếng Việt) → dùng nó', () => {
+  const chunks = [
+    { content: '---\ntitle: Luật Thuế TNCN 2025\nsource: 109/2025/QH15 (Quốc hội)\n---', heading: '' },
+    { content: 'abc', heading: 'TT 87/2026 — Hướng dẫn > Tóm tắt' },
+  ];
+  const title = lib.generateLegalTitle('luat-thue-tncn-2025', chunks, 'luat-thue-tncn-2025.md');
+  assert.equal(title, 'Luật Thuế TNCN 2025');
+});
+
+test('generateLegalTitle — không có gì → fallback file_path (basename)', () => {
+  const title = lib.generateLegalTitle('tt-89-2026', [], 'tt-89-2026.md');
+  assert.equal(title, 'tt-89-2026.md');
+});
+
+test('generateLegalTitle — source rỗng/heading rỗng → fallback file_path', () => {
+  const chunks = [{ content: 'Nội dung không có frontmatter, không có heading', heading: '' }];
+  const title = lib.generateLegalTitle('no-such-file', chunks, 'no-such-file.md');
+  assert.equal(title, 'no-such-file.md');
+});
+
+test('isRawFilenameTitle — nhận diện tên file thô vs title chuẩn', () => {
+  assert.equal(lib.isRawFilenameTitle('tt-94-2026'), true);
+  assert.equal(lib.isRawFilenameTitle('nd-253-2026-tncn'), true);
+  assert.equal(lib.isRawFilenameTitle('Thông tư 94/2026/TT-BTC'), false);
+  assert.equal(lib.isRawFilenameTitle('Nghị định 253/2026/NĐ-CP'), false);
+  assert.equal(lib.isRawFilenameTitle('Luật 109/2025/QH15 - Thuế TNCN'), false);
+  assert.equal(lib.isRawFilenameTitle(''), true);
+});
+
+test('extractDocTitleFromHeading — lấy phần trước " > " đầu tiên', () => {
+  assert.equal(
+    lib.extractDocTitleFromHeading('NĐ 141/2026 — Sửa đổi thuế hộ KD > Tóm tắt'),
+    'NĐ 141/2026 — Sửa đổi thuế hộ KD'
+  );
+  assert.equal(lib.extractDocTitleFromHeading(''), '');
+  assert.equal(lib.extractDocTitleFromHeading('không có separator'), 'không có separator');
+});
+
+// =========================================================================
+// fetchLegalContent — sinh title tiếng Việt từ stored title + chunks
+// =========================================================================
+
+/** Mock Supabase hỗ trợ cả source_documents lẫn knowledge_chunks. */
+function mockSbForContent(rows: Record<string, unknown>[], storedTitle: string) {
+  const calls: string[] = [];
+  const sb = {
+    from: (table: string) => {
+      calls.push(`from:${table}`);
+      const q: Record<string, unknown> = {};
+      q.select = () => q;
+      q.eq = (col: string, val: unknown) => { calls.push(`eq:${col}=${val}`); return q; };
+      q.order = (col: string, opts: unknown) => { calls.push(`order:${col}:${JSON.stringify(opts)}`); return q; };
+      q.limit = (n: number) => { calls.push(`limit:${n}`); return q; };
+      q.maybeSingle = () => q;
+      q.then = (onFulfilled: (v: unknown) => unknown) => {
+        const resolved = table === 'source_documents'
+          ? { data: storedTitle ? { title: storedTitle } : null, error: null }
+          : { data: rows, error: null };
+        return Promise.resolve(resolved).then(onFulfilled);
+      };
+      return q;
+    },
+  };
+  return { sb, calls };
+}
+
+test('fetchLegalContent — title từ stored source_documents khi chuẩn', async () => {
+  const { sb } = mockSbForContent(
+    [{ title: 'tt-94-2026', heading: '', content: 'Nội dung điều 1.', chunk_index: 0 }],
+    'Luật 109/2025/QH15 - Thuế thu nhập cá nhân (TNCN)'
+  );
+  const result = await lib.fetchLegalContent(sb, 'luat-109-2025-tncn.md');
+  assert.equal(result.error, null);
+  assert.equal(result.title, 'Luật 109/2025/QH15 - Thuế thu nhập cá nhân (TNCN)');
+  assert.equal(result.content, 'Nội dung điều 1.');
+});
+
+test('fetchLegalContent — title DB thô → sinh từ chunks (frontmatter source)', async () => {
+  const { sb } = mockSbForContent(
+    [
+      { title: 'tt-94-2026-dieu-1', heading: '', content: '---\ntitle: TT 94/2026\ndomain: tax\nsource: Thông tư 94/2026/TT-BTC\n---', chunk_index: 0 },
+      { title: 'tt-94-2026-dieu-1', heading: 'TT 94/2026 — Điều 1. Phạm vi điều chỉnh > Tóm tắt', content: 'Thông tư này quy định về...', chunk_index: 1 },
+    ],
+    'tt-94-2026'
+  );
+  const result = await lib.fetchLegalContent(sb, 'tt-94-2026.md');
+  assert.equal(result.error, null);
+  assert.equal(result.title, 'Thông tư 94/2026/TT-BTC');
+  assert.equal(result.chunk_count, 2);
+  assert.ok(result.content.includes('## TT 94/2026 — Điều 1. Phạm vi điều chỉnh > Tóm tắt'));
+});
+
+test('fetchLegalContent — title DB thô + không frontmatter → sinh từ heading', async () => {
+  const { sb } = mockSbForContent(
+    [{ title: 'nd-141', heading: 'NĐ 141/2026 — Sửa đổi thuế hộ KD > Tóm tắt', content: 'Nội dung.', chunk_index: 0 }],
+    'nd-141-2026-ho-kinh-doanh-tndn'
+  );
+  const result = await lib.fetchLegalContent(sb, 'nd-141-2026-ho-kinh-doanh-tndn.md');
+  assert.equal(result.error, null);
+  assert.equal(result.title, 'NĐ 141/2026 — Sửa đổi thuế hộ KD');
+});
+
+test('fetchLegalContent — query source_documents title trước khi chunks', async () => {
+  const { sb, calls } = mockSbForContent([], 'tt-89-2026');
+  await lib.fetchLegalContent(sb, 'tt-89-2026.md');
+  const firstFrom = calls.findIndex((c) => c === 'from:source_documents');
+  const secondFrom = calls.findIndex((c) => c === 'from:knowledge_chunks');
+  assert.ok(firstFrom >= 0 && secondFrom > firstFrom, 'phải query source_documents trước knowledge_chunks');
 });

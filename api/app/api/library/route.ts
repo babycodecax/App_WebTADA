@@ -12,7 +12,8 @@ export const maxDuration = 60;
  *   - forms:          biểu mẫu admin thêm thủ công (bảng landing_forms, is_active=true)
  *   - legal_documents: văn bản luật đọc từ kho nguồn source_documents hiện có
  *                      (source_origin='vault', status='ready', doc_type ∈
- *                      luat/nd/tt/nq/vbhn) — KHÔNG tạo bảng mới cho luật.
+ *                      luat/nd/tt/nq/vbhn). title được sinh tiếng Việt đầy đủ
+ *                      từ nội dung (frontmatter source/heading) — không còn tên file thô.
  *
  * Không cache dài — mỗi lần mở trang chủ là lấy dữ liệu mới nhất.
  */

@@ -13,12 +13,27 @@ const SERVICES_CONTENT_ROW = '__services_content__';
  * Trả về toàn bộ nội dung dịch vụ dưới dạng 1 văn bản thuần (mỗi dòng 1 dịch vụ,
  * admin tự viết, có thể kèm emoji). Trang chủ hiển thị đúng 1-1 theo nội dung này.
  *
+ * Query hàng sentinel (group_name = __services_content__):
+ *   - Ưu tiên is_active = true;
+ *   - Nếu không tìm thấy (row null) → fallback query bỏ filter is_active
+ *     (phòng trường hợp RLS/trigger làm is_active sai, nội dung vẫn hiển thị).
+ *
  * Response: { "content": "🏠 Kế toán dịch vụ trọn gói\n..." }
  * Không cache dài — mỗi lần mở trang chủ là lấy nội dung mới nhất.
  */
 export async function GET(_req: NextRequest) {
   try {
-    const { data: row, error } = await getSupabase()
+    const sb = getSupabase();
+
+    // DEBUG tạm: fingerprint service role key (chỉ hash 12 ký tự — không lộ key)
+    try {
+      const crypto = require('crypto');
+      const k = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+      const fp = crypto.createHash('sha256').update(k).digest('hex').slice(0, 12);
+      console.error(`[services-debug] key-fp=${fp} url-host=${(process.env.SUPABASE_URL || '').replace(/^https:\/\//, '').split('.')[0]}`);
+    } catch { /* bỏ qua */ }
+
+    const { data: row, error } = await sb
       .from('landing_services')
       .select('description')
       .eq('is_active', true)
@@ -27,14 +42,39 @@ export async function GET(_req: NextRequest) {
       .maybeSingle();
 
     if (error) {
+      console.error(`[services] Lỗi query is_active=true: ${error.message}`);
       return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
 
-    return new Response(JSON.stringify({ content: row?.description || '' }), {
+    // Fallback: row null (không tìm thấy hàng active) → thử query không filter is_active
+    if (!row) {
+      const { data: fallbackRow, error: fallbackErr } = await sb
+        .from('landing_services')
+        .select('description, is_active')
+        .eq('group_name', SERVICES_CONTENT_ROW)
+        .limit(1)
+        .maybeSingle();
+
+      if (fallbackErr) {
+        console.error(`[services] Lỗi query fallback: ${fallbackErr.message}`);
+        return new Response(JSON.stringify({ error: fallbackErr.message }), { status: 500 });
+      }
+      if (fallbackRow) {
+        console.warn(
+          `[services] Hàng sentinel tồn tại nhưng is_active=${fallbackRow.is_active} — dùng fallback query`
+        );
+      }
+      return new Response(JSON.stringify({ content: fallbackRow?.description || '' }), {
+        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+      });
+    }
+
+    return new Response(JSON.stringify({ content: row.description || '' }), {
       headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
     });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : 'Lỗi không xác định';
+    console.error(`[services] Lỗi không xác định: ${msg}`);
     return new Response(JSON.stringify({ error: `Lỗi lấy nội dung dịch vụ: ${msg}` }), { status: 500 });
   }
 }

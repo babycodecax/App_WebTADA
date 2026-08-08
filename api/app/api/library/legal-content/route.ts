@@ -12,6 +12,8 @@ export const maxDuration = 60;
  * - KHÔNG cần auth — bất kỳ ai cũng xem được văn bản luật (vault/legal là tri thức công khai).
  * - Dữ liệu ghép từ knowledge_chunks (không đọc file gốc — Vercel không có vault/).
  * - Giống hệt /api/admin/sources/content nhưng bỏ check admin.
+ * - title: tiếng Việt đầy đủ (ưu tiên source_documents.title chuẩn → frontmatter
+ *   source/heading trong chunks → fallback file_path).
  *
  * Response: { file_path, title, content, chunk_count } — content là markdown
  * (giữ nguyên bảng | cột |, heading, danh sách) để frontend render bằng marked.
