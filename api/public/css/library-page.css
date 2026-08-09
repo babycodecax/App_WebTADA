@@ -99,6 +99,11 @@
   display: flex;
   flex-direction: column;
 }
+/* Bắt buộc hidden attribute thắng display:flex — 2 tab (Văn bản luật/Biểu mẫu)
+   chỉ hiển thị 1 list tại 1 thời điểm; nếu thiếu dòng này cả 2 list hiện chồng nhau. */
+.library-page-list[hidden] {
+  display: none !important;
+}
 
 .library-row {
   display: flex;
