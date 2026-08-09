@@ -1,32 +1,48 @@
 """admin_auth.py — Xác thực admin chung cho các router quản trị.
 
-Trước đây _get_admin_password/_check_admin bị nhân bản trong upload_routes.py
-và source_routes.py — fix MEDIUM: gom về 1 module dùng chung.
-
-Các router KHÔNG được đổi hành vi: vẫn đọc ADMIN_PASSWORD MỖI LẦN gọi
-(.env thay đổi sau khi server start có hiệu lực ngay).
+THỐNG NHẤT: chỉ dùng TÀI KHOẢN GOOGLE được cấp quyền (ADMIN_EMAILS).
+Bỏ mật khẩu ADMIN_PASSWORD — check_admin verify JWT access token của
+Supabase (Google OAuth) rồi so email với danh sách ADMIN_EMAILS.
 """
-import hmac
 import os
 
 from fastapi import HTTPException, Request
 
 
-def _get_admin_password() -> str:
-    """Đọc ADMIN_PASSWORD MỖI LẦN gọi — .env thay đổi sau khi server start
-    vẫn có hiệu lực ngay (trước đây đọc 1 lần lúc import: server start khi
-    chưa đặt password thì mọi admin endpoint trả 401 tới khi restart)."""
-    return os.getenv("ADMIN_PASSWORD", "")
+def _get_admin_emails() -> set[str]:
+    """Đọc ADMIN_EMAILS MỖI LẦN gọi — .env thay đổi sau khi server start
+    vẫn có hiệu lực ngay."""
+    return {
+        email.strip().lower()
+        for email in os.getenv("ADMIN_EMAILS", "").split(",")
+        if email.strip()
+    }
 
 
-def check_admin(request: Request) -> None:
-    """Xác thực Bearer token so với ADMIN_PASSWORD (chống timing attack)."""
-    password = _get_admin_password()
-    if not password:
-        raise HTTPException(status_code=401, detail="ADMIN_PASSWORD chưa được cấu hình")
+def check_admin(request: Request) -> str:
+    """Xác thực Bearer token Google (Supabase access token) + email ∈ ADMIN_EMAILS.
+    Trả về email admin nếu hợp lệ; ném 401/403 nếu không."""
+    admins = _get_admin_emails()
+    if not admins:
+        raise HTTPException(status_code=401, detail="ADMIN_EMAILS chưa được cấu hình")
     auth = request.headers.get("Authorization", "")
     if not auth.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Cần token quản trị")
+        raise HTTPException(status_code=401, detail="Cần đăng nhập")
     token = auth.replace("Bearer ", "", 1)
-    if not hmac.compare_digest(token, password):
-        raise HTTPException(status_code=401, detail="Token quản trị không hợp lệ")
+    try:
+        from supabase import create_client
+
+        url = os.getenv("SUPABASE_URL", "")
+        anon = os.getenv("SUPABASE_ANON_KEY", "")
+        if not url or not anon:
+            raise HTTPException(status_code=500, detail="Supabase chưa được cấu hình")
+        supabase = create_client(url, anon)
+        user = supabase.auth.get_user(token)
+        email = (user.user.email or "").lower().strip()
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(status_code=401, detail="Token không hợp lệ") from None
+    if not email or email not in admins:
+        raise HTTPException(status_code=403, detail="Bạn không có quyền quản trị")
+    return email

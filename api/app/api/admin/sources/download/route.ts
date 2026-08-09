@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
-import { isAdmin } from '@/lib/adminAuth';
+import { isAdminGoogle } from '@/lib/adminAuth';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -13,7 +13,7 @@ const BUCKET = 'vault-sources';
  * Frontend dùng để tải file về máy.
  */
 export async function GET(req: NextRequest) {
-  if (!isAdmin(req)) {
+  if (!(await isAdminGoogle(req))) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { 'Content-Type': 'application/json' } });
   }
 

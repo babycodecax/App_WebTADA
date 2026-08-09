@@ -5,7 +5,6 @@
   'use strict';
 
   var API = window.LOCAL_API ? window.LOCAL_API : '';
-  var TOKEN_KEY = 'tada_admin_token';
 
   var el = {
     password: null, msg: null, connNote: null, connStatus: null,
@@ -15,15 +14,6 @@
     listCard: null, list: null, legalCard: null, legalList: null
   };
 
-  function getToken() {
-    try { return sessionStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; }
-  }
-  function setToken(t) {
-    try {
-      if (t) sessionStorage.setItem(TOKEN_KEY, t);
-      else sessionStorage.removeItem(TOKEN_KEY);
-    } catch (e) { /* ignore */ }
-  }
 
   function showMsg(target, text, type) {
     if (!target) return;
@@ -46,57 +36,21 @@
     return (bytes / 1024 / 1024).toFixed(1) + ' MB';
   }
 
-  /* ===== Kết nối ===== */
-  function connect() {
-    var pw = el.password.value.trim();
-    if (!pw) { showMsg(el.msg, 'Nhập mật khẩu quản trị', 'error'); return; }
-    showMsg(el.msg, 'Đang kết nối...', '');
-
-    fetch(API + '/api/admin/check', { headers: { 'Authorization': 'Bearer ' + pw } })
-      .then(function (r) {
-        if (r.status === 401) throw new Error('Mật khẩu quản trị không đúng');
-        if (!r.ok) throw new Error('Kết nối thất bại (' + r.status + ')');
-        return r.json();
-      })
-      .then(function () {
-        setToken(pw);
-        el.password.value = '';
-        renderConnected(true);
-        showMsg(el.msg, 'Kết nối thành công', 'success');
-        loadAll();
-      })
-      .catch(function (err) {
-        showMsg(el.msg, 'Lỗi: ' + (err.message || 'Kết nối thất bại'), 'error');
-      });
-  }
-
-  function logout() {
-    setToken('');
-    renderConnected(false);
-    showMsg(el.msg, 'Đã đăng xuất', '');
-  }
-
+  /* ===== Trạng thái đăng nhập Google ===== */
   function renderConnected(connected) {
-    el.connNote.style.display = connected ? 'flex' : 'none';
-    el.connStatus.textContent = connected
-      ? 'Đã kết nối quản trị.'
-      : 'Chưa kết nối — nhập mật khẩu quản trị (ADMIN_PASSWORD):';
-    el.editorCard.style.display = connected ? 'block' : 'none';
-    el.listCard.style.display = connected ? 'block' : 'none';
-    el.legalCard.style.display = connected ? 'block' : 'none';
-    if (!connected) {
-      resetEditor();
-      el.list.innerHTML = '';
-      el.legalList.innerHTML = '';
+    if (el.editorCard) el.editorCard.style.display = connected ? 'block' : 'none';
+    if (el.listCard) el.listCard.style.display = connected ? 'block' : 'none';
+    if (!connected && el.list) {
+      el.list.innerHTML = '<div class="blog-empty">Chưa đăng nhập — bấm nút Đăng nhập (Google) ở góc trên bên phải.</div>';
     }
   }
 
   /* ===== Danh sách biểu mẫu ===== */
   function loadForms() {
     el.list.innerHTML = '<div class="blog-loading">Đang tải...</div>';
-    fetch(API + '/api/admin/forms', { headers: { 'Authorization': 'Bearer ' + getToken() } })
+    fetch(API + '/api/admin/forms', { headers: { 'Authorization': 'Bearer ' + (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '') } })
       .then(function (r) {
-        if (r.status === 401) { setToken(''); renderConnected(false); throw new Error('Phiên hết hạn'); }
+        if (r.status === 401) { window.__tadaSession = null; renderConnected(false); throw new Error('Phiên hết hạn'); }
         return r.json();
       })
       .then(function (data) {
@@ -257,12 +211,12 @@
 
     fetch(API + '/api/admin/forms', {
       method: isEdit ? 'PUT' : 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '') },
       body: JSON.stringify(payload)
     })
       .then(function (r) {
         return r.json().then(function (d) {
-          if (r.status === 401) { setToken(''); renderConnected(false); throw new Error('Phiên hết hạn'); }
+          if (r.status === 401) { window.__tadaSession = null; renderConnected(false); throw new Error('Phiên hết hạn'); }
           if (!r.ok) throw new Error(d.error || ('Lưu thất bại (' + r.status + ')'));
           return d;
         });
@@ -283,12 +237,12 @@
   function uploadFormFileWithMeta(fd, isEdit, name, done) {
     fetch(API + '/api/admin/forms', {
       method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + getToken() },
+      headers: { 'Authorization': 'Bearer ' + (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '') },
       body: fd
     })
       .then(function (r) {
         return r.json().then(function (d) {
-          if (r.status === 401) { setToken(''); renderConnected(false); throw new Error('Phiên hết hạn'); }
+          if (r.status === 401) { window.__tadaSession = null; renderConnected(false); throw new Error('Phiên hết hạn'); }
           if (!r.ok) throw new Error(d.error || ('Lưu thất bại (' + r.status + ')'));
           return d;
         });
@@ -307,10 +261,10 @@
   function deleteForm(id) {
     fetch(API + '/api/admin/forms?id=' + encodeURIComponent(id), {
       method: 'DELETE',
-      headers: { 'Authorization': 'Bearer ' + getToken() }
+      headers: { 'Authorization': 'Bearer ' + (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '') }
     })
       .then(function (r) {
-        if (r.status === 401) { setToken(''); renderConnected(false); throw new Error('Phiên hết hạn'); }
+        if (r.status === 401) { window.__tadaSession = null; renderConnected(false); throw new Error('Phiên hết hạn'); }
         return r.json();
       })
       .then(function (d) {
@@ -327,7 +281,7 @@
      bindTo(get) — gắn DOM của tab "Quản lý tài liệu" (admin-docs.js gọi).
      Kết nối/quản lý phiên do admin-docs.js đảm nhiệm (1 ô password chung). */
   function bindTo(get) {
-    el.password = get('docs-password');
+    el.password = null; // bỏ mật khẩu — dùng Google auth
     el.msg = get('docs-conn-msg');
     el.connNote = get('docs-conn-note');
     el.editorCard = get('docs-upload-card');
@@ -356,13 +310,13 @@
     if (el.editorCard) el.editorCard.style.display = connected ? 'block' : 'none';
     if (el.listCard) el.listCard.style.display = connected ? 'block' : 'none';
     if (!connected && el.list) {
-      el.list.innerHTML = '<div class="blog-empty">Chưa kết nối — nhập mật khẩu quản trị ở trên.</div>';
+      el.list.innerHTML = '<div class="blog-empty">Chưa đăng nhập — bấm nút Đăng nhập (Google) ở góc trên bên phải.</div>';
     }
   }
 
   /* ===== Kết nối — delegate cho admin-docs (token chung) ===== */
   function getDocToken() {
-    return getToken();
+    return (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '');
   }
 
   // Expose cho tab "Quản lý tài liệu" (admin-docs.js)
@@ -373,7 +327,7 @@
     saveForm: saveForm,
     deleteForm: deleteForm,
     resetEditor: resetEditor,
-    hasToken: function () { return !!getToken(); }
+    hasToken: function () { return !!(window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : ''); }
   };
 
   if (document.readyState === 'loading') {

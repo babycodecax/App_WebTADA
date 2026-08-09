@@ -3,7 +3,6 @@
   'use strict';
 
   var API = window.LOCAL_API ? window.LOCAL_API : '';
-  var TOKEN_KEY = 'tada_admin_token';
   var el = { list: null, origin: null, q: null };
   var allSources = [];
 
@@ -31,10 +30,7 @@
     return '<div class="source-view-md">' + html + '</div>';
   }
 
-  function getToken() {
-    try { return sessionStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; }
-  }
-
+  
   // Escape cho nội dung TEXT (hiển thị trong thẻ) — dùng createTextNode để an toàn ở cả text lẫn attribute (innerHTML chuyển &<>"' thành entity an toàn).
   function escHtml(s) {
     if (s == null) return '';
@@ -66,7 +62,7 @@
     if (origin) url += 'origin=' + encodeURIComponent(origin) + '&';
     if (q) url += 'q=' + encodeURIComponent(q) + '&';
 
-    fetch(url, { headers: { 'Authorization': 'Bearer ' + getToken() } })
+    fetch(url, { headers: { 'Authorization': 'Bearer ' + (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '') } })
       .then(function (r) {
         if (r.status === 401) throw new Error('Phiên hết hạn');
         return r.json();
@@ -152,7 +148,7 @@
 
     // Ưu tiên: đọc file word gốc từ Storage (docx route)
     fetch(API + '/api/admin/sources/docx?file_path=' + encodeURIComponent(filePath), {
-      headers: { 'Authorization': 'Bearer ' + getToken() }
+      headers: { 'Authorization': 'Bearer ' + (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '') }
     })
       .then(function (r) {
         if (r.status === 401) throw new Error('Phiên hết hạn');
@@ -191,7 +187,7 @@
 
   function loadContentFallback(filePath, title, body) {
     fetch(API + '/api/admin/sources/content?file_path=' + encodeURIComponent(filePath), {
-      headers: { 'Authorization': 'Bearer ' + getToken() }
+      headers: { 'Authorization': 'Bearer ' + (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '') }
     })
       .then(function (r) { return r.json(); })
       .then(function (data) {
@@ -214,7 +210,7 @@
   function downloadSource(filePath, title) {
     // Thử tải raw .docx từ download route (Storage)
     fetch(API + '/api/admin/sources/download?file_path=' + encodeURIComponent(filePath), {
-      headers: { 'Authorization': 'Bearer ' + getToken() }
+      headers: { 'Authorization': 'Bearer ' + (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '') }
     })
       .then(function (r) {
         if (!r.ok) throw new Error('not found');
@@ -232,7 +228,7 @@
       .catch(function () {
         // Fallback: tải markdown từ content route
         fetch(API + '/api/admin/sources/content?file_path=' + encodeURIComponent(filePath), {
-          headers: { 'Authorization': 'Bearer ' + getToken() }
+          headers: { 'Authorization': 'Bearer ' + (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '') }
         })
           .then(function (r) { return r.json(); })
           .then(function (data) {
@@ -266,7 +262,7 @@
       function (fp) {
         fetch(API + '/api/admin/sources?file_path=' + encodeURIComponent(fp) + '&mode=exact', {
           method: 'DELETE',
-          headers: { 'Authorization': 'Bearer ' + getToken() }
+          headers: { 'Authorization': 'Bearer ' + (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '') }
         })
           .then(function (r) {
             if (r.status === 401) throw new Error('Phiên hết hạn');
@@ -288,7 +284,7 @@
     if (!confirm('Khôi phục nguồn "' + filePath + '"?\n\nLưu ý: nếu kiến thức đã bị dọn, cần chạy lại ingest (backend local) để tái tạo chunks.')) return;
     fetch(API + '/api/admin/sources/restore', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '') },
       body: JSON.stringify({ file_path: filePath })
     })
       .then(function (r) {

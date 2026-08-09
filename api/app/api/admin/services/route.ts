@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
-import { isAdmin } from '@/lib/adminAuth';
+import { isAdminGoogle } from '@/lib/adminAuth';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -27,7 +27,7 @@ const SERVICES_CONTENT_MAX = 50000;
  * }
  */
 export async function GET(req: NextRequest) {
-  if (!isAdmin(req)) {
+  if (!(await isAdminGoogle(req))) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
   try {
@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
  * Admin auth bắt buộc.
  */
 export async function POST(req: NextRequest) {
-  if (!isAdmin(req)) {
+  if (!(await isAdminGoogle(req))) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
   try {
@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
  * các hàng dịch vụ cũ từ giao diện cũ không còn quản lý nữa.
  */
 export async function DELETE(req: NextRequest) {
-  if (!isAdmin(req)) {
+  if (!(await isAdminGoogle(req))) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
   const url = new URL(req.url);

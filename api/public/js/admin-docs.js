@@ -1,5 +1,5 @@
 /* Admin Quản lý tài liệu — coordinator hợp nhất (Upload + Nguồn tri thức + Biểu mẫu).
-   - 1 kết nối admin chung (ADMIN_PASSWORD → token tada_admin_token).
+   - Xác thực: TÀI KHOẢN GOOGLE (TADAAdminAuth.getToken) — bỏ mật khẩu ADMIN_PASSWORD.
    - Upload 2 loại: Nguồn tri thức (POST /api/admin/upload) | Biểu mẫu (POST /api/admin/forms).
    - 2 sub-tab danh sách: Nguồn tri thức (tái dùng TADASources) | Biểu mẫu (tái dùng TADAForms).
    Dùng chung marked/DOMPurify đã load trong admin.html. */
@@ -7,10 +7,8 @@
   'use strict';
 
   var API = window.LOCAL_API ? window.LOCAL_API : '';
-  var TOKEN_KEY = 'tada_admin_token';
 
   var el = {
-    password: null, connectBtn: null, connNote: null, logoutBtn: null, connMsg: null,
     uploadCard: null, file: null, fileHint: null, title: null,
     descWrap: null, description: null, sortWrap: null, sort: null,
     saveBtn: null, uploadMsg: null,
@@ -19,13 +17,7 @@
   var currentSub = 'source';
 
   function getToken() {
-    try { return sessionStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; }
-  }
-  function setToken(t) {
-    try {
-      if (t) sessionStorage.setItem(TOKEN_KEY, t);
-      else sessionStorage.removeItem(TOKEN_KEY);
-    } catch (e) { /* ignore */ }
+    return (window.TADAAdminAuth && window.TADAAdminAuth.getToken) ? window.TADAAdminAuth.getToken() : '';
   }
   function showMsg(target, text, type) {
     if (!target) return;
@@ -34,44 +26,14 @@
     if (!type) target.className += ' hidden';
   }
 
-  /* ===== Kết nối / đăng xuất (token dùng chung 3 panel) ===== */
-  function connect() {
-    var pw = el.password.value.trim();
-    if (!pw) { showMsg(el.connMsg, 'Nhập mật khẩu quản trị', 'error'); return; }
-    showMsg(el.connMsg, 'Đang kết nối...', '');
-
-    fetch(API + '/api/admin/check', { headers: { 'Authorization': 'Bearer ' + pw } })
-      .then(function (r) {
-        if (r.status === 401) throw new Error('Mật khẩu quản trị không đúng');
-        if (!r.ok) throw new Error('Kết nối thất bại (' + r.status + ')');
-        return r.json();
-      })
-      .then(function () {
-        setToken(pw);
-        el.password.value = '';
-        renderConnected(true);
-        showMsg(el.connMsg, 'Kết nối thành công', 'success');
-        refreshLists();
-      })
-      .catch(function (err) {
-        showMsg(el.connMsg, 'Lỗi: ' + (err.message || 'Kết nối thất bại'), 'error');
-      });
-  }
-
-  function logout() {
-    setToken('');
-    renderConnected(false);
-    showMsg(el.connMsg, 'Đã đăng xuất', '');
-  }
-
+  /* ===== Trạng thái đăng nhập (Google) — mở khóa các panel ===== */
   function renderConnected(connected) {
-    if (el.connNote) el.connNote.style.display = connected ? 'flex' : 'none';
     if (el.uploadCard) el.uploadCard.style.display = connected ? 'block' : 'none';
     if (el.listCard) el.listCard.style.display = connected ? 'block' : 'none';
     if (!connected) {
       var sl = document.getElementById('sources-list');
       var fl = document.getElementById('forms-list');
-      if (sl) sl.innerHTML = '<div class="blog-empty">Chưa kết nối — nhập mật khẩu quản trị ở trên.</div>';
+      if (sl) sl.innerHTML = '<div class="blog-empty">Chưa đăng nhập — bấm nút Đăng nhập (Google) ở góc trên bên phải.</div>';
       if (fl) fl.innerHTML = '<div class="blog-empty">Chưa có biểu mẫu nào.</div>';
     }
   }
@@ -170,11 +132,6 @@
 
   /* ===== Khởi tạo ===== */
   function init() {
-    el.password = document.getElementById('docs-password');
-    el.connectBtn = document.getElementById('docs-connect-btn');
-    el.connNote = document.getElementById('docs-conn-note');
-    el.logoutBtn = document.getElementById('docs-logout-btn');
-    el.connMsg = document.getElementById('docs-conn-msg');
     el.uploadCard = document.getElementById('docs-upload-card');
     el.fileInput = document.getElementById('docs-file');
     el.fileHint = document.getElementById('docs-file-hint');
@@ -190,10 +147,7 @@
     el.subForms = document.getElementById('docs-sub-forms');
     el.listCard = document.getElementById('docs-list-card');
 
-    el.connectBtn?.addEventListener('click', connect);
-    el.logoutBtn?.addEventListener('click', logout);
     el.saveBtn?.addEventListener('click', onUpload);
-    el.password?.addEventListener('keydown', function (e) { if (e.key === 'Enter') connect(); });
     el.subBtns.forEach(function (b) {
       b.addEventListener('click', function () { showSub(b.dataset.sub); });
     });
@@ -209,13 +163,23 @@
       window.TADAForms.bindTo(function (id) { return document.getElementById(id); });
     }
 
-    var connected = !!getToken();
-    renderConnected(connected);
-    if (connected) {
-      showSub(currentSub);
-    } else {
-      showSub(currentSub); // không tải gì (chưa có token)
+    // Trạng thái đăng nhập Google — lắng nghe session thay đổi (blog-admin expose)
+    function syncAuth() {
+      var connected = !!getToken();
+      renderConnected(connected);
+      if (connected) showSub(currentSub);
+      else showSub(currentSub);
     }
+    syncAuth();
+    // Lắng nghe session Google thay đổi (blog-admin expose window.__tadaSession).
+    // Luôn gắn interval — session có thể chưa sẵn sàng lúc init (chưa login).
+    var _orig = window.__tadaSession;
+    setInterval(function () {
+      if (window.__tadaSession !== _orig) {
+        _orig = window.__tadaSession;
+        syncAuth();
+      }
+    }, 1500);
 
     // Khi mở tab "docs" (click sidebar) → refresh
     document.querySelectorAll('.admin-nav-btn[data-view="docs"]').forEach(function (btn) {

@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
-import { isAdmin } from '@/lib/adminAuth';
+import { isAdminGoogle } from '@/lib/adminAuth';
 import { collectMatchingPaths, deleteSourceCascade, escapeLike } from '@/lib/deleteCascade';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
-  if (!isAdmin(req)) {
+  if (!(await isAdminGoogle(req))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

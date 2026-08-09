@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
-import { isAdmin } from '@/lib/adminAuth';
+import { isAdminGoogle } from '@/lib/adminAuth';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -14,7 +14,7 @@ interface UploadDoc {
 
 /** GET /api/admin/knowledge — danh sách tài liệu đã upload (prefix upload/) + số chunks. */
 export async function GET(req: NextRequest) {
-  if (!isAdmin(req)) {
+  if (!(await isAdminGoogle(req))) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
 

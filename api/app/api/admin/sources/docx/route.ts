@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
-import { isAdmin } from '@/lib/adminAuth';
+import { isAdminGoogle } from '@/lib/adminAuth';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -15,7 +15,7 @@ export const maxDuration = 60;
  * Response: { file_path, title, html, storage_path }
  */
 export async function GET(req: NextRequest) {
-  if (!isAdmin(req)) {
+  if (!(await isAdminGoogle(req))) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
 

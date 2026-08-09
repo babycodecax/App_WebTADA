@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
-import { isAdmin } from '@/lib/adminAuth';
+import { isAdminGoogle } from '@/lib/adminAuth';
 import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker';
 import { ALLOWED_EXTENSIONS, extractHtml, extractText, sanitizeTitle } from '@/lib/parseFile';
 import { invalidateStructuredCache } from '@/lib/structured';
@@ -221,7 +221,7 @@ async function upsertDocument(
 }
 
 export async function POST(req: NextRequest) {
-  if (!isAdmin(req)) {
+  if (!(await isAdminGoogle(req))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

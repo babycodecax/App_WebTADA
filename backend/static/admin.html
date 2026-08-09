@@ -103,16 +103,11 @@
 
     <!-- QUẢN LÝ TÀI LIỆU — hợp nhất: Upload + Nguồn tri thức + Thư viện biểu mẫu -->
     <section class="admin-view" id="view-docs">
-      <!-- 1. Kết nối quản trị (ADMIN_PASSWORD) — dùng chung cả tab -->
+      <!-- 1. Trạng thái đăng nhập — dùng TÀI KHOẢN GOOGLE (bỏ mật khẩu admin) -->
       <div class="admin-card">
         <h2>📁 Quản lý tài liệu</h2>
-        <div class="upload-conn-row">
-          <input type="password" id="docs-password" class="form-input" placeholder="Nhập mật khẩu quản trị (ADMIN_PASSWORD)" autocomplete="current-password">
-          <button type="button" class="btn btn-primary" id="docs-connect-btn">Kết nối</button>
-        </div>
-        <div class="upload-conn-status" id="docs-conn-note" style="display:none">
-          <span class="upload-conn-badge">Đã kết nối</span>
-          <button type="button" class="btn btn-outline btn-sm" id="docs-logout-btn">Đăng xuất</button>
+        <div class="upload-conn-status" id="docs-conn-note" style="display:flex">
+          <span class="upload-conn-badge" id="docs-conn-status">Chưa đăng nhập — bấm nút Đăng nhập (Google) ở góc trên bên phải</span>
         </div>
         <div id="docs-conn-msg" class="form-msg"></div>
       </div>
@@ -191,21 +186,12 @@
           Trang chủ sẽ hiển thị <strong>đúng y hệt</strong> những gì bạn nhập. Bấm <em>Lưu</em> để cập nhật lên trang chủ.
         </p>
 
-        <!-- Kết nối quản trị (dùng chung ADMIN_PASSWORD với tab Upload) -->
+        <!-- Trạng thái đăng nhập — dùng TÀI KHOẢN GOOGLE (bỏ mật khẩu admin) -->
         <div id="services-conn" class="services-conn">
-          <div class="services-conn-note" id="services-conn-note" style="display:none">
-            <span class="upload-conn-badge">Đã kết nối</span>
-            <button type="button" class="btn btn-outline btn-sm" id="services-logout-btn">Đăng xuất</button>
-          </div>
           <div class="services-conn-row">
             <strong>Kết nối admin:</strong>
-            <span id="services-conn-status">Chưa kết nối — vào tab <em>Upload tài liệu</em> để đăng nhập, hoặc nhập mật khẩu:</span>
+            <span id="services-conn-status">Chưa đăng nhập — bấm nút Đăng nhập (Google) ở góc trên bên phải:</span>
           </div>
-        </div>
-
-        <div class="sources-filter">
-          <input type="password" id="services-password" class="form-input" placeholder="Mật khẩu quản trị (ADMIN_PASSWORD)" autocomplete="current-password">
-          <button type="button" class="btn btn-primary" id="services-connect-btn">Kết nối</button>
         </div>
         <div id="services-msg" class="form-msg"></div>
 
@@ -268,6 +254,7 @@
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script src="static/js/blog-admin.js"></script>
+  <script src="static/js/admin-auth.js"></script>
   <script src="static/js/admin-docs.js"></script>
   <script src="static/js/admin-sources.js"></script>
   <script src="static/js/admin-forms.js"></script>

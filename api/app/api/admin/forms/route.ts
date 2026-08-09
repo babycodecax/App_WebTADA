@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
-import { isAdmin } from '@/lib/adminAuth';
+import { isAdminGoogle } from '@/lib/adminAuth';
 import { validateFormInput, validateFormUpdate } from '@/lib/libraryData';
 
 export const runtime = 'nodejs';
@@ -84,7 +84,7 @@ async function uploadFormFile(file: File, filePath: string, contentType: string)
  * Bộ lọc: ?q=<từ khoá name>
  */
 export async function GET(req: NextRequest) {
-  if (!isAdmin(req)) return NextResponse.json({ ok: false }, { status: 401 });
+  if (!(await isAdminGoogle(req))) return NextResponse.json({ ok: false }, { status: 401 });
   try {
     const url = new URL(req.url);
     const q = (url.searchParams.get('q') || '').trim().toLowerCase();
@@ -118,7 +118,7 @@ export async function GET(req: NextRequest) {
  *     upload file lên bucket 'forms' rồi tạo bản ghi (pattern giống admin/upload).
  */
 export async function POST(req: NextRequest) {
-  if (!isAdmin(req)) return NextResponse.json({ ok: false }, { status: 401 });
+  if (!(await isAdminGoogle(req))) return NextResponse.json({ ok: false }, { status: 401 });
   try {
     const contentType = (req.headers.get('content-type') || '').toLowerCase();
 
@@ -226,7 +226,7 @@ async function handleMultipartCreate(req: NextRequest) {
  * Body JSON: { id, name?, description?, sort_order?, is_active?, file_url? }
  */
 export async function PUT(req: NextRequest) {
-  if (!isAdmin(req)) return NextResponse.json({ ok: false }, { status: 401 });
+  if (!(await isAdminGoogle(req))) return NextResponse.json({ ok: false }, { status: 401 });
   try {
     const body: unknown = await req.json();
     const v = validateFormUpdate(body);
@@ -251,7 +251,7 @@ export async function PUT(req: NextRequest) {
  * DELETE /api/admin/forms?id=... — xóa biểu mẫu (kèm file trong Storage, best-effort).
  */
 export async function DELETE(req: NextRequest) {
-  if (!isAdmin(req)) return NextResponse.json({ ok: false }, { status: 401 });
+  if (!(await isAdminGoogle(req))) return NextResponse.json({ ok: false }, { status: 401 });
   const url = new URL(req.url);
   const id = (url.searchParams.get('id') || '').trim();
   if (!id) return NextResponse.json({ error: 'Thiếu id' }, { status: 400 });

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
-import { isAdmin } from '@/lib/adminAuth';
+import { isAdminGoogle } from '@/lib/adminAuth';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -13,7 +13,7 @@ export const maxDuration = 60;
  * tái tạo bằng cách chạy lại ingest (backend local) — source gốc vẫn còn.
  */
 export async function POST(req: NextRequest) {
-  if (!isAdmin(req)) {
+  if (!(await isAdminGoogle(req))) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
 

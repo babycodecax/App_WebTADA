@@ -23,6 +23,7 @@
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { flowType: 'pkce' } });
         supabase.auth.onAuthStateChange(function (ev, sess) {
           session = sess;
+          window.__tadaSession = sess; // expose cho admin-auth.js (Quản lý tài liệu/Dịch vụ)
           updateAuthUI();
           if (ev === 'SIGNED_IN') loadPostList();
         });
@@ -30,6 +31,7 @@
         supabase.auth.getSession().then(function (res) {
           if (!res.error && res.data.session) {
             session = res.data.session;
+            window.__tadaSession = res.data.session;
             updateAuthUI();
             loadPostList();
           }
@@ -53,6 +55,7 @@
       if (!supabase) return;
       supabase.auth.signOut().then(function () {
         session = null;
+        window.__tadaSession = null; // khóa các module admin khác
         editingId = null;
         updateAuthUI();
         document.getElementById('post-list').innerHTML = '';

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
-import { isAdmin } from '@/lib/adminAuth';
+import { isAdminGoogle } from '@/lib/adminAuth';
 import { deleteSourceCascade } from '@/lib/deleteCascade';
 import { deleteLegalDoc, LEGAL_DOCS_PUBLIC_FIELDS } from '@/lib/legalDocIngest';
 
@@ -18,7 +18,7 @@ export const maxDuration = 60;
  * Bộ lọc: ?origin=vault|upload (chỉ phân nhóm hiển thị), ?status=, ?q=<từ khoá title>
  */
 export async function GET(req: NextRequest) {
-  if (!isAdmin(req)) {
+  if (!(await isAdminGoogle(req))) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
 
@@ -85,7 +85,7 @@ export async function GET(req: NextRequest) {
  *   - KHÔNG xóa file .docx gốc trong Storage (siêu liệu gốc, giữ an toàn).
  */
 export async function DELETE(req: NextRequest) {
-  if (!isAdmin(req)) {
+  if (!(await isAdminGoogle(req))) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
 
