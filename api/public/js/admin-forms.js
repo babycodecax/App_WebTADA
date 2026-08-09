@@ -201,23 +201,23 @@
   function startEdit(id, forms) {
     var f = forms.find(function (x) { return String(x.id) === String(id); });
     if (!f) return;
-    // "Sửa" = TẠO BIỂU MẪU MỚI (copy tên/mô tả sang form thêm mới — không PUT
-    // lên biểu mẫu cũ). Admin chọn file mới rồi bấm Lưu → tạo biểu mẫu mới.
-    if (el.editId) el.editId.value = '';
-    if (el.editorTitle) el.editorTitle.textContent = '➕ Thêm biểu mẫu mới (copy từ "' + f.name + '")';
+    // SỬA THẬT biểu mẫu đã chọn: điền id + tên/mô tả, Lưu = PUT (không tạo mới,
+    // không nhập lại url — file cũ giữ nguyên).
+    if (el.editId) el.editId.value = String(f.id);
+    if (el.editorTitle) el.editorTitle.textContent = '✏️ Sửa biểu mẫu: ' + f.name;
     if (el.name) el.name.value = f.name || '';
     if (el.description) el.description.value = f.description || '';
     if (el.file) el.file.value = '';
-    if (el.sort) el.sort.value = '0';
-    if (el.active) el.active.value = 'true';
-    if (el.cancelBtn) el.cancelBtn.style.display = 'none';
-    showMsg(el.saveMsg, 'Chọn file mới bên dưới rồi bấm Lưu để tạo biểu mẫu MỚI (biểu mẫu cũ giữ nguyên).', '');
+    if (el.sort) el.sort.value = typeof f.sort_order === 'number' ? String(f.sort_order) : '0';
+    if (el.active) el.active.value = f.is_active === false ? 'false' : 'true';
+    if (el.cancelBtn) el.cancelBtn.style.display = 'inline-flex';
+    showMsg(el.saveMsg, 'Sửa tên/mô tả rồi bấm Lưu — file đã có giữ nguyên (không cần chọn lại).', '');
     if (el.editorCard) el.editorCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function saveForm() {
-    // LUÔN tạo mới (POST) — không còn sửa (PUT) trên biểu mẫu cũ.
-    // Yêu cầu: "khi nhấn sửa phải tạo thêm biểu mẫu mới, không sửa trên biểu mẫu đã chọn".
+    var id = el.editId ? el.editId.value : '';
+    var isEdit = !!id;
     var name = el.name.value.trim();
     if (!name) { showMsg(el.saveMsg, 'Nhập tên biểu mẫu', 'error'); return; }
 
@@ -229,48 +229,34 @@
     var done = function () { el.saveBtn.disabled = false; el.saveBtn.textContent = '💾 Lưu biểu mẫu'; };
 
     if (file) {
+      // Có file mới: nếu đang SỬA → PUT cập nhật file/url/name; nếu THÊM → POST tạo mới.
+      // Route forms PUT hỗ trợ file_url mới; upload file mới lên storage rồi PUT.
       var fd = new FormData();
       fd.append('file', file);
       fd.append('name', name);
       fd.append('description', el.description.value.trim());
-      fd.append('sort_order', el.sort ? el.sort.value || '' : '');
-      fetch(API + '/api/admin/forms', {
-        method: 'POST',
-        headers: { 'Authorization': 'Bearer ' + getToken() },
-        body: fd
-      })
-        .then(function (r) {
-          return r.json().then(function (d) {
-            if (r.status === 401) { setToken(''); renderConnected(false); throw new Error('Phiên hết hạn'); }
-            if (!r.ok) throw new Error(d.error || ('Lưu thất bại (' + r.status + ')'));
-            return d;
-          });
-        })
-        .then(function () {
-          showMsg(el.saveMsg, 'Đã thêm biểu mẫu và upload file.', 'success');
-          resetEditor();
-          loadForms();
-        })
-        .catch(function (err) {
-          if (!/hết hạn/i.test(err.message || '')) showMsg(el.saveMsg, 'Lỗi: ' + (err.message || 'lưu thất bại'), 'error');
-        })
-        .finally(done);
+      fd.append('sort_order', el.sort && /^\d+$/.test(el.sort.value) ? el.sort.value : '');
+      if (isEdit) fd.append('id', id);
+      // upload file → nhận file_url → PUT hoặc POST
+      uploadFormFileWithMeta(fd, isEdit, name, done);
       return;
     }
 
-    // Không có file — JSON path (luôn POST tạo mới, không PUT)
-    var payload = {
-      name: name,
-      description: el.description.value.trim(),
-      file_name: '',
-      file_url: '',
-      file_type: '',
-      file_size: 0,
-      sort_order: el.sort && /^\d+$/.test(el.sort.value) ? parseInt(el.sort.value, 10) : 0
-    };
+    // Không có file — JSON path: PUT nếu đang sửa (giữ file cũ), POST nếu thêm mới
+    var payload = isEdit
+      ? { id: id, name: name, description: el.description.value.trim() }
+      : {
+          name: name,
+          description: el.description.value.trim(),
+          file_name: '',
+          file_url: '',
+          file_type: '',
+          file_size: 0,
+          sort_order: el.sort && /^\d+$/.test(el.sort.value) ? parseInt(el.sort.value, 10) : 0
+        };
 
     fetch(API + '/api/admin/forms', {
-      method: 'POST',
+      method: isEdit ? 'PUT' : 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
       body: JSON.stringify(payload)
     })
@@ -282,7 +268,33 @@
         });
       })
       .then(function () {
-        showMsg(el.saveMsg, 'Đã thêm biểu mẫu mới.', 'success');
+        showMsg(el.saveMsg, isEdit ? 'Đã cập nhật biểu mẫu.' : 'Đã thêm biểu mẫu mới.', 'success');
+        resetEditor();
+        loadForms();
+      })
+      .catch(function (err) {
+        if (!/hết hạn/i.test(err.message || '')) showMsg(el.saveMsg, 'Lỗi: ' + (err.message || 'lưu thất bại'), 'error');
+      })
+      .finally(done);
+  }
+
+  // Upload file kèm metadata — 1 request duy nhất. Route multipart tự xử lý:
+  // có field `id` → SỬA (update row cũ, thay file); không có → TẠO MỚI.
+  function uploadFormFileWithMeta(fd, isEdit, name, done) {
+    fetch(API + '/api/admin/forms', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + getToken() },
+      body: fd
+    })
+      .then(function (r) {
+        return r.json().then(function (d) {
+          if (r.status === 401) { setToken(''); renderConnected(false); throw new Error('Phiên hết hạn'); }
+          if (!r.ok) throw new Error(d.error || ('Lưu thất bại (' + r.status + ')'));
+          return d;
+        });
+      })
+      .then(function () {
+        showMsg(el.saveMsg, isEdit ? 'Đã cập nhật biểu mẫu (đổi file).' : 'Đã thêm biểu mẫu và upload file.', 'success');
         resetEditor();
         loadForms();
       })
@@ -334,8 +346,8 @@
     el.legalCard = null;
     el.legalList = null;
 
-    el.saveBtn?.addEventListener('click', saveForm);
-    if (el.name) el.name.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); saveForm(); } });
+    // KHÔNG bind nút Lưu ở đây — admin-docs.js đã bind `docs-save-btn` → onUpload
+    // (xử lý cả 2 loại). Bind 2 nơi = mỗi click tạo 2 biểu mẫu trùng nhau.
   }
 
   /* ===== Hiển thị trạng thái kết nối (gọi từ admin-docs) ===== */

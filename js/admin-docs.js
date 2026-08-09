@@ -127,40 +127,13 @@
     if (!file) { showMsg(el.uploadMsg, 'Chọn file để upload', 'error'); return; }
 
     if (isForm) {
-      var name = el.title.value.trim();
-      if (!name) { showMsg(el.uploadMsg, 'Nhập tên biểu mẫu', 'error'); return; }
-      // Gọi TADAForms.saveForm sẽ conflict — gọi thẳng luồng thêm biểu mẫu
-      var fd = new FormData();
-      fd.append('file', file);
-      fd.append('name', name);
-      fd.append('description', el.description.value.trim());
-      fd.append('sort_order', el.sort.value || '0');
-      el.saveBtn.disabled = true;
-      showMsg(el.uploadMsg, 'Đang tải lên...', '');
-      fetch(API + '/api/admin/forms', {
-        method: 'POST',
-        headers: { 'Authorization': 'Bearer ' + getToken() },
-        body: fd
-      })
-        .then(function (r) {
-          return r.json().then(function (d) {
-            if (r.status === 401) { setToken(''); renderConnected(false); throw new Error('Phiên hết hạn'); }
-            if (!r.ok) throw new Error(d.error || 'Lưu thất bại');
-            return d;
-          });
-        })
-        .then(function () {
-          showMsg(el.uploadMsg, 'Đã thêm biểu mẫu và upload file.', 'success');
-          el.fileInput.value = '';
-          el.title.value = '';
-          el.description.value = '';
-          el.sort.value = '0';
-          if (window.TADAForms) window.TADAForms.loadForms();
-        })
-        .catch(function (err) {
-          if (!/hết hạn/i.test(err.message || '')) showMsg(el.uploadMsg, 'Lỗi: ' + (err.message || 'lưu thất bại'), 'error');
-        })
-        .finally(function () { el.saveBtn.disabled = false; });
+      // Delegate cho TADAForms.saveForm() — 1 luồng duy nhất (thêm/sửa),
+      // tránh 2 nơi gửi request (gây tạo 2 biểu mẫu trùng).
+      if (window.TADAForms && window.TADAForms.saveForm) {
+        window.TADAForms.saveForm();
+      } else {
+        showMsg(el.uploadMsg, 'Module biểu mẫu chưa sẵn sàng — thử lại.', 'error');
+      }
       return;
     }
 

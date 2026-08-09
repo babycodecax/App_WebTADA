@@ -185,6 +185,10 @@ async function handleMultipartCreate(req: NextRequest) {
   const storageKey = `forms/${Date.now()}-${sanitizeStorageName(file.name)}`;
   const { storagePath, publicUrl } = await uploadFormFile(file, storageKey, MIME_MAP[ext] || 'application/octet-stream');
 
+  // Nếu có field `id` → SỬA biểu mẫu đã chọn (thay file + cập nhật), không tạo mới.
+  const idField = form.get('id');
+  const editId = typeof idField === 'string' && idField.trim() ? idField.trim() : '';
+
   const payload = {
     name,
     description,
@@ -196,6 +200,18 @@ async function handleMultipartCreate(req: NextRequest) {
     sort_order: sortOrder,
     is_active: true,
   };
+
+  if (editId) {
+    const { data: updated, error: upErr } = await getSupabase()
+      .from('landing_forms')
+      .update(payload)
+      .eq('id', editId)
+      .select(ADMIN_FIELDS)
+      .single();
+    if (upErr) return NextResponse.json({ error: upErr.message }, { status: 500 });
+    return NextResponse.json({ ok: true, form: updated }, { status: 200 });
+  }
+
   const { data: created, error } = await getSupabase()
     .from('landing_forms')
     .insert(payload)
