@@ -48,6 +48,22 @@ async function ensureBucket(): Promise<void> {
   }
 }
 
+/** Số thứ tự TỰ ĐỘNG: max(sort_order) hiện có + 1 — không cần admin nhập tay. */
+async function nextSortOrder(sb: ReturnType<typeof getSupabase>): Promise<number> {
+  try {
+    const { data, error } = await sb
+      .from('landing_forms')
+      .select('sort_order')
+      .order('sort_order', { ascending: false })
+      .limit(1);
+    if (error) return 0;
+    const max = (data && data[0] && typeof data[0].sort_order === 'number') ? data[0].sort_order : 0;
+    return max + 1;
+  } catch {
+    return 0;
+  }
+}
+
 /** Upload file lên Storage bucket 'forms' (public). Trả { storagePath, publicUrl } hoặc throw. */
 async function uploadFormFile(file: File, filePath: string, contentType: string): Promise<{ storagePath: string; publicUrl: string }> {
   await ensureBucket();
@@ -115,9 +131,15 @@ export async function POST(req: NextRequest) {
     const v = validateFormInput(body);
     if (!v.ok) return NextResponse.json({ error: v.error }, { status: 400 });
 
+    // Số thứ tự tự động: nếu admin không gửi sort_order (>0) → max+1
+    const data = { ...v.data };
+    if (!(typeof data.sort_order === 'number' && data.sort_order > 0)) {
+      data.sort_order = await nextSortOrder(getSupabase());
+    }
+
     const { data: created, error } = await getSupabase()
       .from('landing_forms')
-      .insert(v.data)
+      .insert(data)
       .select(ADMIN_FIELDS)
       .single();
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
@@ -152,9 +174,13 @@ async function handleMultipartCreate(req: NextRequest) {
   if (!name) return NextResponse.json({ error: 'Thiếu tên biểu mẫu' }, { status: 400 });
   const descField = form.get('description');
   const description = (typeof descField === 'string' ? descField : '').trim();
+  // Số thứ tự TỰ ĐỘNG: nếu admin gửi sort_order hợp lệ (>0) thì dùng, ngược lại
+  // backend tự tính max(sort_order)+1 — không cần nhập tay.
   const sortField = form.get('sort_order');
-  const sortRaw = typeof sortField === 'string' ? sortField : '0';
-  const sortOrder = /^\d+$/.test(sortRaw) ? parseInt(sortRaw, 10) : 0;
+  const sortRaw = typeof sortField === 'string' ? sortField : '';
+  const sortOrder = /^\d+$/.test(sortRaw) && parseInt(sortRaw, 10) > 0
+    ? parseInt(sortRaw, 10)
+    : await nextSortOrder(getSupabase());
 
   const storageKey = `forms/${Date.now()}-${sanitizeStorageName(file.name)}`;
   const { storagePath, publicUrl } = await uploadFormFile(file, storageKey, MIME_MAP[ext] || 'application/octet-stream');

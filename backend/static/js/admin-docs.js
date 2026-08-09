@@ -97,7 +97,8 @@
   function applyUploadType(type) {
     var isForm = type === 'forms' || type === 'form';
     if (el.descWrap) el.descWrap.style.display = isForm ? 'block' : 'none';
-    if (el.sortWrap) el.sortWrap.style.display = isForm ? 'block' : 'none';
+    // Ô "Thứ tự" đã bỏ — backend tự tính sort_order (max+1), không nhập tay
+    if (el.sortWrap) el.sortWrap.style.display = 'none';
     if (el.fileHint) {
       el.fileHint.textContent = isForm
         ? 'hỗ trợ .pdf, .docx, .xlsx — tối đa 4 MB'
