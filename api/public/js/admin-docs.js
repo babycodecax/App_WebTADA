@@ -76,7 +76,7 @@
     }
   }
 
-  /* ===== Sub-tab: Nguồn tri thức | Biểu mẫu ===== */
+  /* ===== Sub-tab: Nguồn tri thức | Biểu mẫu (danh sách) ===== */
   function showSub(sub) {
     currentSub = sub;
     el.subBtns.forEach(function (b) {
@@ -84,20 +84,31 @@
     });
     el.subSource.style.display = (sub === 'source') ? 'block' : 'none';
     el.subForms.style.display = (sub === 'forms') ? 'block' : 'none';
-    // Thay đổi nút upload theo loại
-    var isForm = sub === 'forms';
-    el.descWrap.style.display = isForm ? 'block' : 'none';
-    el.sortWrap.style.display = isForm ? 'block' : 'none';
+    applyUploadType(sub);
+    if (getToken()) refreshLists();
+  }
+
+  /* ===== Loại upload hiện tại (radio) — chỉ đổi form upload, không đổi sub-tab ===== */
+  var currentType = 'source';
+  function onTypeChange(type) {
+    currentType = type;
+    applyUploadType(type);
+  }
+  function applyUploadType(type) {
+    var isForm = type === 'forms' || type === 'form';
+    if (el.descWrap) el.descWrap.style.display = isForm ? 'block' : 'none';
+    if (el.sortWrap) el.sortWrap.style.display = isForm ? 'block' : 'none';
     if (el.fileHint) {
       el.fileHint.textContent = isForm
         ? 'hỗ trợ .pdf, .docx, .xlsx — tối đa 4 MB'
         : 'hỗ trợ .docx, .pdf, .txt, .md — tối đa 4 MB';
     }
-    el.fileInput.accept = isForm ? '.pdf,.docx,.doc,.xlsx,.xls,.txt,.md' : '.docx,.pdf,.txt,.md';
+    if (el.fileInput) {
+      el.fileInput.accept = isForm ? '.pdf,.docx,.doc,.xlsx,.xls,.txt,.md' : '.docx,.pdf,.txt,.md';
+    }
     if (el.saveBtn) {
       el.saveBtn.innerHTML = isForm ? '💾 Lưu biểu mẫu' : '📤 Upload &amp; cập nhật';
     }
-    if (getToken()) refreshLists();
   }
 
   function refreshLists() {
@@ -108,9 +119,9 @@
     }
   }
 
-  /* ===== Upload (theo loại đang chọn) ===== */
+  /* ===== Upload (theo loại radio đang chọn) ===== */
   function onUpload() {
-    var isForm = currentSub === 'forms';
+    var isForm = currentType === 'form';
     var file = el.fileInput.files[0];
     if (!file) { showMsg(el.uploadMsg, 'Chọn file để upload', 'error'); return; }
 
@@ -212,6 +223,12 @@
     el.subBtns.forEach(function (b) {
       b.addEventListener('click', function () { showSub(b.dataset.sub); });
     });
+
+    // Radio chọn loại upload (Nguồn tri thức | Biểu mẫu) — đồng bộ loại upload
+    var radioSource = document.getElementById('docs-type-source');
+    var radioForm = document.getElementById('docs-type-form');
+    if (radioSource) radioSource.addEventListener('change', function () { onTypeChange('source'); });
+    if (radioForm) radioForm.addEventListener('change', function () { onTypeChange('form'); });
 
     // Gắn TADAForms (id mới) — phải chạy sau khi DOM sẵn sàng
     if (window.TADAForms && window.TADAForms.bindTo) {
