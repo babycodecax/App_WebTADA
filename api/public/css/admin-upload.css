@@ -301,3 +301,62 @@
 .form-msg.hidden { display: none; }
 .form-msg.error { color: #b3261e; }
 .form-msg.success { color: #116329; }
+
+/* ==========================================================================
+   VIEW-DOCS — Tab "Quản lý tài liệu" (hợp nhất Upload + Nguồn + Biểu mẫu)
+   ========================================================================== */
+.docs-type-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.docs-type-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border-light, #e2d8d0);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  background: var(--bg-light, #fff);
+}
+.docs-type-opt small {
+  font-weight: 400;
+  color: var(--text-muted-dark, #6b7280);
+  margin-left: 2px;
+}
+.docs-type-opt:has(input:checked) {
+  border-color: var(--primary-burgundy, #800020);
+  background: rgba(128, 0, 32, 0.05);
+}
+.docs-sub-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.docs-sub-btn {
+  font-family: var(--font-sans), 'Be Vietnam Pro', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted-dark, #6b7280);
+  background: var(--bg-light, #fff);
+  border: 1.5px solid var(--border-light, #e2d8d0);
+  border-radius: 999px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: var(--transition-fast, 0.15s);
+}
+.docs-sub-btn:hover {
+  border-color: var(--primary-burgundy, #800020);
+  color: var(--primary-burgundy, #800020);
+}
+.docs-sub-btn.active {
+  background: var(--primary-burgundy, #800020);
+  border-color: var(--primary-burgundy, #800020);
+  color: #fff;
+}

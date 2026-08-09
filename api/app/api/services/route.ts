@@ -30,8 +30,11 @@ const SERVICES_CONTENT_ROW = '__services_content__';
  * Response: { "content": "🏠 Kế toán dịch vụ trọn gói\n..." }
  * Không cache dài — mỗi lần mở trang chủ là lấy nội dung mới nhất.
  */
-export async function GET(_req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
+    // Đọc req.url để ép Next runtime dynamic (không prerender tĩnh) — bản 14.2
+    // vẫn có thể static prerender route không dùng req dù force-dynamic.
+    const _url = req.url;
     const sb = getSupabase();
 
     const { data: row, error } = await sb

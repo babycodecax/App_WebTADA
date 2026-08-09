@@ -86,7 +86,7 @@
   }
 
   function showAuthError() {
-    el.list.innerHTML = '<div class="blog-error">Phiên quản trị hết hạn — vào tab Upload tài liệu để kết nối lại.</div>';
+    el.list.innerHTML = '<div class="blog-error">Phiên quản trị hết hạn — nhập lại mật khẩu ở mục Kết nối phía trên (tab Quản lý tài liệu).</div>';
   }
 
   /* ===== Render bảng nguồn ===== */
@@ -160,17 +160,23 @@
       })
       .then(function (data) {
         if (data.error) throw new Error(data.error);
-        // Nếu có note (chưa upload file word) → fallback hiển thị chunks md
-        if (data.note && !data.content) {
+        // Nếu có note (chưa có file word gốc) → fallback hiển thị chunks md
+        if (data.note && !data.html) {
           body.innerHTML = '<div class="blog-empty">' + escHtml(data.note) + '</div>' +
             '<div class="src-fallback-hint">Hiển thị nội dung từ chunks đã xử lý:</div>';
           return loadContentFallback(filePath, title, body);
         }
-        var content = data.content || '';
-        if (/[#*|`\[\]]/.test(content)) {
-          body.innerHTML = mdHtml(content);
+        // HTML đầy đủ từ .docx gốc (mammoth convertToHtml — giữ bảng biểu như Word)
+        if (data.html) {
+          var safeHtml = window.DOMPurify && window.DOMPurify.sanitize ? window.DOMPurify.sanitize(data.html) : data.html;
+          body.innerHTML = '<div class="legal-doc-html">' + safeHtml + '</div>';
         } else {
-          body.innerHTML = '<pre class="source-view-pre">' + escHtml(content) + '</pre>';
+          var content = data.content || '';
+          if (/[#*|`\[\]]/.test(content)) {
+            body.innerHTML = mdHtml(content);
+          } else {
+            body.innerHTML = '<pre class="source-view-pre">' + escHtml(content) + '</pre>';
+          }
         }
         body.dataset.fp = filePath;
         body.dataset.title = title || '';
@@ -377,11 +383,6 @@
       var body = document.getElementById('source-view-body');
       if (body && body.dataset.fp) downloadSource(body.dataset.fp, body.dataset.title);
     });
-
-    // Lắng nghe chuyển tab sang sources → tải danh sách
-    document.querySelectorAll('.admin-nav-btn[data-view="sources"]').forEach(function (btn) {
-      btn.addEventListener('click', function () { setTimeout(loadSources, 50); });
-    });
   }
 
   function debounce(fn, ms) {
@@ -395,9 +396,6 @@
 
   function init() {
     bind();
-    // Nếu tab sources đang active ngay từ đầu (sau refresh)
-    var active = document.querySelector('.admin-nav-btn.active');
-    if (active && active.dataset.view === 'sources') loadSources();
   }
 
   if (document.readyState === 'loading') {
@@ -405,4 +403,14 @@
   } else {
     init();
   }
+
+  // Expose cho tab "Quản lý tài liệu" (admin-docs.js) tái sử dụng
+  window.TADASources = {
+    view: viewSource,
+    download: downloadSource,
+    del: deleteSource,
+    restore: restoreSource,
+    load: loadSources,
+    mdHtml: mdHtml,
+  };
 })();

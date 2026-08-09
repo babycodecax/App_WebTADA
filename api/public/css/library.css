@@ -3,11 +3,6 @@
    Branding: Burgundy (#800020) & Gold (#D4AF37) — đồng bộ css/styles.css
    ========================================================================== */
 
-.library-section {
-  background: linear-gradient(180deg, var(--bg-light) 0%, var(--bg-light-alt) 100%);
-  scroll-margin-top: var(--header-height);
-}
-
 /* Breadcrumb (SEO) — nhỏ, muted, nằm trên tiêu đề */
 .library-breadcrumb {
   font-size: 13px;

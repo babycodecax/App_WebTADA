@@ -1,8 +1,5 @@
 import OpenAI from 'openai';
 
-// Load .env.local for production
-try { require('dotenv').config({ path: require('path').join(__dirname, '..', '.env.local') }); } catch (e) {}
-
 export function getClient(): OpenAI {
   const model = process.env.LLM_MODEL || 'deepseek-v4-flash';
   let apiKey: string;

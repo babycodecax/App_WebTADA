@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
 import { isAdmin } from '@/lib/adminAuth';
-import { extractText } from '@/lib/parseFile';
+import { extractHtml } from '@/lib/parseFile';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -10,8 +10,9 @@ const BUCKET = 'vault-sources';
 
 /**
  * GET /api/admin/sources/docx?file_path=...
- * Trả về nội dung file word gốc (.docx) từ Supabase Storage.
- * Frontend hiển thị text extract (không cần render markdown).
+ * Trả về nội dung file word gốc (.docx) từ Supabase Storage dạng HTML
+ * (mammoth.convertToHtml — GIỮ bảng biểu, định dạng như bản Word gốc,
+ * giống file_html của thư viện /library). Frontend render HTML trực tiếp.
  */
 export async function GET(req: NextRequest) {
   if (!isAdmin(req)) {
@@ -51,15 +52,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: `Không tải được file: ${dlErr?.message || 'file not found'}` }, { status: 404 });
   }
 
-  // 3. Extract text — wrap Blob thành File để extractText nhận diện extension (.docx/.pdf)
+  // 3. Extract HTML — mammoth.convertToHtml giữ bảng biểu như bản Word gốc
   try {
     const fileName = storagePath.split('/').pop() || 'file.docx';
     const fileAsFile = new File([fileData], fileName, { type: fileData.type || 'application/octet-stream' });
-    const extracted = await extractText(fileAsFile);
+    const html = await extractHtml(fileAsFile);
     return NextResponse.json({
       file_path: filePath,
-      title: src?.title || extracted.title || filePath,
-      content: extracted.body,
+      title: src?.title || filePath,
+      html,
       storage_path: storagePath,
     });
   } catch (e) {

@@ -40,17 +40,11 @@
       <button class="admin-nav-btn" data-view="list">
         <span>📋</span> Bài viết
       </button>
-      <button class="admin-nav-btn" data-view="upload">
-        <span>📤</span> Upload tài liệu
-      </button>
-      <button class="admin-nav-btn" data-view="sources">
-        <span>🗂️</span> Nguồn tri thức
+      <button class="admin-nav-btn" data-view="docs">
+        <span>📁</span> Quản lý tài liệu
       </button>
       <button class="admin-nav-btn" data-view="services">
         <span>🔧</span> Dịch vụ
-      </button>
-      <button class="admin-nav-btn" data-view="forms">
-        <span>📋</span> Thư viện biểu mẫu
       </button>
     </aside>
 
@@ -105,62 +99,84 @@
       </div>
     </section>
 
-    <!-- Upload tài liệu vào tri thức chatbox -->
-    <section class="admin-view" id="view-upload">
-      <!-- 1. Kết nối quản trị (ADMIN_PASSWORD) — tách bạch khỏi login Google blog -->
-      <div class="admin-card" id="upload-conn-card">
-        <h2>📤 Upload tài liệu vào tri thức</h2>
+    <!-- QUẢN LÝ TÀI LIỆU — hợp nhất: Upload + Nguồn tri thức + Thư viện biểu mẫu -->
+    <section class="admin-view" id="view-docs">
+      <!-- 1. Kết nối quản trị (ADMIN_PASSWORD) — dùng chung cả tab -->
+      <div class="admin-card">
+        <h2>📁 Quản lý tài liệu</h2>
         <div class="upload-conn-row">
-          <input type="password" id="upload-password" class="form-input" placeholder="Nhập mật khẩu quản trị (ADMIN_PASSWORD)" autocomplete="current-password">
-          <button type="button" class="btn btn-primary" id="upload-connect-btn">Kết nối</button>
+          <input type="password" id="docs-password" class="form-input" placeholder="Nhập mật khẩu quản trị (ADMIN_PASSWORD)" autocomplete="current-password">
+          <button type="button" class="btn btn-primary" id="docs-connect-btn">Kết nối</button>
         </div>
-        <div class="upload-conn-status" id="upload-conn-status" style="display:none">
+        <div class="upload-conn-status" id="docs-conn-note" style="display:none">
           <span class="upload-conn-badge">Đã kết nối</span>
-          <button type="button" class="btn btn-outline btn-sm" id="upload-logout-btn">Đăng xuất</button>
+          <button type="button" class="btn btn-outline btn-sm" id="docs-logout-btn">Đăng xuất</button>
         </div>
-        <div id="upload-conn-msg" class="form-msg"></div>
+        <div id="docs-conn-msg" class="form-msg"></div>
       </div>
 
-      <!-- 2. Form upload file -->
-      <div class="admin-card" id="upload-form-card" style="display:none">
+      <!-- 2. Upload tài liệu (2 loại: Nguồn tri thức | Biểu mẫu) -->
+      <div class="admin-card" id="docs-upload-card" style="display:none">
         <h3>Upload tài liệu mới</h3>
-        <div class="form-group">
-          <label>Chọn file <small>hỗ trợ .docx, .pdf, .txt, .md — tối đa 4 MB</small></label>
-          <input type="file" id="upload-file" class="form-input" accept=".docx,.pdf,.txt,.md">
+        <div class="docs-type-row">
+          <label class="docs-type-opt">
+            <input type="radio" name="docs-type" id="docs-type-source" value="source" checked>
+            📚 Nguồn tri thức <small>— .docx .pdf .txt .md, kiến thức chatbox</small>
+          </label>
+          <label class="docs-type-opt">
+            <input type="radio" name="docs-type" id="docs-type-form" value="form">
+            📋 Biểu mẫu tải xuống <small>— .pdf .docx .xlsx, hiển thị trong thư viện biểu mẫu</small>
+          </label>
         </div>
         <div class="form-group">
-          <label>Tiêu đề <small>tùy chọn — mặc định lấy tên file</small></label>
-          <input type="text" id="upload-title" class="form-input" placeholder="vd: Hướng dẫn kê khai thuế 2026">
+          <label for="docs-file">Chọn file <small id="docs-file-hint">hỗ trợ .docx, .pdf, .txt, .md — tối đa 4 MB</small></label>
+          <input type="file" id="docs-file" class="form-input" accept=".docx,.pdf,.txt,.md">
+        </div>
+        <div class="sources-filter" style="flex-wrap:wrap;gap:10px">
+          <div class="form-group" style="flex:1;min-width:200px">
+            <label for="docs-title">Tiêu đề <small>tùy chọn — mặc định lấy từ file</small></label>
+            <input type="text" id="docs-title" class="form-input" placeholder="vd: Hướng dẫn kê khai thuế 2026">
+          </div>
+          <div class="form-group" id="docs-desc-wrap" style="flex:1;min-width:200px;display:none">
+            <label for="docs-description">Mô tả ngắn <small>hiển thị trên thẻ biểu mẫu</small></label>
+            <input type="text" id="docs-description" class="form-input" placeholder="vd: Dùng cho cá nhân nộp hồ sơ hoàn thuế">
+          </div>
+          <div class="form-group" id="docs-sort-wrap" style="flex:0 0 120px;display:none">
+            <label for="docs-sort">Thứ tự</label>
+            <input type="number" id="docs-sort" class="form-input" value="0" min="0" step="1">
+          </div>
         </div>
         <div class="form-actions">
-          <button type="button" class="btn btn-primary" id="upload-btn">Upload &amp; cập nhật tri thức</button>
+          <button type="button" class="btn btn-primary" id="docs-save-btn">📤 Upload &amp; cập nhật</button>
         </div>
-        <div id="upload-msg" class="form-msg"></div>
+        <div id="docs-upload-msg" class="form-msg"></div>
       </div>
 
-      <!-- 3. Danh sách tài liệu đã upload -->
-      <div class="admin-card" id="upload-docs-card" style="display:none">
-        <h3>Danh sách tài liệu đã upload</h3>
-        <div id="upload-docs-list"></div>
-      </div>
-    </section>
-
-    <!-- Quản lý nguồn tri thức (vault + upload) -->
-    <section class="admin-view" id="view-sources">
-      <div class="admin-card">
-        <h2>🗂️ Quản lý nguồn tri thức</h2>
-        <p style="color:var(--text-muted-dark,#6b7280);font-size:14px;margin:4px 0 16px">
-          Toàn bộ tài liệu đang phục vụ chatbox (từ vault và upload). Xem, tải, xóa, khôi phục nguồn.
-        </p>
-        <div class="sources-filter">
-          <select id="sources-origin" class="form-select">
-            <option value="">Tất cả nguồn</option>
-            <option value="vault">📚 Vault</option>
-            <option value="upload">📤 Upload</option>
-          </select>
-          <input type="text" id="sources-q" class="form-input" placeholder="Tìm theo tiêu đề / file path..." style="flex:1">
+      <!-- 3. Danh sách: 2 sub-tab (Nguồn tri thức | Biểu mẫu) -->
+      <div class="admin-card" id="docs-list-card" style="display:none">
+        <div class="docs-sub-tabs">
+          <button type="button" class="docs-sub-btn active" data-sub="source">📚 Nguồn tri thức</button>
+          <button type="button" class="docs-sub-btn" data-sub="forms">📋 Biểu mẫu</button>
         </div>
-        <div id="sources-list"><div class="blog-empty">Chọn nguồn để xem danh sách.</div></div>
+        <!-- Nguồn tri thức -->
+        <div class="docs-sub-body" id="docs-sub-source">
+          <div class="sources-filter" style="margin-bottom:14px">
+            <select id="sources-origin" class="form-select">
+              <option value="">Tất cả nguồn</option>
+              <option value="vault">📚 Vault</option>
+              <option value="upload">📤 Upload</option>
+            </select>
+            <input type="text" id="sources-q" class="form-input" placeholder="Tìm theo tiêu đề / file path..." style="flex:1">
+          </div>
+          <div id="sources-list"><div class="blog-empty">Chưa kết nối — nhập mật khẩu quản trị ở trên.</div></div>
+        </div>
+        <!-- Biểu mẫu -->
+        <div class="docs-sub-body" id="docs-sub-forms" style="display:none">
+          <div class="sources-filter" style="margin-bottom:14px">
+            <input type="text" id="forms-q" class="form-input" placeholder="Tìm theo tên biểu mẫu..." style="flex:1">
+          </div>
+          <div id="forms-list"><div class="blog-empty">Chưa có biểu mẫu nào.</div></div>
+        </div>
       </div>
     </section>
 
@@ -206,82 +222,6 @@
       </div>
     </section>
 
-    <!-- Thư viện biểu mẫu (admin thêm/sửa/xóa) + Văn bản luật (đọc-only từ kho nguồn) -->
-    <section class="admin-view" id="view-forms">
-      <div class="admin-card">
-        <h2>📋 Thư viện biểu mẫu &amp; văn bản luật</h2>
-        <p style="color:var(--text-muted-dark,#6b7280);font-size:14px;margin:4px 0 16px">
-          Thêm biểu mẫu tải xuống hiển thị trên trang chủ (mục <em>Thư viện</em>).
-          Văn bản luật ở dưới là <strong>chỉ đọc</strong> — tự lấy từ kho nguồn tri thức, cập nhật khi kho đổi.
-        </p>
-
-        <!-- Kết nối quản trị (dùng chung ADMIN_PASSWORD với tab Upload) -->
-        <div id="forms-conn" class="services-conn">
-          <div class="services-conn-note" id="forms-conn-note" style="display:none">
-            <span class="upload-conn-badge">Đã kết nối</span>
-            <button type="button" class="btn btn-outline btn-sm" id="forms-logout-btn">Đăng xuất</button>
-          </div>
-          <div class="services-conn-row">
-            <strong>Kết nối admin:</strong>
-            <span id="forms-conn-status">Chưa kết nối — nhập mật khẩu quản trị (ADMIN_PASSWORD):</span>
-          </div>
-        </div>
-        <div class="sources-filter">
-          <input type="password" id="forms-password" class="form-input" placeholder="Mật khẩu quản trị (ADMIN_PASSWORD)" autocomplete="current-password">
-          <button type="button" class="btn btn-primary" id="forms-connect-btn">Kết nối</button>
-        </div>
-        <div id="forms-msg" class="form-msg"></div>
-      </div>
-
-      <!-- Thêm / sửa biểu mẫu (ẩn tới khi kết nối) -->
-      <div class="admin-card" id="forms-editor-card" style="display:none">
-        <h3 id="forms-editor-title">➕ Thêm biểu mẫu mới</h3>
-        <input type="hidden" id="forms-edit-id">
-        <div class="form-group">
-          <label for="forms-name">Tên biểu mẫu <span style="color:var(--accent-gold-dark,#aa8620)">*</span></label>
-          <input type="text" id="forms-name" class="form-input" placeholder="vd: Mẫu đơn xin hoàn thuế TNCN" maxlength="300">
-        </div>
-        <div class="form-group">
-          <label for="forms-description">Mô tả ngắn <small>hiển thị trên thẻ biểu mẫu</small></label>
-          <input type="text" id="forms-description" class="form-input" placeholder="vd: Dùng cho cá nhân nộp hồ sơ hoàn thuế" maxlength="2000">
-        </div>
-        <div class="form-group">
-          <label for="forms-file">File tải xuống <small>PDF / DOCX / XLSX — tối đa 4 MB; để trống nếu chỉ sửa tên/mô tả</small></label>
-          <input type="file" id="forms-file" class="form-input" accept=".pdf,.docx,.doc,.xlsx,.xls,.txt,.md">
-        </div>
-        <div class="sources-filter" style="flex-wrap:wrap">
-          <div class="form-group" style="flex:1;min-width:160px">
-            <label for="forms-sort">Thứ tự sắp xếp <small>số nhỏ hiện trước</small></label>
-            <input type="number" id="forms-sort" class="form-input" value="0" min="0" step="1">
-          </div>
-          <div class="form-group" style="flex:1;min-width:160px">
-            <label for="forms-active">Trạng thái</label>
-            <select id="forms-active" class="form-select">
-              <option value="true">Hiển thị</option>
-              <option value="false">Ẩn</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-actions">
-          <button type="button" class="btn btn-primary" id="forms-save-btn">💾 Lưu biểu mẫu</button>
-          <button type="button" class="btn btn-outline" id="forms-cancel-btn" style="display:none">Hủy sửa</button>
-        </div>
-        <div id="forms-save-msg" class="form-msg"></div>
-      </div>
-
-      <!-- Danh sách biểu mẫu -->
-      <div class="admin-card" id="forms-list-card" style="display:none">
-        <h3>Danh sách biểu mẫu</h3>
-        <div id="forms-list"><div class="blog-loading">Đang tải...</div></div>
-      </div>
-
-      <!-- Văn bản luật từ kho nguồn (chỉ đọc) -->
-      <div class="admin-card" id="forms-legal-card" style="display:none">
-        <h3>⚖️ Văn bản luật từ kho nguồn <small>(chỉ đọc — tự cập nhật khi kho đổi)</small></h3>
-        <div id="forms-legal-list"><div class="blog-loading">Đang tải...</div></div>
-      </div>
-    </section>
-  </main>
 
   <!-- Modal xem nội dung nguồn -->
   <div id="source-view-overlay" class="source-view-overlay" style="display:none">
@@ -326,9 +266,9 @@
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script src="static/js/blog-admin.js"></script>
-  <script src="static/js/admin-upload.js"></script>
+  <script src="static/js/admin-docs.js"></script>
   <script src="static/js/admin-sources.js"></script>
-  <script src="static/js/admin-services.js"></script>
   <script src="static/js/admin-forms.js"></script>
+  <script src="static/js/admin-services.js"></script>
 </body>
 </html>

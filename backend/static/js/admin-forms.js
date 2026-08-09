@@ -187,30 +187,30 @@
 
   /* ===== Thêm / sửa ===== */
   function resetEditor() {
-    el.editId.value = '';
-    el.editorTitle.textContent = '➕ Thêm biểu mẫu mới';
-    el.name.value = '';
-    el.description.value = '';
-    el.file.value = '';
-    el.sort.value = '0';
-    el.active.value = 'true';
-    el.cancelBtn.style.display = 'none';
+    if (el.editId) el.editId.value = '';
+    if (el.editorTitle) el.editorTitle.textContent = '➖ Thêm biểu mẫu mới';
+    if (el.name) el.name.value = '';
+    if (el.description) el.description.value = '';
+    if (el.file) el.file.value = '';
+    if (el.sort) el.sort.value = '0';
+    if (el.active) el.active.value = 'true';
+    if (el.cancelBtn) el.cancelBtn.style.display = 'none';
     showMsg(el.saveMsg, '', '');
   }
 
   function startEdit(id, forms) {
     var f = forms.find(function (x) { return String(x.id) === String(id); });
     if (!f) return;
-    el.editId.value = String(f.id);
-    el.editorTitle.textContent = '✏️ Sửa biểu mẫu: ' + f.name;
-    el.name.value = f.name || '';
-    el.description.value = f.description || '';
-    el.file.value = '';
-    el.sort.value = typeof f.sort_order === 'number' ? String(f.sort_order) : '0';
-    el.active.value = f.is_active === false ? 'false' : 'true';
-    el.cancelBtn.style.display = 'inline-flex';
+    if (el.editId) el.editId.value = String(f.id);
+    if (el.editorTitle) el.editorTitle.textContent = '✏️ Sửa biểu mẫu: ' + f.name;
+    if (el.name) el.name.value = f.name || '';
+    if (el.description) el.description.value = f.description || '';
+    if (el.file) el.file.value = '';
+    if (el.sort) el.sort.value = typeof f.sort_order === 'number' ? String(f.sort_order) : '0';
+    if (el.active) el.active.value = f.is_active === false ? 'false' : 'true';
+    if (el.cancelBtn) el.cancelBtn.style.display = 'inline-flex';
     showMsg(el.saveMsg, 'Bỏ trống file nếu chỉ muốn sửa tên/mô tả/trạng thái.', '');
-    el.editorCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (el.editorCard) el.editorCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function saveForm() {
@@ -323,55 +323,62 @@
       });
   }
 
-  /* ===== Khởi tạo ===== */
-  function bind() {
-    el.password = document.getElementById('forms-password');
-    el.msg = document.getElementById('forms-msg');
-    el.connNote = document.getElementById('forms-conn-note');
-    el.connStatus = document.getElementById('forms-conn-status');
-    el.editorCard = document.getElementById('forms-editor-card');
-    el.editorTitle = document.getElementById('forms-editor-title');
-    el.editId = document.getElementById('forms-edit-id');
-    el.name = document.getElementById('forms-name');
-    el.description = document.getElementById('forms-description');
-    el.file = document.getElementById('forms-file');
-    el.sort = document.getElementById('forms-sort');
-    el.active = document.getElementById('forms-active');
-    el.saveBtn = document.getElementById('forms-save-btn');
-    el.cancelBtn = document.getElementById('forms-cancel-btn');
-    el.saveMsg = document.getElementById('forms-save-msg');
-    el.listCard = document.getElementById('forms-list-card');
-    el.list = document.getElementById('forms-list');
-    el.legalCard = document.getElementById('forms-legal-card');
-    el.legalList = document.getElementById('forms-legal-list');
+  /* ===== Khởi tạo =====
+     bindTo(get) — gắn DOM của tab "Quản lý tài liệu" (admin-docs.js gọi).
+     Kết nối/quản lý phiên do admin-docs.js đảm nhiệm (1 ô password chung). */
+  function bindTo(get) {
+    el.password = get('docs-password');
+    el.msg = get('docs-conn-msg');
+    el.connNote = get('docs-conn-note');
+    el.editorCard = get('docs-upload-card');
+    el.editorTitle = get('docs-upload-title') || (el.editorCard ? el.editorCard.querySelector('h3') : null);
+    el.name = get('docs-title');
+    el.description = get('docs-description');
+    el.file = get('docs-file');
+    el.sort = get('docs-sort');
+    el.listCard = get('docs-list-card');
+    el.list = get('forms-list');
+    el.saveBtn = get('docs-save-btn');
+    el.saveMsg = get('docs-upload-msg');
+    el.cancelBtn = null; // tab hợp nhất không có nút hủy sửa riêng
+    el.active = null;    // luôn hiển thị
+    el.editId = null;
+    el.legalCard = null;
+    el.legalList = null;
 
-    document.getElementById('forms-connect-btn')?.addEventListener('click', connect);
-    document.getElementById('forms-logout-btn')?.addEventListener('click', logout);
-    el.password?.addEventListener('keydown', function (e) { if (e.key === 'Enter') connect(); });
     el.saveBtn?.addEventListener('click', saveForm);
-    el.cancelBtn?.addEventListener('click', resetEditor);
-
-    document.querySelectorAll('.admin-nav-btn[data-view="forms"]').forEach(function (btn) {
-      btn.addEventListener('click', function () { setTimeout(loadIfToken, 50); });
-    });
+    if (el.name) el.name.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); saveForm(); } });
   }
 
-  function loadIfToken() {
-    if (getToken()) loadAll();
+  /* ===== Hiển thị trạng thái kết nối (gọi từ admin-docs) ===== */
+  function renderConnected(connected) {
+    if (el.connNote) el.connNote.style.display = connected ? 'flex' : 'none';
+    if (el.editorCard) el.editorCard.style.display = connected ? 'block' : 'none';
+    if (el.listCard) el.listCard.style.display = connected ? 'block' : 'none';
+    if (!connected && el.list) {
+      el.list.innerHTML = '<div class="blog-empty">Chưa kết nối — nhập mật khẩu quản trị ở trên.</div>';
+    }
   }
 
-  function init() {
-    bind();
-    var hasToken = !!getToken();
-    renderConnected(hasToken);
-    if (hasToken) loadAll();
-    var active = document.querySelector('.admin-nav-btn.active');
-    if (active && active.dataset.view === 'forms') loadIfToken();
+  /* ===== Kết nối — delegate cho admin-docs (token chung) ===== */
+  function getDocToken() {
+    return getToken();
   }
+
+  // Expose cho tab "Quản lý tài liệu" (admin-docs.js)
+  window.TADAForms = {
+    bindTo: bindTo,
+    renderConnected: renderConnected,
+    loadForms: loadForms,
+    saveForm: saveForm,
+    deleteForm: deleteForm,
+    resetEditor: resetEditor,
+    hasToken: function () { return !!getToken(); }
+  };
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+    document.addEventListener('DOMContentLoaded', function () {
+      // Không tự bind — chờ admin-docs.js gọi TADAForms.bindTo()
+    });
   }
 })();
