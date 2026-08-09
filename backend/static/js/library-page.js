@@ -51,6 +51,10 @@ document.addEventListener('DOMContentLoaded', function () {
       (item.doc_number ? '<span>📌 ' + escHtml(item.doc_number) + '</span>' : '');
     var clickable = item.id || item.file_path;
     var title = item.title || item.file_name || item.file_path || 'Văn bản luật';
+    // Nút Tải .docx gốc (nếu có file_name) — public download route
+    var downloadBtn = item.file_name
+      ? '<a class="library-row-btn library-row-btn-dl" href="' + API + '/api/library/legal-docs/download?file_name=' + encodeURIComponent(item.file_name) + '" target="_blank" rel="noopener nofollow" aria-label="Tải file: ' + escHtml(title) + '">⬇ Tải</a>'
+      : '';
     return (
       '<article class="library-row" data-kind="legal" data-id="' + escHtml(clickable) + '" ' +
         'data-has-html="' + (item.id ? '1' : '0') + '" tabindex="0" role="button" ' +
@@ -61,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
           '<div class="library-row-meta">' + meta + '</div>' +
         '</div>' +
         '<span class="library-row-btn" data-kind="legal">📖 Xem toàn văn</span>' +
+        downloadBtn +
       '</article>'
     );
   }
@@ -195,6 +200,35 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ===== Load dữ liệu =====
+  var allLegal = [];
+  var allForms = [];
+  var searchBox = null;
+
+  function applySearch() {
+    var q = searchBox ? searchBox.value.trim().toLowerCase() : '';
+    var legalList = document.getElementById('lib-legal-list');
+    var formsList = document.getElementById('lib-forms-list');
+    var countLegal = document.getElementById('library-count-legal');
+    var countForms = document.getElementById('library-count-forms');
+    if (!q) {
+      renderList(legalList, allLegal, legalRow);
+      renderList(formsList, allForms, formRow);
+      if (countLegal) countLegal.textContent = String(allLegal.length);
+      if (countForms) countForms.textContent = String(allForms.length);
+      return;
+    }
+    var filteredLegal = allLegal.filter(function (it) {
+      return ((it.title || '') + ' ' + (it.doc_number || '')).toLowerCase().includes(q);
+    });
+    var filteredForms = allForms.filter(function (it) {
+      return ((it.name || '') + ' ' + (it.description || '') + ' ' + (it.file_name || '')).toLowerCase().includes(q);
+    });
+    renderList(legalList, filteredLegal, legalRow);
+    renderList(formsList, filteredForms, formRow);
+    if (countLegal) countLegal.textContent = String(filteredLegal.length);
+    if (countForms) countForms.textContent = String(filteredForms.length);
+  }
+
   function loadLibrary() {
     var legalList = document.getElementById('lib-legal-list');
     var formsList = document.getElementById('lib-forms-list');
@@ -211,13 +245,13 @@ document.addEventListener('DOMContentLoaded', function () {
         var legalVault = Array.isArray(data.legal_documents) ? data.legal_documents : [];
         var forms = Array.isArray(data.forms) ? data.forms : [];
         // Ưu tiên bảng landing_legal_docs (toàn văn HTML) — thiếu thì fallback vault
-        var legal = legalDocs.length ? legalDocs : legalVault;
-        renderList(legalList, legal, legalRow);
-        renderList(formsList, forms, formRow);
-        if (countLegal) countLegal.textContent = String(legal.length);
-        if (countForms) countForms.textContent = String(forms.length);
+        allLegal = legalDocs.length ? legalDocs : legalVault;
+        allForms = forms;
+        applySearch();
       })
       .catch(function () {
+        allLegal = [];
+        allForms = [];
         renderList(legalList, [], legalRow);
         renderList(formsList, [], formRow);
         if (countLegal) countLegal.textContent = '0';
@@ -292,6 +326,12 @@ document.addEventListener('DOMContentLoaded', function () {
         navMenu.classList.remove('active');
       });
     });
+  }
+
+  // Tìm kiếm thư viện (lọc client-side cả 2 tab)
+  searchBox = document.getElementById('library-search');
+  if (searchBox) {
+    searchBox.addEventListener('input', function () { applySearch(); });
   }
 
   bindClose();

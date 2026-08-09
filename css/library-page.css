@@ -50,6 +50,28 @@
   margin: 0;
 }
 
+/* Ô tìm kiếm thư viện */
+.library-search {
+  margin-top: 18px;
+  max-width: 560px;
+}
+.library-search-input {
+  width: 100%;
+  font-family: var(--font-sans), 'Be Vietnam Pro', system-ui, sans-serif;
+  font-size: 15px;
+  padding: 12px 18px;
+  border: 1.5px solid var(--border-light, #e2d8d0);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.library-search-input:focus {
+  border-color: var(--primary-burgundy, #800020);
+  box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.08);
+}
+
 .library-page-section {
   padding-top: 24px;
 }
@@ -211,6 +233,14 @@
 }
 .library-row-btn[data-kind="legal"]:hover {
   background: var(--bg-dark-alt);
+}
+/* Nút Tải .docx — tách màu vàng kim để phân biệt với Xem toàn văn */
+.library-row-btn-dl {
+  background: var(--accent-gold-dark, #aa8620);
+  margin-left: 8px;
+}
+.library-row-btn-dl:hover {
+  background: var(--accent-gold, #D4AF37);
 }
 
 /* Trạng thái rỗng / lỗi */
