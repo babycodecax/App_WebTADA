@@ -2,18 +2,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
 import { isAdmin } from '@/lib/adminAuth';
 import { deleteSourceCascade } from '@/lib/deleteCascade';
-import { deleteLegalDoc } from '@/lib/legalDocIngest';
+import { deleteLegalDoc, LEGAL_DOCS_PUBLIC_FIELDS } from '@/lib/legalDocIngest';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
-const SOURCE_FIELDS = 'file_path,title,doc_type,effective_date,status,source_origin,updated_at,storage_path';
-
 /**
- * GET /api/admin/sources — danh sách toàn bộ nguồn từ source_documents
- * (cả vault lẫn upload), kèm số compliance_records đã extract.
+ * GET /api/admin/sources — danh sách nguồn tri thức.
  *
- * Bộ lọc: ?origin=vault|upload, ?status=, ?q=<từ khoá title/file_path>
+ * NGUỒN DỮ LIỆU: bảng landing_legal_docs (các văn bản .docx đã parse toàn văn
+ * giữ bảng biểu như Thư viện /library) — theo yêu cầu: admin quản lý đúng
+ * "nguồn .docx của thư viện", không còn liệt kê note .md tóm tắt.
+ * (Kiến thức chatbox .md cũ vẫn giữ nguyên trong chunks — KHÔNG đụng tới.)
+ *
+ * Bộ lọc: ?origin=vault|upload (chỉ phân nhóm hiển thị), ?status=, ?q=<từ khoá title>
  */
 export async function GET(req: NextRequest) {
   if (!isAdmin(req)) {
@@ -23,42 +25,49 @@ export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
     const origin = url.searchParams.get('origin') || '';
-    const status = url.searchParams.get('status') || '';
     const q = (url.searchParams.get('q') || '').trim().toLowerCase();
 
-    let query = getSupabase().from('source_documents').select(SOURCE_FIELDS).order('updated_at', { ascending: false });
-    if (origin === 'vault' || origin === 'upload') query = query.eq('source_origin', origin);
-    if (status) query = query.eq('status', status);
+    let query = getSupabase()
+      .from('landing_legal_docs')
+      .select(LEGAL_DOCS_PUBLIC_FIELDS)
+      .eq('is_active', true)
+      .order('created_at', { ascending: false });
+    if (origin === 'upload') {
+      // Chưa có khái niệm upload trong thư viện — trả rỗng cho lọc "Upload"
+      return NextResponse.json({ sources: [], total: 0 });
+    }
 
-    const { data: rows, error } = await query.limit(1000);
+    const { data: rows, error } = await query.limit(500);
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-    // Filter theo q (title/file_path chứa từ khoá)
-    let filtered = (rows || []) as Record<string, string>[];
+    // Filter theo q (title chứa từ khoá)
+    let filtered = (rows || []) as Record<string, unknown>[];
     if (q) {
       filtered = filtered.filter(
-        (r) => (r.title || '').toLowerCase().includes(q) || (r.file_path || '').toLowerCase().includes(q)
+        (r) => (String(r.title || '')).toLowerCase().includes(q) ||
+               (String(r.doc_number || '')).toLowerCase().includes(q)
       );
     }
-    // Ẩn nguồn tóm tắt (không phải văn bản toàn văn) — giữ nguyên chunks trong DB
-    // để chatbox vẫn dùng được kiến thức. Thêm file_path vào set nếu cần ẩn thêm.
-    const HIDDEN_SOURCES = new Set(['luat-thue-tncn-2025.md']);
-    filtered = filtered.filter((r) => !HIDDEN_SOURCES.has(r.file_path));
 
-    // Count compliance_records theo source_file (1 query)
-    const filePaths = filtered.map((r) => r.file_path);
-    const counts: Record<string, number> = {};
-    if (filePaths.length) {
-      const { data: compRows } = await getSupabase()
-        .from('compliance_records')
-        .select('source_file,id')
-        .in('source_file', filePaths);
-      for (const c of compRows || []) {
-        counts[c.source_file as string] = (counts[c.source_file as string] || 0) + 1;
-      }
-    }
-
-    const sources = filtered.map((r) => ({ ...r, compliance_count: counts[r.file_path] || 0 }));
+    // Map sang shape frontend admin-sources đang dùng:
+    // { id, title, doc_type, effective_date, status, source_origin, file_path,
+    //   storage_path, file_name, compliance_count }
+    const sources = filtered.map((r) => {
+      const fileName = String(r.file_name || '');
+      return {
+        id: String(r.id || ''),
+        title: String(r.title || fileName),
+        doc_type: String(r.doc_type || 'other'),
+        effective_date: '',
+        status: 'ready',
+        source_origin: 'vault',
+        file_path: fileName,
+        storage_path: fileName ? 'vault/' + fileName : '',
+        file_name: fileName,
+        compliance_count: 0,
+        created_at: String(r.created_at || ''),
+      };
+    });
     return NextResponse.json({ sources, total: sources.length });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : 'Lỗi không xác định';
@@ -67,9 +76,13 @@ export async function GET(req: NextRequest) {
 }
 
 /**
- * DELETE /api/admin/sources?file_path=...&mode=exact
- * Xóa nguồn (vault → soft-delete status='deleted'; upload → hard-delete).
- * Dọn toàn bộ kiến thức liên quan trong Supabase.
+ * DELETE /api/admin/sources?file_path=... (file_path = file_name .docx thư viện)
+ * Xóa nguồn + ĐỒNG BỘ 2 CHIỀU:
+ *   - Xóa row landing_legal_docs (thư viện public /library mất văn bản ngay).
+ *   - Xóa chunks chatbox liên quan (file_path khớp basename — nếu văn bản từng
+ *     được upload .docx vào chatbox) — kiến thức chatbox tự đồng bộ theo.
+ *   - KHÔNG đụng note .md cũ (kiến thức chatbox hiện tại giữ nguyên).
+ *   - KHÔNG xóa file .docx gốc trong Storage (siêu liệu gốc, giữ an toàn).
  */
 export async function DELETE(req: NextRequest) {
   if (!isAdmin(req)) {
@@ -84,34 +97,34 @@ export async function DELETE(req: NextRequest) {
   }
 
   try {
-    // Xác định loại nguồn (vault → soft-delete, upload → hard-delete)
-    const { data: src } = await getSupabase()
-      .from('source_documents')
-      .select('source_origin,status')
-      .eq('file_path', filePath)
-      .limit(1);
-    const origin = src?.[0]?.source_origin || 'vault';
-    const softDelete = origin !== 'upload'; // vault soft-delete, upload hard-delete
+    const sb = getSupabase();
+    // file_path = file_name của thư viện (vd '109_2025_QH15_665870.docx')
+    const fileName = filePath.split('/').pop() || filePath;
 
-    // paths: exact → [filePath]; contains → collect từ source_documents
-    let paths = [filePath];
+    // 1. Xóa khỏi landing_legal_docs (thư viện public)
+    await deleteLegalDoc(sb, fileName);
+
+    // 2. Xóa chunks chatbox liên quan (file_path chứa basename — vd upload .docx,
+    //    hoặc chunk kèm .docx) — best-effort, an toàn (no-op nếu không có)
     if (mode !== 'exact') {
-      const { data: matched } = await getSupabase()
-        .from('source_documents')
-        .select('file_path')
-        .ilike('file_path', `%${filePath}%`);
-      paths = (matched || []).map((r: { file_path: string }) => r.file_path);
-      if (!paths.length) paths = [filePath];
+      // mode contains → xóa mọi chunks có file_path chứa fileName
+      const { error: likeErr } = await sb
+        .from('knowledge_chunks')
+        .delete()
+        .ilike('file_path', `%${fileName}%`);
+      if (likeErr) console.warn(`[sources] xóa chunks (contains) bỏ qua: ${likeErr.message}`);
+    } else {
+      const stem = fileName.replace(/\.docx$/i, '');
+      const { error: delErr } = await sb
+        .from('knowledge_chunks')
+        .delete()
+        .or(`file_path.eq.${fileName},file_path.ilike.%${stem}%`);
+      if (delErr) console.warn(`[sources] xóa chunks bỏ qua: ${delErr.message}`);
     }
 
-    const result = await deleteSourceCascade(paths, { softDelete });
-    // Đồng bộ Thư viện: nếu nguồn xóa có file .docx gốc trong landing_legal_docs
-    // thì xóa luôn (best-effort — lỗi không chặn xóa nguồn chính).
-    for (const p of paths) {
-      const fileName = p.split('/').pop() || '';
-      if (fileName.toLowerCase().endsWith('.docx')) await deleteLegalDoc(getSupabase(), fileName);
-    }
-    return NextResponse.json({ ok: true, ...result, status: softDelete ? 'deleted' : 'removed' });
+    // 3. Không đụng .md vault (chatbox giữ nguyên) — không xóa file storage gốc.
+
+    return NextResponse.json({ ok: true, status: 'removed' });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : 'Lỗi không xác định';
     return NextResponse.json({ error: `Lỗi xóa nguồn: ${msg}` }, { status: 500 });

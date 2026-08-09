@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
 import { isAdmin } from '@/lib/adminAuth';
-import { extractHtml } from '@/lib/parseFile';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
-const BUCKET = 'vault-sources';
-
 /**
- * GET /api/admin/sources/docx?file_path=...
- * Trả về nội dung file word gốc (.docx) từ Supabase Storage dạng HTML
- * (mammoth.convertToHtml — GIỮ bảng biểu, định dạng như bản Word gốc,
- * giống file_html của thư viện /library). Frontend render HTML trực tiếp.
+ * GET /api/admin/sources/docx?file_path=... (file_path = file_name .docx thư viện)
+ *
+ * Xem nội dung văn bản .docx của Thư viện: trả về `file_html` đã parse sẵn
+ * (mammoth convertToHtml — GIỮ bảng biểu, đúng như /library xem toàn văn).
+ * Không cần re-extract lại file — nhanh và khớp 100% với bản public.
+ *
+ * Response: { file_path, title, html, storage_path }
  */
 export async function GET(req: NextRequest) {
   if (!isAdmin(req)) {
@@ -25,46 +25,40 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Thiếu file_path' }, { status: 400 });
   }
 
-  // 1. Lấy storage_path từ source_documents
-  const { data: srcRows, error: srcErr } = await getSupabase()
-    .from('source_documents')
-    .select('storage_path,title')
-    .eq('file_path', filePath)
-    .limit(1);
-  if (srcErr) return NextResponse.json({ error: srcErr.message }, { status: 500 });
+  // file_path từ admin list = file_name (vd '109_2025_QH15_665870.docx')
+  const fileName = filePath.split('/').pop() || filePath;
 
-  const src = (srcRows || [])[0] as { storage_path?: string; title?: string } | undefined;
-  const storagePath = src?.storage_path || '';
-  if (!storagePath) {
-    return NextResponse.json({
-      file_path: filePath,
-      title: src?.title || filePath,
-      content: null,
-      note: 'Nguồn này chưa có file word gốc trong Storage. Tải file .docx gốc từ vault/thue-ke-toan/sources/ và upload qua admin để xem/tải.',
-    });
-  }
-
-  // 2. Download file từ Supabase Storage
-  const { data: fileData, error: dlErr } = await getSupabase().storage
-    .from(BUCKET)
-    .download(storagePath);
-  if (dlErr || !fileData) {
-    return NextResponse.json({ error: `Không tải được file: ${dlErr?.message || 'file not found'}` }, { status: 404 });
-  }
-
-  // 3. Extract HTML — mammoth.convertToHtml giữ bảng biểu như bản Word gốc
   try {
-    const fileName = storagePath.split('/').pop() || 'file.docx';
-    const fileAsFile = new File([fileData], fileName, { type: fileData.type || 'application/octet-stream' });
-    const html = await extractHtml(fileAsFile);
+    const sb = getSupabase();
+    const { data: row, error } = await sb
+      .from('landing_legal_docs')
+      .select('id,title,doc_type,file_html,file_name,created_at')
+      .eq('file_name', fileName)
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    if (!row || !row.file_html) {
+      return NextResponse.json({
+        file_path: filePath,
+        title: fileName,
+        html: null,
+        note: 'Không tìm thấy văn bản .docx trong thư viện (landing_legal_docs).',
+      });
+    }
+
     return NextResponse.json({
       file_path: filePath,
-      title: src?.title || filePath,
-      html,
-      storage_path: storagePath,
+      title: String(row.title || fileName),
+      html: String(row.file_html || ''),
+      storage_path: 'vault/' + fileName,
+      doc_type: String(row.doc_type || 'other'),
+      created_at: String(row.created_at || ''),
     });
   } catch (e) {
-    const msg = e instanceof Error ? e.message : 'Lỗi extract';
-    return NextResponse.json({ error: `Lỗi đọc file: ${msg}` }, { status: 500 });
+    const msg = e instanceof Error ? e.message : 'Lỗi không xác định';
+    return NextResponse.json({ error: `Lỗi đọc văn bản: ${msg}` }, { status: 500 });
   }
 }
