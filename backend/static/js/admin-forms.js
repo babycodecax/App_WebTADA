@@ -41,7 +41,7 @@
     if (el.editorCard) el.editorCard.style.display = connected ? 'block' : 'none';
     if (el.listCard) el.listCard.style.display = connected ? 'block' : 'none';
     if (!connected && el.list) {
-      el.list.innerHTML = '<div class="blog-empty">Chưa đăng nhập — bấm nút Đăng nhập (Google) ở góc trên bên phải.</div>';
+      el.list.innerHTML = '<div class="blog-empty">Tài khoản của bạn không có quyền sử dụng chức năng này.</div>';
     }
   }
 
@@ -50,7 +50,7 @@
     el.list.innerHTML = '<div class="blog-loading">Đang tải...</div>';
     fetch(API + '/api/admin/forms', { headers: { 'Authorization': 'Bearer ' + (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '') } })
       .then(function (r) {
-        if (r.status === 401) { window.__tadaSession = null; renderConnected(false); throw new Error('Phiên hết hạn'); }
+        if (r.status === 401) { renderConnected(false); throw new Error('Bạn không có quyền sử dụng chức năng này'); }
         return r.json();
       })
       .then(function (data) {
@@ -216,7 +216,7 @@
     })
       .then(function (r) {
         return r.json().then(function (d) {
-          if (r.status === 401) { window.__tadaSession = null; renderConnected(false); throw new Error('Phiên hết hạn'); }
+          if (r.status === 401) { renderConnected(false); throw new Error('Bạn không có quyền sử dụng chức năng này'); }
           if (!r.ok) throw new Error(d.error || ('Lưu thất bại (' + r.status + ')'));
           return d;
         });
@@ -242,7 +242,7 @@
     })
       .then(function (r) {
         return r.json().then(function (d) {
-          if (r.status === 401) { window.__tadaSession = null; renderConnected(false); throw new Error('Phiên hết hạn'); }
+          if (r.status === 401) { renderConnected(false); throw new Error('Bạn không có quyền sử dụng chức năng này'); }
           if (!r.ok) throw new Error(d.error || ('Lưu thất bại (' + r.status + ')'));
           return d;
         });
@@ -264,7 +264,7 @@
       headers: { 'Authorization': 'Bearer ' + (window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '') }
     })
       .then(function (r) {
-        if (r.status === 401) { window.__tadaSession = null; renderConnected(false); throw new Error('Phiên hết hạn'); }
+        if (r.status === 401) { renderConnected(false); throw new Error('Bạn không có quyền sử dụng chức năng này'); }
         return r.json();
       })
       .then(function (d) {
@@ -310,7 +310,7 @@
     if (el.editorCard) el.editorCard.style.display = connected ? 'block' : 'none';
     if (el.listCard) el.listCard.style.display = connected ? 'block' : 'none';
     if (!connected && el.list) {
-      el.list.innerHTML = '<div class="blog-empty">Chưa đăng nhập — bấm nút Đăng nhập (Google) ở góc trên bên phải.</div>';
+      el.list.innerHTML = '<div class="blog-empty">Tài khoản của bạn không có quyền sử dụng chức năng này.</div>';
     }
   }
 

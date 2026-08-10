@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
+import { isAdminGoogle, getAdminEmailFromToken } from '@/lib/adminAuth';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -52,24 +53,13 @@ export async function POST(req: NextRequest) {
       return new Response(JSON.stringify({ error: 'Thiếu title hoặc content' }), { status: 400 });
     }
 
-    // Verify admin JWT
-    const auth = req.headers.get('Authorization') || '';
-    if (!auth.startsWith('Bearer ')) {
-      return new Response(JSON.stringify({ error: 'Cần đăng nhập' }), { status: 401 });
+    // Verify admin — CHỈ tài khoản trong ADMIN_EMAILS mới được tạo bài
+    if (!(await isAdminGoogle(req))) {
+      return new Response(JSON.stringify({ error: 'Tài khoản của bạn không có quyền sử dụng chức năng này' }), { status: 403 });
     }
 
     const client = getSupabase();
-    const token = auth.slice(7);
-    const { data: userData, error: userError } = await client.auth.getUser(token);
-    if (userError || !userData?.user?.email) {
-      return new Response(JSON.stringify({ error: 'Token không hợp lệ' }), { status: 401 });
-    }
-    const email = userData.user.email.toLowerCase();
-    const adminEmails = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean);
-    if (!adminEmails.includes(email)) {
-      return new Response(JSON.stringify({ error: 'Bạn không có quyền viết bài' }), { status: 403 });
-    }
-
+    const email = await getAdminEmailFromToken(req);
     const slug = body.slug || slugify(body.title);
 
     // Check slug duplicate

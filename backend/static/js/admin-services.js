@@ -9,6 +9,9 @@
   function getToken() {
     return (window.TADAAdminAuth && window.TADAAdminAuth.getToken) ? window.TADAAdminAuth.getToken() : '';
   }
+  function isAdminUser() {
+    return !!(window.TADAAdminAuth && window.TADAAdminAuth.isAdmin && window.TADAAdminAuth.isAdmin());
+  }
 
   function showMsg(target, text, type) {
     if (!target) return;
@@ -16,17 +19,19 @@
     target.className = 'form-msg' + (type ? ' ' + type : '') + (type ? '' : ' hidden');
   }
 
-  /* ===== Trạng thái đăng nhập Google ===== */
-  function renderConnected(connected) {
+  /* ===== Trạng thái ADMIN (Google + ADMIN_EMAILS) ===== */
+  function renderConnected(isAdmin) {
     var note = document.getElementById('services-conn-note');
-    if (note) note.style.display = connected ? 'flex' : 'none';
+    if (note) note.style.display = isAdmin ? 'flex' : 'none';
     var statusEl = document.getElementById('services-conn-status');
     if (statusEl) {
-      statusEl.textContent = connected
+      statusEl.textContent = isAdmin
         ? 'Đã đăng nhập quản trị (Google).'
-        : 'Chưa đăng nhập — bấm nút Đăng nhập (Google) ở góc trên bên phải:';
+        : (window.TADAAdminAuth && window.TADAAdminAuth.isLoggedIn && window.TADAAdminAuth.isLoggedIn())
+          ? 'Tài khoản của bạn không có quyền sử dụng chức năng này.'
+          : 'Vui lòng đăng nhập bằng tài khoản quản trị (Google) để sử dụng chức năng.';
     }
-    if (el.editorWrap) el.editorWrap.style.display = connected ? 'block' : 'none';
+    if (el.editorWrap) el.editorWrap.style.display = isAdmin ? 'block' : 'none';
   }
 
   /* ===== Tải nội dung dịch vụ hiện tại ===== */
@@ -93,11 +98,11 @@
 
     el.saveBtn?.addEventListener('click', saveContent);
 
-    // Trạng thái đăng nhập Google — theo dõi session thay đổi
+    // Trạng thái ADMIN — theo dõi session + danh sách admin thay đổi
     function syncAuth() {
-      var connected = !!getToken();
-      renderConnected(connected);
-      if (connected) loadContent();
+      var isAdmin = isAdminUser();
+      renderConnected(isAdmin);
+      if (isAdmin) loadContent();
     }
     syncAuth();
     var _orig = window.__tadaSession;
@@ -107,6 +112,8 @@
         syncAuth();
       }
     }, 1500);
+    // Khi danh sách admin emails tải xong (/api/config) → check lại
+    if (window.TADAAdminAuth) window.TADAAdminAuth._notify = syncAuth;
 
     document.querySelectorAll('.admin-nav-btn[data-view="services"]').forEach(function (btn) {
       btn.addEventListener('click', function () { setTimeout(function () { if (getToken()) loadContent(); }, 50); });

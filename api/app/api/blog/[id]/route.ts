@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
+import { isAdminGoogle } from '@/lib/adminAuth';
 
 export const runtime = 'nodejs';
 
@@ -9,15 +10,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     const body = await req.json();
     const client = getSupabase();
 
-    // Verify admin JWT
-    const auth = req.headers.get('Authorization') || '';
-    if (!auth.startsWith('Bearer ')) {
-      return new Response(JSON.stringify({ error: 'Cần đăng nhập' }), { status: 401 });
-    }
-    const token = auth.slice(7);
-    const { data: userData, error: userError } = await client.auth.getUser(token);
-    if (userError || !userData?.user?.email) {
-      return new Response(JSON.stringify({ error: 'Token không hợp lệ' }), { status: 401 });
+    // Verify admin — CHỈ tài khoản trong ADMIN_EMAILS mới được sửa bài
+    if (!(await isAdminGoogle(req))) {
+      return new Response(JSON.stringify({ error: 'Tài khoản của bạn không có quyền sử dụng chức năng này' }), { status: 403 });
     }
 
     const { data, error } = await client.from('blog_posts')
@@ -45,14 +40,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   try {
     const client = getSupabase();
 
-    const auth = req.headers.get('Authorization') || '';
-    if (!auth.startsWith('Bearer ')) {
-      return new Response(JSON.stringify({ error: 'Cần đăng nhập' }), { status: 401 });
-    }
-    const token = auth.slice(7);
-    const { data: userData, error: userError } = await client.auth.getUser(token);
-    if (userError || !userData?.user?.email) {
-      return new Response(JSON.stringify({ error: 'Token không hợp lệ' }), { status: 401 });
+    // Verify admin — CHỈ tài khoản trong ADMIN_EMAILS mới được xóa bài
+    if (!(await isAdminGoogle(req))) {
+      return new Response(JSON.stringify({ error: 'Tài khoản của bạn không có quyền sử dụng chức năng này' }), { status: 403 });
     }
 
     const { error } = await client.from('blog_posts').delete().eq('id', params.id);

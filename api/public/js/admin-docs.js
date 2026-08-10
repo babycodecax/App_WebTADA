@@ -19,6 +19,9 @@
   function getToken() {
     return (window.TADAAdminAuth && window.TADAAdminAuth.getToken) ? window.TADAAdminAuth.getToken() : '';
   }
+  function isAdminUser() {
+    return !!(window.TADAAdminAuth && window.TADAAdminAuth.isAdmin && window.TADAAdminAuth.isAdmin());
+  }
   function showMsg(target, text, type) {
     if (!target) return;
     target.textContent = text;
@@ -26,14 +29,17 @@
     if (!type) target.className += ' hidden';
   }
 
-  /* ===== Trạng thái đăng nhập (Google) — mở khóa các panel ===== */
-  function renderConnected(connected) {
-    if (el.uploadCard) el.uploadCard.style.display = connected ? 'block' : 'none';
-    if (el.listCard) el.listCard.style.display = connected ? 'block' : 'none';
-    if (!connected) {
+  /* ===== Trạng thái admin (Google + ADMIN_EMAILS) — mở khóa panel ===== */
+  function renderConnected(isAdmin) {
+    if (el.uploadCard) el.uploadCard.style.display = isAdmin ? 'block' : 'none';
+    if (el.listCard) el.listCard.style.display = isAdmin ? 'block' : 'none';
+    if (!isAdmin) {
       var sl = document.getElementById('sources-list');
       var fl = document.getElementById('forms-list');
-      if (sl) sl.innerHTML = '<div class="blog-empty">Chưa đăng nhập — bấm nút Đăng nhập (Google) ở góc trên bên phải.</div>';
+      var msg = window.TADAAdminAuth && window.TADAAdminAuth.isLoggedIn()
+        ? 'Tài khoản của bạn không có quyền sử dụng chức năng này.'
+        : 'Vui lòng đăng nhập bằng tài khoản quản trị (Google) để sử dụng chức năng.';
+      if (sl) sl.innerHTML = '<div class="blog-empty">' + msg + '</div>';
       if (fl) fl.innerHTML = '<div class="blog-empty">Chưa có biểu mẫu nào.</div>';
     }
   }
@@ -163,12 +169,11 @@
       window.TADAForms.bindTo(function (id) { return document.getElementById(id); });
     }
 
-    // Trạng thái đăng nhập Google — lắng nghe session thay đổi (blog-admin expose)
+    // Trạng thái ADMIN (Google + ADMIN_EMAILS) — lắng nghe session thay đổi
     function syncAuth() {
-      var connected = !!getToken();
-      renderConnected(connected);
-      if (connected) showSub(currentSub);
-      else showSub(currentSub);
+      var isAdmin = window.TADAAdminAuth && window.TADAAdminAuth.isAdmin ? window.TADAAdminAuth.isAdmin() : false;
+      renderConnected(isAdmin);
+      showSub(currentSub);
     }
     syncAuth();
     // Lắng nghe session Google thay đổi (blog-admin expose window.__tadaSession).

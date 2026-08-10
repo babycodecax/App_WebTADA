@@ -82,7 +82,7 @@
   }
 
   function showAuthError() {
-    el.list.innerHTML = '<div class="blog-error">Phiên quản trị hết hạn — nhập lại mật khẩu ở mục Kết nối phía trên (tab Quản lý tài liệu).</div>';
+    el.list.innerHTML = '<div class="blog-error">Tài khoản của bạn không có quyền sử dụng chức năng này.</div>';
   }
 
   /* ===== Render bảng nguồn ===== */

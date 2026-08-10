@@ -32,11 +32,17 @@ export async function isAdminGoogle(req: NextRequest): Promise<boolean> {
   }
 }
 
-/**
- * isAdmin — GIỮ TƯƠNG THÍCH: delegate sang isAdminGoogle (async).
- * Các route cũ gọi `if (!isAdmin(req))` → đổi thành `if (!(await isAdminGoogle(req)))`.
- * Để tránh vỡ, giữ hàm này trả Promise<boolean>.
- */
-export async function isAdmin(req: NextRequest): Promise<boolean> {
-  return isAdminGoogle(req);
+/** Lấy email từ Bearer token Google (nếu token hợp lệ) — dùng cho author_email. */
+export async function getAdminEmailFromToken(req: NextRequest): Promise<string> {
+  const auth = req.headers.get('authorization') || '';
+  if (!auth.startsWith('Bearer ')) return '';
+  const token = auth.slice(7).trim();
+  if (!token) return '';
+  try {
+    const { data, error } = await getSupabase().auth.getUser(token);
+    if (error || !data?.user?.email) return '';
+    return data.user.email.toLowerCase();
+  } catch {
+    return '';
+  }
 }
