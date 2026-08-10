@@ -12,7 +12,10 @@ import { getSupabase } from '@/lib/supabase';
 export const runtime = 'nodejs';
 export const maxDuration = 120;
 
-/** Lưu lịch sử audit vào Supabase (best-effort, không crash) */
+/** Lưu lịch sử audit vào Supabase (best-effort, không crash).
+ *  Lưu cả payload (violations + html_report + word_report) — fix review 2026-08-10:
+ *  cache in-memory trên Vercel serverless mất khi cold start, history/result
+ *  phải đọc được từ Supabase khi instance khác xử lý request. */
 async function saveAuditHistory(result: CachedResult, userEmail?: string): Promise<void> {
   try {
     await getSupabase().from('audit_history').insert({
@@ -24,6 +27,7 @@ async function saveAuditHistory(result: CachedResult, userEmail?: string): Promi
       file_name: result.file_name,
       user_email: userEmail || null,
       ran_at: new Date(result.ran_at * 1000).toISOString(),
+      payload: result, // toàn bộ CachedResult — fallback đọc chi tiết khi cache lạnh
     });
   } catch (e) {
     // Lưu history thất bại không ảnh hưởng kết quả

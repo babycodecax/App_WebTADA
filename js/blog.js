@@ -4,6 +4,14 @@
 
   var API = window.LOCAL_API ? window.LOCAL_API : '';  // '' = same-origin proxy
 
+  // Domain gốc — dùng cho canonical/structured data (SEO)
+  var SITE_ROOT = 'https://api-nu-drab.vercel.app';
+
+  /** URL bài viết theo slug — chuẩn clean path /blog/:slug (SEO) */
+  function postUrl(slug) {
+    return '/blog/' + encodeURIComponent((slug || '').split('/').join('-'));
+  }
+
   function slugify(text) {
     return text.toLowerCase().trim()
       .replace(/[^a-z0-9\s-]/g, '')
@@ -17,10 +25,21 @@
     return d.toLocaleDateString('vi-VN', { year:'numeric', month:'long', day:'numeric' });
   }
 
-  // === Detect if this is detail page (has query param ?slug=xxx) ===
-  function init() {
+  // === Detect if this is detail page ===
+  // URL chuẩn: /blog/:slug (clean path — SEO tốt hơn ?slug=). Vercel rewrite
+  // /blog/:slug → blog.html, slug đọc từ pathname. Fallback: ?slug= cũ.
+  function getSlugFromUrl() {
     var params = new URLSearchParams(window.location.search);
-    var slug = params.get('slug');
+    var q = params.get('slug');
+    if (q) return q;
+    var path = window.location.pathname || '';
+    // /blog/<slug> (sau tiền tố /blog)
+    var m = path.match(/^\/blog\/([^/]+)\/?$/);
+    return m ? decodeURIComponent(m[1]) : '';
+  }
+
+  function init() {
+    var slug = getSlugFromUrl();
     var grid = document.getElementById('blog-grid');
 
     if (!grid) return;
@@ -65,7 +84,7 @@
     var html = '<div class="blog-related"><h3>📖 Bài viết liên quan</h3><div class="blog-related-grid">';
     related.forEach(function (p) {
       html +=
-        '<a href="?slug=' + encodeURIComponent(p.slug) + '" class="blog-related-card">' +
+        '<a href="' + postUrl(p.slug) + '" class="blog-related-card">' +
           '<h4>' + escHtml(p.title) + '</h4>' +
           (p.summary ? '<p>' + escHtml(p.summary.slice(0, 100)) + '</p>' : '') +
         '</a>';
@@ -91,7 +110,7 @@
         posts.forEach(function (p) {
           var card = document.createElement('a');
           card.className = 'blog-card';
-          card.href = '?slug=' + encodeURIComponent(p.slug);
+          card.href = postUrl(p.slug);
           card.innerHTML =
             '<h2 class="blog-card-title">' + escHtml(p.title) + '</h2>' +
             '<p class="blog-card-summary">' + escHtml(p.summary || '') + '</p>' +
@@ -118,7 +137,7 @@
           '@type': 'ListItem',
           position: i + 1,
           name: p.title,
-          url: 'https://api-nu-drab.vercel.app/blog?slug=' + encodeURIComponent(p.slug)
+          url: SITE_ROOT + '/blog/' + encodeURIComponent(p.slug)
         };
       });
       var schema = {
@@ -188,9 +207,8 @@
       Google Starter Guide: mỗi trang cần title, description, canonical,
       structured data riêng để index đúng nội dung. */
   function updateDetailSeo(post) {
-    var base = 'https://api-nu-drab.vercel.app';
     var slug = post.slug || '';
-    var url = base + '/blog?slug=' + encodeURIComponent(slug);
+    var url = SITE_ROOT + '/blog/' + encodeURIComponent(slug);
     var author = post.author_email || 'Dịch Vụ Thuế Kế Toán TADA';
 
     // 1) Meta description (động từ summary/content)
@@ -295,8 +313,8 @@
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: 'https://api-nu-drab.vercel.app/' },
-          { '@type': 'ListItem', position: 2, name: 'Bài viết & Hướng dẫn', item: 'https://api-nu-drab.vercel.app/blog' },
+          { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: SITE_ROOT + '/' },
+          { '@type': 'ListItem', position: 2, name: 'Bài viết & Hướng dẫn', item: SITE_ROOT + '/blog' },
           { '@type': 'ListItem', position: 3, name: postTitle, item: url }
         ]
       };

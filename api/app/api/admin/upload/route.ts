@@ -5,6 +5,7 @@ import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker'
 import { ALLOWED_EXTENSIONS, extractHtml, extractText, sanitizeTitle } from '@/lib/parseFile';
 import { invalidateStructuredCache } from '@/lib/structured';
 import { invalidateComplianceCache } from '@/lib/compliance';
+import { invalidateKnowledgeCache } from '@/lib/knowledgeCache';
 import { autoExtractComplianceBounded, extractHeuristicThenUpsert } from '@/lib/autoComplianceExtract';
 import { extractLegalTitleFromHtml, buildLegalDocRow, upsertLegalDoc } from '@/lib/legalDocIngest';
 import { waitUntil } from '@vercel/functions';
@@ -292,9 +293,10 @@ export async function POST(req: NextRequest) {
     // TỰ ĐỘNG CẬP NHẬT THƯ VIỆN — .docx → landing_legal_docs (best-effort, chạy nền)
     waitUntil(syncLegalDocToLibrary(file));
     // Số liệu structured (moc_mien_thue_tncn_2026...) + compliance records có
-    // thể đổi theo tài liệu mới → invalidate cả 2 cache
+    // thể đổi theo tài liệu mới → invalidate cả 2 cache + knowledge cache
     invalidateStructuredCache();
     invalidateComplianceCache();
+    invalidateKnowledgeCache();
     // TỰ ĐỘNG EXTRACT COMPLIANCE — 2 tầng:
     //  1) Heuristic NGAY trong request (không LLM, <1s): chắc chắn có records
     //     cho tài liệu mới — kể cả nếu Vercel kill mọi thứ sau khi trả response.

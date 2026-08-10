@@ -3,6 +3,7 @@ import { getSupabase } from '@/lib/supabase';
 import { getClient } from '@/lib/claude';
 import { getStructuredKnowledge } from '@/lib/structured';
 import { isNumericQuery, searchCompliance, formatComplianceContext } from '@/lib/compliance';
+import { getKnowledgeChunksCached, refreshKnowledgeCache } from '@/lib/knowledgeCache';
 
 export const runtime = 'nodejs';
 export const maxDuration = 120;
@@ -228,38 +229,67 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
   ];
   const VITAL_LIMIT = 200; // mỗi file chunk nhỏ, 200 đủ
 
-  const queries = [
-    getSupabase()
-      .from('knowledge_chunks')
-      .select('id, content, title, heading, file_path, chunk_index')
-      .limit(1000),
-    getSupabase()
+  // Cache tầng module (fix review 2026-08-10): lần đầu mỗi instance query live,
+  // các câu hỏi sau trong TTL dùng cache — giảm ~20+ request Supabase/câu hỏi.
+  // Chunks upload/ mới nhất vẫn được query NỔI (xuyên cache) để admin upload
+  // hiện ngay, không cần đợi TTL 10 phút.
+  const cached = getKnowledgeChunksCached();
+  let uploadRows: any[] = [];
+  try {
+    const { data: upData } = await getSupabase()
       .from('knowledge_chunks')
       .select('id, content, title, heading, file_path, chunk_index')
       .like('file_path', 'upload/%')
-      .limit(1000),
-    ...VITAL_PATTERNS.map(p =>
-      getSupabase()
-        .from('knowledge_chunks')
-        .select('id, content, title, heading, file_path, chunk_index')
-        .like('file_path', p)
-        .limit(VITAL_LIMIT)
-    ),
-  ];
-  const results = await Promise.all(queries);
+      .limit(1000);
+    uploadRows = upData || [];
+  } catch { /* upload query lỗi — bỏ qua */ }
 
-  const errors = results.map(r => r.error).filter(Boolean);
-  if (errors.length) console.warn('Knowledge load error:', errors[0]);
-
-  // Gộp data + dedup theo id (chunks file trọng yếu có thể trùng với page1)
   const seenIds = new Set<string>();
   const data: any[] = [];
-  for (const res of results) {
-    for (const row of res.data || []) {
+  if (cached.data.length) {
+    for (const row of cached.data) {
       if (seenIds.has(row.id)) continue;
       seenIds.add(row.id);
       data.push(row);
     }
+    // Chunks upload: cache cũ + upload mới từng query riêng (dedup theo id)
+    for (const row of uploadRows) {
+      if (seenIds.has(row.id)) continue;
+      seenIds.add(row.id);
+      data.push(row);
+    }
+  } else {
+    // Cache lạnh → query live (giữ nguyên query cũ, kết quả như trước)
+    const queries = [
+      getSupabase()
+        .from('knowledge_chunks')
+        .select('id, content, title, heading, file_path, chunk_index')
+        .limit(1000),
+      getSupabase()
+        .from('knowledge_chunks')
+        .select('id, content, title, heading, file_path, chunk_index')
+        .like('file_path', 'upload/%')
+        .limit(1000),
+      ...VITAL_PATTERNS.map(p =>
+        getSupabase()
+          .from('knowledge_chunks')
+          .select('id, content, title, heading, file_path, chunk_index')
+          .like('file_path', p)
+          .limit(VITAL_LIMIT)
+      ),
+    ];
+    const results = await Promise.all(queries);
+    const errors = results.map(r => r.error).filter(Boolean);
+    if (errors.length) console.warn('Knowledge load error:', errors[0]);
+    for (const res of results) {
+      for (const row of res.data || []) {
+        if (seenIds.has(row.id)) continue;
+        seenIds.add(row.id);
+        data.push(row);
+      }
+    }
+    // Lưu cache (best-effort) cho các câu hỏi sau
+    void refreshKnowledgeCache();
   }
 
   if (!data.length) {

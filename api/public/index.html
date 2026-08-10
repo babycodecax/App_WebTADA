@@ -420,7 +420,6 @@
        ==================================== */
     (function () {
       var SUPABASE_URL = '', SUPABASE_ANON_KEY = '';
-      var ADMIN_EMAILS = [];  // danh sách admin từ backend
       var MAX_FREE = 3;
       var FREE_KEY = 'tada_free_count';
       var supabase = null;
@@ -438,7 +437,6 @@
         .then(function (cfg) {
           SUPABASE_URL = cfg.supabaseUrl;
           SUPABASE_ANON_KEY = cfg.supabaseAnonKey;
-          ADMIN_EMAILS = cfg.adminEmails || [];
           if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
           supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
           // Lang nghe auth state change (can dat SAU khi supabase duoc tao)
@@ -474,17 +472,27 @@
           loginBtn.style.display = 'none';
           avatar.style.display = 'flex';
           var img = document.getElementById('avatar-img');
-          if (img) img.src = session.user.user_metadata.avatar_url || '';
+          if (img) {
+            var avatarUrl = session.user.user_metadata.avatar_url || '';
+            // Chống XSS: chỉ chấp nhận URL https:// (chặn javascript:/data:/vbscript:)
+            img.src = /^https:\/\//i.test(avatarUrl) ? avatarUrl : '';
+          }
           var name = document.getElementById('user-name');
           if (name) name.textContent = session.user.user_metadata.full_name || session.user.email || 'User';
           var email = document.getElementById('user-email');
           if (email) email.textContent = session.user.email || '';
 
-          // Hiện nút "Viết bài" nếu email thuộc admin list
+          // Hiện nút "Viết bài" nếu là ADMIN — kiểm tra SERVER (/api/admin/check),
+          // không lộ danh sách ADMIN_EMAILS ra client (fix review 2026-08-10)
           var writeBtn = document.getElementById('btn-write-post');
           if (writeBtn) {
-            var userEmail = (session.user.email || '').toLowerCase().trim();
-            writeBtn.style.display = (ADMIN_EMAILS.indexOf(userEmail) !== -1) ? 'block' : 'none';
+            var token = session.access_token;
+            if (!token) { writeBtn.style.display = 'none'; }
+            else {
+              fetch('/api/admin/check', { headers: { 'Authorization': 'Bearer ' + token } })
+                .then(function (r) { writeBtn.style.display = r.ok ? 'block' : 'none'; })
+                .catch(function () { writeBtn.style.display = 'none'; });
+            }
           }
 
           chatbox.dataset.loggedIn = 'true';
@@ -570,13 +578,13 @@
         },
         log: function (action, detail, qCount) {
           if (!session) return;
-          var email = session.user.email || '';
+          var token = session.access_token;
+          if (!token) return;
           var name = session.user.user_metadata?.full_name || '';
           fetch('/api/log', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
             body: JSON.stringify({
-              email: email,
               user_name: name,
               action: action,
               detail: detail || '',
@@ -604,7 +612,7 @@
           posts.forEach(function (p) {
             var card = document.createElement('a');
             card.className = 'blog-mini-card';
-            card.href = '/blog?slug=' + encodeURIComponent(p.slug);
+            card.href = '/blog/' + encodeURIComponent(p.slug);
             card.innerHTML =
               '<h3>' + esc(p.title) + '</h3>' +
               '<p>' + esc((p.summary || '').substring(0, 150)) + '</p>' +

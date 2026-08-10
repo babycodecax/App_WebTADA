@@ -30,8 +30,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
     if (error) return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     return new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } });
-  } catch (e: any) {
-    return new Response(JSON.stringify({ error: e.message || 'Internal error' }), { status: 500 });
+  } catch {
+    // Không lộ chi tiết lỗi nội bộ ra client (fix review 2026-08-10)
+    return new Response(JSON.stringify({ error: 'Lỗi máy chủ, vui lòng thử lại' }), { status: 500 });
   }
 }
 
@@ -48,7 +49,8 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     const { error } = await client.from('blog_posts').delete().eq('id', params.id);
     if (error) return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     return new Response(JSON.stringify({ success: true }), { headers: { 'Content-Type': 'application/json' } });
-  } catch (e: any) {
-    return new Response(JSON.stringify({ error: e.message || 'Internal error' }), { status: 500 });
+  } catch {
+    // Không lộ chi tiết lỗi nội bộ ra client (fix review 2026-08-10)
+    return new Response(JSON.stringify({ error: 'Lỗi máy chủ, vui lòng thử lại' }), { status: 500 });
   }
 }

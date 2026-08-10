@@ -5,6 +5,7 @@ import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker'
 import { sanitizeTitle } from '@/lib/parseFile';
 import { invalidateStructuredCache } from '@/lib/structured';
 import { invalidateComplianceCache } from '@/lib/compliance';
+import { invalidateKnowledgeCache } from '@/lib/knowledgeCache';
 import { autoExtractComplianceBounded, extractHeuristicThenUpsert } from '@/lib/autoComplianceExtract';
 import { waitUntil } from '@vercel/functions';
 
@@ -103,6 +104,7 @@ export async function POST(req: NextRequest) {
     await clearAnswerCache();
     invalidateStructuredCache();
     invalidateComplianceCache();
+    invalidateKnowledgeCache();
     // Tự động extract compliance records từ tài liệu vừa ingest — 2 tầng như
     // upload route: heuristic NGAY (chắc chắn có records) + LLM refine nền qua
     // waitUntil (best-effort). Truyền fm.body (đã strip frontmatter).

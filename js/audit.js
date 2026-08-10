@@ -125,7 +125,10 @@
     var win = window.open('', '_blank');
     if (!win) { alert('Vui lòng cho phép pop-up để xuất báo cáo'); return; }
     win.document.title = lastResult.file_name || 'BaoCao_SoatXet_BCTC.pdf';
-    win.document.write(lastResult.html_report);
+    // Sanitize chống XSS — html_report sinh từ dữ liệu file upload (fix review 2026-08-10)
+    var html = lastResult.html_report;
+    if (window.DOMPurify && window.DOMPurify.sanitize) html = window.DOMPurify.sanitize(html);
+    win.document.write(html);
     win.document.close();
   }
 

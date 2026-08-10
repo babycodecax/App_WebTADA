@@ -36,7 +36,8 @@ export async function GET(_req: NextRequest) {
       .order('published_at', { ascending: false });
 
     for (const post of data || []) {
-      const loc = `${SITE}/blog?slug=${escapeXml(post.slug)}`;
+      // Clean path /blog/:slug (SEO) — thay ?slug= (fix review 2026-08-10)
+      const loc = `${SITE}/blog/${escapeXml(post.slug)}`;
       const lastmod = post.updated_at
         ? `<lastmod>${escapeXml(post.updated_at)}</lastmod>`
         : '';

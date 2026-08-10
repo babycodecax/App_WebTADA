@@ -2,28 +2,41 @@
    CHỈ khóa 4 chức năng trong trang admin (Quản lý tài liệu, Dịch vụ, Soạn bài,
    Bài viết) cho tài khoản khách — trang chủ public (thư viện, chatbox, blog xem)
    KHÔNG bị ảnh hưởng.
-   Chỉ tài khoản trong ADMIN_EMAILS mới là admin. */
+   Quyền admin KIỂM TRA Ở SERVER (/api/admin/check) — client KHÔNG giữ danh
+   sách ADMIN_EMAILS (fix review 2026-08-10: không lộ email admin qua /api/config). */
 (function () {
   'use strict';
 
   var API = window.LOCAL_API ? window.LOCAL_API : '';
-  var _adminEmails = [];
+  var _isAdmin = false;
   var _isLoading = false;
 
-  // Lấy danh sách admin emails từ /api/config (gọi 1 lần)
-  function loadAdminEmails() {
+  // Gọi /api/admin/check với Bearer token — server quyết định đúng/sai.
+  // Nếu chưa có session (blog-admin.js chưa set xong __tadaSession) → thử lại
+  // sau 300ms tối đa 10 lần — tránh kết luận "không admin" sai trước khi session sẵn.
+  var _retries = 0;
+  function checkAdmin() {
     if (_isLoading) return;
+    var token = window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '';
+    if (!token) {
+      _retries++;
+      if (_retries <= 10) { setTimeout(checkAdmin, 300); return; }
+      _isAdmin = false; notify(); return;
+    }
     _isLoading = true;
-    fetch(API + '/api/config')
-      .then(function (r) { return r.json(); })
-      .then(function (cfg) {
-        _adminEmails = (cfg && Array.isArray(cfg.adminEmails)) ? cfg.adminEmails : [];
-        // Sau khi có danh sách → thông báo cho các module cập nhật UI
-        var n = window.TADAAdminAuth && window.TADAAdminAuth._notify;
-        if (n) n();
+    fetch(API + '/api/admin/check', { headers: { 'Authorization': 'Bearer ' + token } })
+      .then(function (r) {
+        _isAdmin = r.ok;
+        _retries = 0;
+        notify();
       })
-      .catch(function () { /* giữ rỗng — mặc định không admin */ })
+      .catch(function () { _isAdmin = false; notify(); })
       .finally(function () { _isLoading = false; });
+  }
+
+  function notify() {
+    var n = window.TADAAdminAuth && window.TADAAdminAuth._notify;
+    if (n) n();
   }
 
   window.TADAAdminAuth = {
@@ -45,21 +58,23 @@
     isLoggedIn: function () {
       return !!this.getToken();
     },
-    /** Có phải ADMIN (email ∈ ADMIN_EMAILS) không — tài khoản khách = false. */
+    /** Có phải ADMIN không — kết quả SERVER (Bearer token), cache tới khi session đổi. */
     isAdmin: function () {
-      if (!this.isLoggedIn()) return false;
-      var email = this.getEmail().toLowerCase();
-      if (!email) return false;
-      return _adminEmails.indexOf(email) !== -1;
+      return _isAdmin;
     },
-    /** Danh sách email admin được cấp quyền (public config). */
-    getAdminEmails: function () {
-      return _adminEmails.slice();
+    /** Yêu cầu kiểm tra lại quyền admin (gọi khi session thay đổi). */
+    refreshAdmin: function () {
+      _isAdmin = false;
+      checkAdmin();
     },
-    /** Callback — các module đăng ký để nhận thông báo khi danh sách admin đổi. */
+    /** Callback — các module đăng ký để nhận thông báo khi trạng thái đổi. */
     _notify: null
   };
 
-  // Tải danh sách admin emails khi load
-  loadAdminEmails();
+  // Kiểm tra admin khi load (nếu đã có session trong localStorage của supabase-js).
+  // Lưu ý: window.__tadaSession được blog-admin.js set SAU khi có session — các
+  // module khác (admin-docs/admin-services) tự gọi refreshAdmin khi session đổi.
+  // Nếu checkAdmin() chạy khi CHƯA có token (chưa login) → refreshAdmin()
+  // được gọi lại sau khi đăng nhập (blog-admin.js) để lấy kết quả đúng.
+  checkAdmin();
 })();

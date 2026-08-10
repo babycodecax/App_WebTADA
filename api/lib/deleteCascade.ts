@@ -16,6 +16,7 @@
 import { getSupabase } from './supabase';
 import { invalidateComplianceCache } from './compliance';
 import { invalidateStructuredCache } from './structured';
+import { invalidateKnowledgeCache } from './knowledgeCache';
 
 /** Escape ký tự wildcard của LIKE/ILIKE. */
 export function escapeLike(s: string): string {
@@ -175,6 +176,7 @@ export async function deleteSourceCascade(
 
   // 4) Cache + dữ liệu số liệu
   invalidateStructuredCache();
+  invalidateKnowledgeCache();
   await clearAnswerCache();
 
   return { chunks, sources };

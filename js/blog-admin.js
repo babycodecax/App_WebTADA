@@ -24,6 +24,9 @@
         supabase.auth.onAuthStateChange(function (ev, sess) {
           session = sess;
           window.__tadaSession = sess; // expose cho admin-auth.js (Quản lý tài liệu/Dịch vụ)
+          if (window.TADAAdminAuth && window.TADAAdminAuth.refreshAdmin) {
+            window.TADAAdminAuth.refreshAdmin(); // kiểm tra quyền admin ở server
+          }
           updateAuthUI();
           if (ev === 'SIGNED_IN') loadPostList();
         });
@@ -56,6 +59,9 @@
       supabase.auth.signOut().then(function () {
         session = null;
         window.__tadaSession = null; // khóa các module admin khác
+        if (window.TADAAdminAuth && window.TADAAdminAuth.refreshAdmin) {
+          window.TADAAdminAuth.refreshAdmin(); // server trả false → khóa admin
+        }
         editingId = null;
         updateAuthUI();
         document.getElementById('post-list').innerHTML = '';
@@ -108,7 +114,8 @@
       loginBtn.style.display = 'none';
       logoutBtn.style.display = 'inline-block';
       emailSpan.textContent = session.user.email || '';
-      if (session.user.user_metadata?.avatar_url) {
+      if (/^https:\/\//i.test(session.user.user_metadata?.avatar_url || '')) {
+        // Chống XSS: chỉ chấp nhận URL https:// (chặn javascript:/data:/vbscript:)
         avatar.src = session.user.user_metadata.avatar_url;
         avatar.style.display = 'inline';
       }

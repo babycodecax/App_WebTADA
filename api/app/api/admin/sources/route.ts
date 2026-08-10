@@ -3,6 +3,7 @@ import { getSupabase } from '@/lib/supabase';
 import { isAdminGoogle } from '@/lib/adminAuth';
 import { deleteSourceCascade } from '@/lib/deleteCascade';
 import { deleteLegalDoc, LEGAL_DOCS_PUBLIC_FIELDS } from '@/lib/legalDocIngest';
+import { invalidateKnowledgeCache } from '@/lib/knowledgeCache';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -123,6 +124,8 @@ export async function DELETE(req: NextRequest) {
     }
 
     // 3. Không đụng .md vault (chatbox giữ nguyên) — không xóa file storage gốc.
+    // Vừa xóa chunks → knowledge cache phải hết hạn để chat không trích nguồn đã xóa
+    invalidateKnowledgeCache();
 
     return NextResponse.json({ ok: true, status: 'removed' });
   } catch (e: unknown) {
