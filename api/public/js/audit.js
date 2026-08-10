@@ -125,9 +125,23 @@
     var win = window.open('', '_blank');
     if (!win) { alert('Vui lòng cho phép pop-up để xuất báo cáo'); return; }
     win.document.title = lastResult.file_name || 'BaoCao_SoatXet_BCTC.pdf';
-    // Sanitize chống XSS — html_report sinh từ dữ liệu file upload (fix review 2026-08-10)
-    var html = lastResult.html_report;
-    if (window.DOMPurify && window.DOMPurify.sanitize) html = window.DOMPurify.sanitize(html);
+    // KHÔNG dùng DOMPurify (xóa <style> làm mất viền bảng/font) và KHÔNG escape
+    // </script> (trong HTML ký tự \ không phải escape → thẻ script không đóng
+    // → trình duyệt nuốt hết phần còn lại → MẤT HẾT CHỮ). html_report do server
+    // sinh, mọi trường dữ liệu đã esc() → an toàn, trả nguyên.
+    var html = String(lastResult.html_report || '');
+    // FIX lỗi font/bảng: tab mới (about:blank) không biết base → asset /img/...
+    // không resolve. Chèn <base href="domain gốc"> để logo/ảnh tải đúng + đảm
+    // bảo charset utf-8 cho tiếng Việt (dấu không lỗi).
+    var baseHref = window.location.origin + '/';
+    var baseTag = '<base href="' + baseHref + '">';
+    if (/<head[^>]*>/.test(html)) {
+      html = html.replace(/<head([^>]*)>/, function (m, attrs) {
+        return '<head' + attrs + '>' + baseTag;
+      });
+    } else {
+      html = '<!DOCTYPE html><html><head><meta charset="utf-8">' + baseTag + '</head><body>' + html + '</body></html>';
+    }
     win.document.write(html);
     win.document.close();
   }

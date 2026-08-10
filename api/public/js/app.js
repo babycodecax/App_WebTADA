@@ -122,7 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 3. Services — hiển thị 1 khối văn bản nối tiếp (mỗi dòng 1 dịch vụ) từ /api/services.
+  // 3. Services — hiển thị MỖI DÒNG 1 CARD HÀNG NGANG (giống blog-mini-card),
+  //    admin nhập 1 dòng = 1 dịch vụ trong /api/services → trang chủ tự cập nhật.
   //    Fallback: văn bản tĩnh nhúng sẵn nếu API lỗi/trống (trang vẫn hiển thị đầy đủ cho SEO).
   var FALLBACK_CONTENT =
     '🏠 Kế toán dịch vụ trọn gói\n' +
@@ -140,10 +141,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!content) return;
     content.innerHTML = '';
 
-    var block = document.createElement('div');
-    block.className = 'services-text-block';
-    block.textContent = text || '';
-    content.appendChild(block);
+    // Tách từng dòng (admin nhập mỗi dòng 1 dịch vụ) → bỏ dòng trống
+    var lines = (text || '').split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+    if (!lines.length) return;
+
+    var wrapper = document.createElement('div');
+    wrapper.className = 'services-grid';
+
+    lines.forEach(function (line) {
+      var card = document.createElement('div');
+      card.className = 'services-card';
+
+      // Tách emoji đầu dòng (🏠/🌟/…) khỏi tên dịch vụ — hiển thị icon riêng
+      var icon = '';
+      var name = line;
+      var m = line.match(/^([\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}]\s*)(.+)$/u);
+      if (m) { icon = m[1].trim(); name = m[2].trim(); }
+
+      if (icon) {
+        var iconEl = document.createElement('span');
+        iconEl.className = 'services-card-icon';
+        iconEl.textContent = icon;
+        card.appendChild(iconEl);
+      }
+
+      var nameEl = document.createElement('span');
+      nameEl.className = 'services-card-name';
+      nameEl.textContent = name || line;
+      card.appendChild(nameEl);
+
+      wrapper.appendChild(card);
+    });
+
+    content.appendChild(wrapper);
   }
 
   function loadServices() {
