@@ -134,9 +134,16 @@ test('hasRealMatch: mọi chunk matchCount = 0 (kể cả score > 0 do boost) �
   assert.equal(hasRealMatch(scored), false);
 });
 
-test('hasRealMatch: có >= 1 chunk matchCount > 0 → true', () => {
+test('hasRealMatch: query dài (>= 4 terms) → 1 match đủ', () => {
   const scored = [{ score: 0, matchCount: 0 }, { score: 3.2, matchCount: 1 }, { score: 0 }];
-  assert.equal(hasRealMatch(scored), true);
+  assert.equal(hasRealMatch(scored, ['a', 'b', 'c', 'd']), true);
+});
+
+test('hasRealMatch: query ngắn (<= 3 terms) → cần >= 2 match (chống substring)', () => {
+  const scored = [{ score: 3.2, matchCount: 1 }];
+  assert.equal(hasRealMatch(scored, ['a', 'b', 'c']), false);
+  const scored2 = [{ score: 3.2, matchCount: 2 }];
+  assert.equal(hasRealMatch(scored2, ['a', 'b', 'c']), true);
 });
 
 test('hasRealMatch: mảng rỗng → false', () => {

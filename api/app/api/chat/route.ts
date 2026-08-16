@@ -13,7 +13,7 @@ import { getStructuredKnowledge } from '@/lib/structured';
 import { isNumericQuery, searchCompliance, formatComplianceContext } from '@/lib/compliance';
 import { getKnowledgeChunksCached, refreshKnowledgeCache } from '@/lib/knowledgeCache';
 import { isBlogPath, isAdminKnowledgePath } from '@/lib/blogKnowledge';
-import { tokenize, expandShortQuery, hasRealMatch } from '@/lib/queryExpansion';
+import { tokenize, expandShortQuery, countStrongMatches, hasRealMatch } from '@/lib/queryExpansion';
 import {
   sanitizeHistory,
   limitHistory,
@@ -38,21 +38,8 @@ function buildStructuredPrompt(structured: { key: string; value: string }[]): st
 // Tokenize/keyword mapping/mở rộng query đã chuyển sang lib/queryExpansion.ts
 // (tokenize, expandKeywords, expandShortQuery, hasRealMatch).
 
-/**
- * Đếm số term match trong chunk — MATCH TỪ ĐỘC LẬP (không phải substring).
- * Fix HIGH: substring 'cá' match 'cá nhân', 'cảnh' match 'gia cảnh' → câu
- * ngoài domain ("nuôi cá cảnh") bị coi là "có kiến thức". Regex: token biên
- * (space/start/end) — số (VD "50.000") vẫn match chính xác vì có dấu chấm.
- */
-function _countMatches(terms: string[], haystack: string): number {
-  let count = 0;
-  for (const t of terms) {
-    const esc = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const re = new RegExp(`(^|[\\s\\p{P}])${esc}(?=$|[\\s\\p{P}])`, 'u');
-    if (re.test(haystack)) count++;
-  }
-  return count;
-}
+// Đếm term match CHẶT — dùng chung countStrongMatches từ lib/queryExpansion
+// (word boundary, term 1 ký tự chỉ số) — tránh trùng logic 2 nơi.
 
 // Phát hiện chủ đề từ query để bổ sung search (lowercase trước — tiếng Việt
 // viết hoa đầu câu như "Thu nhập..." phải match được)
@@ -291,7 +278,7 @@ async function searchKnowledge(query: string, topK: number = TOP_K, historyTerms
     const heading = (row.heading || '');
     const haystack = (content + ' ' + title + ' ' + heading).toLowerCase();
 
-    const matchCount = _countMatches(terms, haystack);
+    const matchCount = countStrongMatches(terms, haystack);
     let score = matchCount > 0 ? 1.0 + Math.log2(matchCount + 1) : 0;
 
     // Cheatsheet boost +1 (trước +8/+3 — cheatsheet match nhiều term phổ biến
@@ -359,7 +346,10 @@ async function searchKnowledge(query: string, topK: number = TOP_K, historyTerms
   // Fix HIGH: không có chunk nào match thật → trả [] (KHÔNG trả top-K chunk
   // ngẫu nhiên score 0). Chunk chỉ boost chủ đề/cheatsheet không tính là match.
   // forcedChunks vẫn được xét (chúng là nền tảng trả lời mốc/ngưỡng đã force).
-  if (!hasRealMatch(scored) && !forcedChunks.length) {
+  // hasRealMatch(scored, terms): threshold theo độ dài query — query ngắn (≤3
+  // terms) cần ≥2 match chặt trong CÙNG 1 chunk (chống substring trùng ngẫu
+  // nhiên); query dài (≥4 terms) chỉ cần 1 (đã nhiều term đặc trưng).
+  if (!hasRealMatch(scored, terms) && !forcedChunks.length) {
     return [];
   }
   // Merge forcedChunks vào top TRƯỚC (chunk forced = nền tảng trả lời mốc/ngưỡng,

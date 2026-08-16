@@ -109,11 +109,41 @@ export function expandKeywords(query: string): string[] {
  * không match chunk nào → trước đây trả top-K ngẫu nhiên score 0 hoặc rỗng.
  * Bổ sung synonym domain (VD "thuế suất" → "biểu thuế lũy tiến") để tăng recall.
  * Query >= 3 term → giữ nguyên (chỉ expandKeywords) — tránh làm nhiễu.
+ *
+ * Lưu ý: expandKeywords(query) đã chèn đủ mọi synonym domain từ TOPIC_KEYWORDS
+ * (gồm cả mapping cho query ngắn) — không cần lặp lại mapping ở đây.
  */
 export function expandShortQuery(query: string): string[] {
-  const base = expandKeywords(query);
-  if (base.length >= 3) return base;
-  return base;
+  return expandKeywords(query);
+}
+
+/**
+ * Đếm số term khớp CHẶT (word boundary) trong văn bản.
+ *
+ * Khác substring match ("cá" match trong "cá nhân", "cảnh" match trong
+ * "gia cảnh"): khớp chặt chỉ tính term xuất hiện như từ độc lập — term >= 2
+ * ký tự phải đứng giữa 2 ranh giới từ (ký tự khác chữ/số/dấu gạch dưới);
+ * term 1 ký tự chỉ tính khi là số ("2", "5" — giá trị thuế quan trọng).
+ *
+ * Dùng để phân biệt "match THẬT" (chunk cùng chủ đề) với "match tình cờ"
+ * (substring) — chữa false-positive: "nuôi cá cảnh" không còn match "cá nhân"
+ * hay "gia cảnh" → không gọi LLM lạc đề với context TNCN.
+ */
+export function countStrongMatches(terms: string[], text: string): number {
+  if (!terms || !terms.length || !text) return 0;
+  const hay = ` ${(text || '').toLowerCase()} `;
+  let count = 0;
+  for (const t of terms) {
+    if (!t) continue;
+    if (t.length === 1) {
+      // Term 1 ký tự: chỉ giữ số (hành vi cũ cho "2", "5") — substring thường
+      if (/\d/.test(t) && hay.includes(t)) count++;
+      continue;
+    }
+    // Term >= 2 ký tự: phải đứng giữa 2 ranh giới từ
+    if (new RegExp(`[^\\p{L}\\p{N}_]${t}[^\\p{L}\\p{N}_]`, 'u').test(hay)) count++;
+  }
+  return count;
 }
 
 /**
@@ -121,7 +151,18 @@ export function expandShortQuery(query: string): string[] {
  * Chunk chỉ được boost chủ đề/cheatsheet (score > 0 nhưng matchCount = 0)
  * KHÔNG được tính là "có kiến thức" — tránh trả lời chung chung khi thực ra
  * không tìm thấy tài liệu liên quan.
+ *
+ * Threshold chống false-positive substring match (fix HIGH): query ngắn
+ * (<= 3 terms) phải khớp >= 2 terms CHẶT trong CÙNG 1 chunk mới coi là có
+ * kiến thức — 1 term lẻ dễ trùng substring ngẫu nhiên với chunk khác chủ đề
+ * (VD "nuôi cá cảnh" match "cá nhân"/"gia cảnh" trong chunk TNCN). Query dài
+ * (>= 4 terms) giữ threshold 1 vì đã có nhiều term đặc trưng.
  */
-export function hasRealMatch(scored: Array<{ matchCount?: number }>): boolean {
-  return (scored || []).some(c => (c.matchCount || 0) > 0);
+export function hasRealMatch(
+  scored: Array<{ matchCount?: number }>,
+  terms: string[] = []
+): boolean {
+  if (!scored || !scored.length) return false;
+  const threshold = terms.length >= 4 ? 1 : 2;
+  return scored.some(c => (c.matchCount || 0) >= threshold);
 }
