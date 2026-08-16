@@ -2,6 +2,8 @@ import OpenAI from 'openai';
 import {
   getClientForModel,
   getModelList,
+  getModelProvider,
+  streamGemini,
   streamWithModelFallback,
   type StreamDelta,
 } from './modelFallback';
@@ -61,7 +63,16 @@ export async function* streamChat(
   ];
 
   const models = getModelList();
+  const userMessageText = userMessage;
   yield* streamWithModelFallback(models, async (model) => {
+    if (getModelProvider(model) === 'gemini') {
+      return streamGemini(model, {
+        system,
+        user: userMessageText,
+        maxTokens: 1024,
+        temperature: 0.0,
+      });
+    }
     const stream = await getClientForModel(model).chat.completions.create({
       model,
       max_tokens: 1024,

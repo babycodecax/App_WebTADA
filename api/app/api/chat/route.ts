@@ -1,6 +1,14 @@
 import { NextRequest } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
-import { getClientForModel, getModelList, streamWithModelFallback } from '@/lib/modelFallback';
+import {
+  getClientForModel,
+  getModelList,
+  getModelProvider,
+  streamGemini,
+  streamWithModelFallback,
+  type CallModelFn,
+  type StreamDelta,
+} from '@/lib/modelFallback';
 import { getStructuredKnowledge } from '@/lib/structured';
 import { isNumericQuery, searchCompliance, formatComplianceContext } from '@/lib/compliance';
 import { getKnowledgeChunksCached, refreshKnowledgeCache } from '@/lib/knowledgeCache';
@@ -599,7 +607,16 @@ export async function POST(req: NextRequest) {
           // dự phòng (lib/modelFallback.ts). List 1 model → hành vi như cũ
           // (3 retry, backoff). onChunk: cộng fullAnswer + đẩy SSE token.
           const models = getModelList(); // đọc lazily trong handler (tránh env freeze build-time)
-          for await (const delta of streamWithModelFallback(models, async (model) => {
+          const callModel: CallModelFn = async (model) => {
+            if (getModelProvider(model) === 'gemini') {
+              // Gemini API: REST gốc (streamGenerateContent) — không có OpenAI-compatible
+              return streamGemini(model, {
+                system,
+                user,
+                maxTokens: 4096,
+                temperature: 0.0,
+              });
+            }
             const chatStream = await getClientForModel(model).chat.completions.create({
               model,
               max_tokens: 4096,
@@ -610,8 +627,9 @@ export async function POST(req: NextRequest) {
               ],
               stream: true,
             });
-            return chatStream as AsyncIterable<{ content?: string | null }>;
-          }, (chunk) => {
+            return chatStream as AsyncIterable<StreamDelta>;
+          };
+          for await (const _delta of streamWithModelFallback(models, callModel, (chunk) => {
             const d = chunk.content || '';
             if (!d) return;
             fullAnswer += d;
