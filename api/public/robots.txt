@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://api-nu-drab.vercel.app/sitemap.xml
+Sitemap: https://ketoanthuetada.com/sitemap.xml

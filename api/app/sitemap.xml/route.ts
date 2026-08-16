@@ -4,7 +4,7 @@ import { getSupabase } from '@/lib/supabase';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const SITE = 'https://api-nu-drab.vercel.app';
+const SITE = 'https://ketoanthuetada.com';
 
 const escapeXml = (s: string): string =>
   s
