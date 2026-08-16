@@ -58,8 +58,6 @@ export async function* streamGemini(
       systemInstruction: { parts: [{ text: req.system }] },
       contents: [{ role: 'user', parts: [{ text: req.user }] }],
       generationConfig: { maxOutputTokens: req.maxTokens, temperature: req.temperature },
-      // Chặn reasoning lộ ra output (model vẫn suy luận bình thường, chỉ ẩn phần suy nghĩ thô)
-      thinkingConfig: { includeThoughts: false },
     }),
   });
 
