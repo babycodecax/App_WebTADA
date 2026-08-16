@@ -1,31 +1,19 @@
 import OpenAI from 'openai';
+import {
+  getClientForModel,
+  getModelList,
+  streamWithModelFallback,
+  type StreamDelta,
+} from './modelFallback';
 
+/**
+ * getClient() — client cho MODEL CHÍNH (model đầu của danh sách LLM_MODEL).
+ * Provider theo prefix: 'gemini/...' → Gemini API; khác → LLM_API_KEY + baseURL.
+ */
 export function getClient(): OpenAI {
-  const model = process.env.LLM_MODEL || 'deepseek-v4-flash';
-  let apiKey: string;
-  let baseURL: string;
-
-  if (model.startsWith('gemini/')) {
-    // Gemini models qua Gemini API
-    apiKey = process.env.GEMINI_API_KEY || '';
-    if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
-    baseURL = 'https://generativelanguage.googleapis.com/v1beta/openai/';
-  } else {
-    // Opencode Go / provider khác
-    apiKey = process.env.LLM_API_KEY || '';
-    if (!apiKey) throw new Error('Missing LLM_API_KEY');
-    baseURL = (process.env.LLM_API_BASE_URL || 'https://opencode.ai/zen/go/v1').replace(/\/+$/, '');
-  }
-
-  return new OpenAI({
-    apiKey,
-    baseURL,
-    timeout: 60000,
-    maxRetries: 5,
-  });
+  return getClientForModel(getModelList()[0]);
 }
 
-export const CHAT_MODEL = process.env.LLM_MODEL || 'deepseek-v4-flash';
 export const EMBED_MODEL = process.env.EMBED_MODEL || 'text-embedding-004';
 
 export async function embedText(text: string): Promise<number[]> {
@@ -56,6 +44,11 @@ export async function embedText(text: string): Promise<number[]> {
   throw lastErr;
 }
 
+/**
+ * streamChat — stream câu trả lời qua danh sách model (LLM_MODEL phân tách
+ * dấu phẩy). Model đầu fail hết retry → tự chuyển model dự phòng + log.
+ * List 1 model → hành vi giữ nguyên như cũ (3 retry, backoff 1s/2s).
+ */
 export async function* streamChat(
   system: string,
   userMessage: string,
@@ -67,26 +60,14 @@ export async function* streamChat(
     { role: 'user' as const, content: userMessage },
   ];
 
-  let lastErr: unknown;
-  for (let attempt = 1; attempt <= 3; attempt++) {
-    try {
-      const stream = await getClient().chat.completions.create({
-        model: CHAT_MODEL,
-        max_tokens: 1024,
-        messages,
-        stream: true,
-      });
-
-      for await (const chunk of stream) {
-        const delta = chunk.choices[0]?.delta?.content;
-        if (delta) yield delta;
-      }
-      return;
-    } catch (e) {
-      lastErr = e;
-      if (attempt >= 3) break;
-      await new Promise((r) => setTimeout(r, 1000 * attempt));
-    }
-  }
-  throw lastErr;
+  const models = getModelList();
+  yield* streamWithModelFallback(models, async (model) => {
+    const stream = await getClientForModel(model).chat.completions.create({
+      model,
+      max_tokens: 1024,
+      messages,
+      stream: true,
+    });
+    return stream as AsyncIterable<StreamDelta>;
+  });
 }

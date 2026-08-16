@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
-import { getClient } from '@/lib/claude';
+import { getClientForModel, getModelList, streamWithModelFallback } from '@/lib/modelFallback';
 import { getStructuredKnowledge } from '@/lib/structured';
 import { isNumericQuery, searchCompliance, formatComplianceContext } from '@/lib/compliance';
 import { getKnowledgeChunksCached, refreshKnowledgeCache } from '@/lib/knowledgeCache';
@@ -8,7 +8,6 @@ import { getKnowledgeChunksCached, refreshKnowledgeCache } from '@/lib/knowledge
 export const runtime = 'nodejs';
 export const maxDuration = 120;
 
-const CHAT_MODEL = process.env.LLM_MODEL || process.env.CHAT_MODEL || 'deepseek-v4-flash';
 const TOP_K = 20;
 
 // ─── Structured knowledge (cache hot — xem lib/structured.ts) ───
@@ -594,50 +593,43 @@ export async function POST(req: NextRequest) {
         ));
 
         let fullAnswer = '';
+        let sentError = false; // tránh gửi 2 tin (error + quá tải) khi tất cả model fail
         try {
-          // Retry khi LLM lỗi/từ chối — tránh fallback "quá tải" sai lệch
-          let lastErr: any = null;
-          for (let attempt = 1; attempt <= 3; attempt++) {
-            try {
-              const chatStream = await getClient().chat.completions.create({
-                model: CHAT_MODEL,
-                max_tokens: 4096,
-                temperature: 0.0,
-                messages: [
-                  { role: 'system', content: system },
-                  { role: 'user', content: user },
-                ],
-                stream: true,
-              });
-
-              for await (const chunk of chatStream) {
-                const delta = chunk.choices[0]?.delta?.content;
-                if (delta) {
-                  fullAnswer += delta;
-                  controller.enqueue(encoder.encode(
-                    `data: ${JSON.stringify({ type: 'token', data: delta })}\n\n`
-                  ));
-                }
-              }
-              if (fullAnswer) break; // có câu trả lời → thoát retry
-            } catch (e: any) {
-              lastErr = e;
-              console.warn(`LLM stream attempt ${attempt} failed:`, e?.message);
-              if (attempt < 3) await new Promise(r => setTimeout(r, 1500 * attempt));
-            }
-          }
-          if (!fullAnswer && lastErr) {
-            console.error('LLM stream error (all attempts):', lastErr);
+          // Fallback danh sách model: model đầu fail hết retry → tự chuyển model
+          // dự phòng (lib/modelFallback.ts). List 1 model → hành vi như cũ
+          // (3 retry, backoff). onChunk: cộng fullAnswer + đẩy SSE token.
+          const models = getModelList(); // đọc lazily trong handler (tránh env freeze build-time)
+          for await (const delta of streamWithModelFallback(models, async (model) => {
+            const chatStream = await getClientForModel(model).chat.completions.create({
+              model,
+              max_tokens: 4096,
+              temperature: 0.0,
+              messages: [
+                { role: 'system', content: system },
+                { role: 'user', content: user },
+              ],
+              stream: true,
+            });
+            return chatStream as AsyncIterable<{ content?: string | null }>;
+          }, (chunk) => {
+            const d = chunk.content || '';
+            if (!d) return;
+            fullAnswer += d;
+            controller.enqueue(encoder.encode(
+              `data: ${JSON.stringify({ type: 'token', data: d })}\n\n`
+            ));
+          })) {
+            // delta đã được xử lý trong onChunk — không làm gì thêm
           }
         } catch (e: any) {
+          // Tất cả model fail → gửi 1 tin thân thiện (không lộ lỗi kỹ thuật raw,
+          // không gửi thêm event error để client khỏi render 2 bubble bot)
+          sentError = true;
           console.error('LLM stream error:', e);
-          controller.enqueue(encoder.encode(
-            `data: ${JSON.stringify({ type: 'error', data: e.message || 'LLM error' })}\n\n`
-          ));
         } finally {
           if (fullAnswer) {
             // không cache — mỗi lần hỏi tính toán mới, dùng tài liệu mới nhất
-          } else if (contexts.length > 0) {
+          } else if (sentError || contexts.length > 0) {
             // Có sources nhưng LLM ko trả lời → gửi fallback
             controller.enqueue(encoder.encode(
               `data: ${JSON.stringify({ type: 'token', data: 'Hệ thống AI đang quá tải, xin vui lòng thử lại câu hỏi ngắn hơn hoặc hỏi lại sau.' })}\n\n`

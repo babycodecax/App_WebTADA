@@ -20,6 +20,7 @@
  */
 
 import { getClient } from './claude';
+import { getModelList } from './modelFallback';
 import { getSupabase } from './supabase';
 import { invalidateComplianceCache, type ComplianceRecord as SharedComplianceRecord } from './compliance';
 import { invalidateStructuredCache } from './structured';
@@ -237,7 +238,7 @@ async function callLlmExtract(fileName: string, chunk: string, signal?: AbortSig
     try {
       const res = await getClient().chat.completions.create(
         {
-          model: process.env.LLM_MODEL || 'deepseek-v4-flash',
+          model: getModelList()[0], // model chính (đầu list LLM_MODEL) — không gửi cả chuỗi phân tách phẩy
           max_tokens: EXTRACT_MAX_TOKENS,
           temperature: 0.0,
           stream: false,
