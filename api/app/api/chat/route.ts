@@ -12,6 +12,7 @@ import {
 import { getStructuredKnowledge } from '@/lib/structured';
 import { isNumericQuery, searchCompliance, formatComplianceContext } from '@/lib/compliance';
 import { getKnowledgeChunksCached, refreshKnowledgeCache } from '@/lib/knowledgeCache';
+import { isBlogPath, isAdminKnowledgePath } from '@/lib/blogKnowledge';
 
 export const runtime = 'nodejs';
 export const maxDuration = 120;
@@ -241,41 +242,49 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
   // Chunks upload/ mới nhất vẫn được query NỔI (xuyên cache) để admin upload
   // hiện ngay, không cần đợi TTL 10 phút.
   const cached = getKnowledgeChunksCached();
-  let uploadRows: any[] = [];
+  // Chunks admin (upload/ + blog/) query NỔI (xuyên cache) để admin upload/blog
+  // mới hiện ngay, không cần đợi TTL 10 phút. Blog nằm ngoài 1000 row đầu của
+  // cache nên phải query riêng — đúng pattern upload/ sẵn có.
+  let adminRows: any[] = [];
   try {
-    const { data: upData } = await getSupabase()
-      .from('knowledge_chunks')
-      .select('id, content, title, heading, file_path, chunk_index')
-      .like('file_path', 'upload/%')
-      .limit(1000);
-    uploadRows = upData || [];
-  } catch { /* upload query lỗi — bỏ qua */ }
+    const [upRes, blogRes] = await Promise.all([
+      getSupabase()
+        .from('knowledge_chunks')
+        .select('id, content, title, heading, file_path, chunk_index')
+        .like('file_path', 'upload/%')
+        .limit(1000),
+      getSupabase()
+        .from('knowledge_chunks')
+        .select('id, content, title, heading, file_path, chunk_index')
+        .like('file_path', 'blog/%')
+        .limit(1000),
+    ]);
+    adminRows = [...(upRes.data || []), ...(blogRes.data || [])];
+  } catch { /* admin query lỗi — bỏ qua */ }
 
   const seenIds = new Set<string>();
   const data: any[] = [];
   if (cached.data.length) {
+    // Fix MEDIUM (warm path): adminRows (live, mới nhất) đứng TRƯỚC cache cũ —
+    // khi blog/upload bị sửa giữ nguyên id, bản live mới thắng bản cache stale
+    // (trước đây cache đẩy trước nên trả nội dung cũ tới 10 phút).
+    for (const row of adminRows) {
+      if (seenIds.has(row.id)) continue;
+      seenIds.add(row.id);
+      data.push(row);
+    }
     for (const row of cached.data) {
       if (seenIds.has(row.id)) continue;
       seenIds.add(row.id);
       data.push(row);
     }
-    // Chunks upload: cache cũ + upload mới từng query riêng (dedup theo id)
-    for (const row of uploadRows) {
-      if (seenIds.has(row.id)) continue;
-      seenIds.add(row.id);
-      data.push(row);
-    }
   } else {
-    // Cache lạnh → query live (giữ nguyên query cũ, kết quả như trước)
+    // Cache lạnh → query live (giữ nguyên query cũ + thêm blog/; tái dùng
+    // adminRows đã query ở trên — không query upload/blog lại lần 2)
     const queries = [
       getSupabase()
         .from('knowledge_chunks')
         .select('id, content, title, heading, file_path, chunk_index')
-        .limit(1000),
-      getSupabase()
-        .from('knowledge_chunks')
-        .select('id, content, title, heading, file_path, chunk_index')
-        .like('file_path', 'upload/%')
         .limit(1000),
       ...VITAL_PATTERNS.map(p =>
         getSupabase()
@@ -294,6 +303,11 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
         seenIds.add(row.id);
         data.push(row);
       }
+    }
+    for (const row of adminRows) {
+      if (seenIds.has(row.id)) continue;
+      seenIds.add(row.id);
+      data.push(row);
     }
     // Lưu cache (best-effort) cho các câu hỏi sau
     void refreshKnowledgeCache();
@@ -322,12 +336,17 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
     if (isCheatsheet) {
       score += 1.0;
     }
-    // Tài liệu admin upload: boost RẤT CAO để tài liệu bổ sung (nội bộ, mới nhất)
-    // luôn thắng file luật cũ khi cùng chủ đề — vì upload là nguồn chính xác nhất
-    // cho các quy định bổ sung (LLM từng đọc luat-109 cũ rồi bỏ qua upload).
-    if ((row.file_path || '').startsWith('upload/')) {
-      score += 8.0;
-      if (matchCount > 0) score += Math.min(matchCount * 0.5, 2.0); // match càng nhiều càng ưu tiên
+    // Tài liệu admin upload + bài blog: boost RẤT CAO để tài liệu bổ sung (nội
+    // bộ, mới nhất) luôn thắng file luật cũ khi cùng chủ đề — vì upload/blog là
+    // nguồn chính xác nhất cho các quy định bổ sung (LLM từng đọc luat-109 cũ
+    // rồi bỏ qua upload). Blog ngang hàng upload (đều là kiến thức admin).
+    // Fix HIGH: chỉ boost khi matchCount > 0 — chunk admin KHÔNG liên quan câu
+    // hỏi không được đặt trên vault match thật (tránh blog tích lũy làm nhiễu).
+    if ((row.file_path || '').startsWith('upload/') || isBlogPath(row.file_path || '')) {
+      if (matchCount > 0) {
+        score += 8.0;
+        score += Math.min(matchCount * 0.5, 2.0); // match càng nhiều càng ưu tiên
+      }
     }
     // Số liệu cụ thể
     const numMatches = (content.match(/\d{1,3}(?:[.,]\d+)?\s*(tỷ|triệu|tr|nghìn|%|đồng)/gi) || []).length;
@@ -367,19 +386,28 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
   }
 
   scored.sort((a, b) => (b.score || 0) - (a.score || 0));
-  // Luôn giữ TẤT CẢ upload chunks (file bổ sung kiến thức) trong top —
-  // không cắt ở topK — vì chunk đúng chủ đề (VD: gôn, nước sạch) có thể có
-  // score thấp do ngắn/ít term nhưng vẫn là nguồn chính xác nhất.
-  const uploadOnly = scored.filter(c => (c.file_path || '').startsWith('upload/'));
-  const top = [...uploadOnly, ...scored.filter(c => !(c.file_path || '').startsWith('upload/')).slice(0, topK)];
-  // Merge forcedChunks vào cuối nếu chưa có trong top
-  // topK + 6 vì có thể có tới 6 chunks force theo nội dung (giảm trừ / 01 tỷ / 50.000)
+  // Merge forcedChunks vào top TRƯỚC (chunk forced = nền tảng trả lời mốc/ngưỡng,
+  // phải có mặt kể cả khi admin pool đông) — fix HIGH: trước đây adminOnly tràn
+  // top khiến vòng merge forced break sớm, câu hỏi mốc mất chunk chuẩn.
+  const top: any[] = [];
   for (const fc of forcedChunks) {
     if (top.length >= topK + 6) break;
     if (!top.some(t => t.id === fc.id)) {
-      fc.score = 5.0; // gán điểm thấp để xếp cuối nhưng vẫn có
-      top.push(fc);
+      top.push({ ...fc, score: 5.0 }); // điểm thấp — vẫn có mặt nhưng xếp cuối
     }
+  }
+  // Chunks admin (upload/ + blog/): giữ TẤT CẢ nếu ít (≤ ADMIN_BUDGET) để chunk
+  // đúng chủ đề (gôn, nước sạch) không bị cắt; nếu nhiều (blog tích lũy) chỉ giữ
+  // admin có match — tránh blog không liên quan lấp đầy context mọi câu hỏi.
+  const adminBudget = 30;
+  const adminOnly = scored.filter(c => isAdminKnowledgePath(c.file_path || ''));
+  const adminMatched = adminOnly.filter(c => (c.matchCount || 0) > 0);
+  const adminKept = adminOnly.length <= adminBudget ? adminOnly : adminMatched.slice(0, adminBudget);
+  // Non-admin: topK slots vault (round-robin bên dưới), ưu tiên chunk có match.
+  const nonAdmin = scored.filter(c => !isAdminKnowledgePath(c.file_path || '')).slice(0, topK);
+  for (const row of [...adminKept, ...nonAdmin]) {
+    if (top.length >= topK + 6) break;
+    if (!top.some(t => t.id === row.id)) top.push(row);
   }
   return top;
 }
@@ -496,21 +524,23 @@ export async function POST(req: NextRequest) {
       // chạm upload 1 cách tương đối. Tối đa 30 upload chunks HOẶC 50% sức chứa.
       const UPLOAD_MAX = 30;
       const UPLOAD_CAP = Math.floor(60 / 2); // 50% của 60 slots
-      const uploadChunks = contexts.filter(c => (c.file_path || '').startsWith('upload/'));
-      const uploadBudget = Math.min(uploadChunks.length, UPLOAD_MAX, UPLOAD_CAP);
-      for (let i = 0; i < uploadBudget; i++) {
-        diverseSources.push(uploadChunks[i]);
+      // Pool admin ưu tiên = upload/ + blog/ (blog ngang hàng upload — kiến
+      // thức admin mới nhất). Blog KHÔNG chiếm 6 slots vault bên dưới.
+      const adminChunks = contexts.filter(c => isAdminKnowledgePath(c.file_path || ''));
+      const adminBudget = Math.min(adminChunks.length, UPLOAD_MAX, UPLOAD_CAP);
+      for (let i = 0; i < adminBudget; i++) {
+        diverseSources.push(adminChunks[i]);
       }
-      // Round-robin các file KHÔNG upload: luôn dành tối đa 6 slots kể cả khi
-      // có nhiều upload chunks (fix MEDIUM: trước đây vòng lặp chặn theo
-      // diverseSources.length < 6 → upload ≥ 6 chunks khiến luật/nd/tt điểm cao
-      // không bao giờ vào context dù câu hỏi chạm upload chỉ tương đối).
+      // Round-robin các file KHÔNG admin (vault): luôn dành tối đa 6 slots kể cả
+      // khi có nhiều upload/blog chunks (fix MEDIUM: trước đây vòng lặp chặn
+      // theo diverseSources.length < 6 → upload ≥ 6 chunks khiến luật/nd/tt
+      // điểm cao không bao giờ vào context dù câu hỏi chạm upload chỉ tương đối).
       let vaultSlots = 0;
       for (let round = 0; round < maxChunksPerFile && vaultSlots < 6; round++) {
         for (const chunks of byFile.values()) {
-          if (vaultSlots >= 6) break; // chỉ 6 sources ngoài upload
+          if (vaultSlots >= 6) break; // chỉ 6 sources ngoài admin
           const chunk = chunks[round]; // chunk thứ `round` của file (nếu có)
-          if (chunk && !(chunk.file_path || '').startsWith('upload/') && !diverseSources.includes(chunk)) {
+          if (chunk && !isAdminKnowledgePath(chunk.file_path || '') && !diverseSources.includes(chunk)) {
             diverseSources.push(chunk);
             vaultSlots++;
           }

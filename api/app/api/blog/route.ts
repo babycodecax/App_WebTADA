@@ -1,6 +1,27 @@
 import { NextRequest } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
 import { isAdminGoogle, getAdminEmailFromToken } from '@/lib/adminAuth';
+import { ingestBlogKnowledge } from '@/lib/blogKnowledge';
+import { invalidateKnowledgeCache } from '@/lib/knowledgeCache';
+import { clearAnswerCache } from '@/lib/deleteCascade';
+
+/** Đồng bộ bài blog → knowledge_chunks (best-effort — lỗi không chặn response). */
+async function syncBlogKnowledge(params: { id: string; title: string; content: string; status: string }): Promise<void> {
+  try {
+    if (params.status === 'published' && (params.content || '').trim()) {
+      const res = await ingestBlogKnowledge(getSupabase(), {
+        id: params.id,
+        title: params.title,
+        content: params.content,
+      });
+      if (!res.ok) console.warn(`[blog] ingest kiến thức bài ${params.id} bỏ qua: ${res.error}`);
+    }
+    invalidateKnowledgeCache();
+    await clearAnswerCache();
+  } catch (e) {
+    console.warn(`[blog] đồng bộ kiến thức bài ${params.id} lỗi: ${e instanceof Error ? e.message : e}`);
+  }
+}
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -81,6 +102,10 @@ export async function POST(req: NextRequest) {
     const { data, error } = await client.from('blog_posts').insert(row).select().single();
     if (error) {
       return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    }
+    if (data?.id) {
+      // Đồng bộ kiến thức (best-effort — lỗi ingest không chặn 201 cho admin)
+      await syncBlogKnowledge({ id: data.id, title: data.title, content: data.content, status: data.status });
     }
     return new Response(JSON.stringify(data), { status: 201, headers: { 'Content-Type': 'application/json' } });
   } catch (e: any) {
