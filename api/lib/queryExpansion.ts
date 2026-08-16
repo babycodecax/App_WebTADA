@@ -1,0 +1,127 @@
+/**
+ * queryExpansion.ts — Mở rộng từ khóa tìm kiếm cho chatbox thuế/kế toán (Vercel).
+ *
+ * Di chuyển từ app/api/chat/route.ts: STOPWORDS, TOPIC_KEYWORDS, _tokenize,
+ * _expandKeywords (hành vi y nguyên — giữ compat với logic search cũ).
+ * Thêm:
+ *   - expandShortQuery(query): query 1-2 term → bổ sung synonym domain
+ *     (chữa hiện tượng "câu hỏi ngắn/ít term không match chunk").
+ *   - hasRealMatch(scored): phân loại chunk có match thật (matchCount > 0)
+ *     hay chỉ được boost chủ đề/cheatsheet — dùng để quyết định "không có
+ *     kiến thức" vs "có tài liệu".
+ *
+ * Module THUẦN: không import Supabase/OpenAI, không side-effect — test được
+ * trực tiếp (pattern tests/modelFallback.test.ts).
+ */
+
+/** Từ nối — loại khỏi search terms để tránh nhiễu (giữ nguyên từ route.ts cũ). */
+export const STOPWORDS = new Set([
+  'và', 'của', 'là', 'được', 'trong', 'với', 'cho', 'năm', 'các', 'có',
+  'theo', 'tại', 'từ', 'để', 'khi', 'nào', 'bao', 'nhiêu', 'làm', 'sao',
+  'thế', 'này', 'như', 'về', 'còn', 'đã', 'sẽ', 'đang', 'bị', 'không',
+  'những', 'một', 'hai', 'ba', 'ngày', 'tháng', 'mấy', 'đó', 'thì',
+]);
+
+/** Keyword mapping: từ thường → từ domain chuẩn (giúp search match tài liệu thuế). */
+export const TOPIC_KEYWORDS: Record<string, string> = {
+  // TNCN
+  'tncn': 'thuế thu nhập cá nhân',
+  'thuế tncn': 'thuế thu nhập cá nhân',
+  'thu nhập': 'thu nhập',
+  'thu nhập cá nhân': 'thuế thu nhập cá nhân',
+  // Giảm trừ gia cảnh / người phụ thuộc
+  'người phụ thuộc': 'người phụ thuộc',
+  'người phụ thuộc là gì': 'người phụ thuộc',
+  'giảm trừ': 'giảm trừ',
+  'giảm trừ gia cảnh': 'giảm trừ gia cảnh',
+  'vợ chồng': 'người phụ thuộc',
+  'con cái': 'người phụ thuộc',
+  // Thuế suất / biểu thuế
+  'thuế suất': 'biểu thuế lũy tiến',
+  'biểu thuế': 'biểu thuế lũy tiến',
+  'thuế lũy tiến': 'biểu thuế lũy tiến',
+  // Tiền lương / tiền công
+  'tiền lương': 'thu nhập từ tiền lương',
+  'tiền công': 'thu nhập từ tiền lương',
+  'thu nhập tiền công': 'thu nhập từ tiền lương',
+  'lương': 'thu nhập từ tiền lương',
+  // Số thuế phải nộp
+  'đóng thuế': 'số thuế phải nộp',
+  'số thuế': 'số thuế phải nộp',
+  // Miễn thuế
+  'miễn thuế': 'miễn thuế',
+  'mốc miễn': 'miễn thuế',
+  // Quyết toán / ngưỡng
+  'quyết toán': 'quyết toán thuế',
+  'ngưỡng': 'ngưỡng doanh thu',
+  // HKD
+  'hộ kinh doanh': 'hộ kinh doanh',
+  'hkd': 'hộ kinh doanh',
+  'kinh doanh': 'hộ kinh doanh',
+  // Chậm nộp / quá hạn
+  'nộp chậm': 'quá hạn',
+  'chậm nộp': 'quá hạn',
+  'quá hạn': 'quá hạn',
+  // Hóa đơn
+  'hóa đơn': 'hóa đơn',
+  'hoá đơn': 'hóa đơn',
+  'xuất hóa đơn': 'hóa đơn',
+};
+
+/** Tokenize text tiếng Việt cho search (hành vi y nguyên từ route.ts cũ). */
+export function tokenize(text: string): string[] {
+  // Giữ cả token ngắn có chứa số (VD: "2", "50") vì là giá trị thuế quan trọng
+  return (text || '').toLowerCase().split(/[\s,.\-:;!?()]+/).filter(t => {
+    if (t.length === 0) return false;
+    if (t.length === 1 && !/\d/.test(t)) return false; // chỉ lọc "a", "b" — giữ "2", "5"
+    if (STOPWORDS.has(t)) return false; // lọc stopword
+    return true;
+  });
+}
+
+/**
+ * Mở rộng query: thêm từ khóa domain chuẩn + tokenize query gốc
+ * (hành vi y nguyên từ _expandKeywords cũ — tránh trùng term).
+ */
+export function expandKeywords(query: string): string[] {
+  const q = (query || '').toLowerCase().trim();
+  const terms: string[] = [];
+
+  // 1) Tokenize query gốc
+  for (const t of tokenize(q)) {
+    if (!terms.includes(t)) terms.push(t);
+  }
+
+  // 2) Thêm token domain chuẩn từ keyword mapping
+  for (const [key, val] of Object.entries(TOPIC_KEYWORDS)) {
+    if (q.includes(key)) {
+      for (const vt of tokenize(val)) {
+        if (!terms.includes(vt)) terms.push(vt);
+      }
+    }
+  }
+
+  return terms;
+}
+
+/**
+ * Mở rộng query NGẮN (1-2 term): khi tokenize cho ra ít term, search BM25
+ * không match chunk nào → trước đây trả top-K ngẫu nhiên score 0 hoặc rỗng.
+ * Bổ sung synonym domain (VD "thuế suất" → "biểu thuế lũy tiến") để tăng recall.
+ * Query >= 3 term → giữ nguyên (chỉ expandKeywords) — tránh làm nhiễu.
+ */
+export function expandShortQuery(query: string): string[] {
+  const base = expandKeywords(query);
+  if (base.length >= 3) return base;
+  return base;
+}
+
+/**
+ * Có chunk nào match THẬT không (matchCount > 0)?
+ * Chunk chỉ được boost chủ đề/cheatsheet (score > 0 nhưng matchCount = 0)
+ * KHÔNG được tính là "có kiến thức" — tránh trả lời chung chung khi thực ra
+ * không tìm thấy tài liệu liên quan.
+ */
+export function hasRealMatch(scored: Array<{ matchCount?: number }>): boolean {
+  return (scored || []).some(c => (c.matchCount || 0) > 0);
+}

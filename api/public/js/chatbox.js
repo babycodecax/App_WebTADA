@@ -17,6 +17,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var busy = false;
 
+  // Conversation memory (trong session — mất khi reload, chấp nhận):
+  // lưu các lượt {role, content} gần nhất để câu hỏi nối tiếp hiểu ngữ cảnh.
+  var conversationHistory = [];
+  var HISTORY_MAX_TURNS = 6; // 6 lượt = 12 message cuối
+  var HISTORY_MAX_CHARS = 500; // cắt nội dung quá dài
+
+  function pushHistory(role, content) {
+    var text = (content || '').trim();
+    if (!text) return;
+    if (text.length > HISTORY_MAX_CHARS) text = text.slice(0, HISTORY_MAX_CHARS);
+    conversationHistory.push({ role: role, content: text });
+    // Giữ tối đa 6 lượt (12 message) — bỏ lượt cũ nhất
+    if (conversationHistory.length > HISTORY_MAX_TURNS * 2) {
+      conversationHistory.splice(0, conversationHistory.length - HISTORY_MAX_TURNS * 2);
+    }
+  }
+
   function cleanMd(text) {
     var cleaned = (text || '')
       .replace(/\*\*(.+?)\*\*/g, '$1')
@@ -162,6 +179,9 @@ document.addEventListener('DOMContentLoaded', function () {
     autoGrow();
     setTyping(true);
 
+    // Ghi câu hỏi vào history TRƯỚC khi gửi (phục vụ câu hỏi nối tiếp)
+    pushHistory('user', text);
+
     var botEl = null, acc = '';
 
     // Dem cau hoi free (chi khi chua login)
@@ -172,7 +192,9 @@ document.addEventListener('DOMContentLoaded', function () {
       window.TADA_AUTH.log('question', text, 0);
     }
 
-    var body = JSON.stringify({ question: text, top_k: 3 });
+    // Gửi kèm lịch sử hội thoại (6 lượt gần nhất) — optional field, frontend
+    // cũ không gửi vẫn chạy bình thường
+    var body = JSON.stringify({ question: text, top_k: 3, history: conversationHistory.slice(-HISTORY_MAX_TURNS * 2) });
     var url = (RAG_API_URL.replace(/\/+$/, '')) + '/api/chat';
 
     fetch(url, {
@@ -200,10 +222,21 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .catch(function (e) {
         setTyping(false);
+        // Lỗi fetch → gỡ câu hỏi vừa đẩy khỏi history (không có câu trả lời
+        // đi kèm, tránh LLM hiểu nhầm lượt hỏi bỏ lửng)
+        for (var i = conversationHistory.length - 1; i >= 0; i--) {
+          if (conversationHistory[i].role === 'user') {
+            conversationHistory.splice(i, 1);
+            break;
+          }
+        }
         addMsg('Xin lỗi, tôi tạm thời không thể trả lời. Vui lòng thử lại hoặc liên hệ Zalo 0986.4242.86.', 'bot');
         console.error(e);
       })
       .then(function () {
+        // Chỉ lưu câu trả lời vào history khi request thành công
+        // (đã nhận 'done' hoặc có token — 'done' luôn đến trước khi .then này chạy)
+        if (botEl && acc) pushHistory('assistant', acc);
         setTyping(false);
         busy = false; sendEl.disabled = false; inputEl.focus();
         // Kiem tra lai limit sau khi tra loi
@@ -233,6 +266,8 @@ document.addEventListener('DOMContentLoaded', function () {
     messagesEl.innerHTML = '';
     setTyping(false);
     busy = false; sendEl.disabled = false;
+    // Xóa cả lịch sử hội thoại — phiên mới bắt đầu từ đầu
+    conversationHistory = [];
     addMsg('Xin chào! Tôi là trợ lý ảo của TADA. Bạn cần giải đáp thắc mắc gì về thuế, kế toán, BHXH hay thủ tục doanh nghiệp?', 'bot');
   }
 

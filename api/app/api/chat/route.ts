@@ -13,6 +13,13 @@ import { getStructuredKnowledge } from '@/lib/structured';
 import { isNumericQuery, searchCompliance, formatComplianceContext } from '@/lib/compliance';
 import { getKnowledgeChunksCached, refreshKnowledgeCache } from '@/lib/knowledgeCache';
 import { isBlogPath, isAdminKnowledgePath } from '@/lib/blogKnowledge';
+import { tokenize, expandShortQuery, hasRealMatch } from '@/lib/queryExpansion';
+import {
+  sanitizeHistory,
+  limitHistory,
+  extractContextTerms,
+  type HistoryMessage,
+} from '@/lib/conversationMemory';
 
 export const runtime = 'nodejs';
 export const maxDuration = 120;
@@ -27,76 +34,22 @@ function buildStructuredPrompt(structured: { key: string; value: string }[]): st
   return `\nBẢNG SỐ LIỆU TRA CỨU NHANH (ưu tiên dùng số này):\n${rows}\n`;
 }
 
-// Keyword mapping: từ thường → từ domain chuẩn (giúp search match tài liệu thuế)
-const TOPIC_KEYWORDS: Record<string, string> = {
-  'tncn': 'thuế thu nhập cá nhân',
-  'thuế tncn': 'thuế thu nhập cá nhân',
-  'thu nhập': 'thu nhập',
-  'thu nhập cá nhân': 'thuế thu nhập cá nhân',
-  'người phụ thuộc': 'người phụ thuộc',
-  'giảm trừ': 'giảm trừ',
-  'giảm trừ gia cảnh': 'giảm trừ gia cảnh',
-  'thuế suất': 'thuế suất',
-  'biểu thuế': 'biểu thuế lũy tiến',
-  'tiền lương': 'thu nhập từ tiền lương',
-  'tiền công': 'thu nhập từ tiền lương',
-  'thu nhập tiền công': 'thu nhập từ tiền lương',
-  'đóng thuế': 'số thuế phải nộp',
-  'số thuế': 'số thuế phải nộp',
-  'miễn thuế': 'miễn thuế',
-  'mốc miễn': 'miễn thuế',
-  'quyết toán': 'quyết toán thuế',
-  'ngưỡng': 'ngưỡng doanh thu',
-};
-
 // ─── Search: full-text + keyword rerank ───
-// Stopword cơ bản — loại khỏi search terms để tránh nhiễu
-const STOPWORDS = new Set([
-  'và', 'của', 'là', 'được', 'trong', 'với', 'cho', 'năm', 'các', 'có',
-  'theo', 'tại', 'từ', 'để', 'khi', 'nào', 'bao', 'nhiêu', 'làm', 'sao',
-  'thế', 'này', 'như', 'về', 'còn', 'đã', 'sẽ', 'đang', 'bị', 'không',
-  'những', 'một', 'hai', 'ba', 'ngày', 'tháng', 'mấy', 'đó', 'thì',
-]);
+// Tokenize/keyword mapping/mở rộng query đã chuyển sang lib/queryExpansion.ts
+// (tokenize, expandKeywords, expandShortQuery, hasRealMatch).
 
-function _tokenize(text: string): string[] {
-  // Giữ cả token ngắn có chứa số (VD: "2", "50") vì là giá trị thuế quan trọng
-  return (text || '').toLowerCase().split(/[\s,.\-:;!?()]+/).filter(t => {
-    if (t.length === 0) return false;
-    if (t.length === 1 && !/\d/.test(t)) return false; // chỉ lọc "a", "b" — giữ "2", "5"
-    if (STOPWORDS.has(t)) return false; // lọc stopword
-    return true;
-  });
-}
-
-/** Mở rộng query: thêm từ khóa domain chuẩn + tokenize query gốc */
-function _expandKeywords(query: string): string[] {
-  const q = query.toLowerCase().trim();
-  const terms: string[] = [];
-
-  // 1) Tokenize query gốc
-  const tokens = _tokenize(q);
-  for (const t of tokens) {
-    if (!terms.includes(t)) terms.push(t);
-  }
-
-  // 2) Thêm token domain chuẩn từ keyword mapping
-  for (const [key, val] of Object.entries(TOPIC_KEYWORDS)) {
-    if (q.includes(key)) {
-      const valTokens = _tokenize(val);
-      for (const vt of valTokens) {
-        if (!terms.includes(vt)) terms.push(vt);
-      }
-    }
-  }
-
-  return terms;
-}
-
-/** Đếm số term match trong chunk, dùng để boost chứ không filter */
+/**
+ * Đếm số term match trong chunk — MATCH TỪ ĐỘC LẬP (không phải substring).
+ * Fix HIGH: substring 'cá' match 'cá nhân', 'cảnh' match 'gia cảnh' → câu
+ * ngoài domain ("nuôi cá cảnh") bị coi là "có kiến thức". Regex: token biên
+ * (space/start/end) — số (VD "50.000") vẫn match chính xác vì có dấu chấm.
+ */
 function _countMatches(terms: string[], haystack: string): number {
   let count = 0;
   for (const t of terms) {
-    if (haystack.includes(t)) count++;
+    const esc = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(`(^|[\\s\\p{P}])${esc}(?=$|[\\s\\p{P}])`, 'u');
+    if (re.test(haystack)) count++;
   }
   return count;
 }
@@ -116,17 +69,30 @@ function _detectTopics(q: string): string[] {
   return topics;
 }
 
-async function searchKnowledge(query: string, topK: number = TOP_K) {
-  const terms = _tokenize(query);
+/**
+ * Search knowledge.
+ * - Query ngắn (< 3 term) → expandShortQuery (synonym domain) để tăng recall.
+ * - historyTerms từ câu hỏi trước → bổ sung term cho câu nối tiếp.
+ * - Không chunk nào matchCount > 0 và không có forcedChunks → trả [] (không
+ *   trả top-K ngẫu nhiên score 0 — chữa "câu hỏi không có thông tin").
+ */
+async function searchKnowledge(query: string, topK: number = TOP_K, historyTerms: string[] = []) {
+  // Bước 1: mở rộng query — query ngắn dùng synonym domain, query thường như cũ
+  const qLow = query.toLowerCase();
+  const terms = expandShortQuery(query);
+  // Bước 2: bổ sung term từ câu hỏi trước (câu nối tiếp: "còn hộ kinh doanh
+  // thì sao") — chỉ thêm term CHƯA có, không làm nhiễu query gốc
+  for (const t of historyTerms || []) {
+    if (!terms.includes(t)) terms.push(t);
+  }
   const topics = _detectTopics(query);
   // Thêm term chủ đề vào search để ưu tiên chunk đúng chủ đề
   for (const t of topics) {
-    const tTokens = _tokenize(t);
+    const tTokens = tokenize(t);
     for (const tt of tTokens) {
       if (!terms.includes(tt)) terms.push(tt);
     }
   }
-  const qLow = query.toLowerCase();
   if (/tiền công|tiền lương/.test(qLow) && !terms.some(t => /thu nhập/.test(t))) {
     terms.push('thu nhập');
   }
@@ -382,10 +348,20 @@ async function searchKnowledge(query: string, topK: number = TOP_K) {
       if (/xói mòn|globe|tối thiểu toàn cầu/.test(haystack)) score += 10.0;
     }
 
-    scored.push({ ...row, score });
+    // Fix HIGH: gắn matchCount vào row — trước đây c.matchCount luôn undefined
+    // (không bao giờ được gán) nên adminMatched luôn rỗng: khi admin pool > 30
+    // chunks, mọi kiến thức upload/blog bị vứt sạch → "trả lời không có thông
+    // tin" dù tài liệu bổ sung tồn tại.
+    scored.push({ ...row, score, matchCount });
   }
 
   scored.sort((a, b) => (b.score || 0) - (a.score || 0));
+  // Fix HIGH: không có chunk nào match thật → trả [] (KHÔNG trả top-K chunk
+  // ngẫu nhiên score 0). Chunk chỉ boost chủ đề/cheatsheet không tính là match.
+  // forcedChunks vẫn được xét (chúng là nền tảng trả lời mốc/ngưỡng đã force).
+  if (!hasRealMatch(scored) && !forcedChunks.length) {
+    return [];
+  }
   // Merge forcedChunks vào top TRƯỚC (chunk forced = nền tảng trả lời mốc/ngưỡng,
   // phải có mặt kể cả khi admin pool đông) — fix HIGH: trước đây adminOnly tràn
   // top khiến vòng merge forced break sớm, câu hỏi mốc mất chunk chuẩn.
@@ -433,6 +409,11 @@ function _sliceForMoc(content: string, maxLen: number): string {
 }
 
 // ─── Main chat handler ───
+
+/** Câu trả lời trung thực khi KHÔNG tìm thấy kiến thức (không gọi LLM). */
+const NO_KNOWLEDGE_ANSWER =
+  'Tôi chưa có đủ thông tin để trả lời câu hỏi này. Bạn có thể hỏi rõ hơn về lĩnh vực thuế, kế toán, BHXH hoặc thủ tục doanh nghiệp (VD: "thuế suất TNCN 2026 là bao nhiêu?") để tôi tra cứu được chính xác hơn.';
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -443,6 +424,11 @@ export async function POST(req: NextRequest) {
     // ("Miễn thuế TNCN 2026?") phải match được mọi regex chế độ mốc/chủ đề.
     const question = body.question.trim().toLowerCase();
 
+    // 0. Conversation history (optional — request cũ không gửi vẫn chạy):
+    //    sanitize → giới hạn lượt → trích term từ câu hỏi trước cho search.
+    const history = limitHistory(sanitizeHistory(body.history));
+    const historyTerms = extractContextTerms(history, question);
+
     // Câu hỏi dạng mốc/ngưỡng → trả lời dạng danh sách đầy đủ (dùng cho cả
     // prompt lẫn đa dạng hóa nguồn bên dưới). KHÔNG dùng 'trần' — false-positive
     // với tên người ("Trần Văn A").
@@ -450,7 +436,7 @@ export async function POST(req: NextRequest) {
 
     // 1. Search knowledge (không dùng cache câu trả lời — luôn tính toán mới
     //    để căn cứ tài liệu mới nhất, tránh trả câu trả lời cũ)
-    const contexts = await searchKnowledge(question, TOP_K);
+    const contexts = await searchKnowledge(question, TOP_K, historyTerms);
     let sources: any[] = [];
 
     // 1b. Compliance records (số liệu/mốc có cấu trúc) — khi câu hỏi có số
@@ -596,6 +582,7 @@ export async function POST(req: NextRequest) {
       `- KHÔNG thêm [Nguồn], <think>, markdown.`,
       `- Nếu hỏi số → đưa số kèm giải thích ngắn (VD: '15% — áp dụng cho doanh nghiệp trên 1 tỷ').`,
       `- CUỐI câu trả lời, thêm 1 dòng: ghi tên văn bản luật đã dùng (VD: '(Căn cứ Luật số 67/2025/QH15)'). KHÔNG ghi điều cụ thể, KHÔNG ghi [Nguồn].`,
+      `- Nếu có LICH SU HOI THOAI trong câu hỏi: câu hỏi có thể là câu NỐI TIẾP (VD: 'còn hộ kinh doanh thì sao', 'thuế suất bao nhiêu') — dùng lịch sử để hiểu chủ đề/ngữ cảnh đang nói, KHÔNG trả lời chung chung.`,
       ...(isMocQuery
         ? [
             ``,
@@ -621,6 +608,13 @@ export async function POST(req: NextRequest) {
       ? `${complianceContext}\n\nTai lieu tham khao:\n${ctxText}\n\nCau hoi: ${question}`
       : `Tai lieu tham khao:\n${ctxText}\n\nCau hoi: ${question}`;
 
+    // Gemini (REST gốc) không nhận history dạng messages — gấp lịch sử vào
+    // chuỗi user (giữ nguyên ChatRequest/streamGemini không đổi)
+    const historyBlock = history.length
+      ? `\n\nLICH SU HOI THOAI (de hieu cau hoi noi tiep):\n${history.map((h: HistoryMessage) => `${h.role === 'user' ? 'Nguoi dung' : 'Tro ly'}: ${h.content}`).join('\n')}\n`
+      : '';
+    const userWithHistory = historyBlock + user;
+
     // 6. Stream LLM
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
@@ -632,6 +626,75 @@ export async function POST(req: NextRequest) {
 
         let fullAnswer = '';
         let sentError = false; // tránh gửi 2 tin (error + quá tải) khi tất cả model fail
+
+        // PHÂN LOẠI "KHÔNG CÓ KIẾN THỨC" vs "LỖI HỆ THỐNG":
+        // Không tìm thấy tài liệu liên quan → trả lời trung thực, KHÔNG gọi LLM
+        // (tiết kiệm chi phí + không trả lời chung chung). Tin "quá tải" CHỈ
+        // dành cho LLM thật sự fail khi đã có context.
+        if (contexts.length === 0) {
+          const allowLlmFallback = process.env.ALLOW_LLM_FALLBACK === 'true';
+          if (allowLlmFallback) {
+            // Phương án 2 (tùy chọn): LLM trả lời THAM KHẢO kèm cảnh báo rõ ràng
+            // — không để khách bị bỏ rơi, nhưng không giả vờ có tài liệu chính thức.
+            const fallbackSystem = [
+              `Bạn là trợ lý thuế/kế toán Việt Nam. KHÔNG có tài liệu tham khảo nào được tìm thấy cho câu hỏi này.`,
+              `Nếu bạn BIẾT câu trả lời chung (kiến thức phổ thông, không bịa số liệu cụ thể) thì trả lời NGẮN GỌN (1-3 câu) kèm dòng cảnh báo: '⚠️ Đây là thông tin tham khảo chung, TADA chưa có tài liệu chính thức về vấn đề này — vui lòng kiểm tra với chuyên gia hoặc liên hệ TADA để được tư vấn.'`,
+              `Nếu KHÔNG chắc chắn → chỉ trả lời: 'Tôi chưa có đủ thông tin để trả lời câu hỏi này. Bạn có thể hỏi rõ hơn về lĩnh vực thuế, kế toán, BHXH hoặc thủ tục doanh nghiệp để tôi tra cứu được chính xác hơn.'`,
+              `KHÔNG bịa số liệu, KHÔNG bịa tên văn bản luật, KHÔNG trả lời dài dòng.`,
+            ].join('\n');
+            try {
+              const models = getModelList();
+              const callModel: CallModelFn = async (model) => {
+                if (getModelProvider(model) === 'gemini') {
+                  return streamGemini(model, {
+                    system: fallbackSystem,
+                    user: userWithHistory,
+                    maxTokens: 1024,
+                    temperature: 0.0,
+                  });
+                }
+                const chatStream = await getClientForModel(model).chat.completions.create({
+                  model,
+                  max_tokens: 1024,
+                  temperature: 0.0,
+                  messages: [
+                    { role: 'system', content: fallbackSystem },
+                    { role: 'user', content: userWithHistory },
+                  ],
+                  stream: true,
+                });
+                return chatStream as AsyncIterable<StreamDelta>;
+              };
+              let gotToken = false;
+              for await (const _delta of streamWithModelFallback(models, callModel, (chunk) => {
+                const d = chunk.content || '';
+                if (!d) return;
+                gotToken = true;
+                controller.enqueue(encoder.encode(
+                  `data: ${JSON.stringify({ type: 'token', data: d })}\n\n`
+                ));
+              })) { /* delta xử lý trong onChunk */ }
+              if (!gotToken) {
+                controller.enqueue(encoder.encode(
+                  `data: ${JSON.stringify({ type: 'token', data: NO_KNOWLEDGE_ANSWER })}\n\n`
+                ));
+              }
+            } catch (e) {
+              console.warn('LLM fallback (no knowledge) fail — gửi NO_KNOWLEDGE:', e);
+              controller.enqueue(encoder.encode(
+                `data: ${JSON.stringify({ type: 'token', data: NO_KNOWLEDGE_ANSWER })}\n\n`
+              ));
+            }
+          } else {
+            controller.enqueue(encoder.encode(
+              `data: ${JSON.stringify({ type: 'token', data: NO_KNOWLEDGE_ANSWER })}\n\n`
+            ));
+          }
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'done' })}\n\n`));
+          controller.close();
+          return;
+        }
+
         try {
           // Fallback danh sách model: model đầu fail hết retry → tự chuyển model
           // dự phòng (lib/modelFallback.ts). List 1 model → hành vi như cũ
@@ -642,17 +705,21 @@ export async function POST(req: NextRequest) {
               // Gemini API: REST gốc (streamGenerateContent) — không có OpenAI-compatible
               return streamGemini(model, {
                 system,
-                user,
+                user: userWithHistory,
                 maxTokens: 4096,
                 temperature: 0.0,
               });
             }
+            // OpenAI-compatible: gửi history (role user/assistant) như messages
+            // thật để LLM hiểu ngữ cảnh câu nối tiếp
+            const historyMessages = history.map((h: HistoryMessage) => ({ role: h.role, content: h.content }));
             const chatStream = await getClientForModel(model).chat.completions.create({
               model,
               max_tokens: 4096,
               temperature: 0.0,
               messages: [
                 { role: 'system', content: system },
+                ...historyMessages,
                 { role: 'user', content: user },
               ],
               stream: true,
@@ -677,8 +744,9 @@ export async function POST(req: NextRequest) {
         } finally {
           if (fullAnswer) {
             // không cache — mỗi lần hỏi tính toán mới, dùng tài liệu mới nhất
-          } else if (sentError || contexts.length > 0) {
-            // Có sources nhưng LLM ko trả lời → gửi fallback
+          } else if (sentError) {
+            // LLM THẬT SỰ fail VÀ đã có context (nhánh no-knowledge đã return
+            // sớm ở trên) → đây là lỗi hệ thống, gửi fallback "quá tải"
             controller.enqueue(encoder.encode(
               `data: ${JSON.stringify({ type: 'token', data: 'Hệ thống AI đang quá tải, xin vui lòng thử lại câu hỏi ngắn hơn hoặc hỏi lại sau.' })}\n\n`
             ));

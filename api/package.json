@@ -11,7 +11,7 @@
     "start": "next start",
     "ingest": "node scripts/ingest-all.js",
     "ingest:legal-docs": "node --import tsx scripts/ingest-legal-docs.ts",
-    "test": "node --import tsx --test tests/"
+    "test": "node --import tsx --test \"tests/*.test.ts\""
   },
   "dependencies": {
     "@supabase/supabase-js": "2.45.4",
