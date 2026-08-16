@@ -28,7 +28,7 @@ export interface HistoryMessage {
 }
 
 // queryExpansion.ts không import conversationMemory → không vòng lặp import
-import { expandKeywords, tokenize } from './queryExpansion';
+import { expandKeywords } from './queryExpansion';
 
 /**
  * Lọc history từ input không tin cậy (body request): chỉ giữ phần tử
@@ -63,10 +63,15 @@ export function limitHistory(messages: HistoryMessage[]): HistoryMessage[] {
 }
 
 /**
- * Trích term bổ sung cho search từ lịch sử: tokenize CONTEXT_QUESTIONS câu
- * hỏi user gần nhất (trước câu hiện tại), bỏ term đã có trong câu hiện tại
- * (tránh lặp) và stopword. Dùng cho câu nối tiếp ngắn — nếu term trùng hết
- * với câu hiện tại → trả [] (không nhiễu search).
+ * Trích term bổ sung cho search từ lịch sử: lấy CONTEXT_QUESTIONS câu hỏi
+ * user gần nhất (trước câu hiện tại), mở rộng synonym domain bằng
+ * expandKeywords — giống hệt cách mở rộng cho câu hiện tại (nhất quán),
+ * bỏ term đã có trong câu hiện tại (tránh lặp). Dùng cho câu nối tiếp ngắn —
+ * nếu term trùng hết với câu hiện tại → trả [] (không nhiễu search).
+ *
+ * Lưu ý: frontend gửi history kèm câu hiện tại (message user cuối cùng trùng
+ * currentQuestion) — bỏ qua câu trùng này để CONTEXT_QUESTIONS thực chất vẫn
+ * lấy được các câu hỏi TRƯỚC đó.
  */
 export function extractContextTerms(
   messages: HistoryMessage[],
@@ -74,14 +79,20 @@ export function extractContextTerms(
 ): string[] {
   if (!Array.isArray(messages) || !messages.length) return [];
 
-  // Token hóa câu hỏi hiện tại để loại term trùng (không cần mở rộng —
-  // mở rộng đã làm ở searchKnowledge cho chính câu hiện tại)
-  const currentTerms = new Set(tokenize(currentQuestion || ''));
+  const qNow = (currentQuestion || '').toLowerCase().trim();
+  // Tập term của câu hiện tại — mở rộng BẰNG expandKeywords để loại đúng cả
+  // synonym ("thuế suất" của câu trước → "biểu/lũy/tiến" không lọt vào
+  // historyTerms vì chính câu hiện tại cũng mở rộng ra chúng)
+  const currentTerms = new Set(expandKeywords(qNow));
 
-  // Lấy CONTEXT_QUESTIONS câu hỏi user gần nhất (lọc từ cuối mảng)
+  // Lấy CONTEXT_QUESTIONS câu hỏi user gần nhất (lọc từ cuối mảng), BỎ qua
+  // câu trùng với câu hiện tại (frontend gửi kèm message user mới nhất)
   const userQuestions: string[] = [];
   for (let i = messages.length - 1; i >= 0 && userQuestions.length < CONTEXT_QUESTIONS; i--) {
-    if (messages[i].role === 'user') userQuestions.push(messages[i].content);
+    if (messages[i].role !== 'user') continue;
+    const q = (messages[i].content || '').trim();
+    if (!q || q.toLowerCase() === qNow) continue;
+    userQuestions.push(messages[i].content);
   }
   if (!userQuestions.length) return [];
 

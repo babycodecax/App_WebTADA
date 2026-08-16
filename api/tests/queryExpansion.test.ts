@@ -23,6 +23,7 @@ const {
   tokenize,
   expandKeywords,
   expandShortQuery,
+  countStrongMatches,
   hasRealMatch,
 } = lib;
 
@@ -128,6 +129,33 @@ test('expandShortQuery: query rỗng → []', () => {
   assert.deepEqual(expandShortQuery(''), []);
 });
 
+// ─── 4b. countStrongMatches (word boundary — chống substring lạc đề) ───
+test('countStrongMatches: word-boundary — "cảnh" match "gia cảnh" (âm tiết rời)', () => {
+  // Tiếng Việt viết rời âm tiết: "gia cảnh" có space nên word-boundary vẫn
+  // tính "cảnh" là match. Lớp chặn lạc đề thật sự là BI-GRAM trong
+  // hasRealMatch ("cá cảnh" không xuất hiện nguyên cụm trong "cá nhân"/"gia cảnh")
+  assert.equal(countStrongMatches(['cảnh'], 'giảm trừ gia cảnh'), 1);
+});
+
+test('countStrongMatches: "cá" match "cá nhân" (âm tiết rời) — bi-gram mới chặn', () => {
+  assert.equal(countStrongMatches(['cá', 'cảnh'], 'thuế thu nhập cá nhân'), 1);
+});
+
+test('countStrongMatches: từ độc lập vẫn match (thuế suất trong biểu thuế)', () => {
+  assert.equal(countStrongMatches(['thuế', 'suất'], 'biểu thuế suất lũy tiến'), 2);
+});
+
+test('countStrongMatches: term 1 ký tự chỉ tính khi là số (2, 5)', () => {
+  assert.equal(countStrongMatches(['2', '5'], 'mức 2% và 5%'), 2);
+  assert.equal(countStrongMatches(['a'], 'a và b'), 0);
+});
+
+test('countStrongMatches: mảng term rỗng / text rỗng → 0', () => {
+  assert.equal(countStrongMatches([], 'abc'), 0);
+  assert.equal(countStrongMatches(['thuế'], ''), 0);
+  assert.equal(countStrongMatches(undefined, 'abc'), 0);
+});
+
 // ─── 5. hasRealMatch ───
 test('hasRealMatch: mọi chunk matchCount = 0 (kể cả score > 0 do boost) → false', () => {
   const scored = [{ score: 0, matchCount: 0 }, { score: 1.5, matchCount: 0 }, { score: 0 }];
@@ -139,11 +167,33 @@ test('hasRealMatch: query dài (>= 4 terms) → 1 match đủ', () => {
   assert.equal(hasRealMatch(scored, ['a', 'b', 'c', 'd']), true);
 });
 
-test('hasRealMatch: query ngắn (<= 3 terms) → cần >= 2 match (chống substring)', () => {
+test('hasRealMatch: query ngắn (<= 3 terms) không số → cần BI-GRAM khớp trong chunk', () => {
+  // probe lạc đề: "nuôi cá cảnh" — chunk TNCN có "cá nhân" + "gia cảnh"
+  // (substring match = 2) nhưng KHÔNG có bi-gram "cá cảnh" → false
+  const chunkTNCN = {
+    score: 3.2,
+    matchCount: 2,
+    title: 'Thuế thu nhập cá nhân',
+    content: 'giảm trừ gia cảnh đối với người phụ thuộc',
+  };
+  assert.equal(hasRealMatch([chunkTNCN], ['nuôi', 'cá', 'cảnh'], 'nuôi cá cảnh'), false);
+
+  // chunk thật sự có "cá cảnh" (kinh doanh cá cảnh) → bi-gram khớp → true
+  const chunkThat = {
+    score: 3.2,
+    matchCount: 2,
+    title: 'Hộ kinh doanh cá cảnh',
+    content: 'nuôi cá cảnh xuất khẩu',
+  };
+  assert.equal(hasRealMatch([chunkThat], ['nuôi', 'cá', 'cảnh'], 'nuôi cá cảnh'), true);
+});
+
+test('hasRealMatch: query ngắn có số → dùng threshold matchCount 2 (không bi-gram)', () => {
+  // "90 ngày" — số không tách bi-gram ý nghĩa
   const scored = [{ score: 3.2, matchCount: 1 }];
-  assert.equal(hasRealMatch(scored, ['a', 'b', 'c']), false);
+  assert.equal(hasRealMatch(scored, ['90', 'ngày'], '90 ngày'), false);
   const scored2 = [{ score: 3.2, matchCount: 2 }];
-  assert.equal(hasRealMatch(scored2, ['a', 'b', 'c']), true);
+  assert.equal(hasRealMatch(scored2, ['90', 'ngày'], '90 ngày'), true);
 });
 
 test('hasRealMatch: mảng rỗng → false', () => {

@@ -14,6 +14,7 @@ import { isNumericQuery, searchCompliance, formatComplianceContext } from '@/lib
 import { getKnowledgeChunksCached, refreshKnowledgeCache } from '@/lib/knowledgeCache';
 import { isBlogPath, isAdminKnowledgePath } from '@/lib/blogKnowledge';
 import { tokenize, expandShortQuery, countStrongMatches, hasRealMatch } from '@/lib/queryExpansion';
+import { classifyAnswer } from '@/lib/answerClassifier';
 import {
   sanitizeHistory,
   limitHistory,
@@ -346,10 +347,11 @@ async function searchKnowledge(query: string, topK: number = TOP_K, historyTerms
   // Fix HIGH: không có chunk nào match thật → trả [] (KHÔNG trả top-K chunk
   // ngẫu nhiên score 0). Chunk chỉ boost chủ đề/cheatsheet không tính là match.
   // forcedChunks vẫn được xét (chúng là nền tảng trả lời mốc/ngưỡng đã force).
-  // hasRealMatch(scored, terms): threshold theo độ dài query — query ngắn (≤3
-  // terms) cần ≥2 match chặt trong CÙNG 1 chunk (chống substring trùng ngẫu
-  // nhiên); query dài (≥4 terms) chỉ cần 1 (đã nhiều term đặc trưng).
-  if (!hasRealMatch(scored, terms) && !forcedChunks.length) {
+  // hasRealMatch(scored, terms, query): query ngắn 2-3 terms không số → cần
+  // BI-GRAM khớp trong cùng 1 chunk ("nuôi cá cảnh" cần "cá cảnh" nguyên cụm —
+  // "cá nhân"/"gia cảnh" trong chunk TNCN không tạo bi-gram, chặn lạc đề);
+  // query dài ≥4 terms → threshold matchCount 1; có số → threshold 2.
+  if (!hasRealMatch(scored, terms, query) && !forcedChunks.length) {
     return [];
   }
   // Merge forcedChunks vào top TRƯỚC (chunk forced = nền tảng trả lời mốc/ngưỡng,
@@ -618,10 +620,13 @@ export async function POST(req: NextRequest) {
         let sentError = false; // tránh gửi 2 tin (error + quá tải) khi tất cả model fail
 
         // PHÂN LOẠI "KHÔNG CÓ KIẾN THỨC" vs "LỖI HỆ THỐNG":
-        // Không tìm thấy tài liệu liên quan → trả lời trung thực, KHÔNG gọi LLM
-        // (tiết kiệm chi phí + không trả lời chung chung). Tin "quá tải" CHỈ
-        // dành cho LLM thật sự fail khi đã có context.
-        if (contexts.length === 0) {
+        // Không tìm thấy tài liệu liên quan VÀ không có compliance records →
+        // trả lời trung thực, KHÔNG gọi LLM (tiết kiệm chi phí + không trả lời
+        // chung chung). Fix MEDIUM: contexts rỗng nhưng CÓ complianceContext
+        // (searchCompliance tìm được records cho câu hỏi có số liệu) vẫn phải
+        // gọi LLM — có dữ liệu structured để trả lời, không nhận "chưa có đủ
+        // thông tin". Tin "quá tải" CHỈ dành cho LLM thật sự fail khi có dữ liệu.
+        if (classifyAnswer(contexts.length > 0, complianceContext !== '') === 'no-knowledge') {
           const allowLlmFallback = process.env.ALLOW_LLM_FALLBACK === 'true';
           if (allowLlmFallback) {
             // Phương án 2 (tùy chọn): LLM trả lời THAM KHẢO kèm cảnh báo rõ ràng

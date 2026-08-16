@@ -20,6 +20,7 @@ export const STOPWORDS = new Set([
   'theo', 'tại', 'từ', 'để', 'khi', 'nào', 'bao', 'nhiêu', 'làm', 'sao',
   'thế', 'này', 'như', 'về', 'còn', 'đã', 'sẽ', 'đang', 'bị', 'không',
   'những', 'một', 'hai', 'ba', 'ngày', 'tháng', 'mấy', 'đó', 'thì',
+  'gì', // từ hỏi ("người phụ thuộc là gì") — không phải term chủ đề
 ]);
 
 /** Keyword mapping: từ thường → từ domain chuẩn (giúp search match tài liệu thuế). */
@@ -147,22 +148,54 @@ export function countStrongMatches(terms: string[], text: string): number {
 }
 
 /**
+ * Bi-gram (cụm 2 âm tiết liền) từ query gốc — trước mở rộng từ khóa.
+ * Tiếng Việt viết rời từng âm tiết nên word-boundary theo space không phân
+ * biệt được "cảnh" của "cá CẢNH" (nuôi cá) với "cảnh" của "gia CẢNH" (giảm
+ * trừ). Bi-gram "cá cảnh" phản ánh nghĩa thật của cụm từ.
+ */
+export function queryBigrams(query: string): string[] {
+  const toks = tokenize(query || '');
+  const out: string[] = [];
+  for (let i = 0; i + 1 < toks.length; i++) {
+    out.push(`${toks[i]} ${toks[i + 1]}`);
+  }
+  return out;
+}
+
+/** Bi-gram có xuất hiện trong văn bản không (cụm 2 từ liền nhau)? */
+export function hasBigramInText(bigrams: string[], text: string): boolean {
+  if (!bigrams || !bigrams.length || !text) return false;
+  const hay = ` ${(text || '').toLowerCase()} `;
+  return bigrams.some(b => hay.includes(` ${b} `));
+}
+
+/**
  * Có chunk nào match THẬT không (matchCount > 0)?
  * Chunk chỉ được boost chủ đề/cheatsheet (score > 0 nhưng matchCount = 0)
  * KHÔNG được tính là "có kiến thức" — tránh trả lời chung chung khi thực ra
  * không tìm thấy tài liệu liên quan.
  *
- * Threshold chống false-positive substring match (fix HIGH): query ngắn
- * (<= 3 terms) phải khớp >= 2 terms CHẶT trong CÙNG 1 chunk mới coi là có
- * kiến thức — 1 term lẻ dễ trùng substring ngẫu nhiên với chunk khác chủ đề
- * (VD "nuôi cá cảnh" match "cá nhân"/"gia cảnh" trong chunk TNCN). Query dài
- * (>= 4 terms) giữ threshold 1 vì đã có nhiều term đặc trưng.
+ * Chống false-positive (fix HIGH): query NGẮN 2-3 terms KHÔNG có số → phải có
+ * BI-GRAM khớp trong cùng 1 chunk ("nuôi cá cảnh" cần "cá cảnh" xuất hiện
+ * nguyên cụm — "cá nhân"/"gia cảnh" trong chunk TNCN không tạo bi-gram đó).
+ * Query dài (>= 4 terms) hoặc có số → threshold matchCount (1 hoặc 2) — đã
+ * đủ term đặc trưng; số (91 ngày, 50.000) không tách bi-gram ý nghĩa.
  */
 export function hasRealMatch(
-  scored: Array<{ matchCount?: number }>,
-  terms: string[] = []
+  scored: Array<{ matchCount?: number; title?: string; heading?: string; content?: string }>,
+  terms: string[] = [],
+  query: string = ''
 ): boolean {
   if (!scored || !scored.length) return false;
   const threshold = terms.length >= 4 ? 1 : 2;
+
+  if (terms.length >= 2 && terms.length <= 3 && !/\d/.test(query || '')) {
+    const bigrams = queryBigrams(query || '');
+    if (bigrams.length) {
+      return scored.some(c =>
+        hasBigramInText(bigrams, `${c.title || ''} ${c.heading || ''} ${c.content || ''}`)
+      );
+    }
+  }
   return scored.some(c => (c.matchCount || 0) >= threshold);
 }

@@ -166,3 +166,36 @@ test('extractContextTerms: chỉ dùng 3 câu hỏi user gần nhất', () => {
   assert.ok(terms.includes('chủ')); // chủ đề bốn — câu hỏi thứ 3 từ cuối
   assert.ok(!terms.includes('nhất')); // 'chủ đề cũ nhất' bị loại (quá cũ)
 });
+
+test('extractContextTerms: frontend gửi kèm câu hiện tại → bỏ qua câu trùng', () => {
+  // Frontend gửi history gồm cả message user mới nhất (trùng currentQuestion)
+  const history = [
+    { role: 'user', content: 'thuế tncn là gì' },
+    { role: 'assistant', content: 'TNCN là thuế thu nhập cá nhân...' },
+    { role: 'user', content: 'thuế suất bao nhiêu' }, // == câu hiện tại — bị bỏ
+  ];
+  const terms = extractContextTerms(history, 'thuế suất bao nhiêu');
+  // Term từ câu hỏi TRƯỚC câu hiện tại (thuế tncn là gì)
+  assert.ok(terms.includes('tncn'));
+  assert.ok(terms.includes('thu'));
+  assert.ok(terms.includes('nhập'));
+  assert.ok(terms.includes('cá'));
+  assert.ok(terms.includes('nhân'));
+});
+
+test('extractContextTerms: lọc synonym của câu hiện tại (không lọt historyTerms)', () => {
+  // Câu trước "thuế suất" mở rộng ra "biểu/lũy/tiến"; câu hiện tại "biểu thuế"
+  // cũng mở rộng ra "biểu/lũy/tiến" → những term đó bị loại (không trùng lặp)
+  const history = [
+    { role: 'user', content: 'thuế suất là bao nhiêu' },
+    { role: 'assistant', content: 'Theo biểu thuế lũy tiến...' },
+    { role: 'user', content: 'biểu thuế' },
+  ];
+  const terms = extractContextTerms(history, 'biểu thuế');
+  // "biểu thuế" của câu hiện tại → biểu/lũy/tiến; term "suất" của câu trước
+  // vẫn được giữ (không thuộc expansion của câu hiện tại)
+  assert.ok(terms.includes('suất'));
+  assert.ok(!terms.includes('biểu')); // expansion câu hiện tại → bị loại
+  assert.ok(!terms.includes('lũy'));
+  assert.ok(!terms.includes('tiến'));
+});
