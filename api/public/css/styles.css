@@ -15,6 +15,8 @@
   --accent-gold: #d4af37;
   --accent-gold-light: #e5c05c;
   --accent-gold-dark: #aa8620;
+  --accent-gold-text: #916B1A; /* WCAG AA 4.71:1 on bg-light — dùng cho text */
+
   
   --bg-light: #fdfbfa;
   --bg-light-alt: #f6f1ed;
@@ -155,7 +157,7 @@ h1, h2, h3, h4, h5, h6 {
 .section-subtitle {
   font-family: var(--font-sans);
   text-transform: uppercase;
-  color: var(--accent-gold);
+  color: var(--accent-gold-text);
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.15em;
@@ -172,7 +174,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-light);
 }
 .section-title-accent {
-  color: var(--accent-gold);
+  color: var(--accent-gold-text);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -236,7 +238,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-outline-gold {
   background-color: transparent;
-  color: var(--accent-gold);
+  color: var(--accent-gold-text);
   border: 1px solid var(--accent-gold);
 }
 .btn-outline-gold:hover {
@@ -1064,7 +1066,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .result-title {
-  color: var(--accent-gold);
+  color: var(--accent-gold-text);
   font-size: 20px;
   margin-bottom: 12px;
 }

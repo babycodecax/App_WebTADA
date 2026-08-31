@@ -15,6 +15,8 @@
   --accent-gold: #d4af37;
   --accent-gold-light: #e5c05c;
   --accent-gold-dark: #aa8620;
+  --accent-gold-text: #916B1A; /* WCAG AA 4.71:1 on bg-light — dùng cho text */
+
   
   --bg-light: #fdfbfa;
   --bg-light-alt: #f6f1ed;
@@ -155,7 +157,7 @@ h1, h2, h3, h4, h5, h6 {
 .section-subtitle {
   font-family: var(--font-sans);
   text-transform: uppercase;
-  color: var(--accent-gold);
+  color: var(--accent-gold-text);
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.15em;
@@ -172,7 +174,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-light);
 }
 .section-title-accent {
-  color: var(--accent-gold);
+  color: var(--accent-gold-text);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -236,7 +238,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-outline-gold {
   background-color: transparent;
-  color: var(--accent-gold);
+  color: var(--accent-gold-text);
   border: 1px solid var(--accent-gold);
 }
 .btn-outline-gold:hover {
@@ -835,27 +837,51 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
-   SERVICES — KHỐI VĂN BẢN NỐI TIẾP ĐƠN GIẢN (không card, không nhóm)
-   Nội dung admin nhập thế nào hiển thị y như vậy (white-space: pre-line).
+   SERVICES — MỖI DÒNG 1 CARD HÀNG NGANG (giống blog-mini-card)
+   Admin nhập 1 dòng = 1 dịch vụ trong /api/services → tự cập nhật trang chủ.
    ========================================================================== */
 .services-content {
   position: relative;
   z-index: 1;
   margin-top: 40px;
-  display: flex;
-  flex-direction: column;
 }
 
-.services-text-block {
-  max-width: 720px;
+.services-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 760px;
   margin: 0 auto;
   width: 100%;
-  font-size: 18px;
-  line-height: 2;
-  color: var(--text-dark);
-  white-space: pre-line;
+}
+
+.services-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-md);
+  padding: 14px 18px;
+  transition: var(--transition-smooth);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.services-card:hover {
+  border-color: var(--accent-gold);
+  box-shadow: 0 4px 12px rgba(128, 0, 32, 0.05);
+}
+
+.services-card-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.services-card-name {
+  /* Font + đậm đồng bộ title 3 section (.blog-mini-card h3, .library-mini-title) — xem css/blog.css */
+  flex: 1;
+  min-width: 0;
   word-break: break-word;
-  text-align: left;
 }
 
 /* ==========================================================================
@@ -1040,7 +1066,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .result-title {
-  color: var(--accent-gold);
+  color: var(--accent-gold-text);
   font-size: 20px;
   margin-bottom: 12px;
 }
@@ -1504,14 +1530,20 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Services text block — mobile: giảm cỡ chữ, không tràn ngang */
+/* Services grid — mobile: card đủ rộng, không tràn ngang */
 @media (max-width: 600px) {
   .services-content {
     margin-top: 32px;
   }
-  .services-text-block {
-    font-size: 16px;
-    line-height: 1.9;
+  .services-grid {
+    gap: 8px;
+  }
+  .services-card {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .services-card-name {
+    font-size: 13px;
   }
 }
 
