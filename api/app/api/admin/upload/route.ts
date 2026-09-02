@@ -235,9 +235,13 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
         else if (/HƯỚNG\s*DẪN|Hướng\s*dẫn/.test(head300)) detectedType = 'HƯỚNG DẪN';
         else if (/LUẬT\b|Luật\b/.test(head300)) detectedType = 'LUẬT';
 
-        // Lấy title từ dòng đầu tiên của nội dung (thường là tên văn bản)
-        const firstLine = text.split('\n').find((l: string) => l.trim().length > 10) || name.replace(/\.[^.]+$/, '');
-        const titleText = firstLine.trim().replace(/\n/g, ' ');
+        // Lấy title: skip tiền tố "CỘNG HÒA..." + "Độc lập...", lấy dòng chứa tên VB
+        const lines = text.split('\n').map((l: string) => l.trim()).filter(Boolean);
+        const TITLE_SKIP = /^(CỘNG HÒA|Độc lập|SOCIALIST|REPUBLIC|Số[\s:]|Ngày[\s:]|\d{1,2}\s*\/\s*\d{4})/i;
+        const titleLine = lines.find((l: string) => l.length > 10 && !TITLE_SKIP.test(l))
+          || lines[0]
+          || name.replace(/\.[^.]+$/, '');
+        const titleText = titleLine.replace(/\n/g, ' ').slice(0, 200);
 
         const paragraphs = text
           .split(/\n\s*\n/)
