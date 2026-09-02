@@ -72,9 +72,19 @@
   };
 
   // Kiểm tra admin khi load (nếu đã có session trong localStorage của supabase-js).
-  // Lưu ý: window.__tadaSession được blog-admin.js set SAU khi có session — các
-  // module khác (admin-docs/admin-services) tự gọi refreshAdmin khi session đổi.
-  // Nếu checkAdmin() chạy khi CHƯA có token (chưa login) → refreshAdmin()
-  // được gọi lại sau khi đăng nhập (blog-admin.js) để lấy kết quả đúng.
   checkAdmin();
+
+  // Re-check khi user quay lại tab (session có thể hết hạn khi chuyển tab)
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && window.__tadaSession) {
+      checkAdmin();
+    }
+  });
+
+  // Periodic refresh mỗi 5 phút — chống session expire im lặng
+  setInterval(function () {
+    if (window.__tadaSession && !document.hidden) {
+      checkAdmin();
+    }
+  }, 5 * 60 * 1000);
 })();

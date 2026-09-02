@@ -186,6 +186,14 @@
       }
     }, 1500);
 
+    // Re-check khi quay lại tab — token có thể expired khi chuyển tab
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) {
+        _orig = window.__tadaSession; // force re-check
+        syncAuth();
+      }
+    });
+
     // Khi mở tab "docs" (click sidebar) → refresh
     document.querySelectorAll('.admin-nav-btn[data-view="docs"]').forEach(function (btn) {
       btn.addEventListener('click', function () { setTimeout(showSub, 50, currentSub); });
