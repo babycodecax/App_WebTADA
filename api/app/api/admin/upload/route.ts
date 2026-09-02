@@ -184,6 +184,20 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
 
     if (ext === 'docx') {
       html = await extractHtml(file);
+      // Detect type từ raw text (300 chars đầu) — chuẩn hơn HTML pattern
+      try {
+        const mammoth = await import('mammoth');
+        const buf = Buffer.from(await file.arrayBuffer());
+        const { value: rawText } = await mammoth.extractRawText({ buffer: buf });
+        const head300 = rawText.slice(0, 300);
+        if (/NGHỊ\s*QUYẾT|Nghị\s*quyết/.test(head300)) detectedType = 'NGHỊ QUYẾT';
+        else if (/THÔNG\s*TƯ|Thông\s*tư/.test(head300)) detectedType = 'THÔNG TƯ';
+        else if (/NGHỊ\s*ĐỊNH|Nghị\s*định/.test(head300)) detectedType = 'NGHỊ ĐỊNH';
+        else if (/QUYẾT\s*ĐỊNH|Quyết\s*định/.test(head300)) detectedType = 'QUYẾT ĐỊNH';
+        else if (/CÔNG\s*VĂN|Công\s*văn/.test(head300)) detectedType = 'CÔNG VĂN';
+        else if (/HƯỚNG\s*DẪN|Hướng\s*dẫn/.test(head300)) detectedType = 'HƯỚNG DẪN';
+        else if (/LUẬT\b|Luật\b/.test(head300)) detectedType = 'LUẬT';
+      } catch { /* fallback to HTML pattern */ }
     } else if (ext === 'pdf') {
       let text = '';
       try {
