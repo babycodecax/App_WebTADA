@@ -172,12 +172,46 @@ async function upsertSourceDocument(filePath: string, title: string, storagePath
 
 /**
  * TỰ ĐỘNG CẬP NHẬT THƯ VIỆN — admin upload .docx → parse mammoth (giữ bảng
- * biểu) → upsert landing_legal_docs → văn bản xuất hiện ngay trong /thu-vien
- * (không cần thêm thủ công). Best-effort: lỗi parse/upsert KHÔNG chặn upload.
+ * biểu), .pdf → pdf-parse hoặc OCR → upsert landing_legal_docs → văn bản
+ * xuất hiện ngay trong /thu-vien. Best-effort: lỗi KHÔNG chặn upload.
  */
 async function syncLegalDocToLibrary(file: File): Promise<void> {
   try {
-    const html = await extractHtml(file); // mammoth convertToHtml — giữ bảng biểu
+    const name = file.name || '';
+    const ext = name.split('.').pop()?.toLowerCase() || '';
+    let html = '';
+
+    if (ext === 'docx') {
+      // .docx → mammoth convertToHtml — giữ bảng biểu
+      html = await extractHtml(file);
+    } else if (ext === 'pdf') {
+      // .pdf → pdf-parse text → HTML đơn giản
+      try {
+        const pdfParse = (await import('pdf-parse/lib/pdf-parse.js')).default;
+        const buf = Buffer.from(await file.arrayBuffer());
+        const parsed = await pdfParse(buf);
+        if (parsed.text.trim()) {
+          // Chuyển text → HTML: mỗi đoạn thành <p>
+          html = parsed.text
+            .split(/\n\s*\n/)
+            .map((p: string) => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`)
+            .join('\n');
+        }
+      } catch {
+        // pdf-parse fail → thử OCR nếu có key
+        const apiKey = process.env.LLM_API_KEY || '';
+        if (apiKey) {
+          const ocrText = await extractText(file);
+          if (ocrText.body.trim()) {
+            html = ocrText.body
+              .split(/\n\s*\n/)
+              .map((p: string) => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`)
+              .join('\n');
+          }
+        }
+      }
+    }
+
     if (!html.trim()) return;
 
     const meta = extractLegalTitleFromHtml(html, file.name);
