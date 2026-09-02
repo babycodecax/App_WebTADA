@@ -33,6 +33,17 @@
   function renderConnected(isAdmin) {
     if (el.uploadCard) el.uploadCard.style.display = isAdmin ? 'block' : 'none';
     if (el.listCard) el.listCard.style.display = isAdmin ? 'block' : 'none';
+    // Cập nhật status badge
+    var connStatus = document.getElementById('docs-conn-status');
+    var connNote = document.getElementById('docs-conn-note');
+    if (connStatus) {
+      connStatus.textContent = isAdmin
+        ? 'Đã đăng nhập quản trị (Google).'
+        : (window.TADAAdminAuth && window.TADAAdminAuth.isLoggedIn && window.TADAAdminAuth.isLoggedIn())
+          ? 'Tài khoản của bạn không có quyền sử dụng chức năng này.'
+          : 'Vui lòng đăng nhập bằng tài khoản quản trị (Google) để sử dụng chức năng.';
+    }
+    if (connNote) connNote.style.display = 'none';
     if (!isAdmin) {
       var sl = document.getElementById('sources-list');
       var fl = document.getElementById('forms-list');
