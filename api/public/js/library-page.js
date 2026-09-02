@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function () {
     nd: 'Nghị định',
     tt: 'Thông tư',
     nq: 'Nghị quyết',
+    qd: 'Quyết định',
+    cv: 'Công văn',
+    hd: 'Hướng dẫn',
     vbhn: 'VBHN'
   };
 

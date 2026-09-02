@@ -180,6 +180,7 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
     const name = file.name || '';
     const ext = name.split('.').pop()?.toLowerCase() || '';
     let html = '';
+    let detectedType: string | undefined; // detect từ nội dung PDF
 
     if (ext === 'docx') {
       html = await extractHtml(file);
@@ -211,10 +212,14 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
         // Detect doc_type + title từ nội dung PDF (500 chars đầu)
         const head = text.slice(0, 500).toUpperCase();
         let detectedType = 'VĂN BẢN';
-        if (/NGHỊ\s*QUYẾT|Nghị\s*quyết/.test(text.slice(0, 300))) detectedType = 'NGHỊ QUYẾT';
-        else if (/THÔNG\s*TƯ|Thông\s*tư/.test(text.slice(0, 300))) detectedType = 'THÔNG TƯ';
-        else if (/NGHỊ\s*ĐỊNH|Nghị\s*định/.test(text.slice(0, 300))) detectedType = 'NGHỊ ĐỊNH';
-        else if (/LUẬT\b|Luật\b/.test(text.slice(0, 300))) detectedType = 'LUẬT';
+        const head300 = text.slice(0, 300);
+        if (/NGHỊ\s*QUYẾT|Nghị\s*quyết/.test(head300)) detectedType = 'NGHỊ QUYẾT';
+        else if (/THÔNG\s*TƯ|Thông\s*tư/.test(head300)) detectedType = 'THÔNG TƯ';
+        else if (/NGHỊ\s*ĐỊNH|Nghị\s*định/.test(head300)) detectedType = 'NGHỊ ĐỊNH';
+        else if (/QUYẾT\s*ĐỊNH|Quyết\s*định/.test(head300)) detectedType = 'QUYẾT ĐỊNH';
+        else if (/CÔNG\s*VĂN|Công\s*văn/.test(head300)) detectedType = 'CÔNG VĂN';
+        else if (/HƯỚNG\s*DẪN|Hướng\s*dẫn/.test(head300)) detectedType = 'HƯỚNG DẪN';
+        else if (/LUẬT\b|Luật\b/.test(head300)) detectedType = 'LUẬT';
 
         // Lấy title từ dòng đầu tiên của nội dung (thường là tên văn bản)
         const firstLine = text.split('\n').find((l: string) => l.trim().length > 10) || name.replace(/\.[^.]+$/, '');
@@ -237,10 +242,18 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
 
     const meta = extractLegalTitleFromHtml(html, file.name);
     const fallbackTitle = name.replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ');
+    // Ưu tiên detectedType từ nội dung PDF > meta từ HTML > fallback
+    const TYPE_MAP: Record<string, string> = {
+      'NGHỊ QUYẾT': 'nq', 'THÔNG TƯ': 'tt', 'NGHỊ ĐỊNH': 'nd',
+      'QUYẾT ĐỊNH': 'qd', 'CÔNG VĂN': 'cv', 'HƯỚNG DẪN': 'hd', 'LUẬT': 'luat',
+    };
+    const finalType = (detectedType && TYPE_MAP[detectedType])
+      ? TYPE_MAP[detectedType]
+      : meta.doc_type;
     const row = buildLegalDocRow({
       html,
       title: meta.title || fallbackTitle,
-      doc_type: meta.doc_type,
+      doc_type: finalType as any,
       doc_number: meta.doc_number,
       fileName: file.name,
       fileUrl: '',
