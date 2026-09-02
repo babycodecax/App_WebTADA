@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
 import { isAdminGoogle } from '@/lib/adminAuth';
 import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker';
-import { ALLOWED_EXTENSIONS, extractHtml, extractText, sanitizeTitle } from '@/lib/parseFile';
+import { ALLOWED_EXTENSIONS, IMAGE_MIME, extractHtml, extractText, sanitizeTitle } from '@/lib/parseFile';
 import { invalidateStructuredCache } from '@/lib/structured';
 import { invalidateComplianceCache } from '@/lib/compliance';
 import { invalidateKnowledgeCache } from '@/lib/knowledgeCache';
@@ -131,6 +131,7 @@ async function uploadFileToStorage(file: File, filePath: string): Promise<string
       '.pdf': 'application/pdf',
       '.txt': 'text/plain',
       '.md': 'text/markdown',
+      ...IMAGE_MIME,
     };
     const { error } = await getSupabase().storage
       .from(BUCKET)
@@ -247,7 +248,7 @@ export async function POST(req: NextRequest) {
   const ext = '.' + (name.split('.').pop() || '').toLowerCase();
   if (!ALLOWED_EXTENSIONS.includes(ext as (typeof ALLOWED_EXTENSIONS)[number])) {
     return NextResponse.json(
-      { error: 'Chỉ hỗ trợ .docx, .pdf, .txt, .md' },
+      { error: 'Chỉ hỗ trợ .docx, .pdf, .txt, .md, .png, .jpg, .jpeg, .gif, .webp' },
       { status: 400 },
     );
   }
@@ -269,7 +270,7 @@ export async function POST(req: NextRequest) {
     const title = rawTitle || extracted.title;
     const filePath = 'upload/' + sanitizeTitle(title);
 
-    // .md → giữ heading; docx/pdf/txt → plain text (heading='')
+    // .md → giữ heading; docx/pdf/txt/ảnh → plain text (heading='')
     // body gốc (đã strip frontmatter nếu .md) — dùng chung cho chunk + auto-extract
     const body = extracted.isMarkdown ? parseFrontmatter(extracted.body).body : extracted.body;
     let chunks: { text: string; heading: string }[];

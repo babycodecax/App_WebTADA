@@ -12,7 +12,16 @@ export interface ExtractedFile {
   isMarkdown: boolean;
 }
 
-export const ALLOWED_EXTENSIONS = ['.docx', '.pdf', '.txt', '.md'] as const;
+export const ALLOWED_EXTENSIONS = ['.docx', '.pdf', '.txt', '.md', '.png', '.jpg', '.jpeg', '.gif', '.webp'] as const;
+
+/** MIME map cho ảnh — dùng khi upload Supabase Storage + gọi Gemini Vision. */
+export const IMAGE_MIME: Record<string, string> = {
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif',
+  '.webp': 'image/webp',
+};
 
 // Ký tự không hợp lệ trong tên file/heading → thay bằng '-'
 const SANITIZE_RE = /[\\/:*?"<>|\s]+/g;
@@ -54,9 +63,86 @@ export async function extractText(file: File): Promise<ExtractedFile> {
     return { title: fallbackTitle, body: parsed.text || '', isMarkdown: false };
   }
 
+  // Ảnh (PNG/JPG/JPEG/GIF/WEBP) → OCR qua Gemini Vision
+  if (ext in IMAGE_MIME) {
+    const body = await ocrImage(file);
+    return { title: fallbackTitle, body, isMarkdown: false };
+  }
+
   // .txt / .md
   const body = await file.text();
   return { title: fallbackTitle, body, isMarkdown: ext === '.md' };
+}
+
+// ─── OCR: Gemini Vision API ───
+const GEMINI_VISION_BASE = 'https://generativelanguage.googleapis.com/v1beta';
+const OCR_PROMPT = 'Trích xuất toàn bộ văn bản trong ảnh này. Giữ nguyên cấu trúc, dòng, và định dạng. Nếu không có văn bản nào, trả về "Không tìm thấy văn bản".";
+
+/**
+ * OCR file ảnh (PNG/JPG/JPEG/GIF/WEBP) qua Gemini Vision API.
+ * Dùng chung LLM_API_KEY (AIza...) từ env — không cần key riêng.
+ * Trả về text trích được hoặc throw nếu lỗi.
+ */
+async function ocrImage(file: File): Promise<string> {
+  const apiKey = process.env.LLM_API_KEY || '';
+  if (!apiKey) throw new Error('Missing LLM_API_KEY — cần cấu hình để OCR ảnh');
+
+  // Giới hạn size ảnh OCR (2 MB) — Gemini Vision tốn bandwidth với ảnh lớn
+  const MAX_OCR_SIZE = 2 * 1024 * 1024;
+  if (file.size > MAX_OCR_SIZE) {
+    throw new Error(`Ảnh quá lớn (${(file.size / 1024 / 1024).toFixed(1)} MB). Tối đa 2 MB cho OCR.`);
+  }
+
+  const ext = extOf(file.name);
+  const mime = IMAGE_MIME[ext] || 'image/png';
+
+  // Chuyển file → base64
+  const buf = Buffer.from(await file.arrayBuffer());
+  const imageBase64 = buf.toString('base64');
+
+  const url = `${GEMINI_VISION_BASE}/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+  // Retry 3 lần cho lỗi transient (429/503/timeout)
+  let lastErr: unknown;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { text: OCR_PROMPT },
+              { inlineData: { mimeType: mime, data: imageBase64 } },
+            ],
+          }],
+          generationConfig: { maxOutputTokens: 8192, temperature: 0.1 },
+        }),
+      });
+
+      if (!res.ok) {
+        const body = await res.text();
+        throw new Error(`Gemini Vision OCR ${res.status}: ${body.slice(0, 200)}`);
+      }
+
+      const json = await res.json() as {
+        candidates?: { content?: { parts?: { text?: string }[] }; finishReason?: string }[];
+      };
+      const text = json?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      if (text.trim()) return text.trim();
+
+      // Response rỗng — log finishReason để debug
+      const finish = json?.candidates?.[0]?.finishReason;
+      console.warn(`[ocr] Gemini Vision trả rỗng, finishReason=${finish || 'unknown'}`);
+      lastErr = new Error(`OCR trả về rỗng (finishReason: ${finish || 'unknown'})`);
+    } catch (e) {
+      lastErr = e;
+    }
+    if (attempt < 3) {
+      await new Promise((r) => setTimeout(r, 1000 * attempt));
+    }
+  }
+  throw lastErr;
 }
 
 /**

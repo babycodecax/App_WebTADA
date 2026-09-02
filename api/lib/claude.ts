@@ -10,7 +10,7 @@ import {
 
 /**
  * getClient() — client cho MODEL CHÍNH (model đầu của danh sách LLM_MODEL).
- * Provider theo prefix: 'gemini/...' → Gemini API; khác → LLM_API_KEY + baseURL.
+ * Provider auto-detect từ prefix LLM_API_KEY: 'AIza...' → Gemini API; khác → OpenAI-compat.
  */
 export function getClient(): OpenAI {
   return getClientForModel(getModelList()[0]);
@@ -19,8 +19,8 @@ export function getClient(): OpenAI {
 export const EMBED_MODEL = process.env.EMBED_MODEL || 'text-embedding-004';
 
 export async function embedText(text: string): Promise<number[]> {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
+  const apiKey = process.env.LLM_API_KEY;
+  if (!apiKey) throw new Error('Missing LLM_API_KEY');
   const url = `https://generativelanguage.googleapis.com/v1/models/${EMBED_MODEL}:embedContent?key=${apiKey}`;
 
   let lastErr: unknown;
@@ -63,9 +63,10 @@ export async function* streamChat(
   ];
 
   const models = getModelList();
+  const apiKey = process.env.LLM_API_KEY || '';
   const userMessageText = userMessage;
   yield* streamWithModelFallback(models, async (model) => {
-    if (getModelProvider(model) === 'gemini') {
+    if (getModelProvider(apiKey) === 'gemini') {
       return streamGemini(model, {
         system,
         user: userMessageText,

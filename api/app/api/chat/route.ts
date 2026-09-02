@@ -639,8 +639,9 @@ export async function POST(req: NextRequest) {
             ].join('\n');
             try {
               const models = getModelList();
+              const apiKey = process.env.LLM_API_KEY || '';
               const callModel: CallModelFn = async (model) => {
-                if (getModelProvider(model) === 'gemini') {
+                if (getModelProvider(apiKey) === 'gemini') {
                   return streamGemini(model, {
                     system: fallbackSystem,
                     user: userWithHistory,
@@ -695,8 +696,9 @@ export async function POST(req: NextRequest) {
           // dự phòng (lib/modelFallback.ts). List 1 model → hành vi như cũ
           // (3 retry, backoff). onChunk: cộng fullAnswer + đẩy SSE token.
           const models = getModelList(); // đọc lazily trong handler (tránh env freeze build-time)
+          const apiKey = process.env.LLM_API_KEY || '';
           const callModel: CallModelFn = async (model) => {
-            if (getModelProvider(model) === 'gemini') {
+            if (getModelProvider(apiKey) === 'gemini') {
               // Gemini API: REST gốc (streamGenerateContent) — không có OpenAI-compatible
               return streamGemini(model, {
                 system,
