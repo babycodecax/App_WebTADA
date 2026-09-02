@@ -176,8 +176,18 @@
       showSub(currentSub);
     }
     syncAuth();
+
+    // Đăng ký notify — admin-auth.js gọi khi checkAdmin() xong (_isAdmin thay đổi)
+    // Chain callback: không ghi đè mà gọi cả notify cũ
+    if (window.TADAAdminAuth) {
+      var _prevNotify = window.TADAAdminAuth._notify;
+      window.TADAAdminAuth._notify = function () {
+        if (_prevNotify) _prevNotify();
+        syncAuth();
+      };
+    }
+
     // Lắng nghe session Google thay đổi (blog-admin expose window.__tadaSession).
-    // Luôn gắn interval — session có thể chưa sẵn sàng lúc init (chưa login).
     var _orig = window.__tadaSession;
     setInterval(function () {
       if (window.__tadaSession !== _orig) {
