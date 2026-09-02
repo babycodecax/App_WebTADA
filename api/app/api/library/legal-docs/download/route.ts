@@ -24,10 +24,12 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  // Chỉ cho phép tải file .docx (chống path traversal / tải file khác)
+  // Chỉ cho phép tải file .docx hoặc .pdf
   const clean = fileName.split('/').pop() || fileName;
-  if (!/\.docx$/i.test(clean)) {
-    return new Response(JSON.stringify({ error: 'Chỉ hỗ trợ tải file .docx' }), {
+  const isDocx = /\.docx$/i.test(clean);
+  const isPdf = /\.pdf$/i.test(clean);
+  if (!isDocx && !isPdf) {
+    return new Response(JSON.stringify({ error: 'Chỉ hỗ trợ tải file .docx hoặc .pdf' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -38,8 +40,13 @@ export async function GET(req: NextRequest) {
     return sb.storage.from(BUCKET).download(path);
   }
 
+  // Thử nhiều đường dẫn: vault/ (văn bản luật gốc) → upload/ (admin upload)
   let storagePath = 'vault/' + clean;
   let dl = await tryDownload(storagePath);
+  if (dl.error || !dl.data) {
+    storagePath = 'upload/' + clean;
+    dl = await tryDownload(storagePath);
+  }
   if ((dl.error || !dl.data) && /[àáảãạăắằẳẵặâấầẩẫậèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵđÀÁẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÈÉẺẼẸÊẾỀỂỄỆÌÍỈĨỊÒÓỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÙÚỦŨỤƯỨỪỬỮỰỲÝỶỸỴĐ]/.test(storagePath)) {
     const normalized = storagePath.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
     const dl2 = await tryDownload(normalized);
@@ -49,15 +56,19 @@ export async function GET(req: NextRequest) {
     }
   }
   if (dl.error || !dl.data) {
-    return new Response(JSON.stringify({ error: 'Không tìm thấy file .docx gốc' }), {
+    return new Response(JSON.stringify({ error: 'Không tìm thấy file gốc' }), {
       status: 404,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
+  const contentType = isPdf
+    ? 'application/pdf'
+    : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
   return new Response(dl.data, {
     headers: {
-      'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'Content-Type': contentType,
       'Content-Disposition': `attachment; filename="${encodeURIComponent(clean)}"`,
       'Cache-Control': 'public, max-age=3600',
     },
