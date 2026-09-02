@@ -118,7 +118,8 @@ async function ocrImage(file: File): Promise<string> {
   const buf = Buffer.from(await file.arrayBuffer());
   const imageBase64 = buf.toString('base64');
 
-  const model = (process.env.LLM_MODEL || 'gemini-2.0-flash').replace(/^gemini\//, '');
+  // Lấy model đầu tiên từ danh sách (LLM_MODEL có thể phân tách phẩy)
+  const model = (process.env.LLM_MODEL || 'gemini-2.0-flash').split(',')[0].trim().replace(/^gemini\//, '');
   const url = `${GEMINI_VISION_BASE}/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
   // Retry 3 lần cho lỗi transient (429/503/timeout)
@@ -185,7 +186,8 @@ async function ocrPdf(file: File): Promise<string> {
   const buf = Buffer.from(await file.arrayBuffer());
   const pdfBase64 = buf.toString('base64');
 
-  const model = (process.env.LLM_MODEL || 'gemini-2.0-flash').replace(/^gemini\//, '');
+  // Lấy model đầu tiên từ danh sách (LLM_MODEL có thể phân tách phẩy)
+  const model = (process.env.LLM_MODEL || 'gemini-2.0-flash').split(',')[0].trim().replace(/^gemini\//, '');
   const url = `${GEMINI_VISION_BASE}/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
   let lastErr: unknown;
