@@ -175,7 +175,7 @@ const MAX_PDF_OCR_SIZE = 4 * 1024 * 1024; // 4 MB (giới hạn route upload)
  * Dùng chung LLM_API_KEY (AIza...) — không cần key riêng.
  * Trigger: pdf-parse trả rỗng hoặc <50 chars/trang (PDF scan/ảnh).
  */
-async function ocrPdf(file: File): Promise<string> {
+export async function ocrPdf(file: File): Promise<string> {
   const apiKey = process.env.LLM_API_KEY || '';
   if (!apiKey) throw new Error('Missing LLM_API_KEY — cần cấu hình để OCR PDF scan');
 

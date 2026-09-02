@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
 import { isAdminGoogle } from '@/lib/adminAuth';
 import { chunkByHeading, chunkPlainText, parseFrontmatter } from '@/lib/chunker';
-import { ALLOWED_EXTENSIONS, IMAGE_MIME, extractHtml, extractText, sanitizeTitle } from '@/lib/parseFile';
+import { ALLOWED_EXTENSIONS, IMAGE_MIME, extractHtml, extractText, ocrPdf, sanitizeTitle } from '@/lib/parseFile';
 import { invalidateStructuredCache } from '@/lib/structured';
 import { invalidateComplianceCache } from '@/lib/compliance';
 import { invalidateKnowledgeCache } from '@/lib/knowledgeCache';
@@ -189,13 +189,22 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
         const pdfParse = (await import('pdf-parse/lib/pdf-parse.js')).default;
         const buf = Buffer.from(await file.arrayBuffer());
         const parsed = await pdfParse(buf);
-        text = parsed.text || '';
-      } catch {
-        // pdf-parse fail → OCR fallback
+        const numpages = parsed.numpages || 1;
+        const charsPerPage = (parsed.text || '').length / numpages;
+        if (parsed.text.trim() && charsPerPage >= 50) {
+          text = parsed.text;
+        }
+      } catch (e) {
+        console.warn(`[syncLib] pdf-parse fail: ${e instanceof Error ? e.message : e}`);
+      }
+
+      // PDF scan hoặc pdf-parse fail → OCR trực tiếp
+      if (!text.trim()) {
         try {
-          const ocrResult = await extractText(file);
-          text = ocrResult.body || '';
-        } catch { /* bỏ qua */ }
+          text = await ocrPdf(file);
+        } catch (e) {
+          console.warn(`[syncLib] OCR fail: ${e instanceof Error ? e.message : e}`);
+        }
       }
 
       if (text.trim()) {
