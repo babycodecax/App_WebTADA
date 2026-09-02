@@ -56,11 +56,28 @@ export async function extractText(file: File): Promise<ExtractedFile> {
   }
 
   if (ext === '.pdf') {
-    // Workaround bug pdf-parse 1.1.1: import trực tiếp lib thay vì index (tránh lỗi debug-path)
-    const pdfParse = (await import('pdf-parse/lib/pdf-parse.js')).default;
     const buf = Buffer.from(await file.arrayBuffer());
-    const parsed = await pdfParse(buf);
-    return { title: fallbackTitle, body: parsed.text || '', isMarkdown: false };
+    let body = '';
+
+    try {
+      // Workaround bug pdf-parse 1.1.1: import trực tiếp lib thay vì index (tránh lỗi debug-path)
+      const pdfParse = (await import('pdf-parse/lib/pdf-parse.js')).default;
+      const parsed = await pdfParse(buf);
+      const numpages = parsed.numpages || 1;
+      const charsPerPage = (parsed.text || '').length / numpages;
+
+      // Detect PDF scan: text rỗng hoặc <50 chars/trang → fallback OCR
+      if (parsed.text.trim() && charsPerPage >= 50) {
+        return { title: fallbackTitle, body: parsed.text, isMarkdown: false };
+      }
+      console.log(`[parseFile] PDF scan (${numpages} trang, ${Math.round(charsPerPage)} chars/trang) → OCR Gemini Vision`);
+    } catch (e) {
+      // pdf-parse fail (PDF corrupt/scan) → fallback OCR
+      console.log(`[parseFile] pdf-parse error: ${e instanceof Error ? e.message : e} → OCR Gemini Vision`);
+    }
+
+    body = await ocrPdf(file);
+    return { title: fallbackTitle, body, isMarkdown: false };
   }
 
   // Ảnh (PNG/JPG/JPEG/GIF/WEBP) → OCR qua Gemini Vision
@@ -77,6 +94,7 @@ export async function extractText(file: File): Promise<ExtractedFile> {
 // ─── OCR: Gemini Vision API ───
 const GEMINI_VISION_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 const OCR_PROMPT = 'Trích xuất toàn bộ văn bản trong ảnh này. Giữ nguyên cấu trúc, dòng, và định dạng. Nếu không có văn bản nào, trả về "Không tìm thấy văn bản".';
+const OCR_PDF_PROMPT = 'Trích xuất toàn bộ văn bản từ PDF này. Đọc tất cả các trang, giữ nguyên cấu trúc, heading, dòng, và định dạng. Nếu PDF rỗng hoặc không có văn bản, trả về "Không tìm thấy nội dung".';
 
 /**
  * OCR file ảnh (PNG/JPG/JPEG/GIF/WEBP) qua Gemini Vision API.
@@ -100,7 +118,8 @@ async function ocrImage(file: File): Promise<string> {
   const buf = Buffer.from(await file.arrayBuffer());
   const imageBase64 = buf.toString('base64');
 
-  const url = `${GEMINI_VISION_BASE}/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const model = (process.env.LLM_MODEL || 'gemini-2.0-flash').replace(/^gemini\//, '');
+  const url = `${GEMINI_VISION_BASE}/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
   // Retry 3 lần cho lỗi transient (429/503/timeout)
   let lastErr: unknown;
@@ -135,6 +154,71 @@ async function ocrImage(file: File): Promise<string> {
       const finish = json?.candidates?.[0]?.finishReason;
       console.warn(`[ocr] Gemini Vision trả rỗng, finishReason=${finish || 'unknown'}`);
       lastErr = new Error(`OCR trả về rỗng (finishReason: ${finish || 'unknown'})`);
+    } catch (e) {
+      lastErr = e;
+    }
+    if (attempt < 3) {
+      await new Promise((r) => setTimeout(r, 1000 * attempt));
+    }
+  }
+  throw lastErr;
+}
+
+// ─── OCR PDF scan: Gemini Vision API (hỗ trợ PDF trực tiếp) ───
+
+const MAX_PDF_OCR_SIZE = 4 * 1024 * 1024; // 4 MB (giới hạn route upload)
+
+/**
+ * OCR PDF scan qua Gemini Vision API — gửi trực tiếp PDF buffer (application/pdf).
+ * Gemini 2.0 Flash hỗ trợ PDF đến 50MB / 1000 trang.
+ * Dùng chung LLM_API_KEY (AIza...) — không cần key riêng.
+ * Trigger: pdf-parse trả rỗng hoặc <50 chars/trang (PDF scan/ảnh).
+ */
+async function ocrPdf(file: File): Promise<string> {
+  const apiKey = process.env.LLM_API_KEY || '';
+  if (!apiKey) throw new Error('Missing LLM_API_KEY — cần cấu hình để OCR PDF scan');
+
+  if (file.size > MAX_PDF_OCR_SIZE) {
+    throw new Error(`PDF quá lớn (${(file.size / 1024 / 1024).toFixed(1)} MB). Tối đa 4 MB cho OCR.`);
+  }
+
+  const buf = Buffer.from(await file.arrayBuffer());
+  const pdfBase64 = buf.toString('base64');
+
+  const model = (process.env.LLM_MODEL || 'gemini-2.0-flash').replace(/^gemini\//, '');
+  const url = `${GEMINI_VISION_BASE}/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+  let lastErr: unknown;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { text: OCR_PDF_PROMPT },
+              { inlineData: { mimeType: 'application/pdf', data: pdfBase64 } },
+            ],
+          }],
+          generationConfig: { maxOutputTokens: 16384, temperature: 0.1 },
+        }),
+      });
+
+      if (!res.ok) {
+        const body = await res.text();
+        throw new Error(`Gemini Vision PDF OCR ${res.status}: ${body.slice(0, 200)}`);
+      }
+
+      const json = await res.json() as {
+        candidates?: { content?: { parts?: { text?: string }[] }; finishReason?: string }[];
+      };
+      const text = json?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      if (text.trim()) return text.trim();
+
+      const finish = json?.candidates?.[0]?.finishReason;
+      console.warn(`[ocr-pdf] Gemini Vision trả rỗng, finishReason=${finish || 'unknown'}`);
+      lastErr = new Error(`PDF OCR trả về rỗng (finishReason: ${finish || 'unknown'})`);
     } catch (e) {
       lastErr = e;
     }

@@ -104,14 +104,15 @@ test('parseModelList: undefined / chuỗi rỗng -> default', () => {
   assert.deepEqual(parseModelList(' , '), [DEFAULT_MODEL]);
 });
 
-// --- 2. getModelProvider (auto-detect từ key prefix) ---
-test('getModelProvider: key AIza... -> gemini', () => {
-  assert.equal(getModelProvider('AIzaSyD...anything'), 'gemini');
+// --- 2. getModelProvider (auto-detect từ model name) ---
+test('getModelProvider: model gemini/... -> gemini', () => {
+  assert.equal(getModelProvider('gemini/gemma-4-31b-it'), 'gemini');
+  assert.equal(getModelProvider('gemini/gemini-3.7-flash'), 'gemini');
 });
 
-test('getModelProvider: key không phải AIza -> llm', () => {
-  assert.equal(getModelProvider('sk-abc123'), 'llm');
-  assert.equal(getModelProvider('or-key-123'), 'llm');
+test('getModelProvider: model không có prefix gemini/ -> llm', () => {
+  assert.equal(getModelProvider('deepseek-v4-flash'), 'llm');
+  assert.equal(getModelProvider('openrouter/free'), 'llm');
   assert.equal(getModelProvider(''), 'llm');
 });
 
@@ -132,9 +133,9 @@ function withEnv(env: Record<string, string>, fn: () => void) {
   }
 }
 
-test('getClientForModel: key AIza -> Gemini baseURL + LLM_API_KEY', () => {
+test('getClientForModel: model gemini/ -> Gemini baseURL + LLM_API_KEY', () => {
   withEnv({ LLM_API_KEY: 'AIzaSyD...test', LLM_API_BASE_URL: 'https://x.example/v1' }, () => {
-    const client = getClientForModel('any-model');
+    const client = getClientForModel('gemini/gemma-4-31b-it');
     assert.equal(client.apiKey, 'AIzaSyD...test');
     assert.equal(client.baseURL, 'https://generativelanguage.googleapis.com/v1beta/openai/');
   });
@@ -155,9 +156,9 @@ test('getClientForModel: thiếu LLM_API_KEY -> throw', () => {
   });
 });
 
-test('getClientForModel: LLM_API_KEY AIza + LLM_API_BASE_URL custom -> dùng Gemini base', () => {
+test('getClientForModel: model gemini/ + LLM_API_BASE_URL custom -> dùng Gemini base', () => {
   withEnv({ LLM_API_KEY: 'AIzaSyCustom', LLM_API_BASE_URL: 'https://my-proxy.example/v1' }, () => {
-    const client = getClientForModel('gemini-2.0-flash');
+    const client = getClientForModel('gemini/gemini-3.7-flash');
     assert.equal(client.apiKey, 'AIzaSyCustom');
     // Gemini base URL luôn dùng generativelanguage
     assert.equal(client.baseURL, 'https://generativelanguage.googleapis.com/v1beta/openai/');
@@ -268,12 +269,12 @@ test('getModelList: ưu tiên LLM_MODEL -> CHAT_MODEL -> default', () => {
   });
 });
 
-// --- 7. Mới test: kiểm tra không còn đọc GEMINI_API_KEY ---
+// --- 7. Test: kiểm tra không còn đọc GEMINI_API_KEY ---
 test('getClientForModel: không còn sử dụng GEMINI_API_KEY', () => {
   // Nếu code vẫn đọc GEMINI_API_KEY thì với LLM_API_KEY rỗng sẽ không throw
   withEnv({ GEMINI_API_KEY: 'should-not-be-used', LLM_API_KEY: 'AIzaSyTest' }, () => {
-    // LLM_API_KEY có giá trị AIza -> provider gemini, dùng LLM_API_KEY
-    const client = getClientForModel('gemini-2.0-flash');
+    // model gemini/ -> provider gemini, dùng LLM_API_KEY
+    const client = getClientForModel('gemini/gemini-3.7-flash');
     assert.equal(client.apiKey, 'AIzaSyTest');
   });
   // Nếu chỉ có GEMINI_API_KEY nhưng không có LLM_API_KEY -> throw
@@ -283,8 +284,8 @@ test('getClientForModel: không còn sử dụng GEMINI_API_KEY', () => {
   });
 });
 
-// --- 8. Bổ sung test cases mới (bước 4) ---
-test('getModelProvider: key rỗng trả về llm', () => {
+// --- 8. Bổ sung test cases mới ---
+test('getModelProvider: model rỗng trả về llm', () => {
   assert.equal(getModelProvider(''), 'llm');
 });
 
@@ -294,18 +295,18 @@ test('getClientForModel: LLM_API_KEY rỗng -> throw Missing LLM_API_KEY', () =>
   });
 });
 
-test('getModelProvider: key "AIza" đầy đủ nhưng ngắn -> gemini', () => {
-  assert.equal(getModelProvider('AIza'), 'gemini');
+test('getModelProvider: model "gemini/x" -> gemini', () => {
+  assert.equal(getModelProvider('gemini/x'), 'gemini');
 });
 
-test('getModelProvider: key "AIZA" hoa -> llm (case-sensitive)', () => {
-  assert.equal(getModelProvider('AIZA'), 'llm');
+test('getModelProvider: "Gemini/X" hoa -> llm (case-sensitive)', () => {
+  assert.equal(getModelProvider('Gemini/X'), 'llm');
 });
 
-test('getClientForModel: LLM_API_KEY AIza mà không có LLM_API_BASE_URL -> dùng Gemini base', () => {
+test('getClientForModel: model gemini/ mà không có LLM_API_BASE_URL -> dùng Gemini base', () => {
   withEnv({ LLM_API_KEY: 'AIzaSyNoBase' }, () => {
     delete process.env.LLM_API_BASE_URL;
-    const client = getClientForModel('gemini-2.0-flash');
+    const client = getClientForModel('gemini/gemini-3.7-flash');
     assert.equal(client.baseURL, 'https://generativelanguage.googleapis.com/v1beta/openai/');
   });
 });

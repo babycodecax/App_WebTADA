@@ -221,3 +221,44 @@ test('sanitizeTitle: giới hạn 100 ký tự', () => {
 test('sanitizeTitle: rỗng → untitled', () => {
   assert.equal(sanitizeTitle(''), 'untitled');
 });
+
+// ─── 10. PDF scan OCR (fallback qua Gemini Vision) ───
+
+/** Tạo file PDF giả — pdf-parse sẽ throw InvalidPDFException → trigger OCR fallback */
+function makeFakePdf(name: string): File {
+  const data = new TextEncoder().encode('%PDF-1.4\nfake content');
+  return new File([data], name, { type: 'application/pdf' });
+}
+
+test('PDF invalid/scan: pdf-parse fail → fallback OCR', async () => {
+  const restore = mockFetchSuccess('Nội dung OCR từ PDF scan');
+  try {
+    const result = await extractText(makeFakePdf('scan.pdf'));
+    assert.equal(result.body, 'Nội dung OCR từ PDF scan');
+    assert.equal(result.isMarkdown, false);
+    assert.equal(result.title, 'scan');
+  } finally { restore(); }
+});
+
+test('PDF scan OCR: thiếu LLM_API_KEY → throw', async () => {
+  const saved = process.env.LLM_API_KEY;
+  delete process.env.LLM_API_KEY;
+  try {
+    await assert.rejects(
+      () => extractText(makeFakePdf('nokey.pdf')),
+      (err: Error) => {
+        assert.ok(err.message.includes('Missing LLM_API_KEY'));
+        return true;
+      }
+    );
+  } finally {
+    if (saved) process.env.LLM_API_KEY = saved;
+  }
+});
+
+test('PDF scan OCR: Gemini trả rỗng → throw', async () => {
+  const restore = mockFetchSuccess('');
+  try {
+    await assert.rejects(() => extractText(makeFakePdf('empty.pdf')));
+  } finally { restore(); }
+});

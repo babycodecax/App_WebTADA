@@ -10,7 +10,7 @@ import {
 
 /**
  * getClient() — client cho MODEL CHÍNH (model đầu của danh sách LLM_MODEL).
- * Provider auto-detect từ prefix LLM_API_KEY: 'AIza...' → Gemini API; khác → OpenAI-compat.
+ * Provider auto-detect từ prefix model: 'gemini/...' → Gemini API; khác → OpenAI-compat.
  */
 export function getClient(): OpenAI {
   return getClientForModel(getModelList()[0]);
@@ -63,10 +63,9 @@ export async function* streamChat(
   ];
 
   const models = getModelList();
-  const apiKey = process.env.LLM_API_KEY || '';
   const userMessageText = userMessage;
   yield* streamWithModelFallback(models, async (model) => {
-    if (getModelProvider(apiKey) === 'gemini') {
+    if (getModelProvider(model) === 'gemini') {
       return streamGemini(model, {
         system,
         user: userMessageText,

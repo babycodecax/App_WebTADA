@@ -124,24 +124,24 @@ export function getModelList(): string[] {
 }
 
 /**
- * Xác định provider từ prefix của API key.
- * Key bắt đầu bằng 'AIza' → Gemini API, còn lại → OpenAI-compatible (LLM).
- * Không còn phụ thuộc vào prefix model name.
+ * Xác định provider từ model name.
+ * Model có prefix 'gemini/' → Gemini API (REST gốc, hỗ trợ Vision/PDF).
+ * Model khác → OpenAI-compatible (OpenRouter/...).
  */
-export function getModelProvider(apiKey: string): 'gemini' | 'llm' {
-  return apiKey.startsWith('AIza') ? 'gemini' : 'llm';
+export function getModelProvider(model: string): 'gemini' | 'llm' {
+  return model.startsWith('gemini/') ? 'gemini' : 'llm';
 }
 
 /**
  * Dựng OpenAI client dùng chung LLM_API_KEY cho mọi provider.
- * Auto-detect: key 'AIza...' → Gemini-compatible endpoint, khác → LLM_BASE_URL.
+ * Auto-detect từ model name: 'gemini/...' → Gemini-compatible endpoint, khác → LLM_BASE_URL.
  * Thiếu key → throw rõ ràng.
  */
-export function getClientForModel(_model: string): OpenAI {
+export function getClientForModel(model: string): OpenAI {
   const apiKey = process.env.LLM_API_KEY || '';
   if (!apiKey) throw new Error('Missing LLM_API_KEY');
 
-  if (getModelProvider(apiKey) === 'gemini') {
+  if (getModelProvider(model) === 'gemini') {
     // Gemini REST endpoint qua OpenAI-compatible wrapper
     return new OpenAI({ apiKey, baseURL: `${GEMINI_API_BASE}/openai/`, timeout: 60000, maxRetries: 5 });
   }
