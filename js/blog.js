@@ -5,7 +5,7 @@
   var API = window.LOCAL_API ? window.LOCAL_API : '';  // '' = same-origin proxy
 
   // Domain gốc — dùng cho canonical/structured data (SEO)
-  var SITE_ROOT = 'https://api-nu-drab.vercel.app';
+  var SITE_ROOT = 'https://ketoanthuetada.com';
 
   /** URL bài viết theo slug — chuẩn clean path /blog/:slug (SEO) */
   function postUrl(slug) {
@@ -182,7 +182,7 @@
         document.title = post.title + ' — TADA';
         updateDetailSeo(post);
 
-        // B�i vi?t li�n quan
+        // Bài viết liên quan
         fetch(API + '/api/blog?limit=999')
           .then(function (r) { return r.json(); })
           .then(function (allPosts) {
@@ -260,7 +260,7 @@
 
   function injectBlogPostingSchema(post, url, author) {
     try {
-      var base = 'https://api-nu-drab.vercel.app';
+      var base = 'https://ketoanthuetada.com';
       // Xoá schema BlogPosting cũ nếu có (tránh trùng khi đổi bài)
       document.querySelectorAll('script[type="application/ld+json"][data-seo="blogposting"]')
         .forEach(function (s) { s.remove(); });
