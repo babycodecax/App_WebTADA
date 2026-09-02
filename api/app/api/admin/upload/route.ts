@@ -184,27 +184,30 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
     if (ext === 'docx') {
       html = await extractHtml(file);
     } else if (ext === 'pdf') {
+      let text = '';
       try {
         const pdfParse = (await import('pdf-parse/lib/pdf-parse.js')).default;
         const buf = Buffer.from(await file.arrayBuffer());
         const parsed = await pdfParse(buf);
-        if (parsed.text.trim()) {
-          html = parsed.text
-            .split(/\n\s*\n/)
-            .map((p: string) => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`)
-            .join('\n');
-        }
+        text = parsed.text || '';
       } catch {
-        const apiKey = process.env.LLM_API_KEY || '';
-        if (apiKey) {
-          const ocrText = await extractText(file);
-          if (ocrText.body.trim()) {
-            html = ocrText.body
-              .split(/\n\s*\n/)
-              .map((p: string) => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`)
-              .join('\n');
-          }
-        }
+        // pdf-parse fail → OCR fallback
+        try {
+          const ocrResult = await extractText(file);
+          text = ocrResult.body || '';
+        } catch { /* bỏ qua */ }
+      }
+
+      if (text.trim()) {
+        // Wrap trong HTML cơ bản: title từ tên file + nội dung paragraphs
+        const titleText = name.replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ');
+        const paragraphs = text
+          .split(/\n\s*\n/)
+          .filter((p: string) => p.trim())
+          .map((p: string) => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`)
+          .join('\n');
+        // Dùng <strong> cho dòng đầu (title) để extractLegalTitleFromHtml match
+        html = `<p><strong>${titleText}</strong></p>\n${paragraphs}`;
       }
     }
 
@@ -214,9 +217,10 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
     }
 
     const meta = extractLegalTitleFromHtml(html, file.name);
+    const fallbackTitle = name.replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ');
     const row = buildLegalDocRow({
       html,
-      title: meta.title || file.name.replace(/\.[^.]+$/, ''),
+      title: meta.title || fallbackTitle,
       doc_type: meta.doc_type,
       doc_number: meta.doc_number,
       fileName: file.name,
@@ -224,7 +228,7 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
     });
     console.log(`[syncLib] ${name}: title="${row.title}" type="${row.doc_type}" html=${row.file_html.length} chars`);
     const result = await upsertLegalDoc(getSupabase(), row);
-    console.log(`[syncLib] ${name}: upsert result ok=${result.ok} error=${result.error || 'none'}`);
+    console.log(`[syncLib] ${name}: upsert ok=${result.ok}${result.error ? ' err=' + result.error : ''}`);
   } catch (e) {
     console.error(`[syncLib] ${file.name}: error`, e);
   }
