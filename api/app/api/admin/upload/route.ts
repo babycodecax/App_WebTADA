@@ -235,13 +235,16 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
         else if (/HƯỚNG\s*DẪN|Hướng\s*dẫn/.test(head300)) detectedType = 'HƯỚNG DẪN';
         else if (/LUẬT\b|Luật\b/.test(head300)) detectedType = 'LUẬT';
 
-        // Lấy title: skip tiền tố CNXHCNVN/Độc lập/Số VB, lấy dòng "Về..." hoặc nội dung chính
+        // Lấy title: skip ~5 dòng đầu boilerplate, tìm dòng nội dung thực
         const lines = text.split('\n').map((l: string) => l.trim()).filter(Boolean);
-        const TITLE_SKIP = /^(CỘNG HÒA|Độc lập|SOCIALIST|REPUBLIC|Số[\s:]|Ngày[\s:]|\d{1,2}\s*\/\s*\d{4}|NGHỊ\s*QUYẾT|THÔNG\s*TƯ|NGHỊ\s*ĐỊNH|QUYẾT\s*ĐỊNH|CÔNG\s*VĂN|HƯỚNG\s*DẪN|LUẬT\b)/i;
-        // Ưu tiên dòng chứa "Về..." hoặc "Quy định..." (tên nội dung VB)
-        const titleLine = lines.find((l: string) => /^(Về|Quy định|Quy chế|Hướng dẫn|Kèm theo)/i.test(l))
-          || lines.find((l: string) => l.length > 10 && !TITLE_SKIP.test(l))
-          || lines[0]
+        const BOILERPLATE = /^(CỘNG HÒA|Độc lập|SOCIALIST|REPUBLIC|Số[\s:]|Ngày[\s:]|\d{1,2}\s*\/\s*\d{4}|NGHỊ\s*QUYẾT|THÔNG\s*TƯ|NGHỊ\s*ĐỊNH|QUYẾT\s*ĐỊNH|CÔNG\s*VĂN|HƯỚNG\s*DẪN|LUẬT\b|ĐIỀU\b|Chương\b|điều\s)/i;
+        // Bỏ 5 dòng đầu (luôn là CNXHCNVN/Độc lập/Số/loại VB/ngày)
+        const bodyLines = lines.slice(5);
+        // Ưu tiên: dòng "Về/Quy định/Quy chế" → dòng > 15 chars đầu tiên → filename
+        const titleLine = bodyLines.find((l: string) => /^(Về|Quy định|Quy chế|Hướng dẫn|Kèm theo)/i.test(l))
+          || bodyLines.find((l: string) => l.length > 15 && !BOILERPLATE.test(l))
+          || bodyLines[0]
+          || lines[lines.length - 1] // dernier meaningful line (thường tên VB ở cuối header)
           || name.replace(/\.[^.]+$/, '');
         const titleText = titleLine.replace(/\n/g, ' ').slice(0, 200);
 
