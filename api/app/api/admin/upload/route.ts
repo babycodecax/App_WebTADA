@@ -208,15 +208,25 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
       }
 
       if (text.trim()) {
-        // Wrap trong HTML cơ bản: title từ tên file + nội dung paragraphs
-        const titleText = name.replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ');
+        // Detect doc_type + title từ nội dung PDF (500 chars đầu)
+        const head = text.slice(0, 500).toUpperCase();
+        let detectedType = 'VĂN BẢN';
+        if (/NGHỊ\s*QUYẾT|Nghị\s*quyết/.test(text.slice(0, 300))) detectedType = 'NGHỊ QUYẾT';
+        else if (/THÔNG\s*TƯ|Thông\s*tư/.test(text.slice(0, 300))) detectedType = 'THÔNG TƯ';
+        else if (/NGHỊ\s*ĐỊNH|Nghị\s*định/.test(text.slice(0, 300))) detectedType = 'NGHỊ ĐỊNH';
+        else if (/LUẬT\b|Luật\b/.test(text.slice(0, 300))) detectedType = 'LUẬT';
+
+        // Lấy title từ dòng đầu tiên của nội dung (thường là tên văn bản)
+        const firstLine = text.split('\n').find((l: string) => l.trim().length > 10) || name.replace(/\.[^.]+$/, '');
+        const titleText = firstLine.trim().replace(/\n/g, ' ');
+
         const paragraphs = text
           .split(/\n\s*\n/)
           .filter((p: string) => p.trim())
           .map((p: string) => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`)
           .join('\n');
-        // Dùng <strong> cho dòng đầu (title) để extractLegalTitleFromHtml match
-        html = `<p><strong>${titleText}</strong></p>\n${paragraphs}`;
+        // Dùng <strong> cho detectedType để STANDALONE_TYPE_RE match
+        html = `<p><strong>${detectedType}</strong></p>\n<p><strong>${titleText}</strong></p>\n${paragraphs}`;
       }
     }
 
