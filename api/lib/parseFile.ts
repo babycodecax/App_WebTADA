@@ -76,7 +76,7 @@ export async function extractText(file: File): Promise<ExtractedFile> {
 
 // ─── OCR: Gemini Vision API ───
 const GEMINI_VISION_BASE = 'https://generativelanguage.googleapis.com/v1beta';
-const OCR_PROMPT = 'Trích xuất toàn bộ văn bản trong ảnh này. Giữ nguyên cấu trúc, dòng, và định dạng. Nếu không có văn bản nào, trả về "Không tìm thấy văn bản".";
+const OCR_PROMPT = 'Trích xuất toàn bộ văn bản trong ảnh này. Giữ nguyên cấu trúc, dòng, và định dạng. Nếu không có văn bản nào, trả về "Không tìm thấy văn bản".';
 
 /**
  * OCR file ảnh (PNG/JPG/JPEG/GIF/WEBP) qua Gemini Vision API.
