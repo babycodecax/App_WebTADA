@@ -56,10 +56,11 @@ type LegalDocType = (typeof LEGAL_DOC_TYPES)[number] | 'other';
  *  Dùng includes() — tên file thường có hậu tố '_665870' (dấu gạch dưới là word
  *  char, \b trước nó luôn fail). */
 export function extractDocTypeFromFileName(fileName: string): LegalDocType {
-  const up = (fileName || '').replace(/\.docx$/i, '').toUpperCase();
+  const up = (fileName || '').replace(/\.[^.]+$/i, '').toUpperCase().replace(/[-_]/g, '');
   if (up.includes('VBHN')) return 'vbhn';
-  if (up.includes('ND-CP')) return 'nd';
-  if (up.includes('TT-BTC')) return 'tt';
+  if (up.includes('NGHIDINH') || up.includes('NDCP') || up.includes('NDCP')) return 'nd';
+  if (up.includes('THONGTU') || up.includes('TTBTC') || up.includes('TT')) return 'tt';
+  if (up.includes('NGHIQUYET') || up.includes('NQ')) return 'nq';
   if (/(?:^|_)QH1[0-9](?:_|$)/.test(up)) return 'luat';
   return 'other';
 }
