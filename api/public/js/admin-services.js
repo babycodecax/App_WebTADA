@@ -113,7 +113,14 @@
       }
     }, 1500);
     // Khi danh sách admin emails tải xong (/api/config) → check lại
-    if (window.TADAAdminAuth) window.TADAAdminAuth._notify = syncAuth;
+    // Chain callback: không ghi đè mà gọi cả notify cũ
+    if (window.TADAAdminAuth) {
+      var _prevNotify = window.TADAAdminAuth._notify;
+      window.TADAAdminAuth._notify = function () {
+        if (_prevNotify) _prevNotify();
+        syncAuth();
+      };
+    }
 
     document.querySelectorAll('.admin-nav-btn[data-view="services"]').forEach(function (btn) {
       btn.addEventListener('click', function () { setTimeout(function () { if (getToken()) loadContent(); }, 50); });
