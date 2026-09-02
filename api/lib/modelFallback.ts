@@ -6,9 +6,12 @@
  * Model đầu = model chính; các model sau = dự phòng khi model chính lỗi
  * (network / 4xx-5xx / timeout) sau khi đã hết số lần retry hiện có.
  *
- * Provider theo prefix:
- *   - 'gemini/...'  → Gemini API (GEMINI_API_KEY, baseURL generativelanguage)
- *   - khác          → LLM_API_KEY + LLM_API_BASE_URL (mặc định Opencode/OpenRouter)
+ * Provider tự động phát hiện từ prefix của LLM_API_KEY:
+ *   - key bắt đầu bằng 'AIza' → Gemini API (baseURL generativelanguage)
+ *   - khác                     → OpenAI-compatible (LLM_API_BASE_URL, mặc định Opencode/OpenRouter)
+ *
+ * Không phân biệt model name — cùng 1 bộ LLM_API_KEY / LLM_API_BASE_URL / LLM_MODEL
+ * chạy được cho cả chat streaming và OCR.
  *
  * Module thuần: không import Supabase; env đọc lazily trong từng hàm để tránh
  * env bị freeze ở build-time trên Vercel. Khi list chỉ có 1 model → hành vi
@@ -46,8 +49,8 @@ export async function* streamGemini(
   rawModel: string,
   req: ChatRequest
 ): AsyncGenerator<StreamDelta> {
-  const apiKey = process.env.GEMINI_API_KEY || '';
-  if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
+  const apiKey = process.env.LLM_API_KEY || '';
+  if (!apiKey) throw new Error('Missing LLM_API_KEY');
   const model = rawModel.replace(/^gemini\//, ''); // bỏ prefix trước khi gửi
   const url = `${GEMINI_API_BASE}/models/${encodeURIComponent(model)}:streamGenerateContent?alt=sse&key=${encodeURIComponent(apiKey)}`;
 
@@ -120,25 +123,28 @@ export function getModelList(): string[] {
   return parseModelList(process.env.LLM_MODEL || process.env.CHAT_MODEL || DEFAULT_MODEL);
 }
 
-/** Xác định provider cho model: prefix 'gemini/' → 'gemini', còn lại → 'llm'. */
-export function getModelProvider(model: string): 'gemini' | 'llm' {
-  return model.startsWith('gemini/') ? 'gemini' : 'llm';
+/**
+ * Xác định provider từ prefix của API key.
+ * Key bắt đầu bằng 'AIza' → Gemini API, còn lại → OpenAI-compatible (LLM).
+ * Không còn phụ thuộc vào prefix model name.
+ */
+export function getModelProvider(apiKey: string): 'gemini' | 'llm' {
+  return apiKey.startsWith('AIza') ? 'gemini' : 'llm';
 }
 
 /**
- * Dựng OpenAI client cho model không-phải-Gemini. Model có prefix 'gemini/'
- * KHÔNG dùng OpenAI client — đi qua streamGemini() (REST gốc của Gemini).
+ * Dựng OpenAI client dùng chung LLM_API_KEY cho mọi provider.
+ * Auto-detect: key 'AIza...' → Gemini-compatible endpoint, khác → LLM_BASE_URL.
  * Thiếu key → throw rõ ràng.
  */
-export function getClientForModel(model: string): OpenAI {
-  if (getModelProvider(model) === 'gemini') {
-    const apiKey = process.env.GEMINI_API_KEY || '';
-    if (!apiKey) throw new Error('Missing GEMINI_API_KEY');
-    // Base URL Gemini chỉ dùng cho streamGemini() — không tạo OpenAI client ở đây
-    return new OpenAI({ apiKey, baseURL: `${GEMINI_API_BASE}/openai/`, timeout: 60000, maxRetries: 5 });
-  }
+export function getClientForModel(_model: string): OpenAI {
   const apiKey = process.env.LLM_API_KEY || '';
   if (!apiKey) throw new Error('Missing LLM_API_KEY');
+
+  if (getModelProvider(apiKey) === 'gemini') {
+    // Gemini REST endpoint qua OpenAI-compatible wrapper
+    return new OpenAI({ apiKey, baseURL: `${GEMINI_API_BASE}/openai/`, timeout: 60000, maxRetries: 5 });
+  }
   const baseURL = (process.env.LLM_API_BASE_URL || DEFAULT_LLM_BASE_URL).replace(/\/+$/, '');
   return new OpenAI({ apiKey, baseURL, timeout: 60000, maxRetries: 5 });
 }
