@@ -182,23 +182,19 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
     let html = '';
 
     if (ext === 'docx') {
-      // .docx → mammoth convertToHtml — giữ bảng biểu
       html = await extractHtml(file);
     } else if (ext === 'pdf') {
-      // .pdf → pdf-parse text → HTML đơn giản
       try {
         const pdfParse = (await import('pdf-parse/lib/pdf-parse.js')).default;
         const buf = Buffer.from(await file.arrayBuffer());
         const parsed = await pdfParse(buf);
         if (parsed.text.trim()) {
-          // Chuyển text → HTML: mỗi đoạn thành <p>
           html = parsed.text
             .split(/\n\s*\n/)
             .map((p: string) => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`)
             .join('\n');
         }
       } catch {
-        // pdf-parse fail → thử OCR nếu có key
         const apiKey = process.env.LLM_API_KEY || '';
         if (apiKey) {
           const ocrText = await extractText(file);
@@ -212,20 +208,25 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
       }
     }
 
-    if (!html.trim()) return;
+    if (!html.trim()) {
+      console.warn(`[syncLib] ${name}: html rỗng — bỏ qua`);
+      return;
+    }
 
     const meta = extractLegalTitleFromHtml(html, file.name);
     const row = buildLegalDocRow({
       html,
-      title: meta.title,
+      title: meta.title || file.name.replace(/\.[^.]+$/, ''),
       doc_type: meta.doc_type,
       doc_number: meta.doc_number,
       fileName: file.name,
       fileUrl: '',
     });
-    await upsertLegalDoc(getSupabase(), row);
+    console.log(`[syncLib] ${name}: title="${row.title}" type="${row.doc_type}" html=${row.file_html.length} chars`);
+    const result = await upsertLegalDoc(getSupabase(), row);
+    console.log(`[syncLib] ${name}: upsert result ok=${result.ok} error=${result.error || 'none'}`);
   } catch (e) {
-    // Best-effort — không để lỗi này chặn upload nguồn chính
+    console.error(`[syncLib] ${file.name}: error`, e);
   }
 }
 
