@@ -84,6 +84,21 @@ export async function GET(
           `<title>${title} — TADA</title>`
         );
 
+        // 3b) Thay thế default canonical/og:url/og:type từ template
+        //     (tránh 2 bộ meta trùng nhau → Google confusion)
+        html = html.replace(
+          /<link rel="canonical" href="[^"]*">/i,
+          `<link rel="canonical" href="${canonical}">`
+        );
+        html = html.replace(
+          /<meta property="og:url" content="[^"]*">/i,
+          `<meta property="og:url" content="${canonical}">`
+        );
+        html = html.replace(
+          /<meta property="og:type" content="[^"]*">/i,
+          `<meta property="og:type" content="article">`
+        );
+
         // 4) Inject meta SEO tags ngay sau <title>
         const seoMeta = [
           `<meta name="description" content="${desc}">`,
