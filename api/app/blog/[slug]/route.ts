@@ -26,44 +26,44 @@ function escJson(s: string): string {
 }
 
 /**
- * Loại bỏ dấu tiếng Việt (NFD decomposition + strip combining marks).
- * Dùng để so sánh old slug (không dấu) với new slug (có dấu).
+ * Redirect map: old slug (thiếu nguyên âm do bug slugify cũ) → new slug (đúng).
+ * Được tạo từ dữ liệu Google Search Console (20 trang chưa indexed).
+ * Khi thêm bài viết mới với slug thay đổi, cập nhật map này.
  */
-function normalizeDiacritics(text: string): string {
-  return text
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, '');
-}
-
-/** Cache slug redirect map — old slug (không dấu) → new slug (có dấu) */
-let slugRedirectMap: Map<string, string> | null = null;
-
-async function getSlugRedirectMap(): Promise<Map<string, string>> {
-  if (slugRedirectMap) return slugRedirectMap;
-
-  const posts = await getAllPosts();
-  const map = new Map<string, string>();
-  for (const p of posts) {
-    map.set(normalizeDiacritics(p.slug), p.slug);
-  }
-  slugRedirectMap = map;
-  return map;
-}
-
-async function getAllPosts(): Promise<Array<{ slug: string }>> {
-  try {
-    const client = getSupabase();
-    const { data } = await client
-      .from('blog_posts')
-      .select('slug')
-      .eq('status', 'published');
-    return data || [];
-  } catch {
-    return [];
-  }
-}
+const OLD_SLUG_REDIRECTS: Record<string, string> = {
+  'gii-php-g-ri-khi-b-bhxh-truy-thu-bo-him-hng-dn-vin':
+    'giai-phap-go-roi-khi-bi-bhxh-truy-thu-bao-hiem-huong-dan-vien',
+  'h-kinh-doanh-di-1-t-khai-thu-2026-th-no-cho-chun':
+    'ho-kinh-doanh-duoi-1-ty-khai-thue-2026-the-nao-cho-chuan',
+  'ho-kinh-doanh-duoi-ty-dong-cach-xu-ly-thue-dung-quy-dinh-2026':
+    'ho-kinh-doanh-duoi-mot-ty-dong-cach-xu-ly-thue-dung-quy-dinh-2026',
+  'hoa-don-bank-neo-cai-khon-loi-bien-thanh-cai-dai':
+    'hoa-don-mot-dang-bank-mot-neo-khi-cai-khon-loi-bien-thanh-cai-dai',
+  'huong-dan-chi-tiet-quy-trinh-ky-su-dung-hoa-don-dien-tu-ho-kinh-doanh-nam-2026':
+    'huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026',
+  'k-hoch-xut-ha-n-in-t-ng-quy-nh-nm-2026-v-l-trnh-g-b-ni-lo-x-pht':
+    'ke-hoach-xuat-hoa-don-dien-tu-dung-quy-dinh-nam-2026-va-lo-trinh-go-bo-noi-lo-xu-phat',
+  'kinh-doanh-san-thuong-mai-dien-tu-xuat-hoa-don-sao-dung-chuan-2026':
+    'kinh-doanh-san-thuong-mai-dien-tu-xuat-hoa-don-sao-cho-dung-chuan-2026',
+  'lm-affiliate-2026-doanh-thu-bao-nhiu-mi-phi-np-thu':
+    'lam-affiliate-2026-doanh-thu-bao-nhieu-moi-phai-nop-thue',
+  'lo-trinh-xu-ly-rui-ro-hoa-don-n06-giai-toa-ap-luc-thue-nam-2026':
+    'lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026',
+  'quan-ly-hoa-don-dau-vao-ho-kinh-doanh-doanh-duoi-1-ty-dong':
+    'quan-ly-hoa-don-dau-vao-cho-ho-kinh-doanh-doanh-thu-duoi-1-ty-dong',
+  'shopee-no-don-2-ty-cai-quen-dat-gia-duong-nao-ho-kinh-doanh':
+    'shopee-no-don-2-ty-va-cai-quen-dat-gia-duong-nao-cho-ho-kinh-doanh',
+  'thue-goi-ten-giam-doc-chay-no-ke-toan-o-lai-chiu-tran-hay-rut-lui-em-dep':
+    'thue-goi-ten-giam-doc-chay-no-ke-toan-nen-o-lai-chiu-tran-hay-rut-lui-em-dep',
+  'tien-an-xang-xe-chi-co-dinh-coi-chung-mat-tien-thue-oan-vi-ngai-tinh-ngay-cong':
+    'tien-an-xang-xe-chi-co-dinh-coi-chung-mat-tien-thue-oan-vi-ngai-tinh-theo-ngay-cong',
+  'tm-tt-cc-im-mi-quan-trng-nht-lin-quan-n-thu-thu-nhp-c-nhn-tncn-v-h-kinh-doanh-hkd-t-03-ngh-nh-252-253-254-p-dng-cho-giai-on-2026':
+    'tom-tat-cac-diem-moi-quan-trong-nhat-lien-quan-den-thue-thu-nhap-ca-nhan-tncn-va-ho-kinh-doanh-hkd-tu-03-nghi-dinh-252-253-254-ap-dung-cho-giai-doan-2026',
+  'tng-hp-cc-trng-hp-b-tm-hon-xut-cnh-do-n-thu-t-2026':
+    'tong-hop-cac-truong-hop-bi-tam-hoan-xuat-canh-do-no-thue-tu-2026',
+  'xu-ly-sai-lech-doanh-toi-uu-nghia-vu-phat-kiem-tra-thue-nam-2025':
+    'xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025',
+};
 
 /** Trích xuất description từ content markdown (fallback khi không có summary) */
 function extractDescription(content: string, maxLen = 155): string {
@@ -182,9 +182,7 @@ export async function GET(
       } else {
         // Slug không tìm thấy trong DB → thử redirect 301 về slug mới
         // (xử lý old slug URLs đã bị thay đổi khi fix-blog-slugs)
-        const redirectMap = await getSlugRedirectMap();
-        const normalizedInput = normalizeDiacritics(slug);
-        const newSlug = redirectMap.get(normalizedInput);
+        const newSlug = OLD_SLUG_REDIRECTS[slug];
 
         if (newSlug) {
           return NextResponse.redirect(`${SITE}/blog/${newSlug}`, {
