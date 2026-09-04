@@ -59,9 +59,14 @@ export async function GET(req: NextRequest) {
 }
 
 // ─── Slug helpers ───
+// Giữ dấu tiếng Việt trong slug (SEO tốt hơn, URL đọc được)
 function slugify(text: string): string {
-  return text.toLowerCase().trim()
-    .replace(/[^a-z0-9\s-]/g, '')
+  return text
+    .normalize('NFD')                           // tách dấu: ệ → e + ̣ + ̂
+    .replace(/[̀-ͯ]/g, '')            // xóa dấu diacritics
+    .replace(/đ/g, 'd').replace(/Đ/g, 'D')     // đ → d
+    .toLowerCase().trim()
+    .replace(/[^a-z0-9\s-]/g, '')              // chỉ giữ a-z, 0-9, space, -
     .replace(/[\s-]+/g, '-')
     .replace(/^-+|-+$/g, '');
 }
