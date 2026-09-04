@@ -156,6 +156,11 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  /* Đồng nhất với services-grid + library-mini-grid: giới hạn bề rộng
+     card ở ~760px, căn giữa — 3 section cùng kích thước card */
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
 }
 .blog-mini-card {
   background: #fff;
@@ -172,12 +177,26 @@
   border-color: var(--accent-gold);
   box-shadow: 0 4px 12px rgba(128,0,32,0.05);
 }
-.blog-mini-card h3 {
+/* ==========================================================================
+   TITLE ĐỒNG BỘ 3 SECTION — Bài viết / Dịch vụ / Thư viện
+   Một nơi sửa = cả 3 đổi (font chữ, in đậm, màu, cỡ) — tránh lệch kiểu.
+   ========================================================================== */
+.blog-mini-card h3,
+.services-card-name,
+.library-mini-title {
+  font-family: var(--font-sans);
+  font-weight: 700; /* in đậm */
   font-size: 14px;
   color: var(--primary-burgundy);
   line-height: 1.4;
+}
+.blog-mini-card h3 {
   flex: 1;
   min-width: 0;
+}
+.library-mini-title {
+  margin: 0 0 4px;
+  word-break: break-word;
 }
 .blog-mini-card p {
   display: none;
@@ -190,6 +209,146 @@
 .blog-see-all {
   text-align: center;
   margin-top: 32px;
+}
+
+/* ==========================================================================
+   LIBRARY MINI SECTION (trang chủ) — 2 tab Văn bản luật / Biểu mẫu
+   Style đồng bộ blog-mini-card: card hàng ngang, đóng khung, mobile tối ưu.
+   ========================================================================== */
+.library-mini-section {
+  background: var(--bg-light-alt);
+}
+.library-mini-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.library-mini-tab {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  padding: 9px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-family: var(--font-sans);
+}
+.library-mini-tab:hover {
+  border-color: var(--accent-gold);
+}
+.library-mini-tab.active {
+  background: var(--primary-burgundy);
+  color: #fff;
+  border-color: var(--primary-burgundy);
+}
+.library-mini-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
+}
+.library-mini-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-md);
+  padding: 14px 18px;
+  transition: var(--transition-smooth);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.library-mini-card:hover {
+  border-color: var(--accent-gold);
+  box-shadow: 0 4px 12px rgba(128,0,32,0.05);
+}
+.library-mini-icon {
+  flex-shrink: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  color: var(--primary-burgundy);
+  opacity: 0.7;
+}
+.library-mini-main {
+  flex: 1;
+  min-width: 0;
+}
+.library-mini-title {
+  /* Font + đậm đồng bộ title 3 section — rule chung bên trên */
+  margin: 0 0 4px;
+  word-break: break-word;
+}
+.library-mini-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--text-muted-dark);
+}
+.library-mini-btn {
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid var(--border-dark);
+  color: var(--primary-burgundy);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+.library-mini-btn:hover {
+  background: var(--primary-burgundy);
+  color: #fff;
+}
+.library-mini-dl {
+  font-size: 16px;
+  color: var(--primary-burgundy);
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+.library-mini-dl:hover {
+  color: var(--accent-gold-dark);
+}
+.library-see-all {
+  text-align: center;
+  margin-top: 32px;
+}
+.library-mini-loading {
+  text-align: center;
+  color: var(--text-muted-dark);
+  padding: 20px 0;
+  font-size: 14px;
+}
+
+/* Mobile tối ưu */
+@media (max-width: 600px) {
+  .library-mini-tabs {
+    gap: 8px;
+  }
+  .library-mini-tab {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  .library-mini-card {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .library-mini-title {
+    font-size: 13px;
+  }
+  .library-mini-meta {
+    gap: 8px;
+  }
 }
 
 /* B�i vi?t li�n quan */

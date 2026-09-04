@@ -47,24 +47,24 @@ document.addEventListener('DOMContentLoaded', function () {
     var eff = item.effective_date || item.created_at || '';
     var meta =
       '<span class="library-badge">' + escHtml(badge) + '</span>' +
-      (eff ? '<span>🗓 ' + escHtml(fmtDate(eff)) + '</span>' : '') +
-      (item.doc_number ? '<span>📌 ' + escHtml(item.doc_number) + '</span>' : '');
+      (eff ? '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ' + escHtml(fmtDate(eff)) + '</span>' : '') +
+      (item.doc_number ? '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> ' + escHtml(item.doc_number) + '</span>' : '');
     var clickable = item.id || item.file_path;
     var title = item.title || item.file_name || item.file_path || 'Văn bản luật';
     // Nút Tải .docx gốc (nếu có file_name) — public download route
     var downloadBtn = item.file_name
-      ? '<a class="library-row-btn library-row-btn-dl" href="' + API + '/api/library/legal-docs/download?file_name=' + encodeURIComponent(item.file_name) + '" target="_blank" rel="noopener nofollow" aria-label="Tải file: ' + escHtml(title) + '">⬇ Tải</a>'
+      ? '<a class="library-row-btn library-row-btn-dl" href="' + API + '/api/library/legal-docs/download?file_name=' + encodeURIComponent(item.file_name) + '" target="_blank" rel="noopener nofollow" aria-label="Tải file: ' + escHtml(title) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Tải</a>'
       : '';
     return (
       '<article class="library-row" data-kind="legal" data-id="' + escHtml(clickable) + '" ' +
         'data-has-html="' + (item.id ? '1' : '0') + '" tabindex="0" role="button" ' +
         'aria-label="Xem toàn văn: ' + escHtml(title) + '">' +
-        '<span class="library-row-icon">⚖️</span>' +
+        '<span class="library-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg></span>' +
         '<div class="library-row-main">' +
           '<h3 class="library-row-title">' + escHtml(title) + '</h3>' +
           '<div class="library-row-meta">' + meta + '</div>' +
         '</div>' +
-        '<span class="library-row-btn" data-kind="legal">📖 Xem toàn văn</span>' +
+        '<span class="library-row-btn" data-kind="legal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Xem toàn văn</span>' +
         downloadBtn +
       '</article>'
     );
@@ -74,15 +74,15 @@ document.addEventListener('DOMContentLoaded', function () {
     var size = fmtSize(item.file_size);
     var meta =
       '<span class="library-badge">Biểu mẫu</span>' +
-      '<span>📎 ' + escHtml(item.file_name || 'File tải xuống') + '</span>' +
-      (size ? '<span>💾 ' + escHtml(size) + '</span>' : '') +
-      (item.created_at ? '<span>🗓 ' + escHtml(fmtDate(item.created_at)) + '</span>' : '');
+      '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> ' + escHtml(item.file_name || 'File tải xuống') + '</span>' +
+      (size ? '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg> ' + escHtml(size) + '</span>' : '') +
+      (item.created_at ? '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ' + escHtml(fmtDate(item.created_at)) + '</span>' : '');
     var btn = item.file_url
-      ? '<a class="library-row-btn" href="' + escHtml(item.file_url) + '" target="_blank" rel="noopener nofollow">⬇ Tải biểu mẫu</a>'
+      ? '<a class="library-row-btn" href="' + escHtml(item.file_url) + '" target="_blank" rel="noopener nofollow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Tải biểu mẫu</a>'
       : '<span class="library-row-btn" style="opacity:.6;cursor:default">Chưa có file</span>';
     return (
       '<article class="library-row" data-kind="form">' +
-        '<span class="library-row-icon">📄</span>' +
+        '<span class="library-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>' +
         '<div class="library-row-main">' +
           '<h3 class="library-row-title">' + escHtml(item.name) + '</h3>' +
           (item.description ? '<p style="margin:0 0 4px;font-size:13px;color:var(--text-muted-dark)">' + escHtml(item.description) + '</p>' : '') +

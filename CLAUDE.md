@@ -1,4 +1,4 @@
-# App_WebTADA — Hệ thống Chatbot Thuế/Kế toán (1 project duy nhất)
+# App_WebTADA — Hệ thống Chatbot Thuế/Kế toán (1 project duy nhất) <!-- hook-test-2026-08-14 -->
 
 ## Cấu trúc
 
@@ -37,3 +37,14 @@ App_WebTADA/
 - Vault: `D:/CodeApp/Projects/ai-second-brain/vault/claude-memory/App_WebTADA/`
 - Tri thức dùng chung: `D:/CodeApp/Projects/ai-second-brain/vault/claude-memory/_shared/`
 - **Quy tắc:** Trước khi code, đọc toàn bộ memory của dự án này trong vault + `_shared/` để nắm quyết định, bài học, pattern đã có.
+
+## 📚 Kiến thức vault đã nạp (tự động — mỗi phiên)
+
+> [!important] Đã nạp kiến thức dự án từ vault (mở phiên mới là có)
+> | Thành phần | Trạng thái |
+> |---|---|
+> | _shared (chung) | ✅ nạp tự động |
+> | App_WebTADA (dự án) | ✅ README + decision-log + lessons + progress |
+> | Lịch sử phiên | ✅ lược đồ các phiên làm việc |
+
+**Nếu chưa thấy bảng ở đầu phiên:** kiến thức vẫn được nạp vào context — bạn có thể hỏi "nạp kiến thức vault dự án này giúp tôi" để Claude đọc lại từ vault.
