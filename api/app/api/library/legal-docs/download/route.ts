@@ -24,12 +24,13 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  // Chỉ cho phép tải file .docx hoặc .pdf
+  // Chỉ cho phép tải file .docx, .doc hoặc .pdf
   const clean = fileName.split('/').pop() || fileName;
   const isDocx = /\.docx$/i.test(clean);
+  const isDoc = /\.doc$/i.test(clean) && !isDocx;
   const isPdf = /\.pdf$/i.test(clean);
-  if (!isDocx && !isPdf) {
-    return new Response(JSON.stringify({ error: 'Chỉ hỗ trợ tải file .docx hoặc .pdf' }), {
+  if (!isDocx && !isDoc && !isPdf) {
+    return new Response(JSON.stringify({ error: 'Chỉ hỗ trợ tải file .docx, .doc hoặc .pdf' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
     });

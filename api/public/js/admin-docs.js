@@ -81,10 +81,10 @@
     if (el.fileHint) {
       el.fileHint.textContent = isForm
         ? 'hỗ trợ .pdf, .docx, .xlsx — tối đa 4 MB'
-        : 'hỗ trợ .docx, .pdf, .txt, .md, .png, .jpg, .gif, .webp — tối đa 4 MB';
+        : 'hỗ trợ .docx, .doc, .pdf, .txt, .md, .png, .jpg, .gif, .webp — tối đa 4 MB';
     }
     if (el.fileInput) {
-      el.fileInput.accept = isForm ? '.pdf,.docx,.doc,.xlsx,.xls,.txt,.md' : '.docx,.pdf,.txt,.md,.png,.jpg,.jpeg,.gif,.webp';
+      el.fileInput.accept = isForm ? '.pdf,.docx,.doc,.xlsx,.xls,.txt,.md' : '.docx,.doc,.pdf,.txt,.md,.png,.jpg,.jpeg,.gif,.webp';
     }
     if (el.saveBtn) {
       el.saveBtn.innerHTML = isForm ? '💾 Lưu biểu mẫu' : '📤 Upload &amp; cập nhật';

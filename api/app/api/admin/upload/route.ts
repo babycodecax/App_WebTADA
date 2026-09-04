@@ -128,6 +128,7 @@ async function uploadFileToStorage(file: File, filePath: string): Promise<string
     const buf = Buffer.from(await file.arrayBuffer());
     const mimeMap: Record<string, string> = {
       '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      '.doc': 'application/msword',
       '.pdf': 'application/pdf',
       '.txt': 'text/plain',
       '.md': 'text/markdown',
@@ -182,13 +183,23 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
     let html = '';
     let detectedType: string | undefined; // detect từ nội dung PDF
 
-    if (ext === 'docx') {
+    if (ext === 'docx' || ext === 'doc') {
       html = await extractHtml(file);
       // Detect type từ raw text (300 chars đầu) — chuẩn hơn HTML pattern
       try {
-        const mammoth = await import('mammoth');
-        const buf = Buffer.from(await file.arrayBuffer());
-        const { value: rawText } = await mammoth.extractRawText({ buffer: buf });
+        let rawText = '';
+        if (ext === 'docx') {
+          const mammoth = await import('mammoth');
+          const buf = Buffer.from(await file.arrayBuffer());
+          const { value } = await mammoth.extractRawText({ buffer: buf });
+          rawText = value;
+        } else {
+          const WordExtractor = (await import('word-extractor')).default;
+          const extractor = new WordExtractor();
+          const buf = Buffer.from(await file.arrayBuffer());
+          const doc = await extractor.extract(buf);
+          rawText = doc.getBody() || '';
+        }
         const head300 = rawText.slice(0, 300);
         if (/NGHỊ\s*QUYẾT|Nghị\s*quyết/.test(head300)) detectedType = 'NGHỊ QUYẾT';
         else if (/THÔNG\s*TƯ|Thông\s*tư/.test(head300)) detectedType = 'THÔNG TƯ';
@@ -344,7 +355,7 @@ export async function POST(req: NextRequest) {
   const ext = '.' + (name.split('.').pop() || '').toLowerCase();
   if (!ALLOWED_EXTENSIONS.includes(ext as (typeof ALLOWED_EXTENSIONS)[number])) {
     return NextResponse.json(
-      { error: 'Chỉ hỗ trợ .docx, .pdf, .txt, .md, .png, .jpg, .jpeg, .gif, .webp' },
+      { error: 'Chỉ hỗ trợ .docx, .doc, .pdf, .txt, .md, .png, .jpg, .jpeg, .gif, .webp' },
       { status: 400 },
     );
   }

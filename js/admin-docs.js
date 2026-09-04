@@ -33,6 +33,17 @@
   function renderConnected(isAdmin) {
     if (el.uploadCard) el.uploadCard.style.display = isAdmin ? 'block' : 'none';
     if (el.listCard) el.listCard.style.display = isAdmin ? 'block' : 'none';
+    // Cập nhật status badge
+    var connStatus = document.getElementById('docs-conn-status');
+    var connNote = document.getElementById('docs-conn-note');
+    if (connStatus) {
+      connStatus.textContent = isAdmin
+        ? 'Đã đăng nhập quản trị (Google).'
+        : (window.TADAAdminAuth && window.TADAAdminAuth.isLoggedIn && window.TADAAdminAuth.isLoggedIn())
+          ? 'Tài khoản của bạn không có quyền sử dụng chức năng này.'
+          : 'Vui lòng đăng nhập bằng tài khoản quản trị (Google) để sử dụng chức năng.';
+    }
+    if (connNote) connNote.style.display = 'none';
     if (!isAdmin) {
       var sl = document.getElementById('sources-list');
       var fl = document.getElementById('forms-list');
@@ -70,10 +81,10 @@
     if (el.fileHint) {
       el.fileHint.textContent = isForm
         ? 'hỗ trợ .pdf, .docx, .xlsx — tối đa 4 MB'
-        : 'hỗ trợ .docx, .pdf, .txt, .md — tối đa 4 MB';
+        : 'hỗ trợ .docx, .doc, .pdf, .txt, .md, .png, .jpg, .gif, .webp — tối đa 4 MB';
     }
     if (el.fileInput) {
-      el.fileInput.accept = isForm ? '.pdf,.docx,.doc,.xlsx,.xls,.txt,.md' : '.docx,.pdf,.txt,.md';
+      el.fileInput.accept = isForm ? '.pdf,.docx,.doc,.xlsx,.xls,.txt,.md' : '.docx,.doc,.pdf,.txt,.md,.png,.jpg,.jpeg,.gif,.webp';
     }
     if (el.saveBtn) {
       el.saveBtn.innerHTML = isForm ? '💾 Lưu biểu mẫu' : '📤 Upload &amp; cập nhật';
@@ -176,8 +187,18 @@
       showSub(currentSub);
     }
     syncAuth();
+
+    // Đăng ký notify — admin-auth.js gọi khi checkAdmin() xong (_isAdmin thay đổi)
+    // Chain callback: không ghi đè mà gọi cả notify cũ
+    if (window.TADAAdminAuth) {
+      var _prevNotify = window.TADAAdminAuth._notify;
+      window.TADAAdminAuth._notify = function () {
+        if (_prevNotify) _prevNotify();
+        syncAuth();
+      };
+    }
+
     // Lắng nghe session Google thay đổi (blog-admin expose window.__tadaSession).
-    // Luôn gắn interval — session có thể chưa sẵn sàng lúc init (chưa login).
     var _orig = window.__tadaSession;
     setInterval(function () {
       if (window.__tadaSession !== _orig) {
@@ -185,6 +206,14 @@
         syncAuth();
       }
     }, 1500);
+
+    // Re-check khi quay lại tab — token có thể expired khi chuyển tab
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) {
+        _orig = window.__tadaSession; // force re-check
+        syncAuth();
+      }
+    });
 
     // Khi mở tab "docs" (click sidebar) → refresh
     document.querySelectorAll('.admin-nav-btn[data-view="docs"]').forEach(function (btn) {

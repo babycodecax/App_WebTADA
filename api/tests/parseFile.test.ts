@@ -79,6 +79,7 @@ test('ALLOWED_EXTENSIONS: chứa tất cả định dạng ảnh', () => {
 
 test('ALLOWED_EXTENSIONS: vẫn giữ định dạng cũ', () => {
   assert.ok(ALLOWED_EXTENSIONS.includes('.docx'));
+  assert.ok(ALLOWED_EXTENSIONS.includes('.doc'));
   assert.ok(ALLOWED_EXTENSIONS.includes('.pdf'));
   assert.ok(ALLOWED_EXTENSIONS.includes('.txt'));
   assert.ok(ALLOWED_EXTENSIONS.includes('.md'));

@@ -12,7 +12,7 @@ export interface ExtractedFile {
   isMarkdown: boolean;
 }
 
-export const ALLOWED_EXTENSIONS = ['.docx', '.pdf', '.txt', '.md', '.png', '.jpg', '.jpeg', '.gif', '.webp'] as const;
+export const ALLOWED_EXTENSIONS = ['.docx', '.doc', '.pdf', '.txt', '.md', '.png', '.jpg', '.jpeg', '.gif', '.webp'] as const;
 
 /** MIME map cho ảnh — dùng khi upload Supabase Storage + gọi Gemini Vision. */
 export const IMAGE_MIME: Record<string, string> = {
@@ -53,6 +53,15 @@ export async function extractText(file: File): Promise<ExtractedFile> {
     const buf = Buffer.from(await file.arrayBuffer());
     const { value } = await mammoth.extractRawText({ buffer: buf });
     return { title: fallbackTitle, body: value || '', isMarkdown: false };
+  }
+
+  // .doc (Word 97-2003) — dùng word-extractor
+  if (ext === '.doc') {
+    const WordExtractor = (await import('word-extractor')).default;
+    const extractor = new WordExtractor();
+    const buf = Buffer.from(await file.arrayBuffer());
+    const doc = await extractor.extract(buf);
+    return { title: fallbackTitle, body: doc.getBody() || '', isMarkdown: false };
   }
 
   if (ext === '.pdf') {
@@ -239,13 +248,31 @@ export async function ocrPdf(file: File): Promise<string> {
  */
 export async function extractHtml(file: File): Promise<string> {
   const name = file.name || '';
-  if (!name.toLowerCase().endsWith('.docx')) return '';
-  try {
-    const mammoth = await import('mammoth');
-    const buf = Buffer.from(await file.arrayBuffer());
-    const { value } = await mammoth.convertToHtml({ buffer: buf });
-    return value || '';
-  } catch {
-    return '';
+  const lower = name.toLowerCase();
+  // .docx → mammoth (giữ bảng biểu)
+  if (lower.endsWith('.docx')) {
+    try {
+      const mammoth = await import('mammoth');
+      const buf = Buffer.from(await file.arrayBuffer());
+      const { value } = await mammoth.convertToHtml({ buffer: buf });
+      return value || '';
+    } catch {
+      return '';
+    }
   }
+  // .doc → word-extractor → HTML đơn giản
+  if (lower.endsWith('.doc')) {
+    try {
+      const WordExtractor = (await import('word-extractor')).default;
+      const extractor = new WordExtractor();
+      const buf = Buffer.from(await file.arrayBuffer());
+      const doc = await extractor.extract(buf);
+      const body = doc.getBody() || '';
+      // Chuyển plain text → HTML cơ bản (giữ dòng)
+      return body.split('\n').filter((l: string) => l.trim()).map((l: string) => `<p>${l}</p>`).join('\n');
+    } catch {
+      return '';
+    }
+  }
+  return '';
 }
