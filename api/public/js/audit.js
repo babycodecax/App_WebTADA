@@ -76,7 +76,7 @@
   function runAudit(file) {
     if (!file) return;
 
-    if (fileNameEl) fileNameEl.textContent = '📄 ' + file.name;
+    if (fileNameEl) fileNameEl.textContent = file.name;
     progressEl.style.display = 'flex';
     resultEl.style.display = 'none';
     errorEl.style.display = 'none';

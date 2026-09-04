@@ -136,7 +136,7 @@
           <div class="user-dropdown" id="user-dropdown">
             <span id="user-name">User</span>
             <span id="user-email" style="font-size:12px;color:var(--text-muted-dark)"></span>
-            <a href="/admin" class="dropdown-write-btn" id="btn-write-post" style="display:none">✏️ Viết bài</a>
+            <a href="/admin" class="dropdown-write-btn" id="btn-write-post" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Viết bài</a>
             <button class="btn-logout" id="btn-logout">Đăng xuất</button>
           </div>
         </div>
@@ -207,7 +207,7 @@
       <div class="chatbox-col">
       <div class="chatbox-wrap" id="chatbox">
           <div class="chatbox-header">
-            <div class="chatbox-avatar">🤖</div>
+            <div class="chatbox-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M12 2L3 7v6c0 5.25 3.75 10.05 9 11.25C17.25 23.05 21 18.25 21 13V7l-9-5z"/><path d="M9 12l2 2 4-4"/></svg></div>
             <div class="chatbox-heading">
               <span class="chatbox-title">Trợ lý Thuế TADA</span>
               <span class="chatbox-status"><span class="chatbox-status-dot"></span> Sẵn sàng tư vấn</span>
@@ -216,7 +216,7 @@
           </div>
 
           <div class="chatbox-messages" id="chat-messages">
-            <div class="chat-msg bot">Xin chào! Tôi là trợ lý ảo của TADA. Bạn cần giải đáp thắc mắc gì về thuế, kế toán, BHXH hay thủ tục doanh nghiệp? 😊</div>
+            <div class="chat-msg bot">Xin chào! Tôi là trợ lý ảo của TADA. Bạn cần giải đáp thắc mắc gì về thuế, kế toán, BHXH hay thủ tục doanh nghiệp?</div>
           </div>
 
           <div class="chatbox-suggest" id="chat-suggest">
@@ -226,13 +226,13 @@
 
           <div class="chatbox-input-area">
             <textarea class="chatbox-input" id="chat-input" rows="1" placeholder="Nhập câu hỏi của bạn..."></textarea>
-            <button class="chatbox-send" id="chat-send" aria-label="Gửi">➤</button>
+            <button class="chatbox-send" id="chat-send" aria-label="Gửi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
           </div>
 
           <!-- Auth overlay: hiện khi hết 3 câu free -->
           <div class="chatbox-auth-overlay" id="chat-auth-overlay">
             <div class="chatbox-auth-box">
-              <div class="chatbox-auth-icon">🔒</div>
+              <div class="chatbox-auth-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
               <h3>Cần đăng nhập để tiếp tục hỏi</h3>
               <p>Đăng nhập tài khoản Google để sử dụng đầy đủ tính năng của TADA.</p>
               <button class="btn btn-google btn-auth-google" id="btn-auth-google">
@@ -251,17 +251,17 @@
 
         <!-- Audit BCTC — bên phải dưới chatbox, form đầy đủ -->
         <div class="audit-section" id="audit-section">
-          <div class="audit-label">📊 Rà soát Báo cáo Tài chính</div>
+          <div class="audit-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M21 21H4.6c-.56 0-.84 0-1.054-.109a1 1 0 0 1-.437-.437C3 20.24 3 19.96 3 19.4V4.6c0-.56 0-.84.109-1.054a1 1 0 0 1 .437-.437C3.76 3 4.04 3 4.6 3H8"/><path d="M10 3h4"/><path d="M16 3h3.4c.56 0 .84 0 1.054.109a1 1 0 0 1 .437.437C21 3.76 21 4.04 21 4.6V8"/><path d="M3 13h4"/><path d="M3 17h4"/><path d="M17 17l2 2m0 0l2 2m-2-2l2-2m-2 2l-2 2"/></svg> Rà soát Báo cáo Tài chính</div>
           <div class="audit-row">
             <label class="audit-btn" id="audit-upload-label">
               <input type="file" id="audit-file-input" accept=".xlsx,.xls,.docx" multiple hidden>
-              📁 Chọn file BCTC
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> Chọn file BCTC
             </label>
             <button class="audit-btn audit-btn-outline" id="audit-export-btn" style="display:none">
-              📄 Xuất PDF
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Xuất PDF
             </button>
             <button class="audit-btn audit-btn-outline" id="audit-download-word-btn" style="display:none">
-              📝 Tải Word
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Tải Word
             </button>
           </div>
           <div class="audit-hint" id="audit-file-name">.xlsx / .xls / .docx (B01 B02 B03 theo TT200/TT99)</div>
@@ -331,8 +331,8 @@
       </div>
 
       <div class="library-mini-tabs" id="library-mini-tabs">
-        <button type="button" class="library-mini-tab active" data-tab="legal">⚖️ Văn bản luật</button>
-        <button type="button" class="library-mini-tab" data-tab="forms">📄 Biểu mẫu</button>
+        <button type="button" class="library-mini-tab active" data-tab="legal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg> Văn bản luật</button>
+        <button type="button" class="library-mini-tab" data-tab="forms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> Biểu mẫu</button>
       </div>
 
       <div class="library-mini-grid" id="library-mini-grid">
@@ -402,14 +402,14 @@
           <h3 class="footer-title">Kênh Liên Hệ</h3>
           <div class="footer-contact-list">
             <div class="footer-contact-item">
-              <span class="contact-icon">📞</span>
+              <span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
               <div class="contact-info">
                 <span class="contact-label">Hotline / Zalo</span>
                 <a href="https://zalo.me/0986424286" target="_blank" class="contact-val">0986.4242.86</a>
               </div>
             </div>
             <div class="footer-contact-item">
-              <span class="contact-icon">💬</span>
+              <span class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
               <div class="contact-info">
                 <span class="contact-label">Cộng đồng Hỗ trợ HKD, DN</span>
                 <a href="https://zalo.me/g/izers2awkn1hyqojzdfv" target="_blank" class="contact-val">Nhóm Zalo Giải Đáp Thuế</a>
@@ -709,33 +709,33 @@
             var badge = docTypeLabel(item.doc_type);
             var eff = item.effective_date || item.created_at || '';
             var download = item.file_name
-              ? '<a class="library-mini-dl" href="/api/library/legal-docs/download?file_name=' + encodeURIComponent(item.file_name) + '" target="_blank" rel="noopener nofollow" aria-label="Tải file: ' + esc(item.title || item.file_name) + '">⬇</a>'
+              ? '<a class="library-mini-dl" href="/api/library/legal-docs/download?file_name=' + encodeURIComponent(item.file_name) + '" target="_blank" rel="noopener nofollow" aria-label="Tải file: ' + esc(item.title || item.file_name) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
               : '';
             card.innerHTML =
-              '<span class="library-mini-icon">⚖️</span>' +
+              '<span class="library-mini-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg></span>' +
               '<div class="library-mini-main">' +
                 '<h3 class="library-mini-title">' + esc(item.title || item.file_name || 'Văn bản luật') + '</h3>' +
                 '<div class="library-mini-meta">' +
                   '<span class="library-badge" style="display:inline-block;background:var(--bg-light-alt);border:1px solid var(--border-light);border-radius:6px;padding:1px 8px;font-size:11px;color:var(--primary-burgundy)">' + esc(badge) + '</span>' +
-                  (eff ? '<span>🗓 ' + esc(fmtDate(eff)) + '</span>' : '') +
-                  (item.doc_number ? '<span>📌 ' + esc(item.doc_number) + '</span>' : '') +
+                  (eff ? '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ' + esc(fmtDate(eff)) + '</span>' : '') +
+                  (item.doc_number ? '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> ' + esc(item.doc_number) + '</span>' : '') +
                 '</div>' +
               '</div>' +
-              '<a class="library-mini-btn" href="/thu-vien" aria-label="Xem toàn văn: ' + esc(item.title || item.file_name || 'Văn bản luật') + '">📖 Xem toàn văn</a>' + download;
+              '<a class="library-mini-btn" href="/thu-vien" aria-label="Xem toàn văn: ' + esc(item.title || item.file_name || 'Văn bản luật') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Xem toàn văn</a>' + download;
           } else {
             var size = item.file_size;
             var sizeTxt = size && size > 0 ? (size < 1024 ? size + ' B' : size < 1048576 ? (size / 1024).toFixed(1) + ' KB' : (size / 1048576).toFixed(1) + ' MB') : '';
             var dlBtn = item.file_url
-              ? '<a class="library-mini-btn" href="' + esc(item.file_url) + '" target="_blank" rel="noopener nofollow" aria-label="Tải biểu mẫu: ' + esc(item.name) + '">⬇ Tải</a>'
+              ? '<a class="library-mini-btn" href="' + esc(item.file_url) + '" target="_blank" rel="noopener nofollow" aria-label="Tải biểu mẫu: ' + esc(item.name) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Tải</a>'
               : '<span class="library-mini-btn" style="opacity:.6;cursor:default">Chưa có file</span>';
             card.innerHTML =
-              '<span class="library-mini-icon">📄</span>' +
+              '<span class="library-mini-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>' +
               '<div class="library-mini-main">' +
                 '<h3 class="library-mini-title">' + esc(item.name) + '</h3>' +
                 '<div class="library-mini-meta">' +
                   '<span class="library-badge" style="display:inline-block;background:var(--bg-light-alt);border:1px solid var(--border-light);border-radius:6px;padding:1px 8px;font-size:11px;color:var(--primary-burgundy)">Biểu mẫu</span>' +
-                  '<span>📎 ' + esc(item.file_name || 'File tải xuống') + '</span>' +
-                  (sizeTxt ? '<span>💾 ' + esc(sizeTxt) + '</span>' : '') +
+                  '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> ' + esc(item.file_name || 'File tải xuống') + '</span>' +
+                  (sizeTxt ? '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg> ' + esc(sizeTxt) + '</span>' : '') +
                 '</div>' +
               '</div>' +
               dlBtn;

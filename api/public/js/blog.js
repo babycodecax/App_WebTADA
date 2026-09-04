@@ -81,7 +81,7 @@
   /** Render danh sách bài viết liên quan */
   function renderRelatedPosts(related, container) {
     if (!related || related.length === 0) return;
-    var html = '<div class="blog-related"><h3>📖 Bài viết liên quan</h3><div class="blog-related-grid">';
+    var html = '<div class="blog-related"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="vertical-align:-3px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Bài viết liên quan</h3><div class="blog-related-grid">';
     related.forEach(function (p) {
       html +=
         '<a href="' + postUrl(p.slug) + '" class="blog-related-card">' +
@@ -182,7 +182,7 @@
         document.title = post.title + ' — TADA';
         updateDetailSeo(post);
 
-        // B�i vi?t li�n quan
+        // Bài viết liên quan
         fetch(API + '/api/blog?limit=999')
           .then(function (r) { return r.json(); })
           .then(function (allPosts) {
