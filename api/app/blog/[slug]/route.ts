@@ -25,6 +25,46 @@ function escJson(s: string): string {
   return s.replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
 }
 
+/**
+ * Loại bỏ dấu tiếng Việt (NFD decomposition + strip combining marks).
+ * Dùng để so sánh old slug (không dấu) với new slug (có dấu).
+ */
+function normalizeDiacritics(text: string): string {
+  return text
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+}
+
+/** Cache slug redirect map — old slug (không dấu) → new slug (có dấu) */
+let slugRedirectMap: Map<string, string> | null = null;
+
+async function getSlugRedirectMap(): Promise<Map<string, string>> {
+  if (slugRedirectMap) return slugRedirectMap;
+
+  const posts = await getAllPosts();
+  const map = new Map<string, string>();
+  for (const p of posts) {
+    map.set(normalizeDiacritics(p.slug), p.slug);
+  }
+  slugRedirectMap = map;
+  return map;
+}
+
+async function getAllPosts(): Promise<Array<{ slug: string }>> {
+  try {
+    const client = getSupabase();
+    const { data } = await client
+      .from('blog_posts')
+      .select('slug')
+      .eq('status', 'published');
+    return data || [];
+  } catch {
+    return [];
+  }
+}
+
 /** Trích xuất description từ content markdown (fallback khi không có summary) */
 function extractDescription(content: string, maxLen = 155): string {
   return content
@@ -139,6 +179,21 @@ export async function GET(
           /<\/head>/i,
           `  <script type="application/ld+json">${jsonLd}</script>\n</head>`
         );
+      } else {
+        // Slug không tìm thấy trong DB → thử redirect 301 về slug mới
+        // (xử lý old slug URLs đã bị thay đổi khi fix-blog-slugs)
+        const redirectMap = await getSlugRedirectMap();
+        const normalizedInput = normalizeDiacritics(slug);
+        const newSlug = redirectMap.get(normalizedInput);
+
+        if (newSlug) {
+          return NextResponse.redirect(`${SITE}/blog/${newSlug}`, {
+            status: 301,
+            headers: { 'Cache-Control': 'public, s-maxage=86400, max-age=3600' },
+          });
+        }
+
+        return new NextResponse('Not Found', { status: 404 });
       }
     } catch {
       // Supabase lỗi → trả HTML gốc (blog.js vẫn render được bằng JS)
