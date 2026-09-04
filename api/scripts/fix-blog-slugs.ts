@@ -8,14 +8,24 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
+import { config } from 'dotenv';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+config({ path: resolve(__dirname, '../.env.local') });
 
 const SUPABASE_URL = process.env.SUPABASE_URL || '';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY || '';
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY || '';
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
-  console.error('Cần set SUPABASE_URL và SUPABASE_SERVICE_KEY (hoặc SUPABASE_ANON_KEY)');
+  console.error('Cần set SUPABASE_URL và SUPABASE_SERVICE_ROLE_KEY');
+  console.error('URL:', SUPABASE_URL ? 'OK' : 'MISSING');
+  console.error('KEY:', SUPABASE_KEY ? 'OK (' + SUPABASE_KEY.slice(0,10) + '...)' : 'MISSING');
   process.exit(1);
 }
+
+console.log(`Using: ${SUPABASE_URL.slice(0,30)}... | key: ${SUPABASE_KEY.slice(0,10)}...`);
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
