@@ -148,18 +148,22 @@ export async function GET(
           `<meta property="og:url" content="${canonical}">`,
           `<meta property="og:type" content="article">`,
           `<meta property="og:image" content="${ogImage}">`,
+          `<meta property="og:image:width" content="1200">`,
+          `<meta property="og:image:height" content="630">`,
+          pubDate ? `<meta property="article:published_time" content="${pubDate}">` : '',
+          modDate ? `<meta property="article:modified_time" content="${modDate}">` : '',
           `<meta name="twitter:title" content="${title} — TADA">`,
           `<meta name="twitter:description" content="${desc}">`,
           `<meta name="twitter:image" content="${ogImage}">`,
-        ].join('\n  ');
+        ].filter(Boolean).join('\n  ');
 
         html = html.replace(
           /<\/title>/i,
           `</title>\n  ${seoMeta}`
         );
 
-        // 5) Inject JSON-LD BlogPosting schema (esc để tránh </script> injection)
-        const jsonLd = escJson(JSON.stringify({
+        // 5) Inject JSON-LD BlogPosting + BreadcrumbList schema (esc để tránh </script> injection)
+        const blogPostingSchema = {
           '@context': 'https://schema.org',
           '@type': 'BlogPosting',
           headline: post.title,
@@ -173,11 +177,24 @@ export async function GET(
             name: 'Dịch Vụ Thuế Kế Toán TADA',
             logo: { '@type': 'ImageObject', url: ogImage },
           },
-        }));
+        };
+
+        const breadcrumbSchema = {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: `${SITE}/` },
+            { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE}/blog` },
+            { '@type': 'ListItem', position: 3, name: post.title },
+          ],
+        };
+
+        const jsonLd = escJson(JSON.stringify(blogPostingSchema));
+        const jsonLdBreadcrumb = escJson(JSON.stringify(breadcrumbSchema));
 
         html = html.replace(
           /<\/head>/i,
-          `  <script type="application/ld+json">${jsonLd}</script>\n</head>`
+          `  <script type="application/ld+json">${jsonLd}</script>\n  <script type="application/ld+json">${jsonLdBreadcrumb}</script>\n</head>`
         );
       } else {
         // Slug không tìm thấy trong DB → thử redirect 301 về slug mới
