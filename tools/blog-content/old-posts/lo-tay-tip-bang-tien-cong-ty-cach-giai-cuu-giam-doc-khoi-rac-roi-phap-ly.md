@@ -1,7 +1,7 @@
 ---
 title: "Lỡ tay tip bằng tiền công ty: Cách giải cứu Giám đốc khỏi rắc rối pháp lý"
 slug: "lo-tay-tip-bang-tien-cong-ty-cach-giai-cuu-giam-doc-khoi-rac-roi-phap-ly"
-summary: "Giám đốc nhầm lẫn tài khoản công ty khi thanh toán tiền tip karaoke có bị coi là lạm dụng tài sản doanh nghiệp không? Hướng dẫn hoàn trả, hạch toán và cách tránh phạt thuế TNDN theo Luật Doanh nghiệp 2020."
+summary: "Giám đốc dùng tiền công ty thanh toán tiền tip có bị coi là lạm dụng tài sản không? Hướng dẫn hoàn trả, hạch toán và tránh phạt thuế theo Luật DN 2020."
 published_at: "2026-06-12"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"
@@ -64,6 +64,6 @@ Nên thực hiện ngay trong ngày phát hiện hoặc chậm nhất trong 5 ng
 *Nguồn tham khảo: Luật Doanh nghiệp số 59/2020/QH14, Luật Thuế TNDN số 14/2020/QH14, Luật Quản lý thuế số 38/2019/QH14, Bộ luật Hình sự 2015*
 
 **Đọc thêm:**
-- [Thuế gọi tên, giám đốc chạy nợ: Kế toán nên ở lại hay rút lui?](https://ketoanthuetada.com/thue-goi-ten-giam-doc-chay-no-ke-toan-nen-o-lai-chiu-tran-hay-rut-lui-em-dep)
-- [Phân tích rủi ro pháp lý và thuế trong giao dịch chuyển nhượng vốn năm 2026](https://ketoanthuetada.com/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)
-- [Sếp nộp 247 triệu vào tài khoản công ty năm 2026](https://ketoanthuetada.com/sep-nop-247-trieu-vao-tai-khoan-cong-ty-nam-2026-ke-toan-can-lap-ho-so-hach-toan-va-ke-khai-giao-dich-lien-ket-the-nao-cho-dung)
+- [Thuế gọi tên, giám đốc chạy nợ: Kế toán nên ở lại hay rút lui?](https://ketoanthuetada.com/blog/thue-goi-ten-giam-doc-chay-no-ke-toan-nen-o-lai-chiu-tran-hay-rut-lui-em-dep)
+- [Phân tích rủi ro pháp lý và thuế trong giao dịch chuyển nhượng vốn năm 2026](https://ketoanthuetada.com/blog/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)
+- [Sếp nộp 247 triệu vào tài khoản công ty năm 2026](https://ketoanthuetada.com/blog/sep-nop-247-trieu-vao-tai-khoan-cong-ty-nam-2026-ke-toan-can-lap-ho-so-hach-toan-va-ke-khai-giao-dich-lien-ket-the-nao-cho-dung)

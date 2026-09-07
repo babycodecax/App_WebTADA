@@ -1,7 +1,7 @@
 ---
 title: "Tổng hợp các trường hợp bị tạm hoãn xuất cảnh do nợ thuế từ 2026"
 slug: "tong-hop-cac-truong-hop-bi-tam-hoan-xuat-canh-do-no-thue-tu-2026"
-summary: "Tổng hợp các trường hợp bị tạm hoãn xuất cảnh do nợ thuế theo Nghị định 252/2026/NĐ-CP. Cá nhân, chủ hộ kinh doanh, người đại diện pháp luật cần biết ngưỡng nợ và quy trình xử lý."
+summary: "Tổng hợp trường hợp bị tạm hoãn xuất cảnh do nợ thuế theo Nghị định 252/2026/NĐ-CP. Cá nhân, chủ hộ kinh doanh cần biết ngưỡng nợ và quy trình xử lý."
 published_at: "2026-07-20"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"
@@ -64,6 +64,6 @@ Sau khi nộp đủ và có xác nhận của ngân hàng, cơ quan thuế sẽ 
 *Nguồn tham khảo: Điều 28, Nghị định 252/2026/NĐ-CP, Luật Quản lý thuế 38/2019/QH14*
 
 **Đọc thêm:**
-- [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động lâu năm](https://ketoanthuetada.com/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)
-- [Lộ trình xử lý rủi ro hóa đơn N06 và giải tỏa áp lực thuế năm 2026](https://ketoanthuetada.com/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026)
-- [Tóm tắt các rủi ro và chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)
+- [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động lâu năm](https://ketoanthuetada.com/blog/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)
+- [Lộ trình xử lý rủi ro hóa đơn N06 và giải tỏa áp lực thuế năm 2026](https://ketoanthuetada.com/blog/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026)
+- [Tóm tắt các rủi ro và chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/blog/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)

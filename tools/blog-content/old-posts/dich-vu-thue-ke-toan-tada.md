@@ -54,6 +54,6 @@ Bạn có thể gọi hotline **0986.4242.86** hoặc truy cập website [ketoan
 *Nguồn tham khảo: Luật Quản lý thuế 38/2019/QH14, Nghị định 254/2026/NĐ-CP*
 
 **Đọc thêm:**
-- [Hướng dẫn chi tiết quy trình đăng ký sử dụng hóa đơn điện tử cho hộ kinh doanh năm 2026](https://ketoanthuetada.com/huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026)
-- [Hộ kinh doanh dưới 1 tỷ: Khai thuế 2026 thế nào cho chuẩn?](https://ketoanthuetada.com/ho-kinh-doanh-duoi-1-ty-khai-thue-2026-the-nao-cho-chuan)
-- [Hóa đơn người tiêu dùng: Hiểu đúng để tránh rủi ro pháp lý năm 2026](https://ketoanthuetada.com/hoa-don-nguoi-tieu-dung-hieu-dung-de-tranh-rui-ro-phap-ly-nam-2026)
+- [Hướng dẫn chi tiết quy trình đăng ký sử dụng hóa đơn điện tử cho hộ kinh doanh năm 2026](https://ketoanthuetada.com/blog/huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026)
+- [Hộ kinh doanh dưới 1 tỷ: Khai thuế 2026 thế nào cho chuẩn?](https://ketoanthuetada.com/blog/ho-kinh-doanh-duoi-1-ty-khai-thue-2026-the-nao-cho-chuan)
+- [Hóa đơn người tiêu dùng: Hiểu đúng để tránh rủi ro pháp lý năm 2026](https://ketoanthuetada.com/blog/hoa-don-nguoi-tieu-dung-hieu-dung-de-tranh-rui-ro-phap-ly-nam-2026)

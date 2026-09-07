@@ -1,7 +1,7 @@
 ---
 title: "Xử lý sai lệch doanh thu và tối ưu nghĩa vụ phạt khi kiểm tra thuế năm 2025"
 slug: "xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025"
-summary: "Kê khai doanh thu tháng thừa tháng thiếu so với thực tế khi bị kiểm tra thuế 2025? Lộ trình xử lý, nguyên tắc bù trừ tiền thuế và cách giảm nhẹ phạt theo quy định quản lý thuế."
+summary: "Kê khai doanh thu thừa tháng này thiếu tháng kia khi kiểm tra thuế 2025? Lộ trình xử lý, bù trừ tiền thuế và cách giảm nhẹ phạt theo quy định quản lý thuế."
 published_at: "2026-06-14"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"
@@ -59,7 +59,7 @@ Mức phạt từ 500.000 đồng đến 8.000.000 đồng tùy khung lỗi, áp
 
 *Nguồn tham khảo: Luật Quản lý thuế 38/2019/QH14, Nghị định 252/2026/NĐ-CP, Thông tư 89/2026/TT-BTC*
 
-**Đọc thêm:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
-- [Phương án xử lý doanh thu chưa kê khai giai đoạn 2023-2025](https://ketoanthuetada.com/phuong-an-xu-ly-doanh-thu-chua-ke-khai-giai-doan-2023-2025)
-- [Tóm tắt các rủi ro và khoản chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)
+**Bài viết liên quan:**
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
+- [Phương án xử lý doanh thu chưa kê khai giai đoạn 2023-2025](https://ketoanthuetada.com/blog/phuong-an-xu-ly-doanh-thu-chua-ke-khai-giai-doan-2023-2025)
+- [Tóm tắt các rủi ro và khoản chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/blog/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)

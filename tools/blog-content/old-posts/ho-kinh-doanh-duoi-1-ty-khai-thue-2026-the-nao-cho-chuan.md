@@ -27,7 +27,7 @@ Bạn sử dụng **Mẫu số 01/TKN-CNKD** (Thông báo doanh thu/Tờ khai th
 
 Nếu trong năm, doanh thu lũy kế của bạn **đạt mốc trên 01 tỷ đồng**, bạn phải thực hiện **khai thuế và nộp thuế kể từ quý phát sinh doanh thu vượt ngưỡng**. Đồng thời, bạn phải chuyển sang sử dụng hóa đơn điện tử có mã của cơ quan thuế trong vòng 30 ngày. Việc cập nhật thông tin kịp thời giúp bạn tránh bị xử phạt vi phạm hành chính về thuế và hóa đơn. Bạn cần theo dõi tổng doanh thu thường xuyên để không bỏ lỡ thời điểm chuyển đổi.
 
-## Lưu ý về định danh cá nhân khi khai thuế từ 2025
+## Định danh cá nhân khi khai thuế từ 2025 có gì cần lưu ý?
 
 Từ ngày 01/07/2025, bạn sử dụng **số định danh cá nhân** thay cho mã số thuế để thực hiện các thủ tục kê khai. Đây là thay đổi quan trọng trong hệ thống thuế điện tử, giúp đồng bộ dữ liệu giữa cơ quan thuế và cơ quan công an. Bạn cần đảm bảo số định danh cá nhân trên tờ khai khớp đúng với thông tin trong Cơ sở dữ liệu quốc gia về dân cư để tránh bị từ chối hồ sơ.
 
@@ -58,6 +58,6 @@ Có. Bạn cần ghi chép sổ sách đơn giản để theo dõi doanh thu bá
 *Nguồn tham khảo: Luật số 09/2026/QH16, Nghị định 141/2026/NĐ-CP, Mẫu số 01/TKN-CNKD*
 
 **Đọc thêm:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
-- [Hộ kinh doanh dưới một tỷ đồng: Cách xử lý thuế đúng quy định 2026](https://ketoanthuetada.com/ho-kinh-doanh-duoi-mot-ty-dong-cach-xu-ly-thue-dung-quy-dinh-2026)
-- [Hướng dẫn chi tiết quy trình đăng ký sử dụng hóa đơn điện tử cho hộ kinh doanh](https://ketoanthuetada.com/huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026)
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
+- [Hộ kinh doanh dưới một tỷ đồng: Cách xử lý thuế đúng quy định 2026](https://ketoanthuetada.com/blog/ho-kinh-doanh-duoi-mot-ty-dong-cach-xu-ly-thue-dung-quy-dinh-2026)
+- [Hướng dẫn chi tiết quy trình đăng ký sử dụng hóa đơn điện tử cho hộ kinh doanh](https://ketoanthuetada.com/blog/huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026)

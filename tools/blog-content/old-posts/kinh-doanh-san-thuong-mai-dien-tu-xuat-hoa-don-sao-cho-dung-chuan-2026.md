@@ -60,6 +60,6 @@ Có. Thuế TNCN từ 10% đến 20% tùy thu nhập tính thuế. Nếu dưới
 *Nguồn tham khảo: Nghị định 254/2026/NĐ-CP, Nghị định 252/2026/NĐ-CP, Thông tư 91/2026/TT-BTC, Luật Doanh nghiệp số 59/2020/QH14*
 
 **Đọc thêm:**
-- [Shopee nổ đơn 2 tỷ và cái quên đắt giá: Đường nào cho hộ kinh doanh?](https://ketoanthuetada.com/shopee-no-don-2-ty-va-cai-quen-dat-gia-duong-nao-cho-ho-kinh-doanh)
-- [Làm Affiliate 2026: Doanh thu bao nhiêu mới phải nộp thuế?](https://ketoanthuetada.com/lam-affiliate-2026-doanh-thu-bao-nhieu-moi-phai-nop-thue)
-- [Hóa đơn người tiêu dùng: Hiểu đúng để tránh rủi ro pháp lý năm 2026](https://ketoanthuetada.com/hoa-don-nguoi-tieu-dung-hieu-dung-de-tranh-rui-ro-phap-ly-nam-2026)
+- [Shopee nổ đơn 2 tỷ và cái quên đắt giá: Đường nào cho hộ kinh doanh?](https://ketoanthuetada.com/blog/shopee-no-don-2-ty-va-cai-quen-dat-gia-duong-nao-cho-ho-kinh-doanh)
+- [Làm Affiliate 2026: Doanh thu bao nhiêu mới phải nộp thuế?](https://ketoanthuetada.com/blog/lam-affiliate-2026-doanh-thu-bao-nhieu-moi-phai-nop-thue)
+- [Hóa đơn người tiêu dùng: Hiểu đúng để tránh rủi ro pháp lý năm 2026](https://ketoanthuetada.com/blog/hoa-don-nguoi-tieu-dung-hieu-dung-de-tranh-rui-ro-phap-ly-nam-2026)

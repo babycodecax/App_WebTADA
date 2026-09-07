@@ -1,7 +1,7 @@
 ---
 title: "Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động lâu năm"
 slug: "phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam"
-summary: "Doanh nghiệp thành lập từ 2009 ngừng hoạt động lâu năm nhưng phát hiện nợ thuế? Phương án tra cứu mã số thuế, khoanh nợ, xóa nợ quá 10 năm và chấm dứt MST theo quy định 2026."
+summary: "Doanh nghiệp thành lập 2009 ngừng hoạt động lâu năm phát hiện nợ thuế? Phương án tra cứu MST, khoanh nợ, xóa nợ quá 10 năm và chấm dứt MST theo quy định 2026."
 published_at: "2026-06-13"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"
@@ -60,6 +60,6 @@ Rất nên. Luật sư giúp rà soát hồ sơ pháp lý, đảm bảo đủ đ
 *Nguồn tham khảo: Luật Quản lý thuế số 38/2019/QH14, Nghị định 252/2026/NĐ-CP, Thông tư 96/2015/TT-BTC, Thông tư 89/2026/TT-BTC*
 
 **Đọc thêm:**
-- [Quy trình giải thể công ty và đóng mã số thuế khi bị cảnh báo không hoạt động](https://ketoanthuetada.com/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
-- [Quy định về số lần và thời hạn tạm ngừng kinh doanh của công ty](https://ketoanthuetada.com/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)
-- [Tóm tắt các rủi ro và chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)
+- [Quy trình giải thể công ty và đóng mã số thuế khi bị cảnh báo không hoạt động](https://ketoanthuetada.com/blog/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
+- [Quy định về số lần và thời hạn tạm ngừng kinh doanh của công ty](https://ketoanthuetada.com/blog/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)
+- [Tóm tắt các rủi ro và chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/blog/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)

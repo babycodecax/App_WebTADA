@@ -23,7 +23,7 @@ Doanh nghiệp cần chuẩn bị hồ sơ chứng minh tính chất công việ
 
 Trong trường hợp cơ quan BHXH đã ban hành quyết định truy thu, doanh nghiệp có quyền **giải trình và khiếu nại** trong thời hạn quy định. Hồ sơ giải trình cần chứng minh hướng dẫn viên là đối tượng tự kê khai thuế và tham gia BHXH tự nguyện do có thu nhập từ nhiều đơn vị lữ hành khác nhau trong năm tính thuế. Đồng thời, doanh nghiệp cần cung cấp hợp đồng dịch vụ, chứng từ chi trả thù lao và danh sách tour đã thực hiện. Nếu giải trình hợp lý, cơ quan BHXH có thể xem xét hủy bỏ quyết định truy thu hoặc điều chỉnh số tiền phải đóng.
 
-## Cách phòng tránh truy thu BHXH cho hướng dẫn viên từ đầu
+## Cách phòng tránh truy thu BHXH cho hướng dẫn viên từ đầu là gì?
 
 Cách tốt nhất là **định rõ hình thức hợp đồng ngay từ đầu**. Khi tuyển dụng hướng dẫn viên, doanh nghiệp nên sử dụng hợp đồng dịch vụ hoặc hợp đồng cộng tác viên thay vì hợp đồng lao động thông thường. Đồng thời, cần xây dựng quy chế hoạt động rõ ràng cho hướng dẫn viên, bao gồm quyền tự chủ về thời gian, phương tiện di chuyển và cách thức thực hiện tour. Việc tuân thủ đúng hình thức hợp đồng giúp doanh nghiệp tránh được rủi ro truy thu bảo hiểm về sau.
 
@@ -58,6 +58,6 @@ Có thể thay đổi hình thức hợp đồng cho các tour tiếp theo, như
 *Nguồn tham khảo: Luật Bảo hiểm xã hội 2014, Luật số 90/2019/QH14*
 
 **Đọc thêm:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
-- [Hướng dẫn hồ sơ hợp thức hóa chi phí tiền lương khi trả lương cho người thân](https://ketoanthuetada.com/huong-dan-ho-so-hop-thuc-hoa-chi-phi-tien-luong-khi-tra-luong-cho-nguoi-than-khi-quyet-toan-thue)
-- [Quy định về số lần và thời hạn tạm ngưng kinh doanh](https://ketoanthuetada.com/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
+- [Hướng dẫn hồ sơ hợp thức hóa chi phí tiền lương khi trả lương cho người thân](https://ketoanthuetada.com/blog/huong-dan-ho-so-hop-thuc-hoa-chi-phi-tien-luong-khi-tra-luong-cho-nguoi-than-khi-quyet-toan-thue)
+- [Quy định về số lần và thời hạn tạm ngưng kinh doanh](https://ketoanthuetada.com/blog/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)

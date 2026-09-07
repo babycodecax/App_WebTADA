@@ -27,7 +27,7 @@ Khi mã số thuế ở trạng thái 06, doanh nghiệp **hoàn toàn không đ
 
 Cách tốt nhất là hoàn thành **tất cả nghĩa vụ thuế trước** khi nộp hồ sơ đề nghị chấm dứt mã số thuế. Cụ thể, doanh nghiệp cần quyết toán thuế các kỳ còn thiếu, nộp đầy đủ tiền thuế nợ, tiền phạt và tiền chậm nộp. Đồng thời, cần đảm bảo địa chỉ trụ sở đăng ký phải chính xác và còn hiện diện tại thời điểm cơ quan thuế kiểm tra. Nếu doanh nghiệp đã chuyển địa chỉ mà chưa cập nhật với cơ quan thuế, cần nộp tờ khai điều chỉnh thông tin đăng ký thuế trong vòng 10 ngày theo quy định tại Điều 35 Luật Quản lý thuế 2019.
 
-## Quy trình chuẩn để đóng mã số thuế đúng cách năm 2026
+## Quy trình chuẩn để đóng mã số thuế đúng cách năm 2026 được thực hiện như thế nào?
 
 Quy trình chuẩn bao gồm 4 bước: (1) Hoàn thành quyết toán thuế các kỳ còn thiếu; (2) Nộp đầy đủ tiền thuế nợ, tiền phạt và tiền chậm nộp; (3) Nộp hồ sơ đề nghị chấm dứt hiệu lực mã số thuế theo Mẫu số 18-ĐK-TCT; (4) Chờ cơ quan thuế xác nhận và ban hành thông báo chấm dứt. Thời gian xử lý thông thường từ 5 đến 15 ngày làm việc kể từ khi nộp đầy đủ hồ sơ hợp lệ. Doanh nghiệp nên theo dõi tiến trình trên hệ thống thuế điện tử để đảm bảo trạng thái được cập nhật đúng hạn.
 
@@ -58,6 +58,6 @@ Có. Nếu doanh nghiệp chưa hoàn thành thủ tục giải thể theo quy �
 *Nguồn tham khảo: Luật Quản lý thuế 38/2019/QH14, Nghị định 125/2020/NĐ-CP, Điều 35 Luật Quản lý thuế 2019*
 
 **Đọc thêm:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
-- [Quy trình giải thể công ty và đóng mã số thuế](https://ketoanthuetada.com/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
-- [Quy định về số lần và thời hạn tạm ngưng kinh doanh của công ty](https://ketoanthuetada.com/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
+- [Quy trình giải thể công ty và đóng mã số thuế](https://ketoanthuetada.com/blog/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
+- [Quy định về số lần và thời hạn tạm ngưng kinh doanh của công ty](https://ketoanthuetada.com/blog/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)

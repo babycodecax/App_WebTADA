@@ -17,19 +17,19 @@ Theo quy định tại Điều 47 Luật Doanh nghiệp 2020, các thành viên 
 
 Nếu sau thời hạn 90 ngày mà bạn vẫn chỉ đóng được 2 tỷ đồng, công ty bắt buộc phải thực hiện thủ tục đăng ký thay đổi vốn điều lệ xuống bằng số vốn thực góp là 2 tỷ đồng. Thời hạn để thực hiện thủ tục này là trong vòng 30 ngày kể từ ngày cuối cùng phải góp đủ phần vốn góp. Việc không thực hiện điều chỉnh vốn điều lệ đúng quy định có thể bị coi là hành vi kê khai khống vốn, vi phạm nghiêm trọng quy định pháp luật.
 
-## Rủi ro pháp lý nếu không điều chỉnh vốn điều lệ đúng hạn
+## Rủi ro pháp lý nếu không điều chỉnh vốn điều lệ đúng hạn là gì?
 
 Về trách nhiệm pháp lý, các thành viên chưa góp đủ vốn phải chịu trách nhiệm tương ứng với tỷ lệ phần vốn góp đã cam kết đối với các nghĩa vụ tài chính của công ty phát sinh trong thời gian trước ngày công ty đăng ký thay đổi vốn điều lệ. Nếu trong thời gian chờ điều chỉnh, công ty phát sinh nợ hoặc nghĩa vụ tài chính, thành viên chưa góp đủ vốn vẫn phải chịu trách nhiệm theo tỷ lệ đã cam kết.
 
 Ngoài ra, theo Điều 204 Luật Doanh nghiệp 2020, hành vi kê khai vốn điều lệ không đúng với thực tế có thể bị xử phạt hành chính. Mức phạt cụ thể tùy thuộc vào mức độ vi phạm và thời gian kéo dài, nhưng có thể lên tới hàng chục triệu đồng.
 
-## Phần chi phí lãi vay bị loại trừ khi tính thuế thu nhập doanh nghiệp
+## Phần chi phí lãi vay bị loại trừ khi tính thuế thu nhập doanh nghiệp được tính như thế nào?
 
 Rủi ro lớn nhất nằm ở phương diện thuế thu nhập doanh nghiệp. Theo quy định tại Điều 8 Luật Quản lý thuế 2019 và Điều 10 Thông tư 78/2026/TT-BTC, phần chi trả lãi tiền vay tương ứng với phần vốn điều lệ còn thiếu theo tiến độ góp vốn sẽ không được tính vào chi phí được trừ khi xác định thu nhập chịu thuế. Điều này có nghĩa là nếu công ty phát sinh khoản vay kinh doanh, cơ quan thuế sẽ loại trừ chi phí lãi vay tương ứng với 3 tỷ đồng tiền vốn còn thiếu, khiến số thuế phải nộp tăng lên đáng kể.
 
 Ví dụ, nếu lãi vay năm là 300 triệu đồng và vốn điều lệ thiếu hụt 3 tỷ trên tổng 5 tỷ (tương đương 60%), thì 60% lãi vay tương đương 180 triệu đồng sẽ bị loại khỏi chi phí được trừ. Điều này trực tiếp làm tăng số thuế TNDN phải nộp của doanh nghiệp.
 
-## Quy trình giảm vốn điều lệ xuống đúng số thực góp
+## Quy trình giảm vốn điều lệ xuống đúng số thực góp được thực hiện ra sao?
 
 Vì vậy, giải pháp tối ưu là bạn nên sớm thực hiện thủ tục giảm vốn điều lệ xuống 2 tỷ đồng tại cơ quan đăng ký kinh doanh để đảm bảo tính minh bạch trong sổ sách kế toán và bảo vệ quyền lợi về chi phí thuế của doanh nghiệp. Quy trình thực hiện như sau:
 
@@ -57,8 +57,14 @@ Thành viên không góp đủ vốn có thể bị buộc chuyển nhượng ph
 
 ---
 
-Đội ngũ Chuyên gia Thuế TADA
+*Đội ngũ Chuyên gia Thuế TADA*
 
-*Cập nhật lần cuối: 15/08/2026 | Nguồn: Điều 47 Luật Doanh nghiệp 2020, Điều 10 Thông tư 78/2026/TT-BTC, Luật Quản lý thuế 2019*
+*Last updated: 15/08/2026*
 
-**Đọc thêm:** [Dịch vụ kế toán thuế TADA](https://ketoanthuetada.com) | [Phân tích rủi ro pháp lý trong giao dịch chuyển nhượng vốn](https://ketoanthuetada.com/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026) | [Phương án xử lý doanh thu chưa kê khai giai đoạn 2023-2025](https://ketoanthuetada.com/phuong-an-xu-ly-doanh-thu-chua-ke-khai-giai-doan-2023-2025) | [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động](https://ketoanthuetada.com/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)
+*Nguồn tham khảo: Điều 47 Luật Doanh nghiệp 2020, Điều 10 Thông tư 78/2026/TT-BTC, Luật Quản lý thuế 2019*
+
+**Đọc thêm:**
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
+- [Phân tích rủi ro pháp lý trong giao dịch chuyển nhượng vốn](https://ketoanthuetada.com/blog/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)
+- [Phương án xử lý doanh thu chưa kê khai giai đoạn 2023-2025](https://ketoanthuetada.com/blog/phuong-an-xu-ly-doanh-thu-chua-ke-khai-giai-doan-2023-2025)
+- [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động](https://ketoanthuetada.com/blog/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)
