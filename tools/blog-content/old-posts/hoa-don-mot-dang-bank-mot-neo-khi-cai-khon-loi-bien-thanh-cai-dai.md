@@ -1,7 +1,7 @@
 ---
 title: "Hóa đơn một đằng, bank một nẻo: Khi cái khôn lỏi biến thành cái dại"
 slug: "hoa-don-mot-dang-bank-mot-neo-khi-cai-khon-loi-bien-thanh-cai-dai"
-summary: "Xuất hóa đơn thấp hơn thực tế để né thuế nhưng sao kê ngân hàng lại khớp đúng giao dịch. Phân tích rủi ro pháp lý, mức phạt và cách xử lý an toàn năm 2026."
+summary: "Xuất hóa đơn thấp hơn thực tế để né thuế nhưng sao kê bank khớp đúng giao dịch. Phân tích rủi ro pháp lý, mức phạt và cách xử lý an toàn 2026."
 published_at: "2026-05-20"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

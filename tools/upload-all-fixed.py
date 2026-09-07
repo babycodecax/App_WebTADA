@@ -2,7 +2,7 @@ import json, os, urllib.request
 
 env_path = 'D:/CodeApp/Projects/App_WebTADA/backend/.env'
 env = {}
-with open(env_path) as f:
+with open(env_path, encoding='utf-8') as f:
     for line in f:
         line = line.strip()
         if line and not line.startswith('#') and '=' in line:

@@ -1,7 +1,7 @@
 ---
 title: "Sếp nộp 247 triệu vào tài khoản công ty năm 2026: Kế toán cần lập hồ sơ, hạch toán và kê khai giao dịch liên kết thế nào cho đúng?"
 slug: "sep-nop-247-trieu-vao-tai-khoan-cong-ty-nam-2026-ke-toan-can-lap-ho-so-hach-toan-va-ke-khai-giao-dich-lien-ket-the-nao-cho-dung"
-summary: "Xử lý nghiệp vụ sếp nộp 247 triệu vào tài khoản công ty năm 2026. Hướng dẫn lập hồ sơ, hạch toán kế toán và kê khai giao dịch liên kết đúng quy định."
+summary: "Xử lý nghiệp vụ sếp nộp 247 triệu vào tài khoản công ty 2026. Hướng dẫn lập hồ sơ, hạch toán kế toán và kê khai giao dịch liên kết."
 published_at: "2026-07-15"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

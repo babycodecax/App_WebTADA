@@ -1,7 +1,7 @@
 ---
 title: "Quy định về số lần và thời hạn tạm ngừng kinh doanh của công ty"
 slug: "quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty"
-summary: "Công ty được tạm ngừng kinh doanh bao nhiêu lần và tối đa bao lâu? Tìm hiểu quy định mới nhất năm 2026 về thời hạn, thủ tục và xử phạt."
+summary: "Công ty được tạm ngừng kinh doanh bao nhiêu lần và tối đa bao lâu? Quy định mới nhất 2026 về thời hạn, thủ tục và xử phạt vi phạm."
 published_at: "2026-07-15"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

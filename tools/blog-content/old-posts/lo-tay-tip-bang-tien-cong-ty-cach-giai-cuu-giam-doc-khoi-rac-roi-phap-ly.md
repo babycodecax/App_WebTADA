@@ -1,7 +1,7 @@
 ---
 title: "Lỡ tay tip bằng tiền công ty: Cách giải cứu Giám đốc khỏi rắc rối pháp lý"
 slug: "lo-tay-tip-bang-tien-cong-ty-cach-giai-cuu-giam-doc-khoi-rac-roi-phap-ly"
-summary: "Giám đốc dùng tiền công ty thanh toán tiền tip có bị coi là lạm dụng tài sản không? Hướng dẫn hoàn trả, hạch toán và tránh phạt thuế theo Luật DN 2020."
+summary: "Giám đốc dùng tiền công ty thanh toán tiền tip karaoke có bị coi là lạm dụng tài sản không? Hướng dẫn hoàn trả, hạch toán và tránh phạt."
 published_at: "2026-06-12"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

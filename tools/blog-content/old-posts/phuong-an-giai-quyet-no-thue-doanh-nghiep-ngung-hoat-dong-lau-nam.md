@@ -1,7 +1,7 @@
 ---
 title: "Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động lâu năm"
 slug: "phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam"
-summary: "Doanh nghiệp thành lập 2009 ngừng hoạt động lâu năm phát hiện nợ thuế? Phương án tra cứu MST, khoanh nợ, xóa nợ quá 10 năm và chấm dứt MST theo quy định 2026."
+summary: "Doanh nghiệp thành lập 2009 ngừng hoạt động lâu năm phát hiện nợ thuế? Phương án tra cứu MST, khoanh nợ, xóa nợ quá 10 năm và chấm dứt."
 published_at: "2026-06-13"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

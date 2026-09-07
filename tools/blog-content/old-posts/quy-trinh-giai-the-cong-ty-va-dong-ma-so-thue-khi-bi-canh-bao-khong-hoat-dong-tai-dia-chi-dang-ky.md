@@ -1,7 +1,7 @@
 ---
 title: "Quy trình giải thể công ty và đóng mã số thuế khi bị cảnh báo không hoạt động tại địa chỉ đăng ký"
 slug: "quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky"
-summary: "Lập công ty từ 2014 nhưng ngừng hoạt động từ 2016, bị cảnh báo không hoạt động tại địa chỉ đăng ký. Hướng dẫn quy trình giải thể và đóng mã số thuế chi tiết."
+summary: "Lập công ty từ 2014 ngừng hoạt động 2016 bị cảnh báo không hoạt động? Hướng dẫn quy trình giải thể và đóng mã số thuế chi tiết."
 published_at: "2026-07-15"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

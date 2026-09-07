@@ -1,7 +1,7 @@
 ---
 title: "Tổng hợp các trường hợp bị tạm hoãn xuất cảnh do nợ thuế từ 2026"
 slug: "tong-hop-cac-truong-hop-bi-tam-hoan-xuat-canh-do-no-thue-tu-2026"
-summary: "Tổng hợp trường hợp bị tạm hoãn xuất cảnh do nợ thuế theo Nghị định 252/2026/NĐ-CP. Cá nhân, chủ hộ kinh doanh cần biết ngưỡng nợ và quy trình xử lý."
+summary: "Tổng hợp trường hợp bị tạm hoãn xuất cảnh do nợ thuế theo Nghị định 252/2026/NĐ-CP. Cá nhân, chủ hộ kinh doanh cần biết ngưỡng nợ."
 published_at: "2026-07-20"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

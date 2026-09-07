@@ -1,7 +1,7 @@
 ---
 title: "Làm Affiliate 2026: Doanh thu bao nhiêu mới phải nộp thuế?"
 slug: "lam-affiliate-2026-doanh-thu-bao-nhieu-moi-phai-nop-thue"
-summary: "Hướng dẫn đầy đủ về nghĩa vụ thuế cho người làm Affiliate năm 2026. Ngưỡng miễn thuế 1 tỷ, thuế suất 7%, khấu trừ tại nguồn và quy định hóa đơn mới nhất."
+summary: "Nghề Affiliate 2026: Doanh thu bao nhiêu mới phải nộp thuế? Ngưỡng miễn thuế 1 tỷ, thuế suất 7%, khấu trừ tại nguồn và quy định hóa đơn."
 published_at: "2026-07-18"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

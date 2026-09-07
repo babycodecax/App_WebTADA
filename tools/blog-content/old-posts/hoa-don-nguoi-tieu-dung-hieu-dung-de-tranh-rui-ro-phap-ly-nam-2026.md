@@ -1,7 +1,7 @@
 ---
 title: "Hóa đơn người tiêu dùng: Hiểu đúng để tránh rủi ro pháp lý năm 2026"
 slug: "hoa-don-nguoi-tieu-dung-hieu-dung-de-tranh-rui-ro-phap-ly-nam-2026"
-summary: "Hướng dẫn lập hóa đơn cho người tiêu dùng cuối cùng theo Nghị định 254/2026. Phân biệt hai trường hợp, quy định giá trị pháp lý và mức phạt khi vi phạm."
+summary: "Hướng dẫn lập hóa đơn cho người tiêu dùng cuối theo Nghị định 254/2026. Phân biệt hai trường hợp, giá trị pháp lý và mức phạt vi phạm."
 published_at: "2026-05-25"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

@@ -1,7 +1,7 @@
 ---
 title: "Tiền ăn xăng xe chi cố định: Coi chừng mất tiền thuế oan vì ngại tính theo ngày công"
 slug: "tien-an-xang-xe-chi-co-dinh-coi-chung-mat-tien-thue-oan-vi-ngai-tinh-theo-ngay-cong"
-summary: "Chi phụ cấp tiền ăn, xăng xe cố định mỗi tháng có bị tính thuế TNCN không? Tìm hiểu quy định năm 2026 và cách chi trả an toàn cho doanh nghiệp."
+summary: "Chi phụ cấp tiền ăn, xăng xe cố định mỗi tháng có bị tính thuế TNCN không? Quy định năm 2026 và cách chi trả an toàn cho DN."
 published_at: "2026-07-15"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

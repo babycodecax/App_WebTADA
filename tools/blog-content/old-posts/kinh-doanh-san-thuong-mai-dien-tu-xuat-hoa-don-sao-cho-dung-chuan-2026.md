@@ -1,7 +1,7 @@
 ---
 title: "Kinh doanh sàn thương mại điện tử: Xuất hóa đơn sao cho đúng chuẩn 2026?"
 slug: "kinh-doanh-san-thuong-mai-dien-tu-xuat-hoa-don-sao-cho-dung-chuan-2026"
-summary: "Hướng dẫn xuất hóa đơn khi kinh doanh trên Shopee, TikTok Shop năm 2026. Quy định bắt buộc, thời điểm lập hóa đơn và khấu trừ thuế tại nguồn theo Nghị định 254."
+summary: "Hướng dẫn xuất hóa đơn khi kinh doanh trên Shopee, TikTok Shop 2026. Quy định bắt buộc, thời điểm lập hóa đơn và khấu trừ tại nguồn."
 published_at: "2026-06-15"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"
