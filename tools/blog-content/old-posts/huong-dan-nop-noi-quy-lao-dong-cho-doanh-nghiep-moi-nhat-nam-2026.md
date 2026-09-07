@@ -78,7 +78,7 @@ Doanh nghiệp có chi nhánh, văn phòng đại diện phải nộp Nội quy 
 *Nguồn tham khảo: Bộ luật Lao động 2019, Điều 25 Nghị định 283/2026/NĐ-CP, Cổng Dịch công quốc gia*
 
 **Đọc thêm:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
-- [Hướng dẫn đăng ký sử dụng hóa đơn điện tử](https://ketoanthuetada.com/huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026)
-- [Thay đổi trạng thái mã số thuế từ 03 sang 06](https://ketoanthuetada.com/chuyen-trang-thai-ma-so-thue-tu-03-sang-06)
-- [Quy định tạm ngừng kinh doanh của công ty](https://ketoanthuetada.com/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
+- [Hướng dẫn đăng ký sử dụng hóa đơn điện tử](https://ketoanthuetada.com/blog/huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026)
+- [Thay đổi trạng thái mã số thuế từ 03 sang 06](https://ketoanthuetada.com/blog/chuyen-trang-thai-ma-so-thue-tu-03-sang-06)
+- [Quy định tạm ngừng kinh doanh của công ty](https://ketoanthuetada.com/blog/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)

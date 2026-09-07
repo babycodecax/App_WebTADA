@@ -56,7 +56,7 @@ Hồ sơ đăng ký đầy đủ và hợp lệ sẽ được xử lý trong th�
 *Nguồn tham khảo: Nghị định 254/2026/NĐ-CP, Thông tư 91/2026/TT-BTC, Luật Giao dịch điện tử*
 
 **Đọc thêm:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
-- [Kế hoạch xuất hóa đơn điện tử đúng quy định năm 2026 và lộ trình gỡ bỏ nỗi lo xử phạt](https://ketoanthuetada.com/ke-hoach-xuat-hoa-don-dien-tu-dung-quy-dinh-nam-2026-va-lo-trinh-go-bo-noi-lo-xu-phat)
-- [Hóa đơn người tiêu dùng: Hiểu đúng để tránh rủi ro pháp lý năm 2026](https://ketoanthuetada.com/hoa-don-nguoi-tieu-dung-hieu-dung-de-tranh-rui-ro-phap-ly-nam-2026)
-- [Kinh doanh sàn thương mại điện tử: Xuất hóa đơn sao cho đúng chuẩn 2026](https://ketoanthuetada.com/kinh-doanh-san-thuong-mai-dien-tu-xuat-hoa-don-sao-cho-dung-chuan-2026)
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
+- [Kế hoạch xuất hóa đơn điện tử đúng quy định năm 2026 và lộ trình gỡ bỏ nỗi lo xử phạt](https://ketoanthuetada.com/blog/ke-hoach-xuat-hoa-don-dien-tu-dung-quy-dinh-nam-2026-va-lo-trinh-go-bo-noi-lo-xu-phat)
+- [Hóa đơn người tiêu dùng: Hiểu đúng để tránh rủi ro pháp lý năm 2026](https://ketoanthuetada.com/blog/hoa-don-nguoi-tieu-dung-hieu-dung-de-tranh-rui-ro-phap-ly-nam-2026)
+- [Kinh doanh sàn thương mại điện tử: Xuất hóa đơn sao cho đúng chuẩn 2026](https://ketoanthuetada.com/blog/kinh-doanh-san-thuong-mai-dien-tu-xuat-hoa-don-sao-cho-dung-chuan-2026)
