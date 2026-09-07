@@ -1,7 +1,7 @@
 ---
 title: "Kế hoạch xuất hóa đơn điện tử đúng quy định năm 2026 và lộ trình gỡ bỏ nỗi lo xử phạt"
 slug: "ke-hoach-xuat-hoa-don-dien-tu-dung-quy-dinh-nam-2026-va-lo-trinh-go-bo-noi-lo-xu-phat"
-summary: "Hướng dẫn xuất hóa đơn điện tử đúng thời điểm, đúng nội dung theo Nghị định 254/2026, giúp doanh nghiệp tránh xử phạt lên đến 80 triệu đồng và các rủi ro truy cứu hình sự."
+summary: "Hướng dẫn xuất hóa đơn điện tử đúng thời điểm, đúng nội dung theo Nghị định 254/2026, giúp doanh nghiệp tránh xử phạt lên đến 80 triệu đồng và các rủi ro..."
 published_at: "2026-08-15"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"
@@ -57,8 +57,8 @@ Từ năm 2026, hầu hết các doanh nghiệp và hộ kinh doanh đều phả
 
 *Nguồn tham khảo: Nghị định 254/2026/NĐ-CP, Thông tư 78/2026/TT-BTC, Tổng cục Thuế*
 
-**Đọc thêm:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
-- [Lộ trình xử lý rủi ro hóa đơn N06](https://ketoanthuetada.com/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026)
-- [Kinh doanh sàn thương mại điện tử xuất hóa đơn](https://ketoanthuetada.com/kinh-doanh-san-thuong-mai-dien-tu-xuat-hoa-don-sao-cho-dung-chuan-2026)
-- [Phân tích rủi ro pháp lý trong giao dịch chuyển nhượng vốn](https://ketoanthuetada.com/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)
+**Bài viết liên quan:**
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
+- [Lộ trình xử lý rủi ro hóa đơn N06](https://ketoanthuetada.com/blog/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026)
+- [Kinh doanh sàn thương mại điện tử xuất hóa đơn](https://ketoanthuetada.com/blog/kinh-doanh-san-thuong-mai-dien-tu-xuat-hoa-don-sao-cho-dung-chuan-2026)
+- [Phân tích rủi ro pháp lý trong giao dịch chuyển nhượng vốn](https://ketoanthuetada.com/blog/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)

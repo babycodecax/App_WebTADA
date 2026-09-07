@@ -59,7 +59,7 @@ Có. Theo Điều 28, Nghị định 252/2026/NĐ-CP, chủ sở hữu có nợ 
 
 *Nguồn tham khảo: Luật Doanh nghiệp số 59/2020/QH14, Điều 212, 213 Luật Doanh nghiệp, Điều 22 Luật Quản lý thuế số 38/2019/QH14, Điều 28 Nghị định 252/2026/NĐ-CP, Bộ luật Hình sự 2015, Thông tư 90/2026/TT-BTC*
 
-**Đọc thêm:**
-- [Quy trình giải thể công ty và đóng mã số thuế khi bị cảnh báo không hoạt động](https://ketoanthuetada.com/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
-- [Tổng hợp các trường hợp bị tạm hoãn xuất cảnh do nợ thuế từ 2026](https://ketoanthuetada.com/tong-hop-cac-truong-hop-bi-tam-hoan-xuat-canh-do-no-thue-tu-2026)
-- [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động lâu năm](https://ketoanthuetada.com/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)
+**Bài viết liên quan:**
+- [Quy trình giải thể công ty và đóng mã số thuế khi bị cảnh báo không hoạt động](https://ketoanthuetada.com/blog/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
+- [Tổng hợp các trường hợp bị tạm hoãn xuất cảnh do nợ thuế từ 2026](https://ketoanthuetada.com/blog/tong-hop-cac-truong-hop-bi-tam-hoan-xuat-canh-do-no-thue-tu-2026)
+- [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động lâu năm](https://ketoanthuetada.com/blog/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)

@@ -2,7 +2,7 @@ import json, os, urllib.request
 
 env_path = 'D:/CodeApp/Projects/App_WebTADA/backend/.env'
 env = {}
-with open(env_path, encoding='utf-8') as f:
+with open(env_path) as f:
     for line in f:
         line = line.strip()
         if line and not line.startswith('#') and '=' in line:
@@ -12,7 +12,7 @@ with open(env_path, encoding='utf-8') as f:
 outdir = 'D:/CodeApp/Projects/App_WebTADA/tools/blog-content/old-posts'
 ok = 0
 fail = 0
-for fname in os.listdir(outdir):
+for fname in sorted(os.listdir(outdir)):
     if not fname.endswith('.md'): continue
     slug = fname.replace('.md','')
     filepath = os.path.join(outdir, fname)
