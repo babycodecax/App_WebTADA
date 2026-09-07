@@ -13,7 +13,7 @@ Chào các bạn, hôm nay chúng ta sẽ cùng nói về một chiêu thức m�
 
 ## Xuất hóa đơn thấp hơn số tiền nhận thực tế có vi phạm pháp luật không?
 
-Hoàn toàn vi phạm. Bản chất của hành vi này là kê khai không trung thực, vi phạm nghiêm trọng Điều 22, Luật Quản lý thuế số 38/2019/QH14. Trong năm 2026, dấu vết số là thứ không thể xóa nhòa. Theo quy định hiện hành, các ngân hàng thương mại có trách nhiệm cung cấp dữ liệu giao dịch cho cơ quan thuế. Chỉ cần một thao tác đối soát chéo đơn giản trên hệ thống quản lý rủi ro tự động, sự vênh lệch giữa hóa đơn và sao kê sẽ hiện ra ngay lập tức. Việc cố tình ghi giá trị trên hóa đơn thấp hơn giá thực tế chính là hành vi sử dụng không hợp pháp hóa đơn và là biểu hiện rõ ràng của tội trốn thuế.
+Hoàn toàn vi phạm. Hành vi kê khai không trung thực vi phạm Điều 22, Luật Quản lý thuế số 38/2019/QH14. Năm 2026, ngân hàng thương mại có trách nhiệm cung cấp dữ liệu giao dịch cho cơ quan thuế, nên sự vênh lệch giữa hóa đơn và sao kê sẽ bị phát hiện ngay qua hệ thống quản lý rủi ro tự động. Cố tình ghi giá trị trên hóa đơn thấp hơn giá thực tế là hành vi sử dụng không hợp pháp hóa đơn, cấu thành tội trốn thuế theo quy định hiện hành.
 
 ## Rủi ro pháp lý lớn nhất khi hóa đơn và sao kê không khớp là gì?
 

@@ -29,7 +29,7 @@ Từ sau ngày 01/07/2025, số định danh cá nhân trên thẻ căn cước 
 
 ## Người làm Affiliate có bắt buộc phải xuất hóa đơn không?
 
-Trường hợp doanh thu Affiliate của bạn đạt mốc từ 1 tỷ đồng trở lên, bạn bắt buộc phải áp dụng hóa đơn điện tử được khởi tạo từ máy tính tiền có kết nối chuyển dữ liệu với cơ quan thuế theo Nghị định 254/2026/NĐ-CP. Đối với doanh thu dưới 1 tỷ đồng, bạn vẫn cần giữ chứng từ chuyển khoản và hợp đồngaffiliate làm căn cứ khai thuế nếu phát sinh yêu cầu từ cơ quan thuế.
+Trường hợp doanh thu Affiliate của bạn đạt mốc từ 1 tỷ đồng trở lên, bạn bắt buộc phải áp dụng hóa đơn điện tử được khởi tạo từ máy tính tiền có kết nối chuyển dữ liệu với cơ quan thuế theo Nghị định 254/2026/NĐ-CP. Đối với doanh thu dưới 1 tỷ đồng, bạn vẫn cần giữ chứng từ chuyển khoản và hợp đồng affiliate làm căn cứ khai thuế nếu phát sinh yêu cầu từ cơ quan thuế.
 
 ---
 
