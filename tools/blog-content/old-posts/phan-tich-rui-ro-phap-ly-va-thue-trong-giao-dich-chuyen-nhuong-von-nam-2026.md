@@ -1,7 +1,7 @@
 ---
 title: "Phân tích rủi ro pháp lý và thuế trong giao dịch chuyển nhượng vốn năm 2026"
 slug: "phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026"
-summary: "Chuyển nhượng vốn 5 tỷ có bị truy thu thuế không? Phân tích rủi ro pháp lý từ Luật DN, nghĩa vụ TNCN và cách xử lý an toàn năm 2026."
+summary: "Chuyển nhượng vốn 5 tỷ có bị truy thu thuế không? Phân tích rủi ro pháp lý từ Luật Doanh nghiệp, nghĩa vụ TNCN và cách xử lý an toàn theo quy định 2026."
 published_at: "2026-06-16"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

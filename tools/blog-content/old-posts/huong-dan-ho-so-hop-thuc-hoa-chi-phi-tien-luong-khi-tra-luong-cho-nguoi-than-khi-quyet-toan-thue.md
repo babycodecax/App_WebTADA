@@ -1,7 +1,7 @@
 ---
 title: "Hướng dẫn hồ sơ hợp thức hóa chi phí tiền lương khi trả lương cho người thân khi quyết toán thuế"
 slug: "huong-dan-ho-so-hop-thuc-hoa-chi-phi-tien-luong-khi-tra-luong-cho-nguoi-than-khi-quyet-toan-thue"
-summary: "Trả lương cho người thân trong công ty TNHH cần hồ sơ gì để hợp thức hóa chi phí? Hướng dẫn hợp đồng, bảng chấm công và bảo hiểm 2026."
+summary: "Trả lương cho vợ chồng, ba mẹ trong công ty TNHH cần hồ sơ gì để hợp thức hóa chi phí? Hướng dẫn hợp đồng, bảng chấm công và bảo hiểm năm 2026."
 published_at: "2026-06-10"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

@@ -1,7 +1,7 @@
 ---
 title: "Quy định về số lần và thời hạn tạm ngừng kinh doanh của công ty"
 slug: "quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty"
-summary: "Công ty được tạm ngừng kinh doanh bao nhiêu lần và tối đa bao lâu? Quy định mới nhất 2026 về thời hạn, thủ tục và xử phạt vi phạm."
+summary: "Công ty được tạm ngừng kinh doanh bao nhiêu lần và tối đa bao lâu? Tìm hiểu quy định mới nhất năm 2026 về thời hạn, thủ tục và xử phạt vi phạm."
 published_at: "2026-07-15"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"
@@ -60,3 +60,4 @@ Có. Theo Luật Quản lý thuế số 38/2019/QH14, doanh nghiệp tạm ngừ
 **Bài viết liên quan:**
 - [Tóm tắt các rủi ro và chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/blog/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)
 - [Quy trình giải thể công ty và đóng mã số thuế](https://ketoanthuetada.com/blog/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
+- [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động lâu năm](https://ketoanthuetada.com/blog/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)

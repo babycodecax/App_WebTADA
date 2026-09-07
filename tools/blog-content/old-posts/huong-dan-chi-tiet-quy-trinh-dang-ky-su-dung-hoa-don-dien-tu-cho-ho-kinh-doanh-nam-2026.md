@@ -1,7 +1,7 @@
 ---
 title: "Hướng dẫn chi tiết quy trình đăng ký sử dụng hóa đơn điện tử cho hộ kinh doanh năm 2026"
 slug: "huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026"
-summary: "Hướng dẫn đăng ký hóa đơn điện tử cho hộ kinh doanh 2026 theo Nghị định 254 và Thông tư 91. Đối tượng, điều kiện, quy trình 3 bước."
+summary: "Hướng dẫn đăng ký hóa đơn điện tử cho hộ kinh doanh năm 2026 theo Nghị định 254 và Thông tư 91. Đối tượng áp dụng, điều kiện và quy trình 3 bước."
 published_at: "2026-06-01"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

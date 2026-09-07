@@ -1,7 +1,7 @@
 ---
 title: "Quản lý hóa đơn đầu vào cho hộ kinh doanh doanh thu dưới 1 tỷ đồng"
 slug: "quan-ly-hoa-don-dau-vao-cho-ho-kinh-doanh-doanh-thu-duoi-1-ty-dong"
-summary: "Hộ kinh doanh dưới 1 tỷ doanh thu không có hóa đơn đầu vào có sao không? Quy định, rủi ro pháp lý và cách hợp thức hóa chứng từ an toàn."
+summary: "Hộ kinh doanh dưới 1 tỷ doanh thu không có hóa đơn đầu vào có sao không? Tìm hiểu quy định, rủi ro pháp lý và cách hợp thức hóa chứng từ an toàn năm 2026."
 published_at: "2026-07-15"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

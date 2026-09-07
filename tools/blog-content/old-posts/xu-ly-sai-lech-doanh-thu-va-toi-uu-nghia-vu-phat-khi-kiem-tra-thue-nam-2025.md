@@ -1,7 +1,7 @@
 ---
 title: "Xử lý sai lệch doanh thu và tối ưu nghĩa vụ phạt khi kiểm tra thuế năm 2025"
 slug: "xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025"
-summary: "Kê khai doanh thu thừa tháng này thiếu tháng kia khi kiểm tra thuế 2025? Lộ trình xử lý, bù trừ tiền thuế và cách giảm nhẹ phạt."
+summary: "Kê khai doanh thu tháng thừa tháng thiếu so với thực tế khi kiểm tra thuế 2025? Lộ trình xử lý, bù trừ tiền thuế và cách giảm nhẹ phạt theo quy định."
 published_at: "2026-06-14"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

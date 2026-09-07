@@ -1,7 +1,7 @@
 ---
 title: "Lộ trình xử lý rủi ro hóa đơn N06 và giải tỏa áp lực thuế năm 2026"
 slug: "lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026"
-summary: "Doanh nghiệp đối mặt truy thu thuế 3 tỷ từ 2021-2024 do hóa đơn N06? Lộ trình xử lý, hồ sơ chứng minh giao dịch thật và giải tỏa áp lực."
+summary: "Doanh nghiệp đối mặt truy thu thuế 3 tỷ từ 2021-2024 do hóa đơn N06 của bên bán bỏ địa chỉ? Lộ trình xử lý, hồ sơ chứng minh và giải tỏa áp lực thuế 2026."
 published_at: "2026-06-14"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

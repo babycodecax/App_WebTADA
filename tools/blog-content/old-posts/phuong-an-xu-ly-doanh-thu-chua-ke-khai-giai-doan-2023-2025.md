@@ -1,7 +1,7 @@
 ---
 title: "Phương án xử lý doanh thu chưa kê khai giai đoạn 2023-2025"
 slug: "phuong-an-xu-ly-doanh-thu-chua-ke-khai-giai-doan-2023-2025"
-summary: "Doanh thu chưa kê khai giai đoạn 2023-2025 xử lý thế nào? Phương án tự quyết toán, tính tiền chậm nộp và nộp dần thuế nợ theo quy định 2026."
+summary: "Có 5 tỷ doanh thu chưa kê khai mỗi năm từ 2023-2025, giờ xử lý thế nào? Phương án tự quyết toán, tính tiền chậm nộp và nộp dần thuế nợ theo quy định 2026."
 published_at: "2026-06-11"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

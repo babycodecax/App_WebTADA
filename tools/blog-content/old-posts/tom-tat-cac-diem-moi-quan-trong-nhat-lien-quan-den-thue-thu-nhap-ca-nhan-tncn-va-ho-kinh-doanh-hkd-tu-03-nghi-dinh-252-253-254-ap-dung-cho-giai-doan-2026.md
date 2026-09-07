@@ -1,7 +1,7 @@
 ---
 title: "Tóm tắt các điểm mới quan trọng nhất liên quan đến Thuế TNCN và Hộ kinh doanh từ 03 Nghị định 252, 253, 254 áp dụng cho giai đoạn 2026"
 slug: "tom-tat-cac-diem-moi-quan-trong-nhat-lien-quan-den-thue-thu-nhap-ca-nhan-tncn-va-ho-kinh-doanh-hkd-tu-03-nghi-dinh-252-253-254-ap-dung-cho-giai-doan-2026"
-summary: "Tóm tắt 3 Nghị định 252, 253, 254 về thuế TNCN và hộ kinh doanh 2026. Mức giảm trừ gia cảnh mới, phân bậc thuế HKD, quy định hóa đơn."
+summary: "Tóm tắt 3 Nghị định 252, 253, 254 về thuế TNCN và hộ kinh doanh năm 2026. Mức giảm trừ gia cảnh mới, phân bậc thuế HKD, quy định hóa đơn điện tử."
 published_at: "2026-07-15"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

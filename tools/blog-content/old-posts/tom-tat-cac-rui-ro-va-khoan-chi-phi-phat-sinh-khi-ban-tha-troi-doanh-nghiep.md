@@ -1,7 +1,7 @@
 ---
 title: "Tóm tắt các rủi ro và khoản chi phí phát sinh khi bạn \"thả trôi\" doanh nghiệp"
 slug: "tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep"
-summary: "Thả trôi doanh nghiệp không giải thể sẽ gặp rủi ro gì? Phân tích các khoản phạt, lãi chậm nộp, trách nhiệm hình sự và hậu quả pháp lý."
+summary: "Thả trôi doanh nghiệp không giải thể sẽ gặp rủi ro gì? Phân tích chi tiết các khoản phạt, lãi chậm nộp, trách nhiệm hình sự và hậu quả pháp lý theo quy định."
 published_at: "2026-07-15"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"

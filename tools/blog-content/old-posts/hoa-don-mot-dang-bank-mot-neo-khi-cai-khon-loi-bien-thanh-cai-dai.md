@@ -1,7 +1,7 @@
 ---
 title: "Hóa đơn một đằng, bank một nẻo: Khi cái khôn lỏi biến thành cái dại"
 slug: "hoa-don-mot-dang-bank-mot-neo-khi-cai-khon-loi-bien-thanh-cai-dai"
-summary: "Xuất hóa đơn thấp hơn thực tế để né thuế nhưng sao kê bank khớp đúng giao dịch. Phân tích rủi ro pháp lý, mức phạt và cách xử lý an toàn 2026."
+summary: "Xuất hóa đơn thấp hơn thực tế để né thuế nhưng sao kê ngân hàng khớp đúng giao dịch. Phân tích rủi ro pháp lý, mức phạt và cách xử lý an toàn năm 2026."
 published_at: "2026-05-20"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"
@@ -51,7 +51,7 @@ Bạn cần lập hóa đơn điều chỉnh hoặc hóa đơn thay thế theo M
 
 *Nguồn tham khảo: Điều 22 Luật Quản lý thuế số 38/2019/QH14, Nghị định 253/2026/NĐ-CP, Nghị định 254/2026/NĐ-CP, Điều 200 Bộ luật Hình sự 2015*
 
-**Bài viết liên quan:**
-- [Hóa đơn người tiêu dùng: Hiểu đúng để tránh rủi ro pháp lý năm 2026](https://ketoanthuetada.com/blog/hoa-don-nguoi-tieu-dung-hieu-dung-de-tranh-rui-ro-phap-ly-nam-2026)
-- [Phân tích rủi ro pháp lý và thuế trong giao dịch chuyển nhượng vốn năm 2026](https://ketoanthuetada.com/blog/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)
-- [Lộ trình xử lý rủi ro hóa đơn N06 và giải tỏa áp lực thuế năm 2026](https://ketoanthuetada.com/blog/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026)
+**Đọc thêm:**
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
+- [Hóa đơn người tiêu dùng: Hiểu đúng để tránh rủi ro pháp lý năm 2026](https://ketoanthuetada.com/hoa-don-nguoi-tieu-dung-hieu-dung-de-tranh-rui-ro-phap-ly-nam-2026)
+- [Phân tích rủi ro pháp lý và thuế trong giao dịch chuyển nhượng vốn năm 2026](https://ketoanthuetada.com/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)

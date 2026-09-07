@@ -1,4 +1,10 @@
-import json, os, urllib.request
+import json
+import os
+import urllib.request
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 env_path = 'D:/CodeApp/Projects/App_WebTADA/backend/.env'
 env = {}
@@ -13,8 +19,9 @@ outdir = 'D:/CodeApp/Projects/App_WebTADA/tools/blog-content/old-posts'
 ok = 0
 fail = 0
 for fname in sorted(os.listdir(outdir)):
-    if not fname.endswith('.md'): continue
-    slug = fname.replace('.md','')
+    if not fname.endswith('.md'):
+        continue
+    slug = fname.replace('.md', '')
     filepath = os.path.join(outdir, fname)
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()

@@ -1,7 +1,7 @@
 ---
 title: "Shopee nổ đơn 2 tỷ và cái quên đắt giá: Đường nào cho hộ kinh doanh?"
 slug: "shopee-no-don-2-ty-va-cai-quen-dat-gia-duong-nao-cho-ho-kinh-doanh"
-summary: "Bán hàng trên Shopee doanh thu 2 tỷ mà quên xuất hóa đơn. Phân tích rủi ro pháp lý, mức phạt và cách xử lý an toàn cho hộ kinh doanh."
+summary: "Bán hàng trên Shopee doanh thu 2 tỷ mà quên xuất hóa đơn. Phân tích rủi ro pháp lý, mức phạt và cách xử lý an toàn cho hộ kinh doanh năm 2026."
 published_at: "2026-07-15"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"
