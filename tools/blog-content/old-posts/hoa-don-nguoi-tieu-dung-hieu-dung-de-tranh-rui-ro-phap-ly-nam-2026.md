@@ -52,6 +52,7 @@ Hành vi không lập hóa đơn khi bán hàng hóa, bao gồm hàng khuyến m
 *Nguồn tham khảo: Nghị định 254/2026/NĐ-CP, Nghị định 310/2025/NĐ-CP, Luật Quản lý thuế số 38/2019/QH14*
 
 **Đọc thêm:**
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
 - [Kinh doanh sàn thương mại điện tử: Xuất hóa đơn sao cho đúng chuẩn 2026](https://ketoanthuetada.com/kinh-doanh-san-thuong-mai-dien-tu-xuat-hoa-don-sao-cho-dung-chuan-2026)
 - [Quản lý hóa đơn đầu vào cho hộ kinh doanh doanh thu dưới 1 tỷ đồng](https://ketoanthuetada.com/quan-ly-hoa-don-dau-vao-cho-ho-kinh-doanh-doanh-thu-duoi-1-ty-dong)
 - [Hóa đơn một đằng, bank một nẻo: Khi cái khôn lỏi biến thành cái dại](https://ketoanthuetada.com/hoa-don-mot-dang-bank-mot-neo-khi-cai-khon-loi-bien-thanh-cai-dai)
