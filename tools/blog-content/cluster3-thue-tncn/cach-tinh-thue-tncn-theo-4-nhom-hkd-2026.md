@@ -9,84 +9,88 @@ status: "published"
 
 # Cách tính thuế TNCN theo 4 nhóm hộ kinh doanh 2026
 
-Hộ kinh doanh cá thể phải chịu thuế thu nhập cá nhân (TNCN) theo 4 nhóm dựa trên doanh thu hàng năm. Việc phân nhóm quyết định mức thuế bạn phải nộp, từ miễn thuế đến 10%. Theo Luật Thuế TNCN số 04/2007/QH12 (sửa đổi, bổ sung) và các Nghị định hướng dẫn hiện hành, hộ kinh doanh cá thể chưa áp dụng hóa đơn, chứng từ theo phương pháp kê khai thực tế sẽ thuộc diện áp dụng tính thuế theo doanh thu.
+Hộ kinh doanh cá thể phải chịu thuế thu nhập cá nhân (TNCN) theo 4 nhóm dựa trên doanh thu hàng năm. Việc phân nhóm quyết định phương thức kê khai, mức thuế và tỷ lệ áp dụng. Theo **Nghị định 141/2026/NĐ-CP** và **Thông tư 152/2025/TT-BTC**, hộ kinh doanh cá thể được phân thành 4 nhóm dựa trên tổng doanh thu năm trước đó.
 
 Bài viết này giúp bạn xác định mình thuộc nhóm nào, cách tính số thuế phải nộp chính xác, và những lưu ý quan trọng khi quyết toán.
 
 ## Hộ kinh doanh 4 nhóm là gì và được phân loại dựa trên cơ sở nào?
 
-Phân loại 4 nhóm hộ kinh doanh dựa trên **doanh thu hàng năm** — không phân biệt ngành nghề hay quy mô vốn. Theo Điều 3 Luật Thuế TNCN, hộ kinh doanh cá thể (bao gồm cá nhân, nhóm cá nhân, hộ gia đình kinh doanh) chịu thuế TNCN trên doanh thu bán hàng hóa hoặc cung cấp dịch vụ.
+Phân loại 4 nhóm hộ kinh doanh dựa trên **doanh thu hàng năm** -- không phân biệt ngành nghề hay quy mô vốn. Theo Điều 3 Luật Thuế TNCN và Nghị định 141/2026/NĐ-CP, hộ kinh doanh cá thể (bao gồm cá nhân, nhóm cá nhân, hộ gia đình kinh doanh) chịu thuế TNCN trên doanh thu bán hàng hóa hoặc cung cấp dịch vụ.
 
-4 nhóm được quy định rõ tại khoản 1 Điều 11 Thông tư 92/2015/TT-BTC (hướng dẫn Luật Thuế TNCN) và tiếp tục áp dụng trong giai đoạn 2026:
+4 nhóm được quy định rõ tại Thông tư 92/2015/TT-BTC (hướng dẫn Luật Thuế TNCN) và tiếp tục áp dụng trong giai đoạn 2026:
 
-- **Nhóm 1:** Doanh thu từ 100 triệu/năm trở xuống
-- **Nhóm 2:** Doanh thu trên 100 triệu đến 300 triệu/năm
-- **Nhóm 3:** Doanh thu trên 300 triệu đến 500 triệu/năm
-- **Nhóm 4:** Doanh thu trên 500 triệu/năm
+- **Nhóm 1:** Doanh thu từ 1 tỷ đồng/năm trở xuống -- **thuế khoán**
+- **Nhóm 2:** Doanh thu trên 1 tỷ đến 3 tỷ đồng/năm -- kê khai theo quý
+- **Nhóm 3:** Doanh thu trên 3 tỷ đến 50 tỷ đồng/năm -- kê khai theo tháng
+- **Nhóm 4:** Doanh thu trên 50 tỷ đồng/năm -- kê khai theo tháng
 
 Lưu ý: Doanh thu ở đây là tổng doanh thu hàng năm, bao gồm cả tiền bán hàng và các khoản thu liên quan đến hoạt động kinh doanh, được xác định theo hóa đơn, sổ sách, hoặc biên lai thu tiền.
 
 ## Mức thuế suất TNCN cho từng nhóm hộ kinh doanh là bao nhiêu?
 
-### Nhóm 1: Doanh thu từ 100 triệu/năm trở xuống — Miễn thuế
+### Nhóm 1: Doanh thu từ 1 tỷ/năm trở xuống -- Miễn thuế (khoán)
 
-Hộ kinh doanh có tổng doanh thu năm không vượt quá 100 triệu đồng được **miễn nộp thuế TNCN**. Đây là nhóm ưu đãi dành cho hộ kinh doanh nhỏ lẻ, buôn bán nhỏ.
+Hộ kinh doanh có tổng doanh thu năm không vượt quá 1 tỷ đồng được **miễn nộp thuế TNCN và GTGT theo kê khai**. Đây là nhóm ưu đãi dành cho hộ kinh doanh nhỏ lẻ. Tuy nhiên, hộ thuộc diện thuế khoán đã bao gồm TNCN trong khoản thuế cố định hàng tháng.
 
-**Ví dụ:** Chị Lan bán rau tại chợ, tổng doanh thu năm 2025 là 85 triệu đồng. Chị thuộc nhóm 1 và không phải nộp thuế TNCN.
+**Ví dụ:** Chị Lan bán rau tại chợ, tổng doanh thu năm 2025 là 850 triệu đồng. Chị thuộc nhóm 1 và được miễn TNCN, GTGT theo kê khai. Nếu áp dụng thuế khoán, chị đóng khoản thuế cố định hàng tháng do Chi cục Thuế ấn định.
 
-Tuy nhiên, hộ kinh doanh nhóm 1 vẫn phải thực hiện **kê khai thuế** hàng quý nếu có phát sinh doanh thu. Việc miễn thuế không đồng nghĩa với việc miễn nghĩa vụ kê khai — bạn cần nộp tờ khai cho Chi cục Thuế để được miễn.
+### Nhóm 2: Doanh thu trên 1 tỷ đến 3 tỷ/năm -- Kê khai theo quý
 
-### Nhóm 2: Doanh thu trên 100 triệu đến 300 triệu/năm — Thuế suất 5%
+Hộ kinh doanh nhóm 2 kê khai TNCN theo tỷ lệ phần trăm trên doanh thu thực tế từng quý. Thuế suất TNCN theo ngành nghề:
 
-Thuế TNCN = Doanh thu x 5%
+| Ngành nghề kinh doanh | Tỷ lệ TNCN |
+|---|---|
+| Phân phối hàng hóa (bán buôn, bán lẻ) | 0,5% |
+| Sản xuất, chế biến hàng hóa | 1,5% |
+| Dịch vụ (ăn uống, tư vấn, vận tải, đào tạo...) | 2% |
+| Cho thuê bất động sản | 5% |
+| Cho thuê xe, phương tiện vận tải | 3% |
 
-**Ví dụ:** Anh Minh mở quán cà phê, doanh thu năm 2025 là 250 triệu đồng. Số thuế phải nộp: 250.000.000 x 5% = 12.500.000 đồng.
+Thuế TNCN = Doanh thu kỳ x Tỷ lệ TNCN theo ngành nghề.
 
-Đây là mức thuế thấp nhất trong các nhóm phải nộp, phù hợp với hộ kinh doanh quy mô nhỏ.
+**Ví dụ:** Anh Minh mở quán cà phê, doanh thu năm 2025 là 1,5 tỷ đồng → nhóm 2. Quý 1/2026 doanh thu = 400 triệu. Thuế TNCN = 400.000.000 x 2% = 8.000.000 đồng.
 
-### Nhóm 3: Doanh thu trên 300 triệu đến 500 triệu/năm — Thuế suất 7%
+### Nhóm 3: Doanh thu trên 3 tỷ đến 50 tỷ/năm -- Kê khai theo tháng
 
-Thuế TNCN = Doanh thu x 7%
+Nhóm 3 phải kê khai cả GTGT và TNCN theo tháng. Phương pháp tính TNCN tương tự nhóm 2 (tỷ lệ phần trăm trên doanh thu), nhưng tần suất kê khai cao hơn.
 
-**Ví dụ:** Cô Hương mở tiệm may, doanh thu năm 2025 là 420 triệu đồng. Số thuế phải nộp: 420.000.000 x 7% = 29.400.000 đồng.
+**Ví dụ:** Cô Hương kinh doanh dịch vụ tư vấn, doanh thu tháng 1/2026 = 3 tỷ. Thuế TNCN = 3.000.000.000 x 2% = 60.000.000 đồng.
 
-### Nhóm 4: Doanh thu trên 500 triệu/năm — Thuế suất 10%
+### Nhóm 4: Doanh thu trên 50 tỷ/năm -- Hộ kinh doanh lớn
 
-Thuế TNCN = Doanh thu x 10%
+Nhóm 4 áp dụng quy định tương tự nhóm 3 nhưng áp dụng cho hộ kinh doanh có doanh thu rất lớn. Ở quy mô này, hộ kinh doanh thường phải tuân thủ các yêu cầu kế toán nghiêm ngặt hơn.
 
-**Ví dụ:** Anh Tùng mở cửa hàng vật liệu xây dựng, doanh thu năm 2025 là 1,2 tỷ đồng. Số thuế phải nộp: 1.200.000.000 x 10% = 120.000.000 đồng.
+**Ví dụ:** Ông Phong chế biến nông sản, doanh thu tháng 1/2026 = 5 tỷ. Thuế TNCN = 5.000.000.000 x 1,5% = 75.000.000 đồng.
 
-Đây là nhóm chịu mức thuế cao nhất dành cho hộ kinh doanh có quy mô lớn. Nếu doanh thu lớn và chi phí thực tế cao, hộ kinh doanh nên xem xét áp dụng **cách tính thuế theo cách 2** (chi phí thực tế hợp lệ) để được khấu trừ chi phí. [Xem thêm so sánh cách 1 và cách 2](/blog/so-sanh-cach-1-va-cach-2-tinh-thue-tncn-hkd).
+## Bảng tổng hợp so sánh 4 nhóm doanh thu hộ kinh doanh năm 2026?
 
-## Bảng tổng hợp thuế suất TNCN 4 nhóm hộ kinh doanh năm 2026 là gì?
-
-| Nhóm | Doanh thu/năm | Tỷ lệ thuế | Ví dụ tính thuế |
-|------|---------------|-----------|----------------|
-| Nhóm 1 | Từ 100 triệu trở xuống | Miễn thuế | 85 triệu → Miễn |
-| Nhóm 2 | Trên 100 triệu - 300 triệu | 5% | 250 triệu → 12,5 triệu |
-| Nhóm 3 | Trên 300 triệu - 500 triệu | 7% | 420 triệu → 29,4 triệu |
-| Nhóm 4 | Trên 500 triệu | 10% | 1,2 tỷ → 120 triệu |
+| Tiêu chí | Nhóm 1 (≤1 tỷ) | Nhóm 2 (1-3 tỷ) | Nhóm 3 (3-50 tỷ) | Nhóm 4 (>50 tỷ) |
+|---|---|---|---|---|
+| **Thuế GTGT, TNCN** | Miễn (kê khai) / Khoán | Kê khai theo quý | Kê khai theo tháng | Kê khai theo tháng |
+| **Phương pháp GTGT** | Miễn/Khoán | Tính trực tiếp | Khấu trừ | Khấu trừ |
+| **Tần suất khai TNCN** | Miễn/Khoán | Theo quý + QT năm | Theo tháng + QT năm | Theo tháng + QT năm |
+| **Mẫu tờ khai** | Không có (hoặc khoán) | 01/CNKD | 01/CNKD + 01/GTGT | 01/CNKD + 01/GTGT |
+| **Thuế suất TNCN** | Miễn/Khoán | Theo ngành nghề | Theo ngành nghề | Theo ngành nghề |
 
 ## Quy định khấu trừ 50% áp dụng khi nào cho hộ kinh doanh không có sổ sách?
 
-Điểm quan trọng cần lưu ý: Nếu hộ kinh doanh **không lập sổ sách kế toán**, cơ quan thuế sẽ áp dụng phương pháp tính thuế theo doanh thu và được **khấu trừ 50%** trên tổng doanh thu trước khi nhân với tỷ lệ thuế. Điều này được quy định tại Điều 3 Thông tư 92/2015/TT-BTC.
+Nếu hộ kinh doanh **không lập sổ sách kế toán**, cơ quan thuế sẽ áp dụng phương pháp tính thuế theo doanh thu và được **khấu trừ 50%** trên tổng doanh thu trước khi nhân với tỷ lệ thuế (theo Điều 3 Thông tư 92/2015/TT-BTC).
 
 Công thức cụ thể:
 
-Thuế TNCN = Doanh thu x 50% x Tỷ lệ thuế tương ứng nhóm
+Thuế TNCN = Doanh thu x 50% x Tỷ lệ thuế tương ứng ngành nghề
 
-**Ví dụ:** Hộ anh Dũng có doanh thu 450 triệu/năm, không có sổ sách kế toán. Thuế phải nộp: 450.000.000 x 50% x 7% = 15.750.000 đồng.
-
-So với trường hợp có sổ sách: 450.000.000 x 7% = 31.500.000 đồng. Như vậy, việc không có sổ sách giúp hộ kinh doanh tiết kiệm được một khoản thuế đáng kể. Tuy nhiên, nếu chi phí thực tế hợp lệ chiếm trên 50% doanh thu thì nên giữ sổ sách để được khấu trừ thực tế.
+**Ví dụ:** Hộ anh Dũng có doanh thu 450 triệu/năm (nhóm 1, khoán), áp dụng tỷ lệ phân phối 0,5%. Thuế phải nộp: 450.000.000 x 50% x 0,5% = 1.125.000 đồng.
 
 ## Thời hạn nộp thuế và tờ khai của hộ kinh doanh là khi nào?
 
-Hộ kinh doanh phải nộp tờ khai và thuế theo quý. Cụ thể:
+Hộ kinh doanh phải nộp tờ khai và thuế theo quý (nhóm 2) hoặc theo tháng (nhóm 3, 4). Cụ thể:
 
-- **Tờ khai thuế TNCN:** Nộp trước ngày cuối cùng của tháng tiếp theo sau khi kết thúc quý. Ví dụ: Quý I (tháng 1-3) phải nộp tờ khai trước ngày 30/4.
-- **Nộp thuế:** Đúng thời hạn nộp tờ khai. Nếu nộp chậm sẽ bị tính lãi chậm nộp theo quy định.
+- **Nhóm 2 (khai theo quý):** Nộp trước ngày 30 của tháng đầu quý sau.
+- **Nhóm 3, 4 (khai theo tháng):** Nộp trước ngày 20 của tháng kế tiếp.
+- **Quyết toán thuế năm:** Nộp trước ngày 30/04 năm sau.
 
-Đối với quyết toán thuế năm, hộ kinh doanh phải nộp quyết toán trước ngày cuối tháng 3 năm sau. [Xem chi tiết hướng dẫn quyết toán](/blog/quyet-toan-thue-tncn-2026-huong-dan-chi-tiet).
+Đối với quyết toán thuế năm, hộ kinh doanh phải nộp quyết toán trước ngày 30 tháng 4 năm sau. [Xem chi tiết hướng dẫn quyết toán](/blog/quyet-toan-thue-tncn-2026-huong-dan-chi-tiet).
 
 ## Những lưu ý quan trọng nào cần biết khi phân nhóm hộ kinh doanh?
 
@@ -101,23 +105,23 @@ Nếu bạn chưa chắc chắn mình thuộc nhóm nào hoặc cần tư vấn 
 
 **Hộ kinh doanh mới bắt đầu kinh doanh giữa năm thì xác định nhóm thế nào?**
 
-Tính theo tổng doanh thu từ khi bắt đầu kinh doanh đến hết năm dương lịch. Nếu mới mở từ tháng 7 và doanh thu đến 31/12 là 60 triệu thì thuộc nhóm 1 (miễn thuế). Nếu doanh thu đạt trên 100 triệu thì xác định nhóm theo doanh thu thực tế.
+Tính theo tổng doanh thu từ khi bắt đầu kinh doanh đến hết năm dương lịch. Nếu mới mở từ tháng 7 và doanh thu đến 31/12 là 600 triệu thì thuộc nhóm 1 (miễn thuế). Nếu doanh thu đạt trên 1 tỷ thì xác định nhóm theo doanh thu thực tế.
 
 **Nếu doanh thu năm nay thuộc nhóm 2 nhưng năm sau thuộc nhóm 1 thì sao?**
 
-Thuế được tính theo nhóm thực tế từng năm. Năm sau nếu doanh thu <= 100 triệu thì miễn thuế. Không có quy định "khóa" nhóm — mỗi năm tính lại.
+Thuế được tính theo nhóm thực tế từng năm. Năm sau nếu doanh thu <= 1 tỷ thì thuộc nhóm 1 (miễn thuế theo kê khai / thuế khoán). Không có quy định "khóa" nhóm -- mỗi năm tính lại.
 
 **Hộ kinh doanh có phải nộp tờ khai hàng quý khi thuộc nhóm 1 (miễn thuế) không?**
 
-Có. Theo Thông tư 92/2015/TT-BTC, hộ kinh doanh thuộc diện miễn thuế vẫn phải nộp tờ khai hàng quý để cơ quan thuế ghi nhận việc miễn. Nếu không nộp tờ khai, hộ kinh doanh có thể bị xử phạt vi phạm hành chính về thuế.
+Nếu áp dụng thuế khoán thì không cần nộp tờ khai theo quý. Nếu thuộc diện kê khai mà doanh thu dưới 1 tỷ thì được miễn TNCN, GTGT nhưng vẫn nên nộp tờ khai định kỳ để cơ quan thuế ghi nhận.
 
-**Doanh thu dùng để phân nhóm có gồm thuế GTGT không?**
+**Thuế suất TNCN áp dụng theo ngành nghề nào?**
 
-Không. Doanh thu để phân nhóm là doanh thu chưa bao gồm thuế GTGT (nếu hộ kinh doanh thuộc diện tính thuế GTGT). Hộ kinh doanh cá thể thông thường không phải kê khai GTGT mà chịu thuế TNCN trên doanh thu.
+Thuế suất TNCN theo ngành nghề: phân phối 0,5%, sản xuất 1,5%, dịch vụ 2%, cho thuê BĐS 5%, cho thuê xe 3%. Bạn có thể tra cứu trên website của Tổng cục Thuế (tcthue.gov.vn) hoặc sử dụng chatbot TADA tại ketoanthuetada.com.
 
 **Nộp thuế ở đâu?**
 
 Hộ kinh doanh nộp thuế trực tiếp tại Chi cục Thuế khu vực nơi hộ kinh doanh đăng ký kinh doanh. Từ 2026, hộ kinh doanh có thể nộp qua ứng dụng eTax Mobile trên điện thoại. [Xem hướng dẫn nộp thuế trên eTax Mobile](/blog/ke-khai-thue-tncn-tren-etax-mobile-huong-dan-a-z).
 
 ---
-*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật Thuế TNCN số 04/2007/QH12, Thông tư 92/2015/TT-BTC, Nghị định hướng dẫn thuế TNCN.*
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Nghị định 141/2026/NĐ-CP, Luật Thuế TNCN số 04/2007/QH12, Thông tư 92/2015/TT-BTC, Thông tư 152/2025/TT-BTC, Nghị định hướng dẫn thuế TNCN.*

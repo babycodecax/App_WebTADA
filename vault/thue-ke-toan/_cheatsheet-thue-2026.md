@@ -4,9 +4,12 @@ domain: tax
 tags:
   - tax
   - tax/cheatsheet
-source: Tổng hợp từ các Luật/ND/TT 2024-2026 trong vault (luat-48, luat-67, luat-109, luat-66, luat-09, vbhn-xnk-107)
+  - tax/xuat-nhap-khau
+  - tax/xu-phat
+  - tax/nha-thau-nuoc-ngoai
+source: Tổng hợp từ các Luật/ND/TT 2024-2026 trong vault (luat-48, luat-67, luat-109, luat-66, luat-09, vbhn-xnk-107, nd-310-2025, nd-320-2025-tndn, tt-20-2026-tndn)
 status: active
-updated: 2026-07-18
+updated: 2026-09-07
 ---
 
 # 📌 Cheatsheet Ngưỡng Thuế 2026
@@ -114,20 +117,56 @@ Mức giảm trừ: **bản thân 15,5tr/tháng** (186tr/năm), **NPT 6,2tr/thá
 
 ---
 
-## 5. Thuế XNK — C/O form D, biểu thuế
-**Căn cứ:** [[vbhn-luat-thue-xnk-107-2016|VBHN Luật Thuế XK/NK 107/2016]] · [[nd-255-2026-giao-dich-lien-ket|NĐ 255/2026 giá giao dịch liên kết]]
+## 5. Thuế XNK — Biểu thuế, C/O, miễn giảm hoàn
+**Căn cứ:** [[vbhn-luat-thue-xnk-107-2016|VBHN Luật Thuế XK/NK 107/2016 (hợp nhất 2026)]] · [[nd-255-2026-giao-dich-lien-ket|NĐ 255/2026 giá giao dịch liên kết]]
 
-- **Thuế suất NK:** ưu đãi / ưu đãi đặc biệt / thông thường (bằng 150% ưu đãi; nếu ưu đãi = 0% thì TTg quyết định).
+### Biểu thuế suất NK (Điều 5)
+| Thuế suất | Cách tính | Ví dụ |
+|---|---|---|
+| **Ưu đãi đặc biệt** | Theo FTA / C/O form D (ASEAN) | Thường **0%** với hàng ASEAN có C/O form D |
+| **Ưu đãi** | Theo Danh mục ưu đãi | Phụ thuộc mặt hàng, nước xuất xứ |
+| **Thông thường** | **= 150%** thuế suất ưu đãi; nếu ưu đãi = 0% thì TTg quyết định | Áp dụng khi không có C/O hoặc nước xuất xứ không hưởng ưu đãi |
+
+### Thuế GTGT hàng nhập khẩu
+- Hàng NK chịu GTGT trên **trị giá tính thuế NK + thuế XK + thuế NK** (cộng dồn).
+- Thuế suất GTGT hàng NK: **0% / 5% / 10%** (cùng bảng GTGT phần 1).
+- Hàng nhập KPTQ → NK nội địa: chịu cả thuế NK + GTGT.
+
+### Thuế TTĐB hàng nhập khẩu
+- Đối tượng: thuốc lá, rượu, bia, ô tô ≤9 chỗ, xăng... (cùng đối tượng TTĐB nội địa).
+- Giá tính thuế TTĐB hàng NK = **Trị giá tính thuế NK + thuế XK + thuế NK + thuế GTGT**.
+- Thuế suất: theo lộ trình Luật 66/2025 (xem phần 4).
+
+### Miễn thuế, giảm thuế, hoàn thuế (Điều 16–19)
+| Loại | Điều kiện | Căn cứ |
+|---|---|---|
+| **Miễn thuế NK** | Hàng quá cảnh; viện trợ; hàng gia công XK; nguyên liệu SX hàng XK; TSCĐ dự án ưu đãi đầu tư; hàng dầu khí, KHCN, an ninh QP, BVMT... (21 khoản) | Đ16 VBHN 107 |
+| **Giảm thuế** | Hàng XK/NK bị thiên tai, hỏa hoạn, tai nạn → giảm theo tỷ lệ tổn thất thực tế; mất mát toàn bộ → không nộp thuế | Đ18 VBHN 107 |
+| **Hoàn thuế** | Nộp thừa; tái nhập chưa qua sử dụng; hàng XK trả lại; máy móc tạm nhập tái xuất đã xuất khẩu | Đ19 VBHN 107 |
+
+### Các quy định khác
 - **C/O form D (ASEAN):** hưởng ưu đãi đặc biệt, thường **0%**.
 - **Chi phí vận chuyển nội địa:** KHÔNG tính vào trị giá tính thuế NK.
 - **Hàng XK bị trả lại chưa qua sử dụng:** 0 thuế.
-- **Khu phi thuế quan → nội địa:** chịu NK + GTGT.
 - **Chuyển đổi mục đích NK SX XK:** nộp lại thuế + chậm nộp.
-- **Biểu thuế XK:** thủy sản 0–10%; nông sản 0–15%; khoáng sản 5–40%; than/dầu 10–45%; gỗ 0–25%; kim loại quý 0–40%.
+- **Từ 01/07/2026:** áp dụng sửa đổi từ Luật Công nghệ cao 133/2025 (miễn thuế nguyên liệu, vật tư phục vụ KHCN, công nghiệp công nghệ số).
+- **Chi tiết thêm:** [[vbhn-luat-thue-xnk-107-2016|VBHN 107/2016 (gốc)]], [[nd-181-2025-xnk|NĐ 181/2025 quy định chi tiết]], [[tt-90-2026-xnk|TT 90/2026 hướng dẫn khai nộp]]
+
+### Biểu thuế XK
+| Nhóm hàng | Khung thuế suất |
+|---|---|
+| Thủy sản | 0–10% |
+| Nông sản (cà phê, chè, tiêu, gạo, ngô) | 0–15% |
+| Phân bón | 0–40% |
+| Khoáng sản (sắt, đồng, vàng, quặng) | 5–40% |
+| Than, dầu | 10–45% |
+| Gỗ và sản phẩm gỗ | 0–25% |
+| Kim loại quý | 0–40% |
+| Đá khối / thạch anh | 5–30% |
 
 ---
 
-## 6. Các ngưỡnh chung (dễ nhầm với luật cũ)
+## 6. Các ngưỡng chung (dễ nhầm với luật cũ)
 | Ngưỡnh | Quy định 2026 | Lưu ý |
 |---|---|---|
 | Thanh toán không tiền mặt | Từng lần **≥ 5 triệu** (TNDN) | Luật cũ 20 triệu → ĐÃ BỎ |
@@ -139,7 +178,94 @@ Mức giảm trừ: **bản thân 15,5tr/tháng** (186tr/năm), **NPT 6,2tr/thá
 
 ---
 
+## 7. Hình phạt VPHC thuế — NĐ 310/2025
+**Căn cứ:** [[nd-310-2025-xu-phat-thue-hoa-don|NĐ 310/2025/NĐ-CP]] (thay thế [[nd-125-2020-xu-phat|NĐ 125/2020]]) · Luật Quản lý thuế 2019
+
+> **Hiệu lực:** 16/01/2026. Nguyên tắc: **một hành vi = một mức phạt cao nhất** (cùng ngày khai sai nhiều chỉ tiêu / chậm nộp nhiều hồ sơ cùng sắc thuế → chỉ phạt 01 hành vi có khung cao nhất).
+
+### Phạt chậm nộp tờ khai
+| Đối tượng | Mức phạt |
+|---|---|
+| **Tổ chức** | 2.000.000đ/lần chậm nộp |
+| **Cá nhân** | 1.000.000đ/lần chậm nộp |
+
+### Phạt chậm nộp thuế
+- **0,03%/ngày** trên số tiền thuế chậm nộp.
+- Áp dụng từ ngày hết hạn nộp đến ngày nộp thực tế.
+
+### Phạt khai sai / trốn thuế (Điều 7)
+| Hành vi | Mức phạt |
+|---|---|
+| **Khai sai thiếu thuế / tăng miễn giảm** | **20%** số tiền thuế thiếu hoặc cao hơn quy định |
+| **Trốn thuế** | **01–03 lần** số tiền thuế trốn |
+
+- Tình tiết giảm nhẹ: −10%; tăng nặng: +10%.
+- ≥ 2 tình tiết giảm nhẹ → mức tối thiểu; ≥ 2 tình tiết tăng nặng → mức tối đa.
+
+### Phạt vi phạm hóa đơn (Điều 24)
+| Hành vi | Mức phạt |
+|---|---|
+| **Không lập HĐ** (hàng mẫu, quà tặng, tiêu dùng nội bộ...) | Cảnh cáo (01 số HĐ) |
+| **Không lập HĐ** từ 50 số trở lên | **60–80 triệu đồng** |
+| **Không lập HĐ** từ 100 số (kết hợp) | **30–50 triệu đồng** |
+| **Lập HĐ không đúng thời điểm** (01 số, hàng mẫu...) | Cảnh cáo |
+| **Lập HĐ không đúng thời điểm** từ 100 số | **50–70 triệu đồng** |
+| **Tiêu hủy HĐ không đúng quy định** | **2–4 triệu đồng** |
+| **Tiêu hủy quá hạn ≥11 ngày** hoặc không tiêu hủy | **4–8 triệu đồng** |
+| **Cung cấp giải pháp HĐĐT không đảm bảo** | **4–8 triệu đồng** |
+
+### Thời hiệu xử phạt (Điều 8)
+| Loại vi phạm | Thời hiệu |
+|---|---|
+| Vi phạm thủ tục thuế | **02 năm** |
+| Trốn thuế / khai sai (chưa đến mức hình sự) | **05 năm** |
+
+### Miễn xử phạt (Điều 9)
+- Khai sai nhưng đã **khai bổ sung và tự giác nộp đủ thuế** trước khi cơ quan thuế công bố quyết định kiểm tra/thanh tra hoặc trước khi phát hiện.
+
+---
+
+## 8. Thuế TNDN nhà thầu nước ngoài
+**Căn cứ:** [[luat-67-2025-tndn|Luật 67/2025 TNDN]] (Điều 2, Điều 3) · [[nd-320-2025-tndn|NĐ 320/2025 chi tiết]]
+
+### Đối tượng áp dụng
+| Điều kiện | Nhà thầu nước ngoài chịu thuế |
+|---|---|
+| **Không có cơ sở thường trú** tại Việt Nam | YES |
+| **Không thành lập pháp nhân** tại Việt Nam (chi nhánh, VPĐD...) | YES |
+| Có **thu nhập phát sinh tại Việt Nam** từ: tư vấn, dịch vụ, lãi tiền vay, bản quyền, nhượng quyền, chuyển nhượng vốn... | YES |
+
+> **Lưu ý:** Nếu nhà thầu có cơ sở thường trú tại VN → chịu thuế TNDN DN thông thường (20%), KHÔNG áp dụng mức 1%.
+
+### Thuế suất
+- **1% trên doanh thu** phát sinh tại Việt Nam (thu nhập trước khi trừ chi phí).
+- Áp dụng cho hầu hết loại hình: tư vấn, dịch vụ, kỹ thuật, quản lý, lãi tiền vay, bản quyền, nhượng quyền, chuyển nhượng vốn...
+- **Không được trừ chi phí** — tính trên tổng doanh thu.
+
+### Hồ sơ, thủ tục khai nộp
+| Bước | Chi tiết |
+|---|---|
+| **Đăng ký thuế** | Đăng ký MST nhà thầu tại cơ quan thuế nơi phát sinh thu nhập |
+| **Khai thuế** | Tờ khai thuế TNDN nhà thầu (theo mẫu TT 20/2026) |
+| **Nộp thuế** | Thực hiện trước khi trả tiền cho nhà thầu (trừ trường hợp tự khai tự nộp) |
+| **Quyết toán** | QTT năm theo thời hạn Luật Quản lý thuế |
+| **Chứng từ** | Hợp đồng nhà thầu + xác nhận đã nộp thuế (để nhà thầu chứng minh đã hoàn thành nghĩa vụ) |
+
+### Ví dụ tính thuế
+- Nhà thầu nước ngoài tư vấn tại VN, doanh thu 500 triệu → Thuế TNDN = 500 x 1% = **5 triệu đồng**.
+- Nhà thầu cho vay lãi 200 triệu → Thuế TNDN = 200 x 1% = **2 triệu đồng**.
+
+### So sánh với hộ kinh doanh/cá thể (xem phần 3)
+- Nhà thầu nước ngoài: **1% trên doanh thu** (không phân loại).
+- HKD/CNKD VN: tỷ lệ % theo ngành nghề (0,5%–5%) trên doanh thu tính thuế, hoặc lũy tiến 15%–20%.
+
+---
+
 ## Nguồn & Kiểm chứng
 - Tất cả số liệu trích từ các note luật gốc trong vault (xem link wikilink mỗi mục).
 - File .docx gốc nằm trong `sources/` — mỗi note `luat-*` đã gắn link file gốc ở phần "Nguồn".
 - Xem thêm: [[_index|← Index Thuế & Kế toán]] · [[glossary|Thuật ngữ]]
+- **Note luật mới (2025–2026):**
+  - [[nd-310-2025-xu-phat-thue-hoa-don|NĐ 310/2025 — Xử phạt VPHC thuế, hóa đơn]] (thay thế [[nd-125-2020-xu-phat|NĐ 125/2020]])
+  - [[luat-67-2025-tndn|Luật 67/2025 — Thuế TNDN]] · [[nd-320-2025-tndn|NĐ 320/2025 chi tiết]] · [[tt-20-2026-tndn|TT 20/2026 hướng dẫn]]
+  - [[vbhn-luat-thue-xnk-107-2016|VBHN 107/2016 — Luật Thuế XK/NK (hợp nhất 2026)]]

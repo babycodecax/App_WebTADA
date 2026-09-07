@@ -9,7 +9,7 @@ status: "published"
 
 # Quyết toán thuế TNCN 2026 - Hướng dẫn chi tiết từ A-Z
 
-Quyết toán thuế thu nhập cá nhân (TNCN) là nghĩa vụ bắt buộc đối với nhiều đối tượng người nộp thuế. Đây là bước cuối cùng trong chu kỳ thuế hàng năm, giúp xác định số thuế TNCN bạn đã nộp thiếu hoặc được hoàn lại. Theo Luật Thuế TNCN số 04/2007/QH12 và Thông tư 92/2015/TT-BTC (sửa đổi), quyết toán thuế TNCN năm 2026 phải thực hiện trước **ngày cuối tháng 3 năm 2027**.
+Quyết toán thuế thu nhập cá nhân (TNCN) là nghĩa vụ bắt buộc đối với nhiều đối tượng người nộp thuế. Đây là bước cuối cùng trong chu kỳ thuế hàng năm, giúp xác định số thuế TNCN bạn đã nộp thiếu hoặc được hoàn lại. Theo Luật Thuế TNCN số 04/2007/QH12 và Thông tư 92/2015/TT-BTC (sửa đổi), quyết toán thuế TNCN năm 2026 phải thực hiện trước **ngày 30 tháng 4 năm 2027**.
 
 Bài viết hướng dẫn chi tiết từng bước, từ đối tượng phải quyết toán đến hồ sơ cần chuẩn bị và cách nộp trực tuyến trên eTax.
 
@@ -17,7 +17,7 @@ Bài viết hướng dẫn chi tiết từng bước, từ đối tượng phả
 
 Theo khoản 1 Điều 21 Luật Thuế TNCN và Điều 9 Thông tư 92/2015/TT-BTC, các đối tượng phải quyết toán thuế TNCN bao gồm:
 
-- **Có thu nhập từ tiền lương, tiền công** vượt mức chịu thuế trong năm (tổng thu nhập >= 132 triệu đồng/năm, tức trên 11 triệu/tháng).
+- **Có thu nhập từ tiền lương, tiền công** vượt mức chịu thuế trong năm (tổng thu nhập >= 186 triệu đồng/năm, tức trên 15,5 triệu/tháng theo Luật 109/2025 từ 01/07/2026).
 - **Có từ 2 nguồn thu nhập trở lên** từ tiền lương, tiền công trong năm 2026.
 - **Có thu nhập từ kinh doanh**, đại lý bảo hiểm, môi giới bất động sản hoặc nhận thù lao các loại.
 - **Cá nhân cư trú có thu nhập từ nước ngoài** nếu thuộc diện chịu thuế tại Việt Nam.
@@ -47,9 +47,9 @@ Theo Điều 9 Thông tư 92/2015/TT-BTC, hồ sơ quyết toán thuế TNCN bao
 
 Theo khoản 1 Điều 44 Luật Quản lý thuế số 38/2019/QH14, thời hạn nộp quyết toán thuế TNCN là:
 
-- **Cá nhân có thu nhập từ tiền lương, tiền công:** Trước ngày cuối tháng 3 năm 2027.
-- **Tổng thu nhập chịu thuế từ 2 nguồn trở lên trong năm:** Trước ngày cuối tháng 3 năm 2027.
-- **Hộ kinh doanh, cá nhân kinh doanh:** Trước ngày cuối tháng 3 năm 2027.
+- **Cá nhân có thu nhập từ tiền lương, tiền công:** Trước ngày 30 tháng 4 năm 2027.
+- **Tổng thu nhập chịu thuế từ 2 nguồn trở lên trong năm:** Trước ngày 30 tháng 4 năm 2027.
+- **Hộ kinh doanh, cá nhân kinh doanh:** Trước ngày 30 tháng 4 năm 2027.
 
 **Xử phạt nếu nộp chậm:** Theo Nghị định 125/2020/NĐ-CP (sửa đổi), phạt hành chính từ 1.000.000 đồng đến 5.000.000 đồng tùy mức độ chậm, cộng với lãi chậm nộp tính theo lãi suất ngân hàng nhà nước.
 
@@ -67,13 +67,13 @@ Theo khoản 1 Điều 44 Luật Quản lý thuế số 38/2019/QH14, thời h�
 - Nguồn 1: Lương chính 20 triệu/tháng (đã khấu trừ 1,6 triệu/tháng)
 - Nguồn 2: Tiền giảng dạy 5 triệu/tháng (đã khấu trừ 500.000/tháng)
 
-Tổng thu nhập chịu thuế năm = (20.000.000 + 5.000.000 - 11.000.000) x 12 = 168.000.000 đồng
+Tổng thu nhập chịu thuế năm = (20.000.000 + 5.000.000 - 15.500.000) x 12 = 114.000.000 đồng
 
-Thuế TNCN theo biểu lũy tiến: Lũy tiến từng phần trên 168 triệu = khoảng 14,6 triệu đồng
+Thuế TNCN theo biểu lũy tiến: Lũy tiến từng phần trên 114 triệu = khoảng 9,6 triệu đồng
 
 Tổng thuế đã khấu trừ: (1.600.000 + 500.000) x 12 = 25.200.000 đồng
 
-Số thuế được hoàn: 25.200.000 - 14.600.000 = khoảng 10,6 triệu đồng
+Số thuế được hoàn: 25.200.000 - 9.600.000 = khoảng 15,6 triệu đồng
 
 ## Có nên tách riêng thu nhập từng nguồn khi quyết toán không?
 
@@ -98,9 +98,9 @@ Từ 2026, cá nhân có thể quyết toán thuế TNCN trực tuyến qua ứn
 ## Những lỗi thường gặp nào cần tránh khi quyết toán thuế TNCN?
 
 - **Không kê khai đầy đủ thu nhập từ 2 nguồn:** Nhiều cá nhân quên kê khai thu nhập từ freelancing hoặc công việc bán thời gian.
-- **Giảm trừ gia cảnh không đúng:** Chỉ được giảm trừ bản thân 11 triệu/tháng và người phụ thuộc 4,4 triệu/tháng nếu có đầy đủ giấy tờ chứng minh.
+- **Giảm trừ gia cảnh không đúng:** Chỉ được giảm trừ bản thân 15,5 triệu/tháng (từ 01/07/2026) và người phụ thuộc 6,2 triệu/tháng/người nếu có đầy đủ giấy tờ chứng minh.
 - **Không tổng hợp thu nhập:** Không tổng hợp làm mất quyền được giảm trừ đầy đủ, dẫn đến nộp thừa thuế.
-- **Nộp chậm:** Sau ngày 31/3 năm sau sẽ bị xử phạt hành chính và tính lãi chậm nộp.
+- **Nộp chậm:** Sau ngày 30/04 năm sau sẽ bị xử phạt hành chính và tính lãi chậm nộp.
 
 Để tránh những lỗi này, bạn nên bắt đầu chuẩn bị hồ sơ quyết toán từ tháng 1 hoặc tháng 2 năm sau. Nếu gặp khó khăn, [hỏi chatbox TADA](https://ketoanthuetada.com/) để được hỗ trợ miễn phí.
 
@@ -116,11 +116,11 @@ Bạn cần tổng hợp thu nhập từ cả 2 nguồn để quyết toán. Ngu
 
 **Hạn cuối nộp quyết toán thuế TNCN là khi nào?**
 
-Trước ngày cuối tháng 3 năm 2027 (cho quyết toán thuế năm 2026). Nếu nộp chậm, bạn bị phạt hành chính từ 1-5 triệu đồng và tính lãi chậm nộp.
+Trước ngày 30/04/2027 (cho quyết toán thuế năm 2026). Nếu nộp chậm, bạn bị phạt hành chính từ 1-5 triệu đồng và tính lãi chậm nộp.
 
 **Quyết toán thuế TNCN cần chuẩn bị những giấy tờ gì?**
 
 Bao gồm: Tờ khai quyết toán thuế (mẫu 02/QTT-TNCN hoặc 04/QTT-TNCN), hợp đồng lao động, biên lai thuế đã nộp, giấy tờ chứng minh giảm trừ gia cảnh (CMND người phụ thuộc, giấy khai sinh, xác nhận nuôi con nuôi).
 
 ---
-*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật Thuế TNCN số 04/2007/QH12, Luật Quản lý thuế số 38/2019/QH14, Thông tư 92/2015/TT-BTC, Nghị định 125/2020/NĐ-CP.*
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật số 109/2025/QH15, Luật Thuế TNCN số 04/2007/QH12, Luật Quản lý thuế số 38/2019/QH14, Thông tư 92/2015/TT-BTC, Nghị định 125/2020/NĐ-CP.*

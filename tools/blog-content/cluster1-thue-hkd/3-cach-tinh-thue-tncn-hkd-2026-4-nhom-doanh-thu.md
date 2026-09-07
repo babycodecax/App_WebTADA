@@ -1,7 +1,7 @@
 ---
 title: "Cách tính thuế TNCN hộ kinh doanh 2026 - 4 nhóm doanh thu"
 slug: cach-tinh-thue-tncn-hkd-2026-4-nhom-doanh-thu
-summary: "Bảng tính thuế TNCN hộ kinh doanh theo 4 nhóm doanh thu năm 2026, từ dưới 500 triệu đến trên 3 tỷ, với ví dụ minh họa từng nhóm."
+summary: "Bảng tính thuế TNCN hộ kinh doanh theo 4 nhóm doanh thu năm 2026, từ dưới 1 tỷ đến trên 50 tỷ, với ví dụ minh họa từng nhóm."
 published_at: "2026-09-07"
 author_email: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"
@@ -28,7 +28,7 @@ Hộ kinh doanh được chia thành 4 nhóm dựa trên tổng doanh thu năm t
 
 Hộ kinh doanh nhóm 1 áp dụng **thuế khoán**, có nghĩa là thuế TNCN đã được bao gồm trong khoản thuế khoán cố định hàng tháng. Hộ không cần tự tính TNCN riêng biệt.
 
-Cơ quan thuế ấn định mức thuế khoán dựa trên doanh thu giả định theo ngành nghề, kết hợp tỷ lệ thuế GTGT (thường 1% hoặc 5%) và tỷ lệ TNCN (thường 0,5% đến 5%). Tổng thuế khoán = (Doanh thu giả định x Tỷ lệ GTGT) + (Doanh thu giả định x Tỷ lệ TNCN).
+Cơ quan thuế ấn định mức thuế khoán dựa trên doanh thu giả định theo ngành nghề, kết hợp tỷ lệ thuế GTGT (thường 1% hoặc 5%) và tỷ lệ TNCN (phân phối 0,5%, sản xuất 1,5%, dịch vụ 2%, cho thuê BĐS 5%, cho thuê xe 3%). Tổng thuế khoán = (Doanh thu giả định x Tỷ lệ GTGT) + (Doanh thu giả định x Tỷ lệ TNCN).
 
 **Ví dụ minh họa:** Hộ chị Hoa (bán tạp hóa), doanh thu giả định tháng 80 triệu. Tỷ lệ GTGT = 1%, TNCN = 0,5%. Thuế GTGT khoán = 800.000 đồng. Thuế TNCN khoán = 400.000 đồng. Tổng thuế khoán = 1.200.000 đồng/tháng (đã gồm lệ phí môn bài).
 
@@ -42,16 +42,12 @@ Hộ kinh doanh nhóm 2 kê khai TNCN theo tỷ lệ phần trăm trên doanh th
 
 | Ngành nghề kinh doanh | Tỷ lệ TNCN |
 |---|---|
-| Bán buôn, bán lẻ hàng hóa | 0,5% |
-| Nhà hàng, ăn uống | 0,5% |
-| Dịch vụ khác chưa phân loại | 1% |
+| Phân phối hàng hóa (bán buôn, bán lẻ) | 0,5% |
 | Sản xuất, chế biến hàng hóa | 1,5% |
-| Dịch vụ vận tải | 1% |
-| Cho thuê tài sản, mặt bằng | 1% đến 5% |
-| Tư vấn, dịch vụ kỹ thuật | 1% đến 5% |
-| Đào tạo, dạy nghề | 1% |
-| Hoạt động y tế | 1% |
-| Bán buôn kim loại, vật liệu xây dựng | 0,5% |
+| Dịch vụ (ăn uống, tư vấn, vận tải, đào tạo, y tế...) | 2% |
+| Cho thuê bất động sản | 5% |
+| Cho thuê xe, phương tiện vận tải | 3% |
+| Dịch vụ khác chưa phân loại | 2% |
 
 **Công thức tính:** Thuế TNCN phải nộp kỳ = Doanh thu kỳ x Tỷ lệ TNCN theo ngành nghề.
 
@@ -65,7 +61,7 @@ Nhóm 3 phải kê khai cả GTGT và TNCN theo **tháng**, thay vì theo quý n
 
 Đặc điểm quan trọng của nhóm 3: Hộ kinh doanh chuyển sang phương pháp **khấu trừ GTGT** thay vì tính trực tiếp trên doanh thu. Điều này có nghĩa là hộ cần xuất hóa đơn GTGT cho khách hàng và hạch toán GTGT đầu vào, GTGT đầu ra riêng biệt.
 
-Tuy nhiên, **cách tính TNCN vẫn giữ nguyên:** Tỷ lệ phần trăm x Doanh thu chịu thuế TNCN. Mức thuế suất không thay đổi so với nhóm 2 (tùy ngành nghề, từ 0,5% đến 5%).
+Tuy nhiên, **cách tính TNCN vẫn giữ nguyên:** Tỷ lệ phần trăm x Doanh thu chịu thuế TNCN. Mức thuế suất không thay đổi so với nhóm 2 (tùy ngành nghề: phân phối 0,5%, sản xuất 1,5%, dịch vụ 2%, cho thuê BĐS 5%, cho thuê xe 3%).
 
 **Quy trình khai nhóm 3:**
 
@@ -99,26 +95,26 @@ Cách tính TNCN nhóm 4: Vẫn theo tỷ lệ phần trăm trên doanh thu, nh�
 Giả sử hộ chị Mai kinh doanh nhà hàng tại Hà Nội, tổng doanh thu năm 2025 là 2,5 tỷ đồng → được xếp nhóm 2 năm 2026.
 
 **Quý 1/2026:** Doanh thu = 700 triệu
-- Thuế GTGT (1%): 7.000.000 đồng
-- Thuế TNCN (0,5%): 3.500.000 đồng
-- Tổng phải nộp: 10.500.000 đồng
+- Thuế GTGT (5%): 35.000.000 đồng
+- Thuế TNCN (2%): 14.000.000 đồng
+- Tổng phải nộp: 49.000.000 đồng
 
 **Quý 2/2026:** Doanh thu = 600 triệu
-- Thuế GTGT: 6.000.000 đồng
-- Thuế TNCN: 3.000.000 đồng
-- Tổng: 9.000.000 đồng
+- Thuế GTGT: 30.000.000 đồng
+- Thuế TNCN: 12.000.000 đồng
+- Tổng: 42.000.000 đồng
 
 **Quý 3/2026:** Doanh thu = 550 triệu
-- Thuế GTGT: 5.500.000 đồng
-- Thuế TNCN: 2.750.000 đồng
-- Tổng: 8.250.000 đồng
+- Thuế GTGT: 27.500.000 đồng
+- Thuế TNCN: 11.000.000 đồng
+- Tổng: 38.500.000 đồng
 
 **Quý 4/2026:** Doanh thu = 650 triệu
-- Thuế GTGT: 6.500.000 đồng
-- Thuế TNCN: 3.250.000 đồng
-- Tổng: 9.750.000 đồng
+- Thuế GTGT: 32.500.000 đồng
+- Thuế TNCN: 13.000.000 đồng
+- Tổng: 45.500.000 đồng
 
-**Tổng cả năm 2026:** Doanh thu = 2,5 tỷ → Tổng thuế GTGT = 25 triệu + TNCN = 12,5 triệu = Tổng nộp 37,5 triệu đồng.
+**Tổng cả năm 2026:** Doanh thu = 2,5 tỷ → Tổng thuế GTGT = 125 triệu + TNCN = 50 triệu = Tổng nộp 175 triệu đồng.
 
 Nếu quyết toán năm cho thấy thuế thực tế phải nộp thấp hơn tổng đã nộp quý, hộ chị Mai sẽ được hoàn thuế chênh lệch.
 
@@ -126,7 +122,7 @@ Nếu quyết toán năm cho thấy thuế thực tế phải nộp thấp hơn 
 
 **Câu 1: Nếu hộ kinh doanh có nhiều ngành nghề khác nhau, tỷ lệ TNCN tính như thế nào?**
 
-Khi hộ kinh doanh hoạt động nhiều ngành nghề có tỷ lệ TNCN khác nhau, cần tách riêng doanh thu theo từng ngành nghề trên tờ khai. Ví dụ, hộ vừa bán hàng (0,5%) vừa cho thuê (1%), thì phần doanh thu bán hàng tính thuế 0,5% và phần cho thuê tính thuế 1%. Không được gộp chung để tính theo tỷ lệ cao nhất.
+Khi hộ kinh doanh hoạt động nhiều ngành nghề có tỷ lệ TNCN khác nhau, cần tách riêng doanh thu theo từng ngành nghề trên tờ khai. Ví dụ, hộ vừa phân phối hàng hóa (0,5%) vừa cho thuê BĐS (5%), thì phần doanh thu phân phối tính thuế 0,5% và phần cho thuê tính thuế 5%. Không được gộp chung để tính theo tỷ lệ cao nhất.
 
 **Câu 2: Thuế TNCN đã nộp quý có thể bù trừ với quý sau không?**
 
@@ -146,6 +142,6 @@ Tỷ lệ TNCN theo ngành nghề được quy định chi tiết tại **Điề
 
 ---
 
-*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Thông tư 92/2015/TT-BTC, Thông tư 152/2025/TT-BTC, Luật Thuế thu nhập cá nhân 2007 (sửa đổi 2024).*
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Nghị định 141/2026/NĐ-CP, Thông tư 92/2015/TT-BTC, Thông tư 152/2025/TT-BTC, Luật Thuế thu nhập cá nhân 2007 (sửa đổi 2024).*
 
-*Xem thêm: [Hộ kinh doanh dưới 500 triệu có phải nộp thuế không?](/blog/ho-kinh-doanh-duoi-500-trieu-co-phai-nop-thue-khong) | [Hướng dẫn kê khai thuế nhóm 2](/blog/huong-dan-ke-khai-thue-hkd-nhom-2-nam-2026) | [Trang chủ TADA](https://ketoanthuetada.com/)*
+*Xem thêm: [Hộ kinh doanh dưới 1 tỷ có phải nộp thuế không?](/blog/ho-kinh-doanh-duoi-500-trieu-co-phai-nop-thue-khong) | [Hướng dẫn kê khai thuế nhóm 2](/blog/huong-dan-ke-khai-thue-hkd-nhom-2-nam-2026) | [Trang chủ TADA](https://ketoanthuetada.com/)*

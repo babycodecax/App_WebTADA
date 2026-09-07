@@ -20,16 +20,17 @@ Cách 1 là phương pháp tính thuế **trên tổng doanh thu**, không trừ
 **Công thức:**
 Thuế TNCN = Doanh thu x Thuế suất nhóm tương ứng
 
-Thuế suất theo 4 nhóm (không có sổ sách):
-- Nhóm 1: Doanh thu <= 100 triệu → Miễn thuế
-- Nhóm 2: 100-300 triệu → 5%
-- Nhóm 3: 300-500 triệu → 7%
-- Nhóm 4: > 500 triệu → 10%
+Thuế suất theo ngành nghề (không có sổ sách):
+- Phân phối hàng hóa (bán buôn, bán lẻ): 0,5%
+- Sản xuất, chế biến hàng hóa: 1,5%
+- Dịch vụ (ăn uống, tư vấn, vận tải, đào tạo...): 2%
+- Cho thuê bất động sản: 5%
+- Cho thuê xe, phương tiện vận tải: 3%
 
 Nếu hộ kinh doanh **không lập sổ sách**, cơ quan thuế sẽ áp dụng giảm 50% trên doanh thu trước khi nhân tỷ lệ thuế (theo Điều 3 Thông tư 92/2015/TT-BTC).
 
-**Ví dụ:** Hộ kinh doanh bán giày dép, doanh thu năm 400 triệu, không có sổ sách:
-Thuế = 400.000.000 x 50% x 7% = 14.000.000 đồng
+**Ví dụ:** Hộ kinh doanh bán giày dép (phân phối), doanh thu năm 400 triệu, không có sổ sách:
+Thuế = 400.000.000 x 50% x 0,5% = 1.000.000 đồng
 
 ## Cách 2 tính thuế TNCN hộ kinh doanh là gì?
 
@@ -44,12 +45,12 @@ Thuế TNCN = (Doanh thu - Chi phí hợp lệ - Giảm trừ gia cảnh) x Thu�
 - Chi phí phải liên quan trực tiếp đến hoạt động kinh doanh
 - Thuế suất áp dụng theo biểu thuế lũy tiến từng phần (từ 5% đến 35%)
 
-**Ví dụ:** Hộ kinh doanh vật liệu xây dựng, doanh thu 1,2 tỷ, chi phí hợp lệ 800 triệu, GTGC 132 triệu/năm:
-Thu nhập chịu thuế = 1.200.000.000 - 800.000.000 - 132.000.000 = 268.000.000 đồng
-Thuế TNCN (lũy tiến): khoảng 28,5 triệu đồng
+**Ví dụ:** Hộ kinh doanh vật liệu xây dựng, doanh thu 1,2 tỷ, chi phí hợp lệ 800 triệu, GTGC 186 triệu/năm (từ 01/07/2026):
+Thu nhập chịu thuế = 1.200.000.000 - 800.000.000 - 186.000.000 = 214.000.000 đồng
+Thuế TNCN (lũy tiến): khoảng 21,4 triệu đồng
 
-So với cách 1 (không sổ sách): 1.200.000.000 x 50% x 10% = 60.000.000 đồng
-Cách 2 tiết kiệm hơn **31,5 triệu đồng/năm**.
+So với cách 1 (không sổ sách, phân phối): 1.200.000.000 x 50% x 0,5% = 3.000.000 đồng
+Trường hợp này cách 1 tiết kiệm hơn. Tuy nhiên, nếu ngành dịch vụ (2%): 1.200.000.000 x 50% x 2% = 12.000.000 đồng.
 
 ## Bảng so sánh cách 1 và cách 2 tính thuế TNCN gồm những gì?
 
@@ -58,8 +59,8 @@ Cách 2 tiết kiệm hơn **31,5 triệu đồng/năm**.
 | **Cơ sở tính thuế** | Tổng doanh thu | Doanh thu - Chi phí hợp lệ - GTGC |
 | **Yêu cầu sổ sách** | Không bắt buộc | Bắt buộc lập sổ kế toán |
 | **Hóa đơn, chứng từ** | Không cần | Cần đầy đủ chi phí hợp lệ |
-| **Thuế suất** | 5% / 7% / 10% (theo nhóm) | Lũy tiến 5%-35% |
-| **Giảm trừ gia cảnh** | Không được trừ | Được trừ 11 triệu/tháng + người phụ thuộc |
+| **Thuế suất** | Theo ngành nghề (0,5% - 5%) | Lũy tiến 5%-35% |
+| **Giảm trừ gia cảnh** | Không được trừ | Được trừ 15,5 triệu/tháng + người phụ thuộc (từ 01/07/2026) |
 | **Phù hợp với** | HKD nhỏ, chi phí thấp | HKD lớn, chi phí cao |
 | **Độ phức tạp** | Đơn giản | Phức tạp hơn |
 | **Rủi ro kiểm tra** | Thấp | Cao hơn (cần chứng từ hợp lệ) |
@@ -68,20 +69,20 @@ Cách 2 tiết kiệm hơn **31,5 triệu đồng/năm**.
 ## Khi nào nên chọn cách 1 và khi nào nên chọn cách 2?
 
 ### Nên chọn cách 1 khi:
-- Hộ kinh doanh **quy mô nhỏ**, doanh thu dưới 500 triệu/năm
+- Hộ kinh doanh **quy mô nhỏ**, doanh thu dưới 1 tỷ/năm (miễn thuế)
 - Chi phí thực tế **thấp** (không có nhiều chi phí đầu vào cần hóa đơn)
 - **Không muốn phức tạp** trong việc lập sổ sách kế toán
 - Ngành nghề có biên lợi nhuận cao (dịch vụ tư vấn, môi giới, buôn bán nhỏ)
 
 ### Nên chọn cách 2 khi:
-- Hộ kinh doanh **quy mô lớn**, doanh thu trên 500 triệu/năm
+- Hộ kinh doanh **quy mô lớn**, doanh thu trên 1 tỷ/năm
 - Chi phí thực tế **cao**, chiếm trên 30-40% doanh thu
 - **Đã lập sổ sách kế toán** hoặc sẵn sàng thuê kế toán viên
 - Có nhiều chi phí hợp lệ cần khấu trừ: tiền thuê mặt bằng, nhập hàng, lương nhân công, điện nước, khấu hao tài sản
 
 ### Quy tắc nhanh để chọn cách tính:
 
-Nếu **(Doanh thu x 50% x Thuế suất nhóm) < (Doanh thu - Chi phí hợp lệ) x Thuế suất lũy tiến** thì chọn Cách 1.
+Nếu **(Doanh thu x 50% x Thuế suất ngành nghề) < (Doanh thu - Chi phí hợp lệ - GTGC) x Thuế suất lũy tiến** thì chọn Cách 1.
 Nếu ngược lại thì chọn Cách 2.
 
 Tuy nhiên, cần tính toán cẩn thận vì biểu thuế lũy tiến có thể lên đến 35% ở mức thu nhập cao, nhưng giảm trừ gia cảnh có thể bù lại.
@@ -91,32 +92,32 @@ Tuy nhiên, cần tính toán cẩn thận vì biểu thuế lũy tiến có th�
 ### Trường hợp 1: Quán cà phê nhỏ
 - Doanh thu: 200 triệu/năm
 - Chi phí hợp lệ: 80 triệu/năm
-- GTGC: 132 triệu/năm (1 người)
+- GTGC: 186 triệu/năm (từ 01/07/2026) (1 người)
 
-**Cách 1 (không sổ sách):** 200.000.000 x 50% x 5% = 5.000.000 đồng
-**Cách 2 (có sổ sách):** (200 - 80 - 132) = không phát sinh thuế
+**Cách 1 (không sổ sách, phân phối):** 200.000.000 x 50% x 0,5% = 500.000 đồng
+**Cách 2 (có sổ sách):** (200 - 80 - 186) = không phát sinh thuế
 
-→ **Chọn cách 2** tiết kiệm hơn 5 triệu đồng/năm, và thực tế không phải nộp thuế.
+→ **Chọn cách 2** tốt hơn vì không phát sinh thuế. Cách 1 chỉ nộp 500K cũng thấp.
 
 ### Trường hợp 2: Cửa hàng vật liệu xây dựng
 - Doanh thu: 1,5 tỷ/năm
 - Chi phí hợp lệ: 1,05 tỷ/năm (70% doanh thu)
-- GTGC: 132 triệu/năm
+- GTGC: 186 triệu/năm (từ 01/07/2026)
 
-**Cách 1 (không sổ sách):** 1.500.000.000 x 50% x 10% = 75.000.000 đồng
-**Cách 2 (có sổ sách):** (1,5 tỷ - 1,05 tỷ - 132 triệu) x biểu thuế lũy tiến = khoảng 13,5 triệu đồng
+**Cách 1 (không sổ sách, phân phối):** 1.500.000.000 x 50% x 0,5% = 3.750.000 đồng
+**Cách 2 (có sổ sách):** (1,5 tỷ - 1,05 tỷ - 186 triệu) = 264 triệu x biểu thuế lũy tiến = khoảng 27 triệu đồng
 
-→ **Chọn cách 2** tiết kiệm hơn 61,5 triệu đồng/năm. Chênh lệch rất lớn.
+→ **Chọn cách 1** tiết kiệm hơn vì thuế phân phối rất thấp. Tuy nhiên, nếu ngành dịch vụ thì cách 2 có thể có lợi hơn.
 
 ### Trường hợp 3: Tiệm cắt tóc
 - Doanh thu: 180 triệu/năm
 - Chi phí hợp lệ: 30 triệu/năm (tiền thuê, dụng cụ)
-- GTGC: 132 triệu/năm
+- GTGC: 186 triệu/năm (từ 01/07/2026)
 
-**Cách 1 (không sổ sách):** 180.000.000 x 50% x 5% = 4.500.000 đồng
-**Cách 2 (có sổ sách):** (180 - 30 - 132) = không phát sinh thuế
+**Cách 1 (không sổ sách, dịch vụ):** 180.000.000 x 50% x 2% = 1.800.000 đồng
+**Cách 2 (có sổ sách):** (180 - 30 - 186) = không phát sinh thuế
 
-→ **Chọn cách 2** tốt hơn, tuy nhiên cách 1 chỉ nộp 4,5 triệu cũng khá thấp, nên cân nhắc chi phí thuê kế toán.
+→ **Chọn cách 2** tốt hơn vì không phát sinh thuế. Cách 1 chỉ nộp 1,8 triệu cũng thấp.
 
 ## Lưu ý quan trọng nào khi chuyển đổi giữa cách 1 và cách 2?
 
@@ -146,4 +147,4 @@ Không. Chi phí phải có hóa đơn, chứng từ hợp lệ để được k
 Có thể, nếu thu nhập chịu thuế vượt 960 triệu/năm (tức trên 80 triệu/tháng sau khi trừ chi phí và GTGC). Tuy nhiên, hầu hết hộ kinh doanh cá thể không đạt mức này. Nếu đạt, nên cân nhắc chuyển thành doanh nghiệp để có lợi thế thuế doanh nghiệp.
 
 ---
-*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật Thuế TNCN số 04/2007/QH12, Thông tư 92/2015/TT-BTC, Thông tư 78/2014/TT-BTC.*
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật số 109/2025/QH15, Luật Thuế TNCN số 04/2007/QH12, Thông tư 92/2015/TT-BTC, Thông tư 78/2014/TT-BTC.*

@@ -23,7 +23,7 @@ Cơ quan thuế sẽ thông báo và phân loại nhóm cho hộ kinh doanh dự
 
 **Bước 1: Xác định doanh thu chịu thuế GTGT.** Hộ kinh doanh cần tổng hợp tất cả doanh thu bán hàng hóa, cung cấp dịch vụ trong kỳ kê khai (quý) từ sổ bán hàng và hóa đơn GTGT đã phát hành. Doanh thu chịu thuế GTGT bao gồm cả doanh thu nhận trước tiền hàng, tiền đặt cọc không hoàn lại và các khoản thu khác liên quan trực tiếp đến hoạt động kinh doanh.
 
-Đối với hộ kinh doanh nhóm 2, thuế GTGT được tính theo phương pháp **trực tiếp trên doanh thu** hoặc **trừGTGT đầu vào**, tùy theo quyết định đăng ký ban đầu. Phương pháp trực tiếp trên doanh thu phổ biến hơn vì đơn giản và phù hợp với đặc thù kinh doanh nhỏ.
+Đối với hộ kinh doanh nhóm 2, thuế GTGT được tính theo phương pháp **trực tiếp trên doanh thu** hoặc **khấu trừ GTGT đầu vào**, tùy theo quyết định đăng ký ban đầu. Phương pháp trực tiếp trên doanh thu phổ biến hơn vì đơn giản và phù hợp với đặc thù kinh doanh nhỏ.
 
 **Công thức tính thuế GTGT theo phương pháp trực tiếp:**
 
@@ -50,11 +50,11 @@ Hộ kinh doanh cần lưu ý ghi đúng **mã ngành nghề theo cấp 4** (ví
 
 | Ngành nghề | Tỷ lệ thuế TNCN |
 |---|---|
-| Bán buôn, bán lẻ hàng hóa | 0,5% |
-| Dịch vụ ăn uống | 0,5% |
-| Sản xuất, chế biến | 1,5% - 2% |
-| Dịch vụ khác | 1% - 5% |
-| Cho thuê tài sản | 1% - 5% |
+| Phân phối hàng hóa (bán buôn, bán lẻ) | 0,5% |
+| Sản xuất, chế biến hàng hóa | 1,5% |
+| Dịch vụ (ăn uống, tư vấn, vận tải, đào tạo...) | 2% |
+| Cho thuê bất động sản | 5% |
+| Cho thuê xe, phương tiện vận tải | 3% |
 
 Thuế TNCN hộ kinh doanh được tính cùng tờ khai 01/CNKD, cộng dồn với thuế GTGT. Tổng số tiền phải nộp = Thuế GTGT + Thuế TNCN.
 

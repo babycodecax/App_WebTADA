@@ -83,15 +83,14 @@ Ngoài các khoản thuế trên, hộ kinh doanh có thể phải nộp **lệ 
 - **Đăng ký mới trong năm:** Nộp lệ phí môn bài khi đăng ký kinh doanh
 - **Đăng ký từ năm trước:** Nộp lệ phí môn bài trước **30/01/2026**
 
-Mức lệ phí môn bài theo nhóm:
+Mức lệ phí môn bài theo nhóm (áp dụng theo Nghị định 141/2026/NĐ-CP):
 | Nhóm hộ kinh doanh | Lệ phí môn bài/năm |
 |---|---|
-| Nhóm 1 (doanh thu < 500 triệu) | 1.000.000 đồng |
-| Nhóm 2 (doanh thu 500 triệu - 1 tỷ) | 1.500.000 đồng |
-| Nhóm 3 (doanh thu 1 tỷ - 2 tỷ) | 3.000.000 đồng |
-| Nhóm 4 (doanh thu 2 tỷ - 5 tỷ) | 5.000.000 đồng |
-| Nhóm 5 (doanh thu 5 tỷ - 10 tỷ) | 7.000.000 đồng |
-| Nhóm 6 (doanh thu trên 10 tỷ) | 10.000.000 đồng |
+| Nhóm 1 (doanh thu <= 1 tỷ) | 1.000.000 đồng |
+| Nhóm 2 (doanh thu trên 1 tỷ - 2 tỷ) | 1.500.000 đồng |
+| Nhóm 3 (doanh thu trên 2 tỷ - 5 tỷ) | 3.000.000 đồng |
+| Nhóm 4 (doanh thu trên 5 tỷ - 10 tỷ) | 5.000.000 đồng |
+| Nhóm 5 (doanh thu trên 10 tỷ) | 10.000.000 đồng |
 
 *Lưu ý: Hộ kinh doanh mới thành lập trong năm được miễn lệ phí môn bài cho đến hết năm thành lập.*
 
@@ -158,4 +157,4 @@ Hộ kinh doanh mới cần thực hiện 3 việc trong vòng 10 ngày kể t�
 
 *Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật Quản lý thuế 2019 (sửa đổi 2024), Thông tư 92/2015/TT-BTC, Thông tư 152/2025/TT-BTC, Luật Phí và lệ phí 2015.*
 
-*Xem thêm: [Hướng dẫn kê khai thuế nhóm 2](/blog/huong-dan-ke-khai-thue-hkd-nhom-2-nam-2026) | [Hộ kinh doanh dưới 500 triệu có phải nộp thuế không?](/blog/ho-kinh-doanh-duoi-500-trieu-co-phai-nop-thue-khong) | [Trang chủ TADA](https://ketoanthuetada.com/)*
+*Xem thêm: [Hướng dẫn kê khai thuế nhóm 2](/blog/huong-dan-ke-khai-thue-hkd-nhom-2-nam-2026) | [Hộ kinh doanh dưới 1 tỷ có phải nộp thuế không?](/blog/ho-kinh-doanh-duoi-500-trieu-co-phai-nop-thue-khong) | [Trang chủ TADA](https://ketoanthuetada.com/)*
