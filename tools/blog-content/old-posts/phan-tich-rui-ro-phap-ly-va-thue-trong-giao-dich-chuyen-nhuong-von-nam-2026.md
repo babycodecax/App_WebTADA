@@ -59,7 +59,7 @@ Nên yêu cầu công ty ký cam kết trách nhiệm bằng văn bản, nộp t
 
 *Nguồn tham khảo: Luật Doanh nghiệp số 59/2020/QH14, Luật Thuế TNCN số 109/2025/QH15, Nghị định 253/2026/NĐ-CP, Bộ luật Hình sự 2015*
 
-**Bài viết liên quan:**
-- [Thuế gọi tên, giám đốc chạy nợ: Kế toán nên ở lại hay rút lui?](https://ketoanthuetada.com/blog/thue-goi-ten-giam-doc-chay-no-ke-toan-nen-o-lai-chiu-tran-hay-rut-lui-em-dep)
-- [Lộ trình xử lý rủi ro hóa đơn N06 và giải tỏa áp lực thuế năm 2026](https://ketoanthuetada.com/blog/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026)
-- [Sếp nộp 247 triệu vào tài khoản công ty năm 2026](https://ketoanthuetada.com/blog/sep-nop-247-trieu-vao-tai-khoan-cong-ty-nam-2026-ke-toan-can-lap-ho-so-hach-toan-va-ke-khai-giao-dich-lien-ket-the-nao-cho-dung)
+**Đọc thêm:**
+- [Thuế gọi tên, giám đốc chạy nợ: Kế toán nên ở lại hay rút lui?](https://ketoanthuetada.com/thue-goi-ten-giam-doc-chay-no-ke-toan-nen-o-lai-chiu-tran-hay-rut-lui-em-dep)
+- [Lộ trình xử lý rủi ro hóa đơn N06 và giải tỏa áp lực thuế năm 2026](https://ketoanthuetada.com/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026)
+- [Sếp nộp 247 triệu vào tài khoản công ty năm 2026](https://ketoanthuetada.com/sep-nop-247-trieu-vao-tai-khoan-cong-ty-nam-2026-ke-toan-can-lap-ho-so-hach-toan-va-ke-khai-giao-dich-lien-ket-the-nao-cho-dung)

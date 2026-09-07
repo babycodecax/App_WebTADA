@@ -51,7 +51,7 @@ Mỗi người phụ thuộc được giảm trừ 6,2 triệu đồng/tháng th
 
 *Nguồn tham khảo: Luật Thuế TNDN số 14/2020/QH14, Thông tư 92/2015/TT-BTC, Nghị định 253/2026/NĐ-CP, Bộ luật Lao động số 45/2019/QH14*
 
-**Bài viết liên quan:**
-- [Thuế gọi tên, giám đốc chạy nợ: Kế toán nên ở lại hay rút lui?](https://ketoanthuetada.com/blog/thue-goi-ten-giam-doc-chay-no-ke-toan-nen-o-lai-chiu-tran-hay-rut-lui-em-dep)
-- [Lỡ tay tip bằng tiền công ty: Cách giải cứu Giám đốc khỏi rắc rối pháp lý](https://ketoanthuetada.com/blog/lo-tay-tip-bang-tien-cong-ty-cach-giai-cuu-giam-doc-khoi-rac-roi-phap-ly)
-- [Tiền ăn xăng xe chi cố định: Coi chừng mất tiền thuế oan](https://ketoanthuetada.com/blog/tien-an-xang-xe-chi-co-dinh-coi-chung-mat-tien-thue-oan-vi-ngai-tinh-theo-ngay-cong)
+**Đọc thêm:**
+- [Thuế gọi tên, giám đốc chạy nợ: Kế toán nên ở lại hay rút lui?](https://ketoanthuetada.com/thue-goi-ten-giam-doc-chay-no-ke-toan-nen-o-lai-chiu-tran-hay-rut-lui-em-dep)
+- [Lỡ tay tip bằng tiền công ty: Cách giải cứu Giám đốc khỏi rắc rối pháp lý](https://ketoanthuetada.com/lo-tay-tip-bang-tien-cong-ty-cach-giai-cuu-giam-doc-khoi-rac-roi-phap-ly)
+- [Tiền ăn xăng xe chi cố định: Coi chừng mất tiền thuế oan](https://ketoanthuetada.com/tien-an-xang-xe-chi-co-dinh-coi-chung-mat-tien-thue-oan-vi-ngai-tinh-theo-ngay-cong)

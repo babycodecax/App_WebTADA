@@ -39,23 +39,31 @@ Khi nhận thông báo, người nộp thuế cần bình tĩnh và thực hiệ
 
 ## Câu hỏi thường gặp
 
-**Thời hạn tạm hoãn xuất cảnh kéo dài bao lâu?**
+### Thời hạn tạm hoãn xuất cảnh kéo dài bao lâu?
+
 Lệnh tạm hoãn xuất cảnh có hiệu lực cho đến khi người nộp thuế hoàn thành nghĩa vụ thuế hoặc số nợ giảm dưới ngưỡng 50 triệu (cá nhân) hoặc 500 triệu (doanh nghiệp). Không có thời hạn cố định, phụ thuộc vào việc xử lý nợ thuế.
 
-**Làm thế nào để kiểm tra mình có bị tạm hoãn xuất cảnh không?**
+### Làm thế nào để kiểm tra mình có bị tạm hoãn xuất cảnh không?
+
 Bạn có thể tra cứu trực tiếp trên hệ thống thuế điện tử hoặc liên hệ cơ quan thuế quản lý trực tiếp. Nếu có ý định xuất cảnh, nên kiểm tra trước ít nhất 30 ngày để có thời gian xử lý.
 
-**Nợ thuế dưới 50 triệu đồng có bị tạm hoãn xuất cảnh không?**
+### Nợ thuế dưới 50 triệu đồng có bị tạm hoãn xuất cảnh không?
+
 Không. Theo Nghị định 252/2026/NĐ-CP, ngưỡng áp dụng cho cá nhân là 50 triệu đồng trở lên và đã quá hạn từ 120 ngày. Nợ dưới ngưỡng này không bị tạm hoãn xuất cảnh nhưng vẫn phải hoàn thành nghĩa vụ nộp thuế.
 
-**Nộp đủ tiền nợ thuế thì bao lâu được hủy lệnh hoãn?**
+### Nộp đủ tiền nợ thuế thì bao lâu được hủy lệnh hoãn?
+
 Sau khi nộp đủ và có xác nhận của ngân hàng, cơ quan thuế sẽ ban hành quyết định hủy bỏ trong thời hạn 5 ngày làm việc. Bạn cần liên hệ trực tiếp để nhận thông báo chính thức.
 
 ---
 
-*Đội ngũ Chuyên gia Thuế TADA | Last updated: 20/07/2026 | Nguồn: Điều 28, Nghị định 252/2026/NĐ-CP, Luật Quản lý thuế 38/2019/QH14*
+*Đội ngũ Chuyên gia Thuế TADA*
+
+*Last updated: 20/07/2026*
+
+*Nguồn tham khảo: Điều 28, Nghị định 252/2026/NĐ-CP, Luật Quản lý thuế 38/2019/QH14*
 
 **Đọc thêm:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
 - [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động lâu năm](https://ketoanthuetada.com/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)
 - [Lộ trình xử lý rủi ro hóa đơn N06 và giải tỏa áp lực thuế năm 2026](https://ketoanthuetada.com/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026)
+- [Tóm tắt các rủi ro và chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)

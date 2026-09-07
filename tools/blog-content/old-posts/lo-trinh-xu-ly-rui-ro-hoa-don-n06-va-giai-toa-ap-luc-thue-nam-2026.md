@@ -59,7 +59,7 @@ Trường hợp bất khả kháng do thiên tai, dịch bệnh, cơ quan thuế
 
 *Nguồn tham khảo: Thông tư 39/2014/TT-BTC, Thông tư 92/2015/TT-BTC, Luật Quản lý thuế số 38/2019/QH14, Nghị định 126/2020/NĐ-CP*
 
-**Bài viết liên quan:**
-- [Tổng hợp các trường hợp bị tạm hoãn xuất cảnh do nợ thuế từ 2026](https://ketoanthuetada.com/blog/tong-hop-cac-truong-hop-bi-tam-hoan-xuat-canh-do-no-thue-tu-2026)
-- [Phân tích rủi ro pháp lý và thuế trong giao dịch chuyển nhượng vốn năm 2026](https://ketoanthuetada.com/blog/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)
-- [Xử lý sai lệch doanh thu và tối ưu nghĩa vụ phạt khi kiểm tra thuế năm 2025](https://ketoanthuetada.com/blog/xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025)
+**Đọc thêm:**
+- [Tổng hợp các trường hợp bị tạm hoãn xuất cảnh do nợ thuế từ 2026](https://ketoanthuetada.com/tong-hop-cac-truong-hop-bi-tam-hoan-xuat-canh-do-no-thue-tu-2026)
+- [Phân tích rủi ro pháp lý và thuế trong giao dịch chuyển nhượng vốn năm 2026](https://ketoanthuetada.com/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)
+- [Xử lý sai lệch doanh thu và tối ưu nghĩa vụ phạt khi kiểm tra thuế năm 2025](https://ketoanthuetada.com/xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025)

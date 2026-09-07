@@ -27,7 +27,7 @@ Mức phạt cụ thể sẽ phụ thuộc vào số lượng người lao độ
 
 Quy trình nộp Nội quy lao động hiện nay được thực hiện hoàn toàn trực tuyến qua Cổng Dịch công quốc gia (Dichvucong.gov.vn). Dưới đây là các bước chi tiết:
 
-**Bước 1: Đăng nhập hệ thống**
+### Bước 1: Đăng nhập hệ thống
 Truy cập trang web Dichvucong.gov.vn, đăng nhập bằng tài khoản VNEID của Chủ doanh nghiệp. Tài khoản VNEID phải là tài khoản cá nhân của người đại diện theo pháp luật, đứng tên trên Giấy chứng nhận đăng ký doanh nghiệp.
 
 **Bước 2: Tìm kiếm dịch vụ**
@@ -41,9 +41,9 @@ Sau khi nộp thành công, doanh nghiệp sẽ nhận được xác nhận và 
 
 ## Nội quy lao động phải có những nội dung gì?
 
-Theo Điều 119 Bộ luật Lao động 2019, Nội quy lao động phải bao gồm các chương về: thời gian làm việc, thời gian nghỉ ngơi, trật tự tại nơi làm việc,珍 trọng và bảo mật thông tin, sử dụng tài sản và thiết bị của doanh nghiệp, và các hành vi bị nghiêm cấm.
+Theo Điều 119 Bộ luật Lao động 2019, Nội quy lao động phải bao gồm các chương về: thời gian làm việc, thời gian nghỉ ngơi, trật tự tại nơi làm việc, tôn trọng và bảo mật thông tin, sử dụng tài sản và thiết bị của doanh nghiệp, và các hành vi bị nghiêm cấm.
 
-Lưu ý quan trọng: Một nội quy lao động chuẩn theo biểu mẫu phải có đầy đủ 10 chương, không phải 7 chương như một số mẫu tải trên mạng internet. Việc thiếu các chương quy định sẽ khiến nội quy không đáp ứng yêu cầu pháp lý và có thể bị từ chối受理.
+Lưu ý quan trọng: Một nội quy lao động chuẩn theo biểu mẫu phải có đầy đủ 10 chương, không phải 7 chương như một số mẫu tải trên mạng internet. Việc thiếu các chương quy định sẽ khiến nội quy không đáp ứng yêu cầu pháp lý và có thể bị từ chối.
 
 ## Các bước nộp cụ thể cần lưu ý gì?
 
@@ -51,24 +51,34 @@ Khi thực hiện nộp nội quy lao động, doanh nghiệp cần đặc biệ
 
 Ngoài ra, doanh nghiệp cần cập nhật nội quy lao động khi có thay đổi về quy mô, tổ chức hoặc khi pháp luật có quy định mới. Việc cập nhật phải được thực hiện trong thời hạn 10 ngày kể từ khi thay đổi xảy ra.
 
-## Câu hỏi thường gặp về Nội quy lao động
+## Câu hỏi thường gặp
 
-**Nội quy lao động có bắt buộc phải công chứng không?**
+### Nội quy lao động có bắt buộc phải công chứng không?
+
 Nội quy lao động không bắt buộc phải công chứng. Tuy nhiên, để đảm bảo hiệu lực pháp lý, nội quy phải được ban hành đúng quy trình: tham vấn với tổ chức đại diện người lao động, được thông qua trong cuộc họp, và thông báo cho toàn bộ người lao động.
 
-**Doanh nghiệp mới thành lập phải nộp nội quy trong thời hạn bao lâu?**
+### Doanh nghiệp mới thành lập phải nộp nội quy trong thời hạn bao lâu?
+
 Doanh nghiệp mới thành lập phải xây dựng và nộp Nội quy lao động ngay khi có từ 10 người lao động trở lên. Thời hạn hiệu lực của nội quy là không có thời hạn, tuy nhiên doanh nghiệp phải cập nhật khi có thay đổi.
 
-**Doanh nghiệp nhỏ dưới 10 người có cần nội quy không?**
+### Doanh nghiệp nhỏ dưới 10 người có cần nội quy không?
+
 Doanh nghiệp có ít hơn 10 người lao động không bắt buộc phải xây dựng và nộp Nội quy lao động theo quy định hiện hành. Tuy nhiên, doanh nghiệp vẫn có thể tự nguyện xây dựng để làm công cụ quản lý hiệu quả.
 
-**Nộp Nội quy lao động ở đâu nếu doanh nghiệp có nhiều chi nhánh?**
+### Nộp Nội quy lao động ở đâu nếu doanh nghiệp có nhiều chi nhánh?
+
 Doanh nghiệp có chi nhánh, văn phòng đại diện phải nộp Nội quy lao động tại Sở Lao động - Thương binh và Xã hội nơi doanh nghiệp đặt trụ sở chính. Chi nhánh được áp dụng chung nội quy lao động của trụ sở chính.
 
 ---
 
-Đội ngũ Chuyên gia Thuế TADA
+*Đội ngũ Chuyên gia Thuế TADA*
 
-*Cập nhật lần cuối: 15/08/2026 | Nguồn: Bộ luật Lao động 2019, Điều 25 Nghị định 283/2026/NĐ-CP, Cổng Dịch công quốc gia*
+*Last updated: 15/08/2026*
 
-Liên kết nội bộ: [Dịch vụ kế toán thuế TADA](https://ketoanthuetada.com) | [Hướng dẫn đăng ký sử dụng hóa đơn điện tử](https://ketoanthuetada.com/blog/huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026) | [Thay đổi trạng thái mã số thuế từ 03 sang 06](https://ketoanthuetada.com/blog/chuyen-trang-thai-ma-so-thue-tu-03-sang-06) | [Quy định tạm ngừng kinh doanh của công ty](https://ketoanthuetada.com/blog/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)
+*Nguồn tham khảo: Bộ luật Lao động 2019, Điều 25 Nghị định 283/2026/NĐ-CP, Cổng Dịch công quốc gia*
+
+**Bài viết liên quan:**
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
+- [Hướng dẫn đăng ký sử dụng hóa đơn điện tử](https://ketoanthuetada.com/blog/huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026)
+- [Thay đổi trạng thái mã số thuế từ 03 sang 06](https://ketoanthuetada.com/blog/chuyen-trang-thai-ma-so-thue-tu-03-sang-06)
+- [Quy định tạm ngừng kinh doanh của công ty](https://ketoanthuetada.com/blog/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)

@@ -39,23 +39,31 @@ Doanh nghiệp nên xây dựng quy chế tài chính nội bộ chặt chẽ, q
 
 ## Câu hỏi thường gặp
 
-**Giám đốc dùng tiền công ty đi karaoke có bị truy tố hình sự không?**
+### Giám đốc dùng tiền công ty đi karaoke có bị truy tố hình sự không?
+
 Nếu khoản tiền lớn từ 100 triệu đồng trở lên và có dấu hiệu chiếm đoạt có hệ thống, Giám đốc có thể bị truy cứu trách nhiệm hình sự theo Điều 174 Bộ luật Hình sự. Với sai sót nhỏ, mức phạt hành chính từ 20% đến 3 lần số thuế trốn.
 
-**Kế toán có phải chịu trách nhiệm khi hạch toán sai khoản chi tip?**
+### Kế toán có phải chịu trách nhiệm khi hạch toán sai khoản chi tip?
+
 Kế toán trưởng chịu trách nhiệm trực tiếp về tính chính xác của sổ sách kế toán. Nếu cố ý hạch toán khoản chi không hợp lệ vào chi phí, kế toán có thể bị xử phạt vi phạm hành chính theo Điều 41 Luật Kế toán số 88/2015/QH14.
 
-**Tiền tip cho nhân viên nhà hàng có cần hóa đơn GTGT không?**
+### Tiền tip cho nhân viên nhà hàng có cần hóa đơn GTGT không?
+
 Có. Theo Thông tư 78/2014/TT-BTC, mọi khoản chi phải có hóa đơn GTGT hoặc chứng từ hợp pháp để được tính vào chi phí được trừ. Tiền tip không có hóa đơn mặc nhiên là chi phí không được trừ.
 
-**Hoàn trả tiền nhầm từ bao lâu thì phải thực hiện?**
-Nên thực hiện ngay trong ngày phát hiện hoặc chậm nhất trong 5 ngày làm việc để chứng minh thiện chí. Việc hoàn trả càng sớm, mức xử phạt càng thấp theo quy định tại Điều 10 Luật Quản lý thuế.
+### Hoàn trả tiền nhầm từ bao lâu thì phải thực hiện?
+
+Nên thực hiện ngay trong ngày phát hiện hoặc chậm nhất trong 5 ngày làm việc để chứng minh thiện chí. Việc hoàn trả càng sớm, mức xử phạt càng thấp theo quy định tại Điều 10 Luật Quản lý thuế. Liên hệ chuyên gia tại [ketoanthuetada.com](https://ketoanthuetada.com) để được tư vấn cách xử lý phù hợp.
 
 ---
 
-*Đội ngũ Chuyên gia Thuế TADA | Last updated: 12/06/2026 | Nguồn: Luật Doanh nghiệp 59/2020/QH14, Luật Thuế TNDN 14/2020/QH14, Luật Quản lý thuế 38/2019/QH14, Bộ luật Hình sự*
+*Đội ngũ Chuyên gia Thuế TADA*
+
+*Last updated: 12/06/2026*
+
+*Nguồn tham khảo: Luật Doanh nghiệp số 59/2020/QH14, Luật Thuế TNDN số 14/2020/QH14, Luật Quản lý thuế số 38/2019/QH14, Bộ luật Hình sự 2015*
 
 **Đọc thêm:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
-- [Thuế gọi tên Giám đốc chạy nợ: Kế toán nên ở lại chịu trận hay rút lui êm đẹp](https://ketoanthuetada.com/thue-goi-ten-giam-doc-chay-no-ke-toan-nen-o-lai-chiu-tran-hay-rut-lui-em-dep)
+- [Thuế gọi tên, giám đốc chạy nợ: Kế toán nên ở lại hay rút lui?](https://ketoanthuetada.com/thue-goi-ten-giam-doc-chay-no-ke-toan-nen-o-lai-chiu-tran-hay-rut-lui-em-dep)
 - [Phân tích rủi ro pháp lý và thuế trong giao dịch chuyển nhượng vốn năm 2026](https://ketoanthuetada.com/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)
+- [Sếp nộp 247 triệu vào tài khoản công ty năm 2026](https://ketoanthuetada.com/sep-nop-247-trieu-vao-tai-khoan-cong-ty-nam-2026-ke-toan-can-lap-ho-so-hach-toan-va-ke-khai-giao-dich-lien-ket-the-nao-cho-dung)

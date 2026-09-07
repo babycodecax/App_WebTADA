@@ -31,18 +31,22 @@ Tuy nhiên, pháp luật cũng có cơ chế mở cho những sai sót vô ý. N
 
 Việc chủ động chuẩn bị giúp doanh nghiệp tránh được các rủi ro xử phạt và giảm bớt áp lực khi cơ quan thuế thực hiện kiểm tra. Đồng thời, doanh nghiệp nên thường xuyên theo dõi các thông báo mới từ Tổng cục Thuế về quy định hóa đơn điện tử.
 
-## Câu hỏi thường gặp về hóa đơn điện tử năm 2026
+## Câu hỏi thường gặp
 
-**Có được lập hóa đơn trước khi giao hàng không?**
+### Có được lập hóa đơn trước khi giao hàng không?
+
 Được, trong trường hợp thu tiền trước, doanh nghiệp có thể lập hóa đơn theo thời điểm thu tiền. Tuy nhiên, cần đảm bảo nội dung hóa đơn phản ánh đúng giao dịch thực tế và đúng quy định tại Nghị định 254/2026/NĐ-CP.
 
-**Sai sót trên hóa đơn phải xử lý trong bao lâu?**
+### Sai sót trên hóa đơn phải xử lý trong bao lâu?
+
 Doanh nghiệp phải phát hiện và khắc phục sai sót trên hóa đơn trong thời hạn 5 ngày làm việc kể từ ngày phát hiện. Nếu vượt quá thời hạn này, doanh nghiệp có thể phải chịu mức phạt nặng hơn theo quy định mới.
 
-**Hóa đơn của năm 2024 có phải chuyển đổi theo mẫu mới không?**
+### Hóa đơn của năm 2024 có phải chuyển đổi theo mẫu mới không?
+
 Hóa đơn đã lập trong năm 2024 theo mẫu cũ vẫn có giá trị pháp lý. Doanh nghiệp không cần chuyển đổi lại hóa đơn cũ mà chỉ cần áp dụng mẫu mới cho các hóa đơn lập từ 01/01/2026 trở đi.
 
-**Doanh nghiệp nhỏ có được miễn sử dụng hóa đơn điện tử không?**
+### Doanh nghiệp nhỏ có được miễn sử dụng hóa đơn điện tử không?
+
 Từ năm 2026, hầu hết các doanh nghiệp và hộ kinh doanh đều phải sử dụng hóa đơn điện tử. Chỉ một số trường hợp đặc biệt tại khu vực miền núi, hải đảo mới được gia hạn thời hạn áp dụng.
 
 ---
@@ -51,4 +55,4 @@ Từ năm 2026, hầu hết các doanh nghiệp và hộ kinh doanh đều phả
 
 *Cập nhật lần cuối: 15/08/2026 | Nguồn: Nghị định 254/2026/NĐ-CP, Thông tư 78/2026/TT-BTC, Tổng cục Thuế*
 
-Liên kết nội bộ: [Dịch vụ kế toán thuế TADA](https://ketoanthuetada.com) | [Lộ trình xử lý rủi ro hóa đơn N06](https://ketoanthuetada.com/blog/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026) | [Kinh doanh sàn thương mại điện tử xuất hóa đơn](https://ketoanthuetada.com/blog/kinh-doanh-san-thuong-mai-dien-tu-xuat-hoa-don-sao-cho-dung-chuan-2026) | [Phân tích rủi ro pháp lý trong giao dịch chuyển nhượng vốn](https://ketoanthuetada.com/blog/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)
+**Đọc thêm:** [Dịch vụ kế toán thuế TADA](https://ketoanthuetada.com) | [Lộ trình xử lý rủi ro hóa đơn N06](https://ketoanthuetada.com/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026) | [Kinh doanh sàn thương mại điện tử xuất hóa đơn](https://ketoanthuetada.com/kinh-doanh-san-thuong-mai-dien-tu-xuat-hoa-don-sao-cho-dung-chuan-2026) | [Phân tích rủi ro pháp lý trong giao dịch chuyển nhượng vốn](https://ketoanthuetada.com/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)

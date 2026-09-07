@@ -31,23 +31,31 @@ Cách tốt nhất là hoàn thành **tất cả nghĩa vụ thuế trước** k
 
 Quy trình chuẩn bao gồm 4 bước: (1) Hoàn thành quyết toán thuế các kỳ còn thiếu; (2) Nộp đầy đủ tiền thuế nợ, tiền phạt và tiền chậm nộp; (3) Nộp hồ sơ đề nghị chấm dứt hiệu lực mã số thuế theo Mẫu số 18-ĐK-TCT; (4) Chờ cơ quan thuế xác nhận và ban hành thông báo chấm dứt. Thời gian xử lý thông thường từ 5 đến 15 ngày làm việc kể từ khi nộp đầy đủ hồ sơ hợp lệ. Doanh nghiệp nên theo dõi tiến trình trên hệ thống thuế điện tử để đảm bảo trạng thái được cập nhật đúng hạn.
 
-## Các câu hỏi thường gặp về chuyển trạng thái mã số thuế
+## Câu hỏi thường gặp
 
-**Trạng thái 06 có thể khôi phục về 03 được không?**
+### Trạng thái 06 có thể khôi phục về 03 được không?
+
 Có thể khôi phục nếu doanh nghiệp chứng minh được vẫn hoạt động tại địa chỉ đăng ký và hoàn thành tất cả nghĩa vụ thuế còn thiếu. Tuy nhiên, quá trình này thường mất từ 15 đến 30 ngày làm việc.
 
-**Mã số thuế ở trạng thái 06 có bị xóa vĩnh viễn không?**
+### Mã số thuế ở trạng thái 06 có bị xóa vĩnh viễn không?
+
 Không. Mã số thuế ở trạng thái 06 vẫn được giữ nguyên trên hệ thống. Doanh nghiệp cần thực hiện thủ tục khôi phục để sử dụng lại, không phải đăng ký mới.
 
-**Phạt bao nhiêu khi để mã số thuế ở trạng thái 06 quá lâu?**
+### Phạt bao nhiêu khi để mã số thuế ở trạng thái 06 quá lâu?
+
 Mức phạt theo Nghị định 125/2020/NĐ-CP dao động từ 2 triệu đến 25 triệu đồng tùy hành vi vi phạm, cộng với tiền chậm nộp tính theo tỷ lệ 0,03%/ngày.
 
-**Doanh nghiệp giải thể rồi có cần quan tâm trạng thái 06 không?**
+### Doanh nghiệp giải thể rồi có cần quan tâm trạng thái 06 không?
+
 Có. Nếu doanh nghiệp chưa hoàn thành thủ tục giải thể theo quy định, chủ doanh nghiệp vẫn có thể bị hạn chế các quyền cá nhân như xuất cảnh, mở tài khoản mới.
 
 ---
 
-*Đội ngũ Chuyên gia Thuế TADA | Last updated: 20/03/2026 | Nguồn: Luật Quản lý thuế 38/2019/QH14, Nghị định 125/2020/NĐ-CP, Điều 35 Luật Quản lý thuế 2019*
+*Đội ngũ Chuyên gia Thuế TADA*
+
+*Last updated: 20/03/2026*
+
+*Nguồn tham khảo: Luật Quản lý thuế 38/2019/QH14, Nghị định 125/2020/NĐ-CP, Điều 35 Luật Quản lý thuế 2019*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)

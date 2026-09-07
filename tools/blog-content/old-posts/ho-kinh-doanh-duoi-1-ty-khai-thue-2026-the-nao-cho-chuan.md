@@ -31,23 +31,31 @@ Nếu trong năm, doanh thu lũy kế của bạn **đạt mốc trên 01 tỷ �
 
 Từ ngày 01/07/2025, bạn sử dụng **số định danh cá nhân** thay cho mã số thuế để thực hiện các thủ tục kê khai. Đây là thay đổi quan trọng trong hệ thống thuế điện tử, giúp đồng bộ dữ liệu giữa cơ quan thuế và cơ quan công an. Bạn cần đảm bảo số định danh cá nhân trên tờ khai khớp đúng với thông tin trong Cơ sở dữ liệu quốc gia về dân cư để tránh bị từ chối hồ sơ.
 
-## Các câu hỏi thường gặp về khai thuế hộ kinh doanh dưới 1 tỷ
+## Câu hỏi thường gặp
 
-**Hộ kinh doanh dưới 1 tỷ có cần nộp tờ khai quý không?**
+### Hộ kinh doanh dưới 1 tỷ có cần nộp tờ khai quý không?
+
 Không. Hộ kinh doanh có doanh thu dưới 01 tỷ đồng chỉ cần nộp thông báo doanh thu vào cuối năm, không phải nộp tờ khai quý định kỳ.
 
-**Nếu đã lỡ nộp tờ khai quý thì sao?**
+### Nếu đã lỡ nộp tờ khai quý thì sao?
+
 Số tiền thuế đã nộp sẽ được cơ quan thuế đối soát và xử lý hoàn trả hoặc bù trừ vào các nghĩa vụ thuế khác. Bạn không cần lo lắng về việc nộp thừa.
 
-**Thời hạn nộp thông báo doanh thu là khi nào?**
+### Thời hạn nộp thông báo doanh thu là khi nào?
+
 Chậm nhất ngày 31 tháng 01 của năm dương lịch tiếp theo. Ví dụ, thông báo doanh thu năm 2025 phải nộp trước ngày 31/01/2026.
 
-**Có cần giữ sổ sách kế toán không?**
+### Có cần giữ sổ sách kế toán không?
+
 Có. Bạn cần ghi chép sổ sách đơn giản để theo dõi doanh thu bán hàng hóa và dịch vụ nhằm làm căn cứ đối soát với cơ quan thuế khi có yêu cầu kiểm tra.
 
 ---
 
-*Đội ngũ Chuyên gia Thuế TADA | Last updated: 05/03/2026 | Nguồn: Luật số 09/2026/QH16, Nghị định 141/2026/NĐ-CP, Mẫu số 01/TKN-CNKD*
+*Đội ngũ Chuyên gia Thuế TADA*
+
+*Last updated: 05/03/2026*
+
+*Nguồn tham khảo: Luật số 09/2026/QH16, Nghị định 141/2026/NĐ-CP, Mẫu số 01/TKN-CNKD*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)

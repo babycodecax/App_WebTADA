@@ -31,23 +31,31 @@ Về hóa đơn, hộ kinh doanh có doanh thu dưới 01 tỷ đồng **không 
 
 Tóm lại, nếu doanh thu năm 2026 của bạn dưới 01 tỷ đồng, bạn không cần phải tiếp tục kê khai thuế theo quý cho các quý còn lại. Bạn chỉ cần thực hiện **thông báo tổng doanh thu thực tế vào cuối năm dương lịch** để hoàn tất nghĩa vụ thuế theo đúng quy định dành cho nhóm hộ kinh doanh được miễn thuế. Nếu có thắc mắc về quy trình hoặc cần hỗ trợ nộp tờ khai, hãy liên hệ chuyên gia thuế để được tư vấn kịp thời.
 
-## Các câu hỏi thường gặp về thuế hộ kinh doanh dưới 1 tỷ
+## Câu hỏi thường gặp
 
-**Doanh thu trên 1 tỷ phải nộp thuế bao nhiêu?**
+### Doanh thu trên 1 tỷ phải nộp thuế bao nhiêu?
+
 Nếu doanh thu vượt 01 tỷ đồng, hộ kinh doanh phải nộp thuế GTGT và TNCN theo tỷ lệ dành cho hộ kinh doanh. Mức thuế cụ thể phụ thuộc vào loại hình kinh doanh và mức doanh thu thực tế.
 
-**Có cần đăng ký mã số thuế cho hộ kinh doanh không?**
+### Có cần đăng ký mã số thuế cho hộ kinh doanh không?
+
 Có. Mỗi hộ kinh doanh phải có mã số thuế riêng để thực hiện các thủ tục kê khai và nộp thuế. Từ 01/07/2025, số định danh cá nhân được sử dụng thay cho mã số thuế.
 
-**Nếu cơ quan thuế yêu cầu kiểm tra thì sao?**
+### Nếu cơ quan thuế yêu cầu kiểm tra thì sao?
+
 Bạn cần xuất trình sổ sách theo dõi doanh thu và các chứng từ liên quan. Việc ghi chép đầy đủ từ đầu sẽ giúp quá trình kiểm tra diễn ra nhanh chóng và thuận lợi.
 
-**Thời hạn nộp thông báo doanh thu là khi nào?**
+### Thời hạn nộp thông báo doanh thu là khi nào?
+
 Chậm nhất ngày 31 tháng 01 của năm dương lịch tiếp theo. Ví dụ, thông báo doanh thu năm 2025 phải nộp trước ngày 31/01/2026.
 
 ---
 
-*Đội ngũ Chuyên gia Thuế TADA | Last updated: 12/03/2026 | Nguồn: Luật số 09/2026/QH16, Nghị định 141/2026/NĐ-CP*
+*Đội ngũ Chuyên gia Thuế TADA*
+
+*Last updated: 12/03/2026*
+
+*Nguồn tham khảo: Luật số 09/2026/QH16, Nghị định 141/2026/NĐ-CP*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)

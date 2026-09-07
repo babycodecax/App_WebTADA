@@ -31,23 +31,31 @@ Cách tốt nhất là **định rõ hình thức hợp đồng ngay từ đầu
 
 Số tiền truy thu phụ thuộc vào thời gian và mức lương cơ bản mà cơ quan BHXH sử dụng làm căn cứ đóng. Thông thường, tiền truy thu bao gồm cả tiền bảo hiểm doanh nghiệp phải đóng và tiền lãi chậm đóng theo quy định. Doanh nghiệp có thể **thương lượng với cơ quan BHXH** về mức đóng nếu chứng minh được hướng dẫn viên thực tế không thuộc diện bắt buộc. Tuy nhiên, việc thương lượng cần dựa trên hồ sơ chứng cứ hợp lệ và nên có sự hỗ trợ của chuyên gia tư vấn thuế và BHXH.
 
-## Các câu hỏi thường gặp về truy thu BHXH hướng dẫn viên
+## Câu hỏi thường gặp
 
-**Hướng dẫn viên du lịch có cần đóng BHXH tự nguyện không?**
+### Hướng dẫn viên du lịch có cần đóng BHXH tự nguyện không?
+
 Có, hướng dẫn viên nên tự tham gia BHXH tự nguyện để đảm bảo quyền lợi về hưu trí, ốm đau và thai sản. Việc đóng BHXH tự nguyện là quyền lợi cá nhân, không phụ thuộc vào doanh nghiệp.
 
-**Doanh nghiệp lữ hành cần chuẩn bị gì khi bị truy thu?**
+### Doanh nghiệp lữ hành cần chuẩn bị gì khi bị truy thu?
+
 Doanh nghiệp cần chuẩn bị hợp đồng dịch vụ với hướng dẫn viên, chứng từ chi trả thù lao theo từng tour, danh sách tour đã thực hiện và chứng chỉ hành nghề của hướng dẫn viên.
 
-**Thời hạn khiếu nại quyết định truy thu BHXH là bao lâu?**
+### Thời hạn khiếu nại quyết định truy thu BHXH là bao lâu?
+
 Theo Luật Bảo hiểm xã hội, doanh nghiệp có quyền khiếu nại trong vòng 90 ngày kể từ ngày nhận quyết định truy thu từ cơ quan BHXH.
 
-**Có thể chuyển hướng dẫn viên sang hợp đồng cộng tác viên sau khi bị truy thu không?**
+### Có thể chuyển hướng dẫn viên sang hợp đồng cộng tác viên sau khi bị truy thu không?
+
 Có thể thay đổi hình thức hợp đồng cho các tour tiếp theo, nhưng không có hiệu lực hồi cố. Tiền truy thu cho giai đoạn trước khi thay đổi vẫn phải giải quyết theo quy định hiện hành.
 
 ---
 
-*Đội ngũ Chuyên gia Thuế TADA | Last updated: 10/03/2026 | Nguồn: Luật Bảo hiểm xã hội 2014, Luật số 90/2019/QH14*
+*Đội ngũ Chuyên gia Thuế TADA*
+
+*Last updated: 10/03/2026*
+
+*Nguồn tham khảo: Luật Bảo hiểm xã hội 2014, Luật số 90/2019/QH14*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)

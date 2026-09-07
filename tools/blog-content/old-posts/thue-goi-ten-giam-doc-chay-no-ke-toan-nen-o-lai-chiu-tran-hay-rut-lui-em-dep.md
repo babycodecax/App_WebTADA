@@ -57,6 +57,6 @@ Cần liên hệ ngay Hội đồng thành viên hoặc chủ sở hữu để c
 
 *Nguồn tham khảo: Luật Doanh nghiệp số 59/2020/QH14, Bộ luật Hình sự 2015, Luật Quản lý thuế số 38/2019/QH14*
 
-**Bài viết liên quan:**
-- [Quy trình giải thể công ty và đóng mã số thuế khi bị cảnh báo không hoạt động](https://ketoanthuetada.com/blog/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
-- [Xử lý sai lệch doanh thu và tối ưu nghĩa vụ phạt khi kiểm tra thuế](https://ketoanthuetada.com/blog/xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025)
+**Đọc thêm:**
+- [Quy trình giải thể công ty và đóng mã số thuế khi bị cảnh báo không hoạt động](https://ketoanthuetada.com/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
+- [Xử lý sai lệch doanh thu và tối ưu nghĩa vụ phạt khi kiểm tra thuế](https://ketoanthuetada.com/xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025)

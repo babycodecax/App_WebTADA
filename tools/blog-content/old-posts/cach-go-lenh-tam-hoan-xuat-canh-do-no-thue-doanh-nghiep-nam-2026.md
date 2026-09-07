@@ -39,23 +39,31 @@ Con số 85 triệu đồng thường bao gồm ba khoản thu chính. Thứ nh�
 
 Nhiều doanh nghiệp mắc sai lầm nghiêm trọng: nộp thuế mà không nộp tờ khai bổ sung trước, khiến cơ quan thuế không ghi nhận đã khắc phục hành vi vi phạm thủ tục. Ngoài ra, việc không tra cứu kỹ số tiền nợ gốc versus tiền phạt và tiền chậm nộp thường dẫn đến nộp thiếu, khiến lệnh cấm không được gỡ. Cách an toàn nhất là yêu cầu cơ quan thuế cung cấp thông báo nợ chi tiết theo từng khoản, sau đó đối chiếu và nộp đúng từng mã khoản phải nộp.
 
-## Các câu hỏi thường gặp về gỡ lệnh tạm hoãn xuất cảnh
+## Câu hỏi thường gặp
 
-**Lệ phí môn bài doanh nghiệp không hoạt động phải nộp bao nhiêu?**
+### Lệ phí môn bài doanh nghiệp không hoạt động phải nộp bao nhiêu?
+
 Doanh nghiệp không hoạt động vẫn phải nộp lệ phí môn bài theo mức cố định hàng năm. Từ năm 2026, mức lệ phí môn bài dao động từ 500.000đ đến 3.000.000đ tùy nhóm doanh nghiệp. Số tiền tích lũy qua 11 năm cộng với tiền chậm nộp có thể lên hàng chục triệu đồng.
 
-**Nợ thuế bao lâu thì bị cấm xuất cảnh?**
+### Nợ thuế bao lâu thì bị cấm xuất cảnh?
+
 Theo Nghị định 252/2026/NĐ-CP, cá nhân là người đại diện doanh nghiệp bị tạm hoãn xuất cảnh khi có tiền thuế nợ quá hạn từ 120 ngày trở lên. Đây là điều kiện bắt buộc, không có ngoại lệ.
 
-**Giải thể doanh nghiệp mất bao lâu?**
+### Giải thể doanh nghiệp mất bao lâu?
+
 Thủ tục giải thể doanh nghiệp thông thường kéo dài từ 2 đến 6 tháng tùy thuộc vào tình trạng nợ thuế và hồ sơ. Nếu đã hoàn thành tất cả nghĩa vụ tài chính trước đó, quy trình sẽ nhanh hơn đáng kể.
 
-**Có thể ủy quyền cho kế toán xử lý thay không?**
+### Có thể ủy quyền cho kế toán xử lý thay không?
+
 Có thể ủy quyền cho người đại diện hợp pháp hoặc tổ chức kế toán dịch vụ thực hiện các thủ tục tra soát, nộp thuế và nộp hồ sơ. Tuy nhiên, việc ký các văn bản chính thức với cơ quan thuế vẫn cần người đại diện pháp luật ký tên.
 
 ---
 
-*Đội ngũ Chuyên gia Thuế TADA | Last updated: 15/03/2026 | Nguồn: Nghị định 252/2026/NĐ-CP, Nghị định 125/2020/NĐ-CP, Nghị định 310/2025/NĐ-CP, Luật Doanh nghiệp 2020*
+*Đội ngũ Chuyên gia Thuế TADA*
+
+*Last updated: 15/03/2026*
+
+*Nguồn tham khảo: Nghị định 252/2026/NĐ-CP, Nghị định 125/2020/NĐ-CP, Nghị định 310/2025/NĐ-CP, Luật Doanh nghiệp 2020*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)

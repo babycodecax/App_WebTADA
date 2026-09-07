@@ -59,7 +59,7 @@ Nếu tổng doanh thu từ tất cả các sàn gộp lại vẫn dưới 1 t�
 
 *Nguồn tham khảo: Luật Thuế thu nhập cá nhân 109/2025/QH15, Nghị định 253/2026/NĐ-CP, Nghị định 254/2026/NĐ-CP*
 
-**Bài viết liên quan:**
-- [Kinh doanh sàn thương mại điện tử: Xuất hóa đơn sao cho đúng chuẩn 2026](https://ketoanthuetada.com/blog/kinh-doanh-san-thuong-mai-dien-tu-xuat-hoa-don-sao-cho-dung-chuan-2026)
-- [Shopee nổ đơn 2 tỷ và cái quên đắt giá: Đường nào cho hộ kinh doanh?](https://ketoanthuetada.com/blog/shopee-no-don-2-ty-va-cai-quen-dat-gia-duong-nao-cho-ho-kinh-doanh)
-- [Hóa đơn người tiêu dùng: Hiểu đúng để tránh rủi ro pháp lý năm 2026](https://ketoanthuetada.com/blog/hoa-don-nguoi-tieu-dung-hieu-dung-de-tranh-rui-ro-phap-ly-nam-2026)
+**Đọc thêm:**
+- [Kinh doanh sàn thương mại điện tử: Xuất hóa đơn sao cho đúng chuẩn 2026](https://ketoanthuetada.com/kinh-doanh-san-thuong-mai-dien-tu-xuat-hoa-don-sao-cho-dung-chuan-2026)
+- [Shopee nổ đơn 2 tỷ và cái quên đắt giá: Đường nào cho hộ kinh doanh?](https://ketoanthuetada.com/shopee-no-don-2-ty-va-cai-quen-dat-gia-duong-nao-cho-ho-kinh-doanh)
+- [Hóa đơn người tiêu dùng: Hiểu đúng để tránh rủi ro pháp lý năm 2026](https://ketoanthuetada.com/hoa-don-nguoi-tieu-dung-hieu-dung-de-tranh-rui-ro-phap-ly-nam-2026)

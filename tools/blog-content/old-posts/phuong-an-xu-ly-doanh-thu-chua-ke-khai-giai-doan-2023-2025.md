@@ -1,7 +1,7 @@
 ---
 title: "Phương án xử lý doanh thu chưa kê khai giai đoạn 2023-2025"
 slug: "phuong-an-xu-ly-doanh-thu-chua-ke-khai-giai-doan-2023-2025"
-summary: "Có 5 tỷ doanh thu chưa kê khai mỗi năm từ 2023-2025, giờ xử lý thế nào để hạn chế phạt chậm? Phương án tự quyết toán, tính tiền chậm nộp và nộp dần thuế nợ theo quy định 2026."
+summary: "Doanh thu chưa kê khai giai đoạn 2023-2025 xử lý thế nào? Phương án tự quyết toán, tính tiền chậm nộp và nộp dần thuế nợ theo quy định 2026."
 published_at: "2026-06-11"
 author: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"
@@ -59,7 +59,7 @@ Tờ khai thuế bổ sung theo mẫu quy định, sổ sách kế toán, chứn
 
 *Nguồn tham khảo: Luật Quản lý thuế số 38/2019/QH14, Nghị định 252/2026/NĐ-CP, Thông tư 89/2026/TT-BTC*
 
-**Bài viết liên quan:**
-- [Xử lý sai lệch doanh thu và tối ưu nghĩa vụ phạt khi kiểm tra thuế năm 2025](https://ketoanthuetada.com/blog/xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025)
-- [Lộ trình xử lý rủi ro hóa đơn N06 và giải tỏa áp lực thuế năm 2026](https://ketoanthuetada.com/blog/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026)
-- [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động lâu năm](https://ketoanthuetada.com/blog/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)
+**Đọc thêm:**
+- [Xử lý sai lệch doanh thu và tối ưu nghĩa vụ phạt khi kiểm tra thuế năm 2025](https://ketoanthuetada.com/xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025)
+- [Lộ trình xử lý rủi ro hóa đơn N06 và giải tỏa áp lực thuế năm 2026](https://ketoanthuetada.com/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026)
+- [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động lâu năm](https://ketoanthuetada.com/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)

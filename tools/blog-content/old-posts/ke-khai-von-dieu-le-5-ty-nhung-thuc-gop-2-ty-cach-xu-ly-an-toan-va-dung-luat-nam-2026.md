@@ -33,7 +33,7 @@ Ví dụ, nếu lãi vay năm là 300 triệu đồng và vốn điều lệ thi
 
 Vì vậy, giải pháp tối ưu là bạn nên sớm thực hiện thủ tục giảm vốn điều lệ xuống 2 tỷ đồng tại cơ quan đăng ký kinh doanh để đảm bảo tính minh bạch trong sổ sách kế toán và bảo vệ quyền lợi về chi phí thuế của doanh nghiệp. Quy trình thực hiện như sau:
 
-**Bước 1:** Lập tờ khai đăng ký doanh nghiệp mẫu trên Hệ thống thông tin quốc gia về đăng ký doanh nghiệp (dangkykinhdoanh.gov.vn).
+### Bước 1: Lập tờ khai đăng ký doanh nghiệp mẫu trên Hệ thống thông tin quốc gia về đăng ký doanh nghiệp (dangkykinhdoanh.gov.vn).
 
 **Bước 2:** Chuẩn bị quyết định của chủ sở hữu công ty hoặc hội đồng thành viên về việc giảm vốn điều lệ.
 
@@ -41,15 +41,18 @@ Vì vậy, giải pháp tối ưu là bạn nên sớm thực hiện thủ tục
 
 **Bước 4:** Cập nhật sổ sách kế toán phản ánh đúng vốn điều lệ thực góp.
 
-## Câu hỏi thường gặp về giảm vốn điều lệ
+## Câu hỏi thường gặp
 
-**Có thể giảm vốn điều lệ khi công ty đang có nợ không?**
+### Có thể giảm vốn điều lệ khi công ty đang có nợ không?
+
 Có thể giảm vốn điều lệ khi công ty đang có nợ, tuy nhiên việc giảm vốn không được làm ảnh hưởng đến quyền lợi của chủ nợ. Công ty phải thông báo bằng văn bản cho các chủ nợ trong thời hạn 15 ngày trước khi thực hiện giảm vốn.
 
-**Giảm vốn điều lệ có phải nộp thuế không?**
+### Giảm vốn điều lệ có phải nộp thuế không?
+
 Giảm vốn điều lệ không phát sinh nghĩa vụ thuế trực tiếp. Tuy nhiên, doanh nghiệp cần cập nhật đăng ký kinh doanh và thông báo cho cơ quan thuế quản lý trực tiếp trong thời hạn 10 ngày kể từ khi thay đổi.
 
-**Thành viên không góp đủ vốn có bị buộc thoái vốn không?**
+### Thành viên không góp đủ vốn có bị buộc thoái vốn không?
+
 Thành viên không góp đủ vốn có thể bị buộc chuyển nhượng phần vốn chưa góp cho thành viên khác hoặc cho bên thứ ba theo quyết định của hội đồng thành viên.
 
 ---
@@ -58,4 +61,4 @@ Thành viên không góp đủ vốn có thể bị buộc chuyển nhượng ph
 
 *Cập nhật lần cuối: 15/08/2026 | Nguồn: Điều 47 Luật Doanh nghiệp 2020, Điều 10 Thông tư 78/2026/TT-BTC, Luật Quản lý thuế 2019*
 
-Liên kết nội bộ: [Dịch vụ kế toán thuế TADA](https://ketoanthuetada.com) | [Phân tích rủi ro pháp lý trong giao dịch chuyển nhượng vốn](https://ketoanthuetada.com/blog/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026) | [Phương án xử lý doanh thu chưa kê khai giai đoạn 2023-2025](https://ketoanthuetada.com/blog/phuong-an-xu-ly-doanh-thu-chua-ke-khai-giai-doan-2023-2025) | [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động](https://ketoanthuetada.com/blog/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)
+**Đọc thêm:** [Dịch vụ kế toán thuế TADA](https://ketoanthuetada.com) | [Phân tích rủi ro pháp lý trong giao dịch chuyển nhượng vốn](https://ketoanthuetada.com/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026) | [Phương án xử lý doanh thu chưa kê khai giai đoạn 2023-2025](https://ketoanthuetada.com/phuong-an-xu-ly-doanh-thu-chua-ke-khai-giai-doan-2023-2025) | [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động](https://ketoanthuetada.com/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)
