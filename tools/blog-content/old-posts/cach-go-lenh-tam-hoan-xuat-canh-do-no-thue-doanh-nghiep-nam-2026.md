@@ -66,6 +66,6 @@ Có thể ủy quyền cho người đại diện hợp pháp hoặc tổ chức
 *Nguồn tham khảo: Nghị định 252/2026/NĐ-CP, Nghị định 125/2020/NĐ-CP, Nghị định 310/2025/NĐ-CP, Luật Doanh nghiệp 2020*
 
 **Đọc thêm:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
-- [Quy trình giải thể công ty và đóng mã số thuế](https://ketoanthuetada.com/blog/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
-- [Tổng hợp các trường hợp bị tạm hoãn xuất cảnh do nợ thuế từ 2026](https://ketoanthuetada.com/blog/tong-hop-cac-truong-hop-bi-tam-hoan-xuat-canh-do-no-thue-tu-2026)
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
+- [Quy trình giải thể công ty và đóng mã số thuế](https://ketoanthuetada.com/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
+- [Tổng hợp các trường hợp bị tạm hoãn xuất cảnh do nợ thuế từ 2026](https://ketoanthuetada.com/tong-hop-cac-truong-hop-bi-tam-hoan-xuat-canh-do-no-thue-tu-2026)

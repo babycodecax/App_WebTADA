@@ -58,6 +58,6 @@ Có. Bạn cần ghi chép sổ sách đơn giản để theo dõi doanh thu bá
 *Nguồn tham khảo: Luật số 09/2026/QH16, Nghị định 141/2026/NĐ-CP, Mẫu số 01/TKN-CNKD*
 
 **Đọc thêm:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
-- [Hộ kinh doanh dưới một tỷ đồng: Cách xử lý thuế đúng quy định 2026](https://ketoanthuetada.com/blog/ho-kinh-doanh-duoi-mot-ty-dong-cach-xu-ly-thue-dung-quy-dinh-2026)
-- [Hướng dẫn chi tiết quy trình đăng ký sử dụng hóa đơn điện tử cho hộ kinh doanh](https://ketoanthuetada.com/blog/huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026)
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
+- [Hộ kinh doanh dưới một tỷ đồng: Cách xử lý thuế đúng quy định 2026](https://ketoanthuetada.com/ho-kinh-doanh-duoi-mot-ty-dong-cach-xu-ly-thue-dung-quy-dinh-2026)
+- [Hướng dẫn chi tiết quy trình đăng ký sử dụng hóa đơn điện tử cho hộ kinh doanh](https://ketoanthuetada.com/huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026)

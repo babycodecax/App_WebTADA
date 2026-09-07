@@ -58,6 +58,6 @@ Có. Nếu doanh nghiệp chưa hoàn thành thủ tục giải thể theo quy �
 *Nguồn tham khảo: Luật Quản lý thuế 38/2019/QH14, Nghị định 125/2020/NĐ-CP, Điều 35 Luật Quản lý thuế 2019*
 
 **Đọc thêm:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
-- [Quy trình giải thể công ty và đóng mã số thuế](https://ketoanthuetada.com/blog/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
-- [Quy định về số lần và thời hạn tạm ngưng kinh doanh của công ty](https://ketoanthuetada.com/blog/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
+- [Quy trình giải thể công ty và đóng mã số thuế](https://ketoanthuetada.com/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
+- [Quy định về số lần và thời hạn tạm ngưng kinh doanh của công ty](https://ketoanthuetada.com/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)

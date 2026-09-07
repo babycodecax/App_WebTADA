@@ -58,5 +58,5 @@ Có. Theo Luật Quản lý thuế số 38/2019/QH14, doanh nghiệp tạm ngừ
 *Nguồn tham khảo: Luật Doanh nghiệp số 59/2020/QH14, Nghị định 01/2021/NĐ-CP, Luật Quản lý thuế số 38/2019/QH14, Nghị định 310/2025/NĐ-CP*
 
 **Bài viết liên quan:**
-- [Tóm tắt các rủi ro và chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/blog/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)
-- [Quy trình giải thể công ty và đóng mã số thuế](https://ketoanthuetada.com/blog/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
+- [Tóm tắt các rủi ro và chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)
+- [Quy trình giải thể công ty và đóng mã số thuế](https://ketoanthuetada.com/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)

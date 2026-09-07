@@ -56,5 +56,5 @@ Mức phạt từ 1 đến 3 lần số tiền thuế trốn theo Điều 22, Lu
 *Nguồn tham khảo: Nghị định 252/2026/NĐ-CP, Nghị định 254/2026/NĐ-CP, Điều 22 Luật Quản lý thuế số 38/2019/QH14*
 
 **Bài viết liên quan:**
-- [Quản lý hóa đơn đầu vào cho hộ kinh doanh doanh thu dưới 1 tỷ đồng](https://ketoanthuetada.com/blog/quan-ly-hoa-don-dau-vao-cho-ho-kinh-doanh-doanh-thu-duoi-1-ty-dong)
-- [Xử lý sai lệch doanh thu và tối ưu nghĩa vụ phạt khi kiểm tra thuế](https://ketoanthuetada.com/blog/xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025)
+- [Quản lý hóa đơn đầu vào cho hộ kinh doanh doanh thu dưới 1 tỷ đồng](https://ketoanthuetada.com/quan-ly-hoa-don-dau-vao-cho-ho-kinh-doanh-doanh-thu-duoi-1-ty-dong)
+- [Xử lý sai lệch doanh thu và tối ưu nghĩa vụ phạt khi kiểm tra thuế](https://ketoanthuetada.com/xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025)

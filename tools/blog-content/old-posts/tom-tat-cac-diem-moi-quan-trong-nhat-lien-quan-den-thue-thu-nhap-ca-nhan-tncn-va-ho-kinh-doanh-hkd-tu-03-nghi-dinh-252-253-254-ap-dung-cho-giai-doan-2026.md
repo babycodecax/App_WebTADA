@@ -70,6 +70,6 @@ Có. Theo Nghị định 252/2026/NĐ-CP, các sàn TMĐT có chức năng thanh
 *Nguồn tham khảo: Nghị định 252/2026/NĐ-CP, Nghị định 253/2026/NĐ-CP, Nghị định 254/2026/NĐ-CP, Luật Quản lý thuế số 38/2019/QH14*
 
 **Bài viết liên quan:**
-- [Shopee nổ đơn 2 tỷ và cái quên đắt giá: Đường nào cho hộ kinh doanh?](https://ketoanthuetada.com/blog/shopee-no-don-2-ty-va-cai-quen-dat-gia-duong-nao-cho-ho-kinh-doanh)
-- [Tiền ăn xăng xe chi cố định: Coi chừng mất tiền thuế oan](https://ketoanthuetada.com/blog/tien-an-xang-xe-chi-co-dinh-coi-chung-mat-tien-thue-oan-vi-ngai-tinh-theo-ngay-cong)
-- [Sếp nộp 247 triệu vào tài khoản công ty năm 2026](https://ketoanthuetada.com/blog/sep-nop-247-trieu-vao-tai-khoan-cong-ty-nam-2026-ke-toan-can-lap-ho-so-hach-toan-va-ke-khai-giao-dich-lien-ket-the-nao-cho-dung)
+- [Shopee nổ đơn 2 tỷ và cái quên đắt giá: Đường nào cho hộ kinh doanh?](https://ketoanthuetada.com/shopee-no-don-2-ty-va-cai-quen-dat-gia-duong-nao-cho-ho-kinh-doanh)
+- [Tiền ăn xăng xe chi cố định: Coi chừng mất tiền thuế oan](https://ketoanthuetada.com/tien-an-xang-xe-chi-co-dinh-coi-chung-mat-tien-thue-oan-vi-ngai-tinh-theo-ngay-cong)
+- [Sếp nộp 247 triệu vào tài khoản công ty năm 2026](https://ketoanthuetada.com/sep-nop-247-trieu-vao-tai-khoan-cong-ty-nam-2026-ke-toan-can-lap-ho-so-hach-toan-va-ke-khai-giao-dich-lien-ket-the-nao-cho-dung)
