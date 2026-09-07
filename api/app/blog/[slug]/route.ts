@@ -113,7 +113,7 @@ export async function GET(
           post.summary || extractDescription(post.content || '')
         );
         const canonical = `${SITE}/blog/${slug}`;
-        const ogImage = `${SITE}/static/img/logo.jpg`;
+        const ogImage = `${SITE}/static/img/og-image.svg`;
         const author = esc(post.author_email || 'Dịch Vụ Thuế Kế Toán TADA');
         const pubDate = post.published_at || '';
         const modDate = post.updated_at || '';
