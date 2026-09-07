@@ -57,7 +57,7 @@ Có thể thay đổi hình thức hợp đồng cho các tour tiếp theo, như
 
 *Nguồn tham khảo: Luật Bảo hiểm xã hội 2014, Luật số 90/2019/QH14*
 
-**Bài viết liên quan:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
-- [Hướng dẫn hồ sơ hợp thức hóa chi phí tiền lương khi trả lương cho người thân](https://ketoanthuetada.com/blog/huong-dan-ho-so-hop-thuc-hoa-chi-phi-tien-luong-khi-tra-luong-cho-nguoi-than-khi-quyet-toan-thue)
-- [Quy định về số lần và thời hạn tạm ngưng kinh doanh](https://ketoanthuetada.com/blog/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)
+**Đọc thêm:**
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
+- [Hướng dẫn hồ sơ hợp thức hóa chi phí tiền lương khi trả lương cho người thân](https://ketoanthuetada.com/huong-dan-ho-so-hop-thuc-hoa-chi-phi-tien-luong-khi-tra-luong-cho-nguoi-than-khi-quyet-toan-thue)
+- [Quy định về số lần và thời hạn tạm ngưng kinh doanh](https://ketoanthuetada.com/quy-dinh-ve-so-lan-va-thoi-han-tam-ngung-kinh-doanh-cua-cong-ty)

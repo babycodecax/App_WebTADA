@@ -59,6 +59,7 @@ Chi phí giải thể bao gồm phí nộp hồ sơ, phí công bố tin trên c
 
 *Nguồn tham khảo: Thông tư 90/2026/TT-BTC, Luật Doanh nghiệp số 59/2020/QH14, Điều 213 Luật Doanh nghiệp*
 
-**Bài viết liên quan:**
-- [Tổng hợp các trường hợp bị tạm hoãn xuất cảnh do nợ thuế](https://ketoanthuetada.com/blog/tong-hop-cac-truong-hop-bi-tam-hoan-xuat-canh-do-no-thue-tu-2026)
-- [Tóm tắt các rủi ro và chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/blog/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)
+**Đọc thêm:**
+- [Tổng hợp các trường hợp bị tạm hoãn xuất cảnh do nợ thuế](https://ketoanthuetada.com/tong-hop-cac-truong-hop-bi-tam-hoan-xuat-canh-do-no-thue-tu-2026)
+- [Tóm tắt các rủi ro và chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)
+- [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động lâu năm](https://ketoanthuetada.com/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)

@@ -72,3 +72,4 @@ Có. Theo Luật Quản lý thuế số 38/2019/QH14, việc sếp cho công ty 
 **Bài viết liên quan:**
 - [Thuế gọi tên, giám đốc chạy nợ: Kế toán nên ở lại hay rút lui?](https://ketoanthuetada.com/blog/thue-goi-ten-giam-doc-chay-no-ke-toan-nen-o-lai-chiu-tran-hay-rut-lui-em-dep)
 - [Xử lý sai lệch doanh thu và tối ưu nghĩa vụ phạt khi kiểm tra thuế](https://ketoanthuetada.com/blog/xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025)
+- [Lỡ tay tip bằng tiền công ty: Cách giải cứu Giám đốc khỏi rắc rối pháp lý](https://ketoanthuetada.com/blog/lo-tay-tip-bang-tien-cong-ty-cach-giai-cuu-giam-doc-khoi-rac-roi-phap-ly)

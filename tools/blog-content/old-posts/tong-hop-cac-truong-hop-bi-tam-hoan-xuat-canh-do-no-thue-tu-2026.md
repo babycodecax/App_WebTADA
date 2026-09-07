@@ -63,7 +63,7 @@ Sau khi nộp đủ và có xác nhận của ngân hàng, cơ quan thuế sẽ 
 
 *Nguồn tham khảo: Điều 28, Nghị định 252/2026/NĐ-CP, Luật Quản lý thuế 38/2019/QH14*
 
-**Bài viết liên quan:**
-- [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động lâu năm](https://ketoanthuetada.com/blog/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)
-- [Lộ trình xử lý rủi ro hóa đơn N06 và giải tỏa áp lực thuế năm 2026](https://ketoanthuetada.com/blog/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026)
-- [Tóm tắt các rủi ro và chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/blog/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)
+**Đọc thêm:**
+- [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động lâu năm](https://ketoanthuetada.com/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)
+- [Lộ trình xử lý rủi ro hóa đơn N06 và giải tỏa áp lực thuế năm 2026](https://ketoanthuetada.com/lo-trinh-xu-ly-rui-ro-hoa-don-n06-va-giai-toa-ap-luc-thue-nam-2026)
+- [Tóm tắt các rủi ro và chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)

@@ -57,7 +57,7 @@ Chậm nhất ngày 31 tháng 01 của năm dương lịch tiếp theo. Ví dụ
 
 *Nguồn tham khảo: Luật số 09/2026/QH16, Nghị định 141/2026/NĐ-CP*
 
-**Bài viết liên quan:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
-- [Hộ kinh doanh dưới 1 tỷ: Khai thuế 2026 thế nào cho chuẩn?](https://ketoanthuetada.com/blog/ho-kinh-doanh-duoi-1-ty-khai-thue-2026-the-nao-cho-chuan)
-- [Hướng dẫn chi tiết quy trình đăng ký sử dụng hóa đơn điện tử cho hộ kinh doanh](https://ketoanthuetada.com/blog/huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026)
+**Đọc thêm:**
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
+- [Hộ kinh doanh dưới 1 tỷ: Khai thuế 2026 thế nào cho chuẩn?](https://ketoanthuetada.com/ho-kinh-doanh-duoi-1-ty-khai-thue-2026-the-nao-cho-chuan)
+- [Hướng dẫn chi tiết quy trình đăng ký sử dụng hóa đơn điện tử cho hộ kinh doanh](https://ketoanthuetada.com/huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026)

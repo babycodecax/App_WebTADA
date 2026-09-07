@@ -60,3 +60,4 @@ Cần liên hệ ngay Hội đồng thành viên hoặc chủ sở hữu để c
 **Bài viết liên quan:**
 - [Quy trình giải thể công ty và đóng mã số thuế khi bị cảnh báo không hoạt động](https://ketoanthuetada.com/blog/quy-trinh-giai-the-cong-ty-va-dong-ma-so-thue-khi-bi-canh-bao-khong-hoat-dong-tai-dia-chi-dang-ky)
 - [Xử lý sai lệch doanh thu và tối ưu nghĩa vụ phạt khi kiểm tra thuế](https://ketoanthuetada.com/blog/xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025)
+- [Lỡ tay tip bằng tiền công ty: Cách giải cứu Giám đốc khỏi rắc rối pháp lý](https://ketoanthuetada.com/blog/lo-tay-tip-bang-tien-cong-ty-cach-giai-cuu-giam-doc-khoi-rac-roi-phap-ly)

@@ -59,7 +59,7 @@ Mức phạt từ 500.000 đồng đến 8.000.000 đồng tùy khung lỗi, áp
 
 *Nguồn tham khảo: Luật Quản lý thuế 38/2019/QH14, Nghị định 252/2026/NĐ-CP, Thông tư 89/2026/TT-BTC*
 
-**Bài viết liên quan:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
-- [Phương án xử lý doanh thu chưa kê khai giai đoạn 2023-2025](https://ketoanthuetada.com/blog/phuong-an-xu-ly-doanh-thu-chua-ke-khai-giai-doan-2023-2025)
-- [Tóm tắt các rủi ro và khoản chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/blog/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)
+**Đọc thêm:**
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
+- [Phương án xử lý doanh thu chưa kê khai giai đoạn 2023-2025](https://ketoanthuetada.com/phuong-an-xu-ly-doanh-thu-chua-ke-khai-giai-doan-2023-2025)
+- [Tóm tắt các rủi ro và khoản chi phí phát sinh khi thả trôi doanh nghiệp](https://ketoanthuetada.com/tom-tat-cac-rui-ro-va-khoan-chi-phi-phat-sinh-khi-ban-tha-troi-doanh-nghiep)

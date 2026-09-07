@@ -63,8 +63,8 @@ Thành viên không góp đủ vốn có thể bị buộc chuyển nhượng ph
 
 *Nguồn tham khảo: Điều 47 Luật Doanh nghiệp 2020, Điều 10 Thông tư 78/2026/TT-BTC, Luật Quản lý thuế 2019*
 
-**Bài viết liên quan:**
-- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
-- [Phân tích rủi ro pháp lý trong giao dịch chuyển nhượng vốn](https://ketoanthuetada.com/blog/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)
-- [Phương án xử lý doanh thu chưa kê khai giai đoạn 2023-2025](https://ketoanthuetada.com/blog/phuong-an-xu-ly-doanh-thu-chua-ke-khai-giai-doan-2023-2025)
-- [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động](https://ketoanthuetada.com/blog/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)
+**Đọc thêm:**
+- [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/dich-vu-thue-ke-toan-tada)
+- [Phân tích rủi ro pháp lý trong giao dịch chuyển nhượng vốn](https://ketoanthuetada.com/phan-tich-rui-ro-phap-ly-va-thue-trong-giao-dich-chuyen-nhuong-von-nam-2026)
+- [Phương án xử lý doanh thu chưa kê khai giai đoạn 2023-2025](https://ketoanthuetada.com/phuong-an-xu-ly-doanh-thu-chua-ke-khai-giai-doan-2023-2025)
+- [Phương án giải quyết nợ thuế cho doanh nghiệp ngừng hoạt động](https://ketoanthuetada.com/phuong-an-giai-quyet-no-thue-doanh-nghiep-ngung-hoat-dong-lau-nam)
