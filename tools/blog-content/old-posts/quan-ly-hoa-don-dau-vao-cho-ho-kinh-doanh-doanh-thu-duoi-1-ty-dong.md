@@ -55,7 +55,7 @@ Bạn nên yêu cầu nhà cung cấp xuất hóa đơn điện tử khi mua hà
 
 *Nguồn tham khảo: Nghị định 253/2026/NĐ-CP, Luật Quản lý thuế số 38/2019/QH14, Nghị định 310/2025/NĐ-CP, Thông tư 92/2015/TT-BTC*
 
-**Bài viết liên quan:**
+**Đọc thêm:**
 - [Thuế gọi tên, giám đốc chạy nợ: Kế toán nên ở lại hay rút lui?](https://ketoanthuetada.com/thue-goi-ten-giam-doc-chay-no-ke-toan-nen-o-lai-chiu-tran-hay-rut-lui-em-dep)
 - [Tiền ăn xăng xe chi cố định: Coi chừng mất tiền thuế oan](https://ketoanthuetada.com/tien-an-xang-xe-chi-co-dinh-coi-chung-mat-tien-thue-oan-vi-ngai-tinh-theo-ngay-cong)
 - [Shopee nổ đơn 2 tỷ và cái quên đắt giá: Đường nào cho hộ kinh doanh?](https://ketoanthuetada.com/shopee-no-don-2-ty-va-cai-quen-dat-gia-duong-nao-cho-ho-kinh-doanh)

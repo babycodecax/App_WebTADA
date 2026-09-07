@@ -55,6 +55,6 @@ Nếu chi trả đúng theo ngày công thực tế và có chứng từ chứng
 
 *Nguồn tham khảo: Luật Thuế TNCN năm 2026, Nghị định 253/2026/NĐ-CP, Luật Bảo hiểm xã hội mới*
 
-**Bài viết liên quan:**
+**Đọc thêm:**
 - [Tóm tắt các điểm mới về TNCN và HKD từ Nghị định 252, 253, 254](https://ketoanthuetada.com/tom-tat-cac-diem-moi-quan-trong-nhat-lien-quan-den-thue-thu-nhap-ca-nhan-tncn-va-ho-kinh-doanh-hkd-tu-03-nghi-dinh-252-253-254-ap-dung-cho-giai-doan-2026)
 - [Sếp nộp 247 triệu vào tài khoản công ty: Kế toán cần làm gì?](https://ketoanthuetada.com/sep-nop-247-trieu-vao-tai-khoan-cong-ty-nam-2026-ke-toan-can-lap-ho-so-hach-toan-va-ke-khai-giao-dich-lien-ket-the-nao-cho-dung)
