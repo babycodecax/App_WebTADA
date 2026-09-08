@@ -138,6 +138,55 @@
   font-size: 14px;
 }
 
+/* Responsive tables — tránh tràn mobile */
+.blog-detail .content table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #d1d5db;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.blog-detail .content table thead {
+  background: var(--bg-light-alt, #f8f8f8);
+}
+.blog-detail .content table th,
+.blog-detail .content table td {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  text-align: left;
+  vertical-align: top;
+}
+.blog-detail .content table th {
+  font-weight: 700;
+  color: var(--primary-burgundy, #800020);
+  white-space: nowrap;
+}
+.blog-detail .content table td {
+  color: var(--text-dark, #1a1a1a);
+}
+
+/* Mobile: bảng cuộn ngang, không tràn */
+@media (max-width: 768px) {
+  .blog-detail .content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: 13px;
+  }
+  .blog-detail .content table thead,
+  .blog-detail .content table tbody,
+  .blog-detail .content table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+  .blog-detail .content table th,
+  .blog-detail .content table td {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+}
+
 /* Loading / Empty / Error states */
 .blog-loading, .blog-empty, .blog-error {
   text-align: center;
@@ -409,8 +458,9 @@
   .blog-detail .content {
     font-size: 17px;
     line-height: 1.9;
-    /* Giữ text-align: justify (căn lề đều 2 bên) — đã có padding 2 bên nên
-       không bị dính sát màn hình, bố cục đẹp hơn */
+    word-break: break-word;
+    overflow-wrap: break-word;
+    /* justify OK trên mobile khi đã có padding 2 bên */
     text-align: justify;
   }
   .blog-detail .content h2 { font-size: 21px; margin: 28px 0 10px; }
