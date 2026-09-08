@@ -27,6 +27,15 @@
   <link rel="stylesheet" href="static/css/fonts.css">
   <link rel="stylesheet" href="static/css/styles.css">
   <link rel="stylesheet" href="static/css/blog.css?v=20260908" media="print" onload="this.media='all'">
+  <!-- Table responsive + border fix for mobile -->
+  <style>
+    .blog-detail .content table{width:100%;border-collapse:collapse;border:1px solid #d1d5db;margin:16px 0;font-size:14px}
+    .blog-detail .content table thead{background:#f8f8f8}
+    .blog-detail .content table th,.blog-detail .content table td{padding:10px 14px;border:1px solid #d1d5db;text-align:left;vertical-align:top}
+    .blog-detail .content table th{font-weight:700;color:#800020;white-space:nowrap}
+    .blog-detail .content table td{color:#1a1a1a}
+    @media(max-width:768px){.blog-detail .content table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;font-size:13px}.blog-detail .content table th,.blog-detail .content table td{padding:8px 10px;font-size:13px}.blog-detail .content{word-break:break-word;overflow-wrap:break-word}}
+  </style>
   <!-- JSON-LD ItemList: sẽ inject động khi render list blog -->
 </head>
 <body>
