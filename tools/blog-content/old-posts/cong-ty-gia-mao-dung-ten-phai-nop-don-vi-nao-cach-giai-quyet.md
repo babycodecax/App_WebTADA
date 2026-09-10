@@ -29,7 +29,7 @@ Ngoài ra, cơ quan thuế vẫn xử lý trên cơ sở dữ liệu chính th�
 
 ## Bị giả mạo đứng tên công ty, phải nộp đơn ở đâu?
 
-Khi phát hiện bị mạo danh standing tên doanh nghiệp hoặc hộ kinh doanh, người dân cần nộp đơn **đến 3 đơn vị cùng lúc** để xử lý nhanh chóng và triệt để:
+Khi phát hiện bị mạo danh đứng tên doanh nghiệp hoặc hộ kinh doanh, người dân cần nộp đơn **đến 3 đơn vị cùng lúc** để xử lý nhanh chóng và triệt để:
 
 ### 1. Nộp đơn đến Cơ quan đăng ký kinh doanh (Sở Tài chính)
 
@@ -57,7 +57,7 @@ Trình báo hành vi đánh cắp thông tin cá nhân và giả mạo chữ ký
 - **Nội dung đơn:** Đề nghị xác minh hành vi giả mạo; yêu cầu chấm dứt hiệu lực mã số thuế và **xóa nghĩa vụ thuế liên quan** đến người bị mạo danh
 - **Kèm theo:** Thông báo tiếp nhận đơn tố giác của cơ quan Công an
 
-## Trình tự xử lý từng bước khi bị giả mạo standing tên công ty
+## Trình tự xử lý từng bước khi bị giả mạo đứng tên công ty
 
 ### Bước 1: Thu thập bằng chứng
 
@@ -72,7 +72,7 @@ Trước khi nộp đơn, người bị mạo danh cần thu thập và lưu gi�
 
 Truy cập **Cổng thông tin quốc gia về đăng ký doanh nghiệp** (dangkykinhdoanh.gov.vn) để kiểm tra:
 
-- Thông tin cá nhân có đang được standing tên làm giám đốc hoặc người đại diện theo pháp luật ở doanh nghiệp nào
+- Thông tin cá nhân có đang được đứng tên làm giám đốc hoặc người đại diện theo pháp luật ở doanh nghiệp nào
 - Mã số doanh nghiệp, ngày thành lập, ngành nghề kinh doanh
 
 Đối với thông tin về tình trạng nợ thuế, truy cập hệ thống **eTax** (etax.gdt.gov.vn) hoặc liên hệ trực tiếp Cơ quan Thuế địa phương.
@@ -94,17 +94,17 @@ Nếu việc mạo danh dẫn đến **tạm hoãn xuất cảnh**, người dâ
 
 ## Rủi ro pháp lý nếu không xử lý kịp thời
 
-Nếu người bị mạo danh standing tên công ty **không chủ động xử lý**, có thể gặp phải các hậu quả nghiêm trọng:
+Nếu người bị mạo danh đứng tên công ty **không chủ động xử lý**, có thể gặp phải các hậu quả nghiêm trọng:
 
 **Về thuế:** Tiếp tục nhận thông báo nợ thuế, bị tính lãi chậm nộp **0,03%/ngày** theo quy định hiện hành. Cơ quan thuế áp dụng các biện pháp cưỡng chế theo **Nghị định 252/2026/NĐ-CP**.
 
-**Về hình sự:** Trong trường hợp doanh nghiệp có dấu hiệu trốn thuế có tổ chức, cố ý gian lận, lập hồ sơ giả, người standing tên có thể bị xem xét trách nhiệm hình sự theo **Bộ luật Hình sự 2015** (sửa đổi, bổ sung 2025).
+**Về hình sự:** Trong trường hợp doanh nghiệp có dấu hiệu trốn thuế có tổ chức, cố ý gian lận, lập hồ sơ giả, người đứng tên có thể bị xem xét trách nhiệm hình sự theo **Bộ luật Hình sự 2015** (sửa đổi, bổ sung 2025).
 
 **Về tín dụng:** Thông tin cá nhân có thể bị gắn với lịch sử tín dụng xấu của doanh nghiệp, ảnh hưởng đến việc vay vốn, mở tài khoản ngân hàng.
 
 **Về xuất nhập cảnh:** Bị tạm hoãn xuất cảnh khi làm thủ tục tại sân bay do liên quan đến doanh nghiệp nợ thuế.
 
-## Cách phòng tránh bị giả mạo standing tên công ty
+## Cách phòng tránh bị giả mạo đứng tên công ty
 
 **Thứ nhất**, chủ động bảo mật thông tin định danh: không cho mượn CCCD, không cung cấp bản sao CCCD không rõ mục đích, và thường xuyên kiểm tra thông tin trên Cổng thông tin đăng ký kinh doanh.
 
@@ -112,13 +112,13 @@ Nếu người bị mạo danh standing tên công ty **không chủ động x�
 
 **Thứ ba**, cập nhật CCCD gắn chip và tích hợp xác thực sinh trắc học với cơ sở dữ liệu dân cư để tăng cường bảo mật thông tin.
 
-**Thứ tư**, định kỳ tra cứu thông tin doanh nghiệp trên dangkykinhdoanh.gov.vn để kiểm tra xem thông tin cá nhân có bị giả mạo standing tên ở doanh nghiệp nào hay không.
+**Thứ tư**, định kỳ tra cứu thông tin doanh nghiệp trên dangkykinhdoanh.gov.vn để kiểm tra xem thông tin cá nhân có bị giả mạo đứng tên ở doanh nghiệp nào hay không.
 
 ## Câu hỏi thường gặp
 
-**Câu 1: Nếu chỉ bị standing tên giám đốc mà không standing tên cổ đông, có phải chịu trách nhiệm nợ thuế không?**
+**Câu 1: Nếu chỉ bị đứng tên giám đốc mà không đứng tên cổ đông, có phải chịu trách nhiệm nợ thuế không?**
 
-Về nguyên tắc, **không phải chịu trách nhiệm trực tiếp** về nợ thuế nếu chứng minh được không tham gia thành lập, điều hành doanh nghiệp. Tuy nhiên, cần nộp đơn đề nghị thu hồi đến cơ quan đăng ký kinh doanh để xóa thông tin standing tên trên hệ thống.
+Về nguyên tắc, **không phải chịu trách nhiệm trực tiếp** về nợ thuế nếu chứng minh được không tham gia thành lập, điều hành doanh nghiệp. Tuy nhiên, cần nộp đơn đề nghị thu hồi đến cơ quan đăng ký kinh doanh để xóa thông tin đứng tên trên hệ thống.
 
 **Câu 2: Quy trình xử lý mất bao lâu?**
 
