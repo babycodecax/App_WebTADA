@@ -6,7 +6,7 @@
 
 🚨 BỐNG DƯƠNG LÀM "GIÁM ĐỐC" CỦA MỘT CÔNG TY CHƯA TỪNG NGHE TÊN?
 
-Đây KHÔNG phải tình huống hiếm. Rất nhiều người dân Việt Nam đang phát hiện mình bị mạo danh standing tên giám đốc, người đại diện pháp luật cho doanh nghiệp mà họ CHƯA TỪNG THÀNH LẬP hay tham gia.
+Đây KHÔNG phải tình huống hiếm. Rất nhiều người dân Việt Nam đang phát hiện mình bị mạo danh đứng tên giám đốc, người đại diện pháp luật cho doanh nghiệp mà họ CHƯA TỪNG THÀNH LẬP hay tham gia.
 
 Hậu quả:
 ❌ Nợ thuế hàng trăm triệu đến hàng tỷ đồng
@@ -31,4 +31,4 @@ Ngay khi phát hiện, bạn cần nộp đơn ĐỒNG THỜI đến 3 đơn v�
 📖 Đọc chi tiết từng bước + mẫu đơn + câu hỏi thường gặp:
 👉 https://ketoanthuetada.com/blog/cong-ty-gia-mao-dung-ten-phai-nop-don-vi-nao-cach-giai-quyet
 
-#TADA #ThuếKếToán #PhápLuậtDoanhNghiệp #BảoVệQuyềnRiêngTư #ĐstandingTênCôngTy #GiảMạo #MãSốThuế
+#TADA #ThuếKếToán #PhápLuậtDoanhNghiệp #BảoVệQuyềnRiêngTư #ĐđứngTênCôngTy #GiảMạo #MãSốThuế
