@@ -19,7 +19,7 @@ Phân loại 4 nhóm hộ kinh doanh dựa trên **doanh thu hàng năm** -- kh�
 
 4 nhóm được quy định rõ tại Thông tư 92/2015/TT-BTC (hướng dẫn Luật Thuế TNCN) và tiếp tục áp dụng trong giai đoạn 2026:
 
-- **Nhóm 1:** Doanh thu từ 1 tỷ đồng/năm trở xuống -- **thuế khoán**
+- **Nhóm 1:** Doanh thu từ 1 tỷ đồng/năm trở xuống -- **miễn thuế TNCN, GTGT**
 - **Nhóm 2:** Doanh thu trên 1 tỷ đến 3 tỷ đồng/năm -- kê khai theo quý
 - **Nhóm 3:** Doanh thu trên 3 tỷ đến 50 tỷ đồng/năm -- kê khai theo tháng
 - **Nhóm 4:** Doanh thu trên 50 tỷ đồng/năm -- kê khai theo tháng
@@ -28,11 +28,11 @@ Lưu ý: Doanh thu ở đây là tổng doanh thu hàng năm, bao gồm cả ti�
 
 ## Mức thuế suất TNCN cho từng nhóm hộ kinh doanh là bao nhiêu?
 
-### Nhóm 1: Doanh thu từ 1 tỷ/năm trở xuống -- Miễn thuế (khoán)
+### Nhóm 1: Doanh thu từ 1 tỷ/năm trở xuống -- Miễn thuế
 
-Hộ kinh doanh có tổng doanh thu năm không vượt quá 1 tỷ đồng được **miễn nộp thuế TNCN và GTGT theo kê khai**. Đây là nhóm ưu đãi dành cho hộ kinh doanh nhỏ lẻ. Tuy nhiên, hộ thuộc diện thuế khoán đã bao gồm TNCN trong khoản thuế cố định hàng tháng.
+Hộ kinh doanh có tổng doanh thu năm không vượt quá 1 tỷ đồng được **miễn nộp thuế TNCN và GTGT** theo NĐ 141/2026. Theo TT 50/2026, HKD chỉ cần **thông báo doanh thu**, không phải khai số thuế phải nộp. Tuy nhiên, HKD **vẫn phải lập sổ sách kế toán** theo TT 152/2025 (ổ S1a-HKD).
 
-**Ví dụ:** Chị Lan bán rau tại chợ, tổng doanh thu năm 2025 là 850 triệu đồng. Chị thuộc nhóm 1 và được miễn TNCN, GTGT theo kê khai. Nếu áp dụng thuế khoán, chị đóng khoản thuế cố định hàng tháng do Chi cục Thuế ấn định.
+**Ví dụ:** Chị Lan bán rau tại chợ, tổng doanh thu năm 2025 là 850 triệu đồng. Chị thuộc nhóm 1 và được miễn TNCN, GTGT. Chị chỉ cần thông báo doanh thu và lập sổ S1a-HKD, số thuế phải nộp bằng 0.
 
 ### Nhóm 2: Doanh thu trên 1 tỷ đến 3 tỷ/năm -- Kê khai theo quý
 
@@ -68,9 +68,9 @@ Nhóm 4 áp dụng quy định tương tự nhóm 3 nhưng áp dụng cho hộ k
 |---|---|---|---|---|
 | **Thuế GTGT, TNCN** | Miễn (kê khai) / Khoán | Kê khai theo quý | Kê khai theo tháng | Kê khai theo tháng |
 | **Phương pháp GTGT** | Miễn/Khoán | Tính trực tiếp | Khấu trừ | Khấu trừ |
-| **Tần suất khai TNCN** | Miễn/Khoán | Theo quý + QT năm | Theo tháng + QT năm | Theo tháng + QT năm |
-| **Mẫu tờ khai** | Không có (hoặc khoán) | 01/CNKD | 01/CNKD + 01/GTGT | 01/CNKD + 01/GTGT |
-| **Thuế suất TNCN** | Miễn/Khoán | Theo ngành nghề | Theo ngành nghề | Theo ngành nghề |
+| **Tần suất khai TNCN** | Miễn (thông báo DT) | Theo quý + QT năm | Theo tháng + QT năm | Theo tháng + QT năm |
+| **Mẫu tờ khai** | Không có (thông báo DT) | 01/CNKD | 01/CNKD + 01/GTGT | 01/CNKD + 01/GTGT |
+| **Thuế suất TNCN** | Miễn | Theo ngành nghề | Theo ngành nghề | Theo ngành nghề |
 
 ## Quy định khấu trừ 50% áp dụng khi nào cho hộ kinh doanh không có sổ sách?
 
@@ -80,7 +80,7 @@ Công thức cụ thể:
 
 Thuế TNCN = Doanh thu x 50% x Tỷ lệ thuế tương ứng ngành nghề
 
-**Ví dụ:** Hộ anh Dũng có doanh thu 450 triệu/năm (nhóm 1, khoán), áp dụng tỷ lệ phân phối 0,5%. Thuế phải nộp: 450.000.000 x 50% x 0,5% = 1.125.000 đồng.
+**Ví dụ:** Hộ anh Dũng có doanh thu 450 triệu/năm (nhóm 1). Anh được miễn thuế TNCN và GTGT theo NĐ 141/2026. Anh chỉ cần thông báo doanh thu và lập sổ S1a-HKD, số thuế phải nộp bằng 0.
 
 ## Thời hạn nộp thuế và tờ khai của hộ kinh doanh là khi nào?
 
@@ -109,11 +109,11 @@ Tính theo tổng doanh thu từ khi bắt đầu kinh doanh đến hết năm d
 
 **Nếu doanh thu năm nay thuộc nhóm 2 nhưng năm sau thuộc nhóm 1 thì sao?**
 
-Thuế được tính theo nhóm thực tế từng năm. Năm sau nếu doanh thu <= 1 tỷ thì thuộc nhóm 1 (miễn thuế theo kê khai / thuế khoán). Không có quy định "khóa" nhóm -- mỗi năm tính lại.
+Thuế được tính theo nhóm thực tế từng năm. Năm sau nếu doanh thu <= 1 tỷ thì thuộc nhóm 1 (miễn thuế TNCN, GTGT theo NĐ 141/2026). Không có quy định "khóa" nhóm -- mỗi năm tính lại.
 
 **Hộ kinh doanh có phải nộp tờ khai hàng quý khi thuộc nhóm 1 (miễn thuế) không?**
 
-Nếu áp dụng thuế khoán thì không cần nộp tờ khai theo quý. Nếu thuộc diện kê khai mà doanh thu dưới 1 tỷ thì được miễn TNCN, GTGT nhưng vẫn nên nộp tờ khai định kỳ để cơ quan thuế ghi nhận.
+Không phải nộp tờ khai GTGT hay TNCN. Theo TT 50/2026, HKD nhóm 1 chỉ cần **thông báo doanh thu** cho cơ quan thuế. Tuy nhiên, HKD vẫn phải lập sổ sách kế toán theo TT 152/2025 (ổ S1a-HKD).
 
 **Thuế suất TNCN áp dụng theo ngành nghề nào?**
 
@@ -124,4 +124,4 @@ Thuế suất TNCN theo ngành nghề: phân phối 0,5%, sản xuất 1,5%, d�
 Hộ kinh doanh nộp thuế trực tiếp tại Chi cục Thuế khu vực nơi hộ kinh doanh đăng ký kinh doanh. Từ 2026, hộ kinh doanh có thể nộp qua ứng dụng eTax Mobile trên điện thoại. [Xem hướng dẫn nộp thuế trên eTax Mobile](/blog/ke-khai-thue-tncn-tren-etax-mobile-huong-dan-a-z).
 
 ---
-*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Nghị định 141/2026/NĐ-CP, Luật Thuế TNCN số 04/2007/QH12, Thông tư 92/2015/TT-BTC, Thông tư 152/2025/TT-BTC, Nghị định hướng dẫn thuế TNCN.*
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Nghị định 141/2026/NĐ-CP, Luật 109/2025/QH15, Thông tư 92/2015/TT-BTC (sửa đổi bởi TT 50/2026/TT-BTC), Thông tư 152/2025/TT-BTC, Nghị định 253/2026/NĐ-CP.*

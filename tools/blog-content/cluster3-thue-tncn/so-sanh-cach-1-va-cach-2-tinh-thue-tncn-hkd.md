@@ -147,4 +147,4 @@ Không. Chi phí phải có hóa đơn, chứng từ hợp lệ để được k
 Có thể, nếu thu nhập chịu thuế vượt 960 triệu/năm (tức trên 80 triệu/tháng sau khi trừ chi phí và GTGC). Tuy nhiên, hầu hết hộ kinh doanh cá thể không đạt mức này. Nếu đạt, nên cân nhắc chuyển thành doanh nghiệp để có lợi thế thuế doanh nghiệp.
 
 ---
-*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật số 109/2025/QH15, Luật Thuế TNCN số 04/2007/QH12, Thông tư 92/2015/TT-BTC, Thông tư 78/2014/TT-BTC.*
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật 109/2025/QH15, Thông tư 92/2015/TT-BTC (sửa đổi bởi TT 50/2026/TT-BTC), Thông tư 78/2014/TT-BTC.*

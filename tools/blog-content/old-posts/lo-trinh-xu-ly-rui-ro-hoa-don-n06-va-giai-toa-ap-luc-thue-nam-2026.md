@@ -13,7 +13,7 @@ Hóa đơn rủi ro mang trạng thái N06 là một trong những bài toán na
 
 ## Hóa đơn N06 bị coi là bất hợp pháp khi nào và theo quy định nào?
 
-Theo Khoản 1 Điều 15 Thông tư 39/2014/TT-BTC, hóa đơn không hợp pháp là hóa đơn không đáp ứng các yêu cầu về nội dung hoặc được lập không đúng trình tự, thủ tục. Khi cơ quan thuế xác định bên bán đã rời bỏ địa chỉ kinh doanh trước thời điểm lập hóa đơn, chứng từ này mất giá trị để người mua sử dụng làm căn cứ khấu trừ GTGT hay tính chi phí được trừ khi tính TNDN. Mức phạt áp dụng cho hành vi khai sai dẫn đến thiếu số tiền thuế phải nộp là 20% trên số thuế thiếu theo Điều 10 Luật Quản lý thuế số 38/2019/QH14. Nếu bị xác định là cố tình sử dụng hóa đơn bất hợp pháp để trốn thuế, mức phạt tăng lên từ 1 đến 3 lần số thuế trốn.
+Theo Khoản 1 Điều 15 Thông tư 39/2014/TT-BTC, hóa đơn không hợp pháp là hóa đơn không đáp ứng các yêu cầu về nội dung hoặc được lập không đúng trình tự, thủ tục. Khi cơ quan thuế xác định bên bán đã rời bỏ địa chỉ kinh doanh trước thời điểm lập hóa đơn, chứng từ này mất giá trị để người mua sử dụng làm căn cứ khấu trừ GTGT hay tính chi phí được trừ khi tính TNDN. Mức phạt áp dụng cho hành vi khai sai dẫn đến thiếu số tiền thuế phải nộp là 20% trên số thuế thiếu theo Điều 10 Luật 108/2025/QH15 (thay thế Luật 108/2025). Nếu bị xác định là cố tình sử dụng hóa đơn bất hợp pháp để trốn thuế, mức phạt tăng lên từ 1 đến 3 lần số thuế trốn.
 
 ## Tiền chậm nộp tích lũy qua nhiều năm lên tới bao nhiêu?
 
@@ -25,11 +25,11 @@ Bước quan trọng nhất là chứng minh nghiệp vụ kinh tế phát sinh 
 
 ## Tạm hoãn xuất cảnh có áp dụng cho lãnh đạo doanh nghiệp nợ thuế không?
 
-Một rủi ro trực tiếp mà doanh nghiệp cần lưu ý là biện pháp tạm hoãn xuất cảnh đối với người đại diện theo pháp luật. Theo Điều 28 Nghị định 126/2020/NĐ-CP, nếu doanh nghiệp đang thuộc trường hợp bị cưỡng chế thi hành quyết định hành chính về thuế hoặc có tiền nợ thuế chưa hoàn thành nghĩa vụ, cơ quan thuế có thẩm quyền thông báo tạm hoãn xuất cảnh. Lệnh này sẽ trực tiếp ngăn cản các kế hoạch cá nhân của lãnh đạo doanh nghiệp, bao gồm cả công tác nước ngoài và du lịch.
+Một rủi ro trực tiếp mà doanh nghiệp cần lưu ý là biện pháp tạm hoãn xuất cảnh đối với người đại diện theo pháp luật. Theo Điều 28 Nghị định 252/2026/NĐ-CP (thay thế NĐ 252/2026), nếu doanh nghiệp đang thuộc trường hợp bị cưỡng chế thi hành quyết định hành chính về thuế hoặc có tiền nợ thuế chưa hoàn thành nghĩa vụ, cơ quan thuế có thẩm quyền thông báo tạm hoãn xuất cảnh. Lệnh này sẽ trực tiếp ngăn cản các kế hoạch cá nhân của lãnh đạo doanh nghiệp, bao gồm cả công tác nước ngoài và du lịch.
 
 ## Lộ trình an toàn để gỡ rối tình trạng nợ thuế hiện tại là gì?
 
-Lộ trình an toàn bao gồm ba bước. Thứ nhất, rà soát toàn bộ danh mục hóa đơn N06 để xác định chính xác số tiền thuế bị truy thu và tiền phạt. Thứ hai, chủ động khai bổ sung hồ sơ thuế trước khi cơ quan thuế công bố quyết định kiểm tra hoặc thanh tra. Việc tự giác nộp đủ số tiền thuế tăng thêm cùng tiền chậm nộp giúp doanh nghiệp không bị xử phạt vi phạm hành chính nặng nề theo Điều 10 Luật Quản lý thuế số 38/2019/QH14. Thứ ba, để tránh rủi ro tương tự trong tương lai, sử dụng hệ thống tra cứu thông tin người nộp thuế để kiểm soát trạng thái hoạt động của đối tác trước khi ký kết hợp đồng mua bán.
+Lộ trình an toàn bao gồm ba bước. Thứ nhất, rà soát toàn bộ danh mục hóa đơn N06 để xác định chính xác số tiền thuế bị truy thu và tiền phạt. Thứ hai, chủ động khai bổ sung hồ sơ thuế trước khi cơ quan thuế công bố quyết định kiểm tra hoặc thanh tra. Việc tự giác nộp đủ số tiền thuế tăng thêm cùng tiền chậm nộp giúp doanh nghiệp không bị xử phạt vi phạm hành chính nặng nề theo Điều 10 Luật 108/2025/QH15 (thay thế Luật 108/2025). Thứ ba, để tránh rủi ro tương tự trong tương lai, sử dụng hệ thống tra cứu thông tin người nộp thuế để kiểm soát trạng thái hoạt động của đối tác trước khi ký kết hợp đồng mua bán.
 
 ---
 
@@ -41,7 +41,7 @@ Nếu chứng minh được giao dịch mua bán là có thật và có đầy �
 
 ### Phạt 20% hay 1-3 lần số thuế trốn trong trường hợp này?
 
-Nếu chứng minh được là khai sai vô ý, mức phạt là 20% trên số thuế thiếu. Nếu bị xác định là cố tình sử dụng hóa đơn bất hợp pháp, mức phạt từ 1 đến 3 lần số thuế trốn theo Điều 22, Luật Quản lý thuế số 38/2019/QH14.
+Nếu chứng minh được là khai sai vô ý, mức phạt là 20% trên số thuế thiếu. Nếu bị xác định là cố tình sử dụng hóa đơn bất hợp pháp, mức phạt từ 1 đến 3 lần số thuế trốn theo Điều 22, Luật 108/2025/QH15 (thay thế Luật 108/2025).
 
 ### Làm sao để kiểm tra đối tác có còn hoạt động tại địa chỉ đăng ký không?
 
@@ -57,7 +57,7 @@ Trường hợp bất khả kháng do thiên tai, dịch bệnh, cơ quan thuế
 
 *Last updated: 14/06/2026*
 
-*Nguồn tham khảo: Thông tư 39/2014/TT-BTC, Thông tư 92/2015/TT-BTC, Luật Quản lý thuế số 38/2019/QH14, Nghị định 126/2020/NĐ-CP*
+*Nguồn tham khảo: Thông tư 39/2014/TT-BTC, Thông tư 92/2015/TT-BTC, Luật 108/2025/QH15 (thay thế Luật 108/2025), Nghị định 252/2026/NĐ-CP (thay thế NĐ 252/2026)*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

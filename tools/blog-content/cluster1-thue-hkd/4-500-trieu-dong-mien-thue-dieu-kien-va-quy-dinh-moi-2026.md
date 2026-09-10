@@ -17,7 +17,7 @@ Theo **Nghị định 141/2026/NĐ-CP** và hướng dẫn tại **Thông tư 15
 
 Đây là chính sách ưu đãi thuế dành cho hộ kinh doanh nhỏ lẻ, giúp giảm gánh nặng hành chính và tài chính cho các hộ có quy mô kinh doanh nhỏ. Mức 1 tỷ được tính theo **tổng doanh thu của năm dương lịch** (từ 01/01 đến 31/12), bao gồm tất cả các nguồn thu liên quan đến hoạt động kinh doanh.
 
-Điểm quan trọng: đây là chính sách **miễn thuế TNCN và GTGT**, không phải miễn mọi nghĩa vụ thuế. Hộ kinh doanh vẫn có thể phải đóng lệ phí môn bài hoặc các khoản phí khác theo quy định.
+Điểm quan trọng: đây là chính sách **miễn thuế TNCN và GTGT**, không phải miễn mọi nghĩa vụ thuế. Tuy nhiên, từ 01/01/2026, **lệ phí môn bài đã bị chấm dứt** theo NQ 198/2025/QH15, nên HKD dưới 1 tỷ thực tế chỉ còn nghĩa vụ thông báo doanh thu và lập sổ sách.
 
 ## Quy định miễn thuế 1 tỷ thay đổi thế nào so với quy định cũ?
 
@@ -50,7 +50,7 @@ Chính sách miễn thuế áp dụng cho các đối tượng sau:
 ### Đối tượng KHÔNG được hưởng
 
 - Hộ kinh doanh có doanh thu năm trước đó trên 1 tỷ
-- Hộ áp dụng thuế khoán (đã bao gồm trong thuế khoán cố định)
+- Hộ kinh doanh có doanh thu năm trước từ 1 tỷ trở xuống (được miễn theo NĐ 141/2026)
 - Hộ kinh doanh có doanh thu cho thuê tài sản riêng vượt 1 tỷ (phần cho thuê không được miễn)
 - Doanh nghiệp tư nhân, công ty TNHH (không phải hộ kinh doanh)
 
@@ -62,13 +62,13 @@ Chính sách miễn thuế áp dụng cho các đối tượng sau:
 
 **Điều kiện 2 - Đăng ký thuế:** Hộ phải được cấp mã số thuế và đăng ký hoạt động kinh doanh hợp pháp. Hộ chưa đăng ký kinh doanh nhưng thực tế hoạt động vẫn phải chịu nghĩa vụ thuế.
 
-**Điều kiện 3 - Phương thức kê khai:** Hộ phải thuộc diện áp dụng thuế theo phương pháp kê khai (không phải thuế khoán). Nếu đang áp dụng thuế khoán thì việc miễn thuế TNCN/GTGT đã được tính trong khoản thuế khoán cố định.
+**Điều kiện 3 - Phương thức kê khai:** Hộ phải kê khai doanh thu thực tế theo quy định. Theo TT 50/2026, HKD dưới 1 tỷ chỉ cần thông báo doanh thu, không phải khai số thuế GTGT, TNCN phải nộp.
 
 **Điều kiện 4 - Khai báo trung thực:** Hộ phải kê khai đúng doanh thu thực tế. Việc cố tình khai sai doanh thu để hưởng miễn thuế là hành vi trốn thuế, bị xử phạt nặng theo Luật Quản lý thuế.
 
 ## Quy định mới 2026 về hóa đơn điện tử và TMĐT ảnh hưởng thế nào?
 
-Một trong những thay đổi lớn nhất năm 2026 là việc **áp dụng bắt buộc hóa đơn điện tử** đối với toàn bộ hộ kinh doanh (theo Nghị định 123/2020/NĐCP, Thông tư 78/2021/TT-BTC và các văn bản hướng dẫn).
+Một trong những thay đổi lớn nhất năm 2026 là việc **áp dụng bắt buộc hóa đơn điện tử** đối với hộ kinh doanh có doanh thu từ 1 tỷ trở lên (theo Nghị định 254/2026/NĐ-CP và Thông tư 91/2026/TT-BTC).
 
 **Hóa đơn điện tử và ngưỡng 1 tỷ:** Khi hộ kinh doanh phải sử dụng hóa đơn điện tử có mã cơ quan thuế, doanh thu được ghi nhận chính xác và minh bạch hơn. Điều này giúp việc xác định hộ có vượt ngưỡng 1 tỷ hay không trở nên rõ ràng, giảm thiểu sai sót cố ý hoặc vô tình.
 
@@ -122,6 +122,6 @@ Hộ kinh doanh nên xuất báo cáo doanh thu hàng tháng từ từng sàn (S
 
 ---
 
-*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Nghị định 141/2026/NĐ-CP, Thông tư 152/2025/TT-BTC, Luật Thuế thu nhập cá nhân 2007 (sửa đổi 2024), Luật Quản lý thuế 2019, Nghị định 123/2020/NĐCP.*
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Nghị định 141/2026/NĐ-CP, Thông tư 152/2025/TT-BTC, Luật 109/2025/QH15, Luật Quản lý thuế 2019, Nghị định 254/2026/NĐ-CP.*
 
 *Xem thêm: [Hộ kinh doanh dưới 1 tỷ có phải nộp thuế không?](/blog/ho-kinh-doanh-duoi-500-trieu-co-phai-nop-thue-khong) | [Cách tính thuế TNCN 2026](/blog/cach-tinh-thue-tncn-hkd-2026-4-nhom-doanh-thu) | [Trang chủ TADA](https://ketoanthuetada.com/)*

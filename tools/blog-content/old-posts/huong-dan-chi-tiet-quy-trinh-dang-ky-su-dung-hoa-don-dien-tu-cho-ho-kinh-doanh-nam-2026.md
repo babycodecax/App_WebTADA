@@ -37,7 +37,7 @@ Từ ngày 01/07/2025, mã số thuế của cá nhân và chủ hộ kinh doanh
 
 ### Hộ kinh doanh doanh thu dưới 1 tỷ có cần đăng ký hóa đơn điện tử không?
 
-Không bắt buộc. Theo Nghị định 254/2026/NĐ-CP, hộ kinh doanh có doanh thu trên 1 tỷ đồng/năm bắt buộc phải sử dụng hóa đơn điện tử. Hộ dưới 1 tỷ đồng vẫn được hưởng chính sách thuế khoán và có thể đăng ký tự nguyện nếu có nhu cầu.
+Không bắt buộc. Theo Nghị định 254/2026/NĐ-CP, hộ kinh doanh có doanh thu trên 1 tỷ đồng/năm bắt buộc phải sử dụng hóa đơn điện tử. Hộ dưới 1 tỷ đồng được miễn thuế TNCN, GTGT theo NĐ 141/2026 và có thể đăng ký HĐĐT tự nguyện nếu có nhu cầu.
 
 ### Chi phí chữ ký số cho hộ kinh doanh khoảng bao nhiêu?
 

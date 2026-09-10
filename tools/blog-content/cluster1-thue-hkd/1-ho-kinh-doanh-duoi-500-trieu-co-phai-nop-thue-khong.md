@@ -15,7 +15,9 @@ Nhiều hộ kinh doanh nhỏ thắc mắc: nếu tổng doanh thu trong năm d�
 
 Theo **Nghị định 141/2026/NĐ-CP** và **Thông tư 152/2025/TT-BTC**, hộ kinh doanh có doanh thu năm trước đó từ 1 tỷ đồng trở xuống được miễn hai loại thuế chính: **thuế thu nhập cá nhân (TNCN)** và **thuế giá trị gia tăng (GTGT)**. Cụ thể, hộ kinh doanh thuộc diện chịu thuế theo phương pháp kê khai mà có doanh thu không vượt ngưỡng 1 tỷ đồng/năm thì không phải nộp thuế TNCN và GTGT tương ứng. Mức 1 tỷ này là **tổng doanh thu của năm trước đó**, được xác định theo hóa đơn, chứng từ hợp lệ.
 
-Lưu ý quan trọng: **đây là miễn thuế GTGT và TNCN, không phải miễn mọi loại thuế.** Hộ kinh doanh vẫn có thể phải nộp các khoản thuế khác nếu phát sinh, chẳng hạn lệ phí môn bài (đối với hộ không sử dụng hóa đơn) hoặc các khoản đóng góp bắt buộc khác theo quy định pháp luật.
+**Điểm mới 2026:** Theo **Nghị quyết 198/2025/QH15 (Điều 10)**, phương pháp **thuế khoán chính thức bị chấm dứt** từ 01/01/2026. Tất cả hộ kinh doanh chuyển sang **kê khai doanh thu thực tế**. HKD dưới 1 tỷ được miễn thuế nhưng vẫn phải kê khai doanh thu và lập sổ sách theo **Thông tư 152/2025/TT-BTC**.
+
+Lưu ý quan trọng: **đây là miễn thuế GTGT và TNCN, không phải miễn mọi loại thuế.** Tuy nhiên, từ 01/01/2026, lệ phí môn bài đã bị chấm dứt theo NQ 198/2025/QH15, nên HKD dưới 1 tỷ thực tế chỉ còn nghĩa vụ thông báo doanh thu và lập sổ sách.
 
 ## Điều kiện để hộ kinh doanh được miễn thuế dưới 1 tỷ
 
@@ -23,36 +25,22 @@ Lưu ý quan trọng: **đây là miễn thuế GTGT và TNCN, không phải mi�
 
 **Điều kiện 1 - Doanh thu:** Tổng doanh thu bán hàng hóa, cung cấp dịch vụ của năm trước đó phải từ 1 tỷ đồng trở xuống. Doanh thu này được xác định theo quy định tại Nghị định 141/2026/NĐ-CP, dựa trên tổng số tiền ghi trên hóa đơn GTGT hoặc hóa đơn bán hàng.
 
-**Điều kiện 2 - Đăng ký thuế:** Hộ kinh doanh phải được cơ quan thuế xác nhận là đối tượng áp dụng thuế theo phương pháp kê khai. Nếu hộ đang áp dụng thuế khoán thì quy định này không áp dụng trực tiếp, vì hộ khoán đã được cơ quan thuế ấn định mức thuế cố định.
+**Điều kiện 2 - Đăng ký thuế:** Hộ kinh doanh phải được cơ quan thuế xác nhận là đối tượng áp dụng thuế theo phương pháp kê khai. Theo TT 50/2026, HKD dưới 1 tỷ chỉ cần **thông báo doanh thu**, không phải khai số thuế GTGT, TNCN phải nộp.
 
 **Điều kiện 3 - Không có doanh thu từ hoạt động cho thuê:** Nếu hộ kinh doanh đồng thời có hoạt động cho thuê tài sản mà tổng doanh thu cho thuê vượt ngưỡng 1 tỷ, thì việc miễn thuế chỉ áp dụng cho phần doanh thu kinh doanh chính, không áp dụng cho phần cho thuê.
 
 ## Hộ kinh doanh dưới 1 tỷ có cần kê khai không?
 
-Mặc dù được miễn thuế, hộ kinh doanh dưới 1 tỷ **vẫn phải thực hiện nghĩa vụ khai thuế** theo quy định. Cụ thể, hộ kinh doanh phải nộp tờ khai thuế GTGT theo quý nếu thuộc diện khai theo quý, hoặc tờ khai quyết toán năm nếu thuộc diện khai theo năm. Điều này giúp cơ quan thuế kiểm soát được số liệu và xác nhận đúng đối tượng miễn thuế.
+Mặc dù được miễn thuế, hộ kinh doanh dưới 1 tỷ **vẫn phải thực hiện nghĩa vụ kê khai doanh thu** theo quy định. Theo **TT 50/2026/TT-BTC**, HKD dưới 1 tỷ chỉ cần **thông báo doanh thu** cho cơ quan thuế, không phải khai số thuế GTGT, TNCN phải nộp.
 
-Theo **Khoản 1 Điều 16 Luật Quản lý thuế 2019** (sửa đổi 2024), người nộp thuế có trách nhiệm kê khai chính xác, trung thực, đầy đủ và đúng hạn. Việc không kê khai dù được miễn thuế vẫn có thể bị xem là vi phạm nghĩa vụ báo cáo, dẫn đến cảnh báo hoặc xử phạt hành chính.
+Tuy nhiên, theo **Thông tư 152/2025/TT-BTC**, hộ kinh doanh **vẫn phải lập sổ sách kế toán** theo mẫu quy định (ổ S1a-HKD — sổ theo dõi doanh thu). Việc cập nhật sổ sách giúp hộ kinh doanh theo dõi doanh thu và đối chiếu khi cơ quan thuế yêu cầu.
 
-**Cách đơn giản nhất:** Hộ kinh doanh dưới 1 tỷ vẫn nên nộp tờ khai GTGT định kỳ (quý hoặc năm) với số liệu doanh thu thực tế. Trên tờ khai, nếu tổng doanh thu dưới 1 tỷ thì hệ thống sẽ tự xác nhận miễn thuế và không phát sinh số tiền phải nộp.
-
-## So sánh hộ kinh doanh dưới 1 tỷ với hộ khoán
-
-Nhiều hộ kinh doanh nhầm lẫn giữa hộ miễn thuế theo kê khai với hộ khoán. Hai đối tượng này có bản chất khác nhau:
-
-| Tiêu chí | Hộ dưới 1 tỷ (kê khai) | Hộ khoán |
-|---|---|---|
-| **Phương thức** | Tự kê khai doanh thu thực tế | CNT ấn định doanh thu giả định |
-| **Thuế TNCN** | Miễn (doanh thu ≤ 1 tỷ) | Đã gồm trong thuế khoán hàng tháng |
-| **Thuế GTGT** | Miễn (doanh thu ≤ 1 tỷ) | Đã gồm trong thuế khoán hàng tháng |
-| **Nghĩa vụ kê khai** | Vẫn phải nộp tờ khai định kỳ | Không cần kê khai hàng quý |
-| **Hóa đơn** | Có thể đăng ký sử dụng HĐ điện tử | Không bắt buộc HĐ |
-
-Điểm mấu chốt: hộ khoán đã đóng một khoản thuế cố định hàng tháng (gồm cả TNCN, GTGT và lệ phí môn bài), nên không cần quan tâm đến ngưỡng 1 tỷ. Trong khi đó, hộ kê khai mới được miễn khi doanh thu thực tế dưới 1 tỷ.
+Theo **Luật 108/2025/QH15** (thay thế Luật 38/2019), người nộp thuế có trách nhiệm kê khai chính xác, trung thực, đầy đủ và đúng hạn. Việc không kê khai dù được miễn thuế vẫn có thể bị xem là vi phạm nghĩa vụ báo cáo.
 
 ## Ví dụ minh họa thực tế
 
 **Trường hợp 1 - Chị Lan (bán hàng online):**
-Tổng doanh thu năm 2025 là 850 triệu đồng. Năm 2026, chị Lan thuộc đối tượng miễn thuế TNCN và GTGT. Chị vẫn phải nộp tờ khai GTGT quý với doanh thu ghi trên hóa đơn, nhưng số thuế phải nộp bằng 0.
+Tổng doanh thu năm 2025 là 850 triệu đồng. Năm 2026, chị Lan thuộc đối tượng miễn thuế TNCN và GTGT. Chị vẫn phải thông báo doanh thu cho cơ quan thuế và lập sổ S1a-HKD, nhưng số thuế phải nộp bằng 0.
 
 **Trường hợp 2 - Anh Minh (mở quán ăn nhỏ):**
 Tổng doanh thu năm 2025 là 1,1 tỷ đồng. Vì vượt ngưỡng 1 tỷ, anh Minh phải nộp thuế TNCN và GTGT bình thường theo quy định. Anh cần tính toán cẩn thận vì mức vượt chỉ 100 triệu nhưng tạo ra nghĩa vụ thuế hoàn toàn mới.
@@ -66,17 +54,17 @@ Tổng doanh thu năm 2025 là 900 triệu đồng kinh doanh chính, cộng th�
 
 **Thứ nhất**, ngưỡng miễn thuế 1 tỷ được **xác định rõ theo năm dương lịch**, không còn tình trạng xác định theo năm tài chính. Điều này giúp hộ kinh doanh dễ dàng theo dõi và đối chiếu doanh thu.
 
-**Thứ hai**, việc áp dụng hóa đơn điện tử bắt buộc (theo Nghị định 123/2020/NĐCP và các Thông tư hướng dẫn) đồng nghĩa với việc doanh thu được ghi nhận chính xác hơn. Hộ kinh doanh không thể khai sai doanh thu mà không có cơ sở đối chiếu.
+**Thứ hai**, việc áp dụng hóa đơn điện tử bắt buộc (theo Nghị định 254/2026/NĐ-CP và Thông tư 91/2026/TT-BTC) đồng nghĩa với việc doanh thu được ghi nhận chính xác hơn. Hộ kinh doanh không thể khai sai doanh thu mà không có cơ sở đối chiếu.
 
 **Thứ ba**, cơ quan thuế đẩy mạnh kết nối dữ liệu với các nền tảng thương mại điện tử (Shopee, Lazada, TikTok Shop) để tự động đối soát doanh thu. Điều này có nghĩa là hộ kinh doanh bán hàng trên các sàn TMĐT cần đảm bảo doanh thu khai báo khớp với dữ liệu từ nền tảng.
 
 ## Những sai lầm thường gặp khi áp dụng miễn thuế 1 tỷ
 
-**Sai lầm 1:** Nghĩ rằng doanh thu dưới 1 tỷ thì không cần làm gì với cơ quan thuế. Thực tế vẫn phải kê khai định kỳ và cập nhật thông tin thuế.
+**Sai lầm 1:** Nghĩ rằng doanh thu dưới 1 tỷ thì không cần làm gì với cơ quan thuế. Thực tế vẫn phải kê khai doanh thu định kỳ và lập sổ sách kế toán theo TT 152/2025.
 
 **Sai lầm 2:** Chỉ tính doanh thu tiền mặt mà quên các khoản thanh toán qua ngân hàng, ví điện tử hoặc các nền tảng thanh toán trực tuyến. Tất cả đều được tính vào tổng doanh thu.
 
-**Sai lầm 3:** Nhầm lẫn giữa miễn thuế TNCN/GTGT với miễn lệ phí môn bài. Lệ phí môn bài được quy định riêng tại Luật Phí và lệ phí, không liên quan trực tiếp đến ngưỡng 1 tỷ.
+**Sai lầm 3:** Nhầm lẫn giữa miễn thuế TNCN/GTGT với miễn lệ phí môn bài. **Lưu ý:** Lệ phí môn bài đã bị chấm dứt từ 01/01/2026 theo NQ 198/2025/QH15, nên vấn đề này không còn phù hợp.
 
 **Sai lầm 4:** Không theo dõi doanh thu theo tháng/quý, dẫn đến cuối năm mới phát hiện vượt ngưỡng mà đã bỏ lỡ thời điểm điều chỉnh phù hợp.
 
@@ -84,7 +72,7 @@ Tổng doanh thu năm 2025 là 900 triệu đồng kinh doanh chính, cộng th�
 
 **Câu 1: Hộ kinh doanh dưới 1 tỷ có cần đăng ký sử dụng hóa đơn điện tử không?**
 
-Có. Theo Nghị định 123/2020/NĐCP, từ 01/07/2024 tất cả hộ kinh doanh phải sử dụng hóa đơn điện tử có mã của cơ quan thuế. Việc miễn thuế TNCN, GTGT không ảnh hưởng đến nghĩa vụ sử dụng hóa đơn. Hộ kinh doanh vẫn phải phát hành hóa đơn cho mỗi lần bán hàng và ghi nhận doanh thu đầy đủ.
+Theo Nghị định 254/2026/NĐ-CP (có hiệu lực từ 01/07/2026, thay thế NĐ 123/2020), hộ kinh doanh có doanh thu từ 1 tỷ trở lên bắt buộc phải sử dụng hóa đơn điện tử có mã của cơ quan thuế. HKD dưới 1 tỷ không bắt buộc HĐĐT, nhưng vẫn phải xuất HĐ khi khách hàng yêu cầu.
 
 **Câu 2: Nếu năm nay doanh thu dưới 1 tỷ nhưng năm sau trên 1 tỷ thì sao?**
 
@@ -100,10 +88,10 @@ Miễn thuế áp dụng cho bản thân hộ kinh doanh. Nếu hộ có thuê n
 
 **Câu 5: Làm sao để kiểm tra doanh thu thực tế đã vượt ngưỡng 1 tỷ chưa?**
 
-Hộ kinh doanh nên theo dõi doanh thu hàng tháng thông qua sổ bán hàng và đối chiếu với hóa đơn đã phát hành. Cách đơn giản nhất là tổng hợp số liệu từ phần mềm kế toán hoặc bảng tính Excel, cập nhật cuối mỗi tháng. Nếu tiếp cận ngưỡng 1 tỷ, cần chủ động chuẩn bị phương án kê khai thuế.
+Hộ kinh doanh nên theo dõi doanh thu hàng tháng thông qua sổ bán hàng và đối chiếu với hóa đơn đã phát hành. Cách đơn giản nhất là tổng hợp số liệu từ sổ S1a-HKD hoặc bảng tính Excel, cập nhật cuối mỗi tháng. Nếu tiếp cận ngưỡng 1 tỷ, cần chủ động chuẩn bị phương án kê khai thuế.
 
 ---
 
-*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Nghị định 141/2026/NĐ-CP, Thông tư 152/2025/TT-BTC, Luật Thuế thu nhập cá nhân 2007 (sửa đổi 2024), Luật Quản lý thuế 2019 (sửa đổi 2024).*
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: NQ 198/2025/QH15, NĐ 141/2026/NĐ-CP, NĐ 254/2026/NĐ-CP, TT 152/2025/TT-BTC, TT 50/2026/TT-BTC, Luật 108/2025/QH15, Luật 109/2025/QH15.*
 
-*Xem thêm: [Cách tính thuế TNCN hộ kinh doanh 2026](/blog/cach-tinh-thue-tncn-hkd-2026-4-nhom-doanh-thu) | [1 tỷ miễn thuế - Điều kiện chi tiết](/blog/500-trieu-dong-mien-thue-dieu-kien-va-quy-dinh-moi-2026) | [Trang chủ TADA](https://ketoanthuetada.com/)*
+*Xem thêm: [Cách tính thuế TNCN hộ kinh doanh 2026](/blog/cach-tinh-thue-tncn-theo-4-nhom-hkd-2026) | [Thuế HKD 2026 tổng hợp](/blog/thue-hkd-2026-tong-hop-day-du) | [Trang chủ TADA](https://ketoanthuetada.com/)*

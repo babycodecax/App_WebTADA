@@ -17,7 +17,7 @@ Người đại diện theo pháp luật có nghĩa vụ thực hiện quyền v
 
 ## Khoản chi tip dùng tiền công ty có được trừ khi tính thuế TNDN không?
 
-Theo Luật Thuế TNDN số 14/2020/QH14, một khoản chi chỉ được trừ nếu thực tế phát sinh liên quan đến hoạt động sản xuất kinh doanh và phải có đầy đủ hóa đơn, chứng từ hợp pháp. Tiền tip và chi phí karaoke cá nhân không đáp ứng điều kiện này nên bị xếp vào nhóm khoản chi không được trừ. Nếu kế toán đưa khoản này vào chi phí quản lý, doanh nghiệp sẽ bị xử phạt 20% trên số tiền thuế khai thiếu theo Điều 10 Luật Quản lý thuế số 38/2019/QH14. Nếu bị đánh giá là cố tình giả mạo chứng từ để trốn thuế, mức phạt có thể lên tới 1 đến 3 lần số thuế trốn.
+Theo Luật 67/2025/QH15 (thay thế Luật 67/2025), một khoản chi chỉ được trừ nếu thực tế phát sinh liên quan đến hoạt động sản xuất kinh doanh và phải có đầy đủ hóa đơn, chứng từ hợp pháp. Tiền tip và chi phí karaoke cá nhân không đáp ứng điều kiện này nên bị xếp vào nhóm khoản chi không được trừ. Nếu kế toán đưa khoản này vào chi phí quản lý, doanh nghiệp sẽ bị xử phạt 20% trên số tiền thuế khai thiếu theo Điều 10 Luật 108/2025/QH15 (thay thế Luật 108/2025). Nếu bị đánh giá là cố tình giả mạo chứng từ để trốn thuế, mức phạt có thể lên tới 1 đến 3 lần số thuế trốn.
 
 ## Giám đốc cần làm gì ngay khi phát hiện nhầm lẫn tài khoản?
 
@@ -25,7 +25,7 @@ Bước quan trọng nhất là Giám đốc cần hoàn trả ngay lập tức 
 
 ## Hồ sơ cần lập để giải trình với cơ quan thuế gồm những gì?
 
-Doanh nghiệp nên lập biên bản xác nhận sai sót do nhầm lẫn tài khoản thanh toán, có chữ ký của Giám đốc và kế toán trưởng, đính kèm lệnh chuyển trả tiền. Trường hợp khoản chi nhầm đã lỡ được kê khai vào hồ sơ khai thuế, doanh nghiệp cần chủ động khai bổ sung trước khi cơ quan thuế công bố quyết định kiểm tra để tránh phạt vi phạm hành chính theo Điều 10 Luật Quản lý thuế số 38/2019/QH14.
+Doanh nghiệp nên lập biên bản xác nhận sai sót do nhầm lẫn tài khoản thanh toán, có chữ ký của Giám đốc và kế toán trưởng, đính kèm lệnh chuyển trả tiền. Trường hợp khoản chi nhầm đã lỡ được kê khai vào hồ sơ khai thuế, doanh nghiệp cần chủ động khai bổ sung trước khi cơ quan thuế công bố quyết định kiểm tra để tránh phạt vi phạm hành chính theo Điều 10 Luật 108/2025/QH15 (thay thế Luật 108/2025).
 
 ## Chủ sở hữu công ty TNHH một thành viên có được rút tiền tự do không?
 
@@ -61,7 +61,7 @@ Nên thực hiện ngay trong ngày phát hiện hoặc chậm nhất trong 5 ng
 
 *Last updated: 12/06/2026*
 
-*Nguồn tham khảo: Luật Doanh nghiệp số 59/2020/QH14, Luật Thuế TNDN số 14/2020/QH14, Luật Quản lý thuế số 38/2019/QH14, Bộ luật Hình sự 2015*
+*Nguồn tham khảo: Luật Doanh nghiệp số 59/2020/QH14, Luật 67/2025/QH15 (thay thế Luật 67/2025), Luật 108/2025/QH15 (thay thế Luật 108/2025), Bộ luật Hình sự 2015*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

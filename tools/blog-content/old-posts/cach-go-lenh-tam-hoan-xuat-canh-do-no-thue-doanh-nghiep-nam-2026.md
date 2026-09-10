@@ -17,7 +17,7 @@ Theo **Nghị định số 252/2026/NĐ-CP**, cá nhân là người đại di�
 
 ## Chi phí 85 triệu đồng bao gồm những khoản nào?
 
-Con số 85 triệu đồng thường bao gồm ba khoản thu chính. Thứ nhất là **tiền nợ lệ phí môn bài** từ năm 2015 đến nay cùng tiền chậm nộp phát sinh. Thứ hai là **tiền phạt vi phạm hành chính** về thủ tục thuế do không nộp hàng chục kỳ hồ sơ khai thuế. Theo **Nghị định 125/2020/NĐ-CP** được sửa đổi bởi **Nghị định 310/2025/NĐ-CP**, hành vi nộp hồ sơ khai thuế quá thời hạn trên 90 ngày có mức phạt tiền từ **15 triệu đến 25 triệu đồng** cho mỗi hành vi vi phạm. Thứ ba là **tiền chậm nộp nợ thuế** và tiền phạt được tính theo tỷ lệ 0,03% mỗi ngày trên số tiền chậm nộp. Với khoảng thời gian 11 năm, số tiền lãi chậm nộp có thể đã vượt qua cả số tiền gốc ban đầu.
+Con số 85 triệu đồng thường bao gồm ba khoản thu chính. Thứ nhất là **tiền nợ lệ phí môn bài** từ năm 2015 đến nay cùng tiền chậm nộp phát sinh. Thứ hai là **tiền phạt vi phạm hành chính** về thủ tục thuế do không nộp hàng chục kỳ hồ sơ khai thuế. Theo **Nghị định 310/2025/NĐ-CP** được sửa đổi bởi **Nghị định 310/2025/NĐ-CP**, hành vi nộp hồ sơ khai thuế quá thời hạn trên 90 ngày có mức phạt tiền từ **15 triệu đến 25 triệu đồng** cho mỗi hành vi vi phạm. Thứ ba là **tiền chậm nộp nợ thuế** và tiền phạt được tính theo tỷ lệ 0,03% mỗi ngày trên số tiền chậm nộp. Với khoảng thời gian 11 năm, số tiền lãi chậm nộp có thể đã vượt qua cả số tiền gốc ban đầu.
 
 ## Bốn bước khôi phục quyền xuất cảnh năm 2026 là gì?
 
@@ -41,9 +41,9 @@ Nhiều doanh nghiệp mắc sai lầm nghiêm trọng: nộp thuế mà không 
 
 ## Câu hỏi thường gặp
 
-### Lệ phí môn bài doanh nghiệp không hoạt động phải nộp bao nhiêu?
+### Doanh nghiệp không hoạt động có nghĩa vụ thuế gì?
 
-Doanh nghiệp không hoạt động vẫn phải nộp lệ phí môn bài theo mức cố định hàng năm. Từ năm 2026, mức lệ phí môn bài dao động từ 500.000đ đến 3.000.000đ tùy nhóm doanh nghiệp. Số tiền tích lũy qua 11 năm cộng với tiền chậm nộp có thể lên hàng chục triệu đồng.
+Theo NQ 198/2025/QH15, **lệ phí môn bài đã bị chấm dứt từ 01/01/2026**. Tuy nhiên, doanh nghiệp không hoạt động vẫn phải chịu nghĩa vụ về thuế TNDN, tiền thuê đất (nếu có) và các khoản nợ thuế trước đó. Nếu có tiền thuế nợ quá hạn từ 120 ngày, người đại diện có thể bị tạm hoãn xuất cảnh.
 
 ### Nợ thuế bao lâu thì bị cấm xuất cảnh?
 
@@ -63,7 +63,7 @@ Có thể ủy quyền cho người đại diện hợp pháp hoặc tổ chức
 
 *Last updated: 15/03/2026*
 
-*Nguồn tham khảo: Nghị định 252/2026/NĐ-CP, Nghị định 125/2020/NĐ-CP, Nghị định 310/2025/NĐ-CP, Luật Doanh nghiệp 2020*
+*Nguồn tham khảo: Nghị định 252/2026/NĐ-CP, Nghị định 310/2025/NĐ-CP (thay thế NĐ 310/2025), Luật Doanh nghiệp 2020*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

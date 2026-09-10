@@ -13,7 +13,7 @@ Nếu bạn đang bán hàng trên Shopee, TikTok Shop hay các nền tảng s�
 
 ## Hộ kinh doanh bán hàng trên sàn có bắt buộc xuất hóa đơn không?
 
-Hộ kinh doanh có doanh thu trong năm từ 01 tỷ đồng trở lên bắt buộc phải áp dụng hóa đơn điện tử khởi tạo từ máy tính tiền có kết nối dữ liệu với cơ quan thuế theo Nghị định 254/2026/NĐ-CP. Bạn bắt buộc phải lập hóa đơn điện tử cho mọi giao dịch bán hàng, bao gồm cả hàng hóa dùng để khuyến mãi, quảng cáo, biếu tặng hoặc trả thay lương cho người lao động. Thời điểm lập hóa đơn là thời điểm chuyển giao quyền sở hữu hoặc quyền sử dụng hàng hóa cho người mua, không phân biệt đã thu được tiền hay chưa. Việc không xuất hóa đơn đúng thời điểm sẽ bị xử phạt vi phạm hành chính theo Điều 20 Nghị định 125/2020/NĐ-CP.
+Hộ kinh doanh có doanh thu trong năm từ 01 tỷ đồng trở lên bắt buộc phải áp dụng hóa đơn điện tử khởi tạo từ máy tính tiền có kết nối dữ liệu với cơ quan thuế theo Nghị định 254/2026/NĐ-CP. Bạn bắt buộc phải lập hóa đơn điện tử cho mọi giao dịch bán hàng, bao gồm cả hàng hóa dùng để khuyến mãi, quảng cáo, biếu tặng hoặc trả thay lương cho người lao động. Thời điểm lập hóa đơn là thời điểm chuyển giao quyền sở hữu hoặc quyền sử dụng hàng hóa cho người mua, không phân biệt đã thu được tiền hay chưa. Việc không xuất hóa đơn đúng thời điểm sẽ bị xử phạt vi phạm hành chính theo Điều 24 Nghị định 310/2025/NĐ-CP (có hiệu lực từ 16/01/2026, thay thế NĐ 310/2025).
 
 ## Hóa đơn bán cho người tiêu dùng cần ghi thông tin gì?
 
@@ -25,11 +25,11 @@ Các sàn thương mại điện tử có chức năng thanh toán sẽ thực h
 
 ## Kinh doanh trên sàn có cần đăng ký hộ kinh doanh không?
 
-Theo Luật Doanh nghiệp số 59/2020/QH14, cá nhân kinh doanh trên sàn thương mại điện tử có doanh thu trong năm từ 100 triệu đồng trở lên phải đăng ký hộ kinh doanh với cơ quan nhà nước có thẩm quyền. Việc đăng ký giúp bạn được cấp mã số thuế riêng, thực hiện nghĩa vụ thuế đầy đủ và tránh bị xử phạt hành chính. Sau khi đăng ký, bạn cần thông báo áp dụng phương pháp tính thuế khoán hoặc kê khai với cơ quan thuế quản lý trực tiếp trong thời hạn 10 ngày kể từ ngày bắt đầu kinh doanh.
+Theo Luật Doanh nghiệp số 59/2020/QH14, cá nhân kinh doanh trên sàn thương mại điện tử có doanh thu trong năm từ 100 triệu đồng trở lên phải đăng ký hộ kinh doanh với cơ quan nhà nước có thẩm quyền. Việc đăng ký giúp bạn được cấp mã số thuế riêng, thực hiện nghĩa vụ thuế đầy đủ và tránh bị xử phạt hành chính. Sau khi đăng ký, bạn cần kê khai doanh thu thực tế với cơ quan thuế quản lý trực tiếp trong thời hạn 10 ngày kể từ ngày bắt đầu kinh doanh. Theo TT 50/2026, HKD dưới 1 tỷ chỉ cần thông báo doanh thu, không phải khai số thuế phải nộp.
 
 ## Hồ sơ khai thuế cho người bán trên sàn cần những gì?
 
-Hồ sơ khai thuế gồm: tờ khai thuế theo mẫu quy định, danh sách giao dịch bán hàng trên sàn theo tháng hoặc quý, chứng từ thanh toán từ sàn và hóa đơn đầu vào (nếu có). Đối với hộ kinh doanh áp dụng thuế khoán, cần nộp tờ khai định kỳ theo quý. Đối với hộ kinh doanh kê khai, cần nộp tờ khai thuế GTGT và thuế TNCN theo tháng. Bạn nên lưu trữ đầy đủ chứng từ điện tử trong thời hạn 5 năm kể từ ngày lập để phục vụ việc kiểm tra, thanh tra của cơ quan thuế.
+Hồ sơ khai thuế gồm: tờ khai thuế theo mẫu quy định, danh sách giao dịch bán hàng trên sàn theo tháng hoặc quý, chứng từ thanh toán từ sàn và hóa đơn đầu vào (nếu có). Đối với hộ kinh doanh dưới 1 tỷ (nhóm 1), chỉ cần thông báo doanh thu theo TT 50/2026. Đối với hộ kinh doanh từ 1 tỷ trở lên (nhóm 2, 3, 4), cần nộp tờ khai thuế GTGT và thuế TNCN theo quý hoặc tháng. Bạn nên lưu trữ đầy đủ chứng từ điện tử trong thời hạn 5 năm kể từ ngày lập để phục vụ việc kiểm tra, thanh tra của cơ quan thuế.
 
 ---
 

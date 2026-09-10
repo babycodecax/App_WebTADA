@@ -13,7 +13,7 @@ Tình huống thực tế: Doanh nghiệp có khoảng 5 tỷ đồng doanh thu 
 
 ## Tại sao phải kê khai bổ sung trước khi cơ quan thanh tra?
 
-Theo quy định pháp luật về quản lý thuế, hành vi không nộp hồ sơ khai thuế sau 90 ngày kể từ ngày hết hạn bị xác định là hành vi trốn thuế, bị xử phạt từ 1 đến 3 lần số tiền thuế trốn. Tuy nhiên, người nộp thuế tự giác khai bổ sung và nộp đủ số tiền thuế trước thời điểm cơ quan thuế công bố quyết định kiểm tra, thanh tra tại trụ sở sẽ không bị xử phạt vi phạm hành chính về thuế theo Điều 10 Luật Quản lý thuế số 38/2019/QH14. Việc chủ động nộp tờ khai và đóng thuế là giải pháp quan trọng nhất giúp tránh khoản phạt trốn thuế gấp nhiều lần số thuế gốc, chỉ phải nộp tiền thuế thiếu, tiền chậm nộp và khoản phạt hành chính về chậm nộp hồ sơ khai thuế.
+Theo quy định pháp luật về quản lý thuế, hành vi không nộp hồ sơ khai thuế sau 90 ngày kể từ ngày hết hạn bị xác định là hành vi trốn thuế, bị xử phạt từ 1 đến 3 lần số tiền thuế trốn. Tuy nhiên, người nộp thuế tự giác khai bổ sung và nộp đủ số tiền thuế trước thời điểm cơ quan thuế công bố quyết định kiểm tra, thanh tra tại trụ sở sẽ không bị xử phạt vi phạm hành chính về thuế theo Điều 10 Luật 108/2025/QH15 (thay thế Luật 108/2025). Việc chủ động nộp tờ khai và đóng thuế là giải pháp quan trọng nhất giúp tránh khoản phạt trốn thuế gấp nhiều lần số thuế gốc, chỉ phải nộp tiền thuế thiếu, tiền chậm nộp và khoản phạt hành chính về chậm nộp hồ sơ khai thuế.
 
 ## Tiền chậm nộp cho doanh thu 5 tỷ mỗi năm tính như thế nào?
 
@@ -25,7 +25,7 @@ Nếu số tiền thuế và tiền chậm nộp của 3 năm cộng lại quá 
 
 ## Có được miễn tiền chậm nộp trong trường hợp này không?
 
-Việc miễn tiền chậm nộp chỉ được xem xét đối với trường hợp gặp thiên tai, thảm họa, dịch bệnh, hỏa hoạn, tai nạn bất ngờ hoặc bất khả kháng khác theo Điều 10 Luật Quản lý thuế số 38/2019/QH14. Nếu chỉ gặp khó khăn tài chính thông thường trong hoạt động kinh doanh mà không có sự kiện bất khả kháng được cơ quan có thẩm quyền xác nhận thì không thuộc đối tượng được miễn tiền chậm nộp. Do đó, cách tốt nhất là kê khai và nộp thuế càng sớm càng tốt để chấm dứt phát sinh thêm tiền chậm nộp hằng ngày.
+Việc miễn tiền chậm nộp chỉ được xem xét đối với trường hợp gặp thiên tai, thảm họa, dịch bệnh, hỏa hoạn, tai nạn bất ngờ hoặc bất khả kháng khác theo Điều 10 Luật 108/2025/QH15 (thay thế Luật 108/2025). Nếu chỉ gặp khó khăn tài chính thông thường trong hoạt động kinh doanh mà không có sự kiện bất khả kháng được cơ quan có thẩm quyền xác nhận thì không thuộc đối tượng được miễn tiền chậm nộp. Do đó, cách tốt nhất là kê khai và nộp thuế càng sớm càng tốt để chấm dứt phát sinh thêm tiền chậm nộp hằng ngày.
 
 ## Lộ trình thực hiện kê khai bổ sung gồm các bước nào?
 
@@ -37,7 +37,7 @@ Lộ trình gồm bốn bước. Thứ nhất, thu thập toàn bộ chứng t�
 
 ### Kê khai bổ sung sau 3 năm có bị coi là trốn thuế không?
 
-Không bị coi là trốn thuế nếu tự giác kê khai trước khi cơ quan thuế công bố quyết định kiểm tra. Sau 90 ngày hết hạn mới bị coi là trốn thuế theo Điều 22, Luật Quản lý thuế số 38/2019/QH14. Việc tự giác kê khai giúp bạn chỉ phải nộp tiền thuế thiếu, tiền chậm nộp và phạt hành chính về chậm nộp hồ sơ.
+Không bị coi là trốn thuế nếu tự giác kê khai trước khi cơ quan thuế công bố quyết định kiểm tra. Sau 90 ngày hết hạn mới bị coi là trốn thuế theo Điều 22, Luật 108/2025/QH15 (thay thế Luật 108/2025). Việc tự giác kê khai giúp bạn chỉ phải nộp tiền thuế thiếu, tiền chậm nộp và phạt hành chính về chậm nộp hồ sơ.
 
 ### Tiền chậm nộp 0,03% mỗi ngày có phải đóng từ lúc hết hạn không?
 
@@ -57,7 +57,7 @@ Tờ khai thuế bổ sung theo mẫu quy định, sổ sách kế toán, chứn
 
 *Last updated: 11/06/2026*
 
-*Nguồn tham khảo: Luật Quản lý thuế số 38/2019/QH14, Nghị định 252/2026/NĐ-CP, Thông tư 89/2026/TT-BTC*
+*Nguồn tham khảo: Luật 108/2025/QH15 (thay thế Luật 108/2025), Nghị định 252/2026/NĐ-CP, Thông tư 89/2026/TT-BTC*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

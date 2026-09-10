@@ -9,7 +9,7 @@ status: "published"
 
 # Hướng dẫn hồ sơ hợp thức hóa chi phí tiền lương khi trả lương cho người thân khi quyết toán thuế
 
-Đối với mô hình công ty TNHH hai thành viên, tiền lương trả cho các thành viên trực tiếp tham gia quản lý, điều hành và lao động được tính vào chi phí kinh doanh nếu đáp ứng các điều kiện theo Luật Thuế thu nhập doanh nghiệp số 14/2020/QH14. Bài viết hướng dẫn chi tiết cách chuẩn bị hồ sơ hợp thức hóa chi phí tiền lương khi trả lương cho người thân và các lưu ý quan trọng năm 2026.
+Đối với mô hình công ty TNHH hai thành viên, tiền lương trả cho các thành viên trực tiếp tham gia quản lý, điều hành và lao động được tính vào chi phí kinh doanh nếu đáp ứng các điều kiện theo Luật 67/2025/QH15 (thay thế Luật 67/2025 về TNDN). Bài viết hướng dẫn chi tiết cách chuẩn bị hồ sơ hợp thức hóa chi phí tiền lương khi trả lương cho người thân và các lưu ý quan trọng năm 2026.
 
 ## Điều kiện để tiền lương trả cho người thân được tính vào chi phí được trừ là gì?
 
@@ -33,7 +33,7 @@ Bộ hồ sơ hợp thức hóa chi phí tiền lương gồm bốn thành phầ
 
 ### Trả lương cho ba mẹ mà không có hợp đồng lao động có được không?
 
-Không được. Bắt buộc phải có hợp đồng lao động để chứng minh tính thực tế của khoản chi. Nếu thiếu hợp đồng, cơ quan thuế sẽ không chấp nhận khoản chi phí này khi quyết toán thuế TNDN theo Điều 4, Luật Quản lý thuế số 38/2019/QH14.
+Không được. Bắt buộc phải có hợp đồng lao động để chứng minh tính thực tế của khoản chi. Nếu thiếu hợp đồng, cơ quan thuế sẽ không chấp nhận khoản chi phí này khi quyết toán thuế TNDN theo Điều 4, Luật 108/2025/QH15 (thay thế Luật 108/2025).
 
 ### Mức đóng bảo hiểm cho vợ chồng quản lý doanh nghiệp có đúng quy định không?
 
@@ -49,7 +49,7 @@ Mỗi người phụ thuộc được giảm trừ 6,2 triệu đồng/tháng th
 
 *Last updated: 10/06/2026*
 
-*Nguồn tham khảo: Luật Thuế TNDN số 14/2020/QH14, Thông tư 92/2015/TT-BTC, Nghị định 253/2026/NĐ-CP, Bộ luật Lao động số 45/2019/QH14*
+*Nguồn tham khảo: Luật 67/2025/QH15 (thay thế Luật 67/2025 về TNDN), Thông tư 92/2015/TT-BTC, Nghị định 253/2026/NĐ-CP, Bộ luật Lao động số 45/2019/QH14*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

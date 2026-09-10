@@ -41,7 +41,7 @@ Dựa trên hệ thống tài khoản mới áp dụng cho năm 2026, bạn th�
 
 Về tờ khai 06: Trong hệ thống thuế hiện hành, tờ khai mẫu 06/TNDN thường dành cho hoạt động chuyển nhượng vốn. Nếu đây chỉ là nghiệp vụ mượn tiền hoặc góp vốn thông thường, công ty không phải khai tờ khai này.
 
-Về giao dịch liên kết (GDLK): Vì sếp là người quản lý, điều hành doanh nghiệp nên việc sếp cho công ty mượn tiền (dù lãi suất 0%) sẽ tạo thành quan hệ liên kết theo Luật Quản lý thuế số 38/2019/QH14. Nghiệp vụ vay mượn này được coi là giao dịch liên kết. Tuy nhiên, Phụ lục GDLK sẽ được nộp cùng với tờ khai quyết toán thuế TNDN vào cuối năm tài chính. Việc bạn cần làm bây giờ là lưu trữ hợp đồng vay mượn thật kỹ để cuối năm có số liệu kê khai. Lưu ý rằng tổng chi phí lãi vay (nếu có lãi suất) sẽ bị khống chế ở mức 30% EBITDA của doanh nghiệp.
+Về giao dịch liên kết (GDLK): Vì sếp là người quản lý, điều hành doanh nghiệp nên việc sếp cho công ty mượn tiền (dù lãi suất 0%) sẽ tạo thành quan hệ liên kết theo Luật 108/2025/QH15 (thay thế Luật 108/2025). Nghiệp vụ vay mượn này được coi là giao dịch liên kết. Tuy nhiên, Phụ lục GDLK sẽ được nộp cùng với tờ khai quyết toán thuế TNDN vào cuối năm tài chính. Việc bạn cần làm bây giờ là lưu trữ hợp đồng vay mượn thật kỹ để cuối năm có số liệu kê khai. Lưu ý rằng tổng chi phí lãi vay (nếu có lãi suất) sẽ bị khống chế ở mức 30% EBITDA của doanh nghiệp.
 
 Tóm lại, bước khẩn cấp nhất hiện nay là soạn thảo các hợp đồng mượn tiền không lãi suất tương ứng với 3 đợt chuyển khoản trên, in sẵn để sếp ký và lưu cùng giấy báo có của ngân hàng. Việc hạch toán vào sổ sách nên thực hiện ngay để đảm bảo tính kịp thời của báo cáo tài chính.
 
@@ -59,7 +59,7 @@ Bạn cần hợp đồng vay/mượn tiền ghi rõ số tiền, thời hạn, 
 
 ### Giao dịch liên kết khi sếp cho vay tiền lãi suất 0% có cần kê khai không?
 
-Có. Theo Luật Quản lý thuế số 38/2019/QH14, việc sếp cho công ty vay tiền lãi suất 0% tạo thành quan hệ liên kết. Bạn cần lưu trữ hợp đồng và kê khai Phụ lục GDLK cùng tờ khai quyết toán TNDN cuối năm. Liên hệ chuyên gia tại [ketoanthuetada.com](https://ketoanthuetada.com) để được hỗ trợ.
+Có. Theo Luật 108/2025/QH15 (thay thế Luật 108/2025), việc sếp cho công ty vay tiền lãi suất 0% tạo thành quan hệ liên kết. Bạn cần lưu trữ hợp đồng và kê khai Phụ lục GDLK cùng tờ khai quyết toán TNDN cuối năm. Liên hệ chuyên gia tại [ketoanthuetada.com](https://ketoanthuetada.com) để được hỗ trợ.
 
 ---
 
@@ -67,7 +67,7 @@ Có. Theo Luật Quản lý thuế số 38/2019/QH14, việc sếp cho công ty 
 
 *Last updated: 15/07/2026*
 
-*Nguồn tham khảo: Thông tư 99/2025/TT-BTC, Luật Doanh nghiệp số 59/2020/QH14, Điều 47 Luật Doanh nghiệp, Luật Quản lý thuế số 38/2019/QH14*
+*Nguồn tham khảo: Thông tư 99/2025/TT-BTC, Luật Doanh nghiệp số 59/2020/QH14, Điều 47 Luật Doanh nghiệp, Luật 108/2025/QH15 (thay thế Luật 108/2025)*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

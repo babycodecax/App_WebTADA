@@ -44,7 +44,7 @@ Gồm 11 loại: kinh doanh; tiền lương tiền công; đầu tư vốn; chuy
 |---|---|---|
 | Kinh doanh (Điều 7) | 15% / 17% / 20% | Doanh thu năm: ≤01tỷ miễn thuế (NĐ 141/2026 nâng từ 500tr); >01tỷ–3 tỷ 15%; 3–50 tỷ 17%; >50 tỷ 20% |
 | Kinh doanh (tỷ lệ) | 0,5% – 5% | Phân phối 0,5%; dịch vụ 2%; SX/vận tải 1,5%; cho thuê TS/đại lý 5% |
-| Cho thuê bất động sản (Điều 7.4) | 5% | Phần doanh thu vượt 500tr |
+| Cho thuê bất động sản (Điều 7.4) | 5% | GTGT 5% + TNCN 5% trên DT tính thuế (HKD ≤ 01 tỷ miễn — NĐ 141/2026) |
 | Đầu tư vốn (Điều 12) | 5% | Theo từng lần phát sinh |
 | Chuyển nhượng vốn (Điều 13) | 20% (hoặc 2% nếu không xđ giá mua) | Giá chuyển nhượng – giá mua – chi phí |
 | Chuyển nhượng chứng khoán (Điều 13.2) | 0,1% | Theo từng lần |

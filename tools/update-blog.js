@@ -22,7 +22,7 @@ function loadEnv(filePath) {
 }
 
 function parseFrontmatter(content) {
-  const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
   if (!match) return { meta: {}, body: content };
   const meta = {};
   for (const line of match[1].split('\n')) {
@@ -79,7 +79,21 @@ async function main() {
     const { meta, body } = parseFrontmatter(content);
     const slug = meta.slug || path.basename(filePath, '.md');
 
+    // Validation: check content doesn't start with frontmatter
+    if (body.trim().startsWith('---')) {
+      console.log(`⚠️  SKIP: ${slug} — content still starts with --- (frontmatter not stripped)`);
+      failed++;
+      continue;
+    }
+
+    // Validation: check title doesn't contain escaped quotes
+    const title = (meta.title || slug).replace(/\\"/g, '"').replace(/\\\\/g, '');
+    if (title.includes('\\"') || title.includes('\\\\')) {
+      console.log(`⚠️  WARN: ${slug} — title has escaped quotes: ${title.substring(0, 60)}`);
+    }
+
     const row = {
+      title: title,
       content: body,
       summary: meta.summary || '',
     };
@@ -93,6 +107,27 @@ async function main() {
       failed++;
     }
   }
+
+  // Post-upload verification: check 3 random posts
+  console.log('\n🔍 Verifying uploaded posts...');
+  const verifyRes = await fetch(
+    `${supabaseUrl}/rest/v1/blog_posts?select=slug,title,content,summary&status=eq.published&limit=3`,
+    { headers: { 'apikey': serviceKey, 'Authorization': `Bearer ${serviceKey}` } }
+  );
+  const verifyData = await verifyRes.json();
+  let verifyOk = 0;
+  for (const p of verifyData) {
+    const hasFrontmatter = p.content.trim().startsWith('---');
+    const hasEscapedQuotes = (p.title || '').includes(String.fromCharCode(92) + '"');
+    const shortSummary = (p.summary || '').length < 10;
+    if (hasFrontmatter || hasEscapedQuotes || shortSummary) {
+      console.log(`  ❌ ${p.slug}: fm=${hasFrontmatter} esc=${hasEscapedQuotes} short_sum=${shortSummary}`);
+    } else {
+      verifyOk++;
+      console.log(`  ✅ ${p.slug}`);
+    }
+  }
+  console.log(`  Verified: ${verifyOk}/${verifyData.length}`);
 
   console.log(`\n═══════════════════════════════════`);
   console.log(`📊 Results: ${updated} updated, ${failed} failed`);

@@ -56,7 +56,7 @@ Nếu cần hỗ trợ đăng ký, bạn có thể tham khảo [cách đăng ký
 Nghị định 141/2026/NĐ-CP không áp dụng phạt trực tiếp cho HKD dưới 1 tỷ nếu họ chưa bắt buộc HĐĐT. Tuy nhiên, **nếu khách hàng yêu cầu HĐĐT mà bạn không xuất được**, bạn có thể bị phạt:
 
 - **Mất khách hàng**: Doanh nghiệp và tổ chức ngày càng yêu cầu HĐĐT bắt buộc.
-- **Phạt hành chính**: Theo Nghị định 125/2020/NĐ-CP (được sửa đổi), việc không xuất HĐ đúng thời điểm có thể bị phạt từ 2-4 triệu đồng/lần vi phạm.
+- **Phạt hành chính**: Theo Nghị định 310/2025/NĐ-CP (có hiệu lực từ 16/01/2026, thay thế NĐ 310/2025), việc không xuất HĐ đúng thời điểm có thể bị phạt cảnh cáo (1-9 số) hoặc 2-8 triệu đồng tùy số lượng HĐ vi phạm.
 - **Rủi ro quyết toán thuế**: Khi cơ quan thuế yêu cầu đối chiếu, việc không có HĐĐT sẽ gây khó khăn trong việc chứng minh doanh thu.
 
 Vì vậy, dù được miễn, HKD nên **chủ động chuẩn bị** để không bị động.

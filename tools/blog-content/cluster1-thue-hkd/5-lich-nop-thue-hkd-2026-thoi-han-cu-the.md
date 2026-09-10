@@ -53,7 +53,7 @@ Tờ khai GTGT nhóm 3, nhóm 4 dùng **mẫu 01/GTGT** (phân biệt với mẫ
 
 ## Thời hạn quyết toán thuế TNCN năm 2026
 
-Tất cả hộ kinh doanh (trừ hộ khoán) phải thực hiện **quyết toán thuế TNCN năm**, chậm nhất là **ngày 30/04/2027** cho năm 2026. Đây là bước cuối cùng trong quy trình thuế năm, dùng để đối chiếu giữa số thuế đã nộp theo kỳ (quý/tháng) với số thuế thực tế phải nộp.
+Tất cả hộ kinh doanh nhóm 2, 3, 4 phải thực hiện **quyết toán thuế TNCN năm**, chậm nhất là **ngày 30/04/2027** cho năm 2026. Đây là bước cuối cùng trong quy trình thuế năm, dùng để đối chiếu giữa số thuế đã nộp theo kỳ (quý/tháng) với số thuế thực tế phải nộp. HKD nhóm 1 (dưới 1 tỷ) được miễn thuế nên không phải quyết toán.
 
 **Quy trình quyết toán:**
 
@@ -65,34 +65,13 @@ Tất cả hộ kinh doanh (trừ hộ khoán) phải thực hiện **quyết to
 
 **Lưu ý quan trọng:** Thời hạn quyết toán 30/04/2027 là bắt buộc. Việc không nộp tờ khai quyết toán bị coi là vi phạm nghĩa vụ kê khai và có thể bị xử phạt theo Khoản 1 Điều 14 Luật Quản lý thuế 2019.
 
-## Lịch nộp thuế khoán cho nhóm 1
+## Nhóm 1 (dưới 1 tỷ) — Miễn thuế, không kê khai
 
-Hộ kinh doanh nhóm 1 (doanh thu dưới 1 tỷ/năm) áp dụng **thuế khoán**, không cần kê khai theo quý hay theo tháng. Thời hạn nộp thuế khoán:
+Hộ kinh doanh nhóm 1 (doanh thu dưới 1 tỷ/năm) được **miễn thuế TNCN và GTGT** theo NĐ 141/2026. Theo TT 50/2026, HKD chỉ cần **thông báo doanh thu** cho cơ quan thuế, không phải khai số thuế GTGT, TNCN phải nộp. Tuy nhiên, HKD **vẫn phải lập sổ sách kế toán** theo TT 152/2025 (ổ S1a-HKD).
 
-- **Tháng đầu năm:** Nộp trước ngày 30/01/2026 (hoặc ngày làm việc kế tiếp nếu 30/01 rơi vào cuối tuần/ngày lễ)
-- **Các tháng tiếp theo:** Nộp trước ngày cuối cùng của tháng đó
+## Lệ phí môn bài — ĐÃ CHẤM DỨT từ 01/01/2026
 
-Thuế khoán được tính theo **định mức cố định hàng tháng** do Chi cục Thuế ấn định, bao gồm: thuế GTGT + thuế TNCN + lệ phí môn bài. Hộ khoán không cần lập tờ khai mà chỉ cần nộp tiền thuế theo định mức.
-
-**Lưu ý:** Nếu hộ khoán ngừng kinh doanh hoặc thay đổi ngành nghề, cần thông báo cho Chi cục Thuế để được điều chỉnh định mức thuế khoán.
-
-## Lịch nộp lệ phí môn bài năm 2026
-
-Ngoài các khoản thuế trên, hộ kinh doanh có thể phải nộp **lệ phí môn bài** theo Luật Phí và lệ phí 2015 (sửa đổi 2020). Thời hạn nộp lệ phí môn bài:
-
-- **Đăng ký mới trong năm:** Nộp lệ phí môn bài khi đăng ký kinh doanh
-- **Đăng ký từ năm trước:** Nộp lệ phí môn bài trước **30/01/2026**
-
-Mức lệ phí môn bài theo nhóm (áp dụng theo Nghị định 141/2026/NĐ-CP):
-| Nhóm hộ kinh doanh | Lệ phí môn bài/năm |
-|---|---|
-| Nhóm 1 (doanh thu <= 1 tỷ) | 1.000.000 đồng |
-| Nhóm 2 (doanh thu trên 1 tỷ - 2 tỷ) | 1.500.000 đồng |
-| Nhóm 3 (doanh thu trên 2 tỷ - 5 tỷ) | 3.000.000 đồng |
-| Nhóm 4 (doanh thu trên 5 tỷ - 10 tỷ) | 5.000.000 đồng |
-| Nhóm 5 (doanh thu trên 10 tỷ) | 10.000.000 đồng |
-
-*Lưu ý: Hộ kinh doanh mới thành lập trong năm được miễn lệ phí môn bài cho đến hết năm thành lập.*
+Theo **Nghị quyết 198/2025/QH15 (Điều 10)**, **lệ phí môn bài chính thức bị chấm dứt** từ 01/01/2026. Hộ kinh doanh **không còn phải nộp lệ phí môn bài** kể từ thời điểm này. Đây là một trong những chính sách hỗ trợ hộ kinh doanh trong Nghị quyết phát triển kinh tế tư nhân.
 
 ## Các hình thức nộp thuế hiện nay
 
@@ -112,7 +91,7 @@ Năm 2026, hộ kinh doanh có thể nộp thuế qua các hình thức sau:
 
 | Thời điểm | Hành động | Đối tượng |
 |---|---|---|
-| **30/01/2026** | Nộp thuế khoán tháng 1 hoặc lệ phí môn bài | Nhóm 1, tất cả nhóm |
+| **30/01/2026** | ~~Nộp lệ phí môn bài~~ ĐÃ CHẤM DỨT | — |
 | **30/04/2026** | Nộp tờ khai GTGT quý 1/2026 | Nhóm 2 |
 | **20/02 - 20/12/2026** | Nộp tờ khai GTGT tháng (ngày 20 hàng tháng) | Nhóm 3, Nhóm 4 |
 | **30/07/2026** | Nộp tờ khai GTGT quý 2/2026 | Nhóm 2 |
@@ -122,12 +101,12 @@ Năm 2026, hộ kinh doanh có thể nộp thuế qua các hình thức sau:
 
 ## Lưu ý khi nộp tờ khai và xử lý trễ hạn
 
-**Xử lý trễ hạn:** Theo Khoản 1 Điều 14 Luật Quản lý thuế 2019, hành vi nộp tờ khai thuế quá hạn bị xử phạt:
+**Xử lý trễ hạn:** Theo Nghị định 310/2025/NĐ-CP (có hiệu lực từ 16/01/2026), hành vi nộp tờ khai thuế quá hạn bị xử phạt:
 
-- **Cảnh cáo** nếu lần đầu trễ hạn và số ngày trễ không quá 5 ngày
-- **Phạt tiền** từ 2.000.000 đồng đến 25.000.000 đồng tùy mức độ vi phạm (số lần trễ, số ngày trễ, số thuế phải nộp)
+- **Tổ chức:** 2.000.000 đồng/lần chậm nộp
+- **Cá nhân:** 1.000.000 đồng/lần chậm nộp
 
-**Lãi chậm nộp:** Ngoài tiền phạt, hộ kinh doanh còn phải nộp **lãi chậm nộp** tính trên số thuế chậm nộp. Lãi suất áp dụng theo lãi suất tiền gửi không kỳ hạn tại ngân hàng Nhà nước, hiện khoảng **0,03%/ngày** (tương đương khoảng 11%/năm).
+**Lãi chậm nộp:** Ngoài tiền phạt, hộ kinh doanh còn phải nộp **lãi chậm nộp 0,03%/ngày** trên số thuế chậm (tương đương khoảng 11%/năm), tính từ ngày hết hạn nộp đến ngày nộp thực tế.
 
 **Khuyến nghị:** Hộ kinh doanh nên đặt lịch nhắc trước 5-7 ngày so với hạn cuối để có thời gian chuẩn bị tờ khai và nộp đúng hạn.
 
@@ -137,9 +116,9 @@ Năm 2026, hộ kinh doanh có thể nộp thuế qua các hình thức sau:
 
 Theo quy định hiện hành, trễ hạn 3 ngày và là lần đầu tiên thì hộ kinh doanh có thể bị **cảnh cáo** (không phạt tiền) nếu số thuế phát sinh không đáng kể. Tuy nhiên, hộ vẫn phải nộp lãi chậm nộp trên số thuế chậm trong 3 ngày đó. Nếu vi phạm lần thứ 2 trở đi, hộ sẽ bị phạt tiền từ 2.000.000 đồng.
 
-**Câu 2: Hộ kinh doanh nhóm 1 (khoán) có cần nộp tờ khai không?**
+**Câu 2: Hộ kinh doanh nhóm 1 (dưới 1 tỷ) có cần nộp tờ khai không?**
 
-Không. Hộ khoán không cần lập và nộp tờ khai GTGT hay TNCN theo quý/tháng. Hộ chỉ cần nộp tiền thuế khoán hàng tháng theo định mức do Chi cục Thuế ấn định. Tuy nhiên, cuối năm hộ cần cập nhật thông tin doanh thu thực tế cho Chi cục Thuế để điều chỉnh định mức năm sau.
+Không phải nộp tờ khai GTGT hay TNCN. Theo TT 50/2026, HKD nhóm 1 chỉ cần **thông báo doanh thu** cho cơ quan thuế. Tuy nhiên, HKD vẫn phải lập sổ sách kế toán theo TT 152/2025 (ổ S1a-HKD) và cập nhật thông tin doanh thu thực tế cho Chi cục Thuế.
 
 **Câu 3: Tôi nộp tờ khai qua mạng nhưng nhập sai số liệu, có thể sửa lại không?**
 
@@ -155,6 +134,6 @@ Hộ kinh doanh mới cần thực hiện 3 việc trong vòng 10 ngày kể t�
 
 ---
 
-*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật Quản lý thuế 2019 (sửa đổi 2024), Thông tư 92/2015/TT-BTC, Thông tư 152/2025/TT-BTC, Luật Phí và lệ phí 2015.*
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật Quản lý thuế 2019 (sửa đổi 2024), Thông tư 92/2015/TT-BTC (sửa đổi bởi TT 50/2026/TT-BTC), Thông tư 152/2025/TT-BTC, Nghị định 310/2025/NĐ-CP, Luật Phí và lệ phí 2015.*
 
 *Xem thêm: [Hướng dẫn kê khai thuế nhóm 2](/blog/huong-dan-ke-khai-thue-hkd-nhom-2-nam-2026) | [Hộ kinh doanh dưới 1 tỷ có phải nộp thuế không?](/blog/ho-kinh-doanh-duoi-500-trieu-co-phai-nop-thue-khong) | [Trang chủ TADA](https://ketoanthuetada.com/)*

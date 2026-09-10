@@ -38,13 +38,18 @@ App_WebTADA/
 - Tri thức dùng chung: `D:/CodeApp/Projects/ai-second-brain/vault/claude-memory/_shared/`
 - **Quy tắc:** Trước khi code, đọc toàn bộ memory của dự án này trong vault + `_shared/` để nắm quyết định, bài học, pattern đã có.
 
-## 📚 Kiến thức vault đã nạp (tự động — mỗi phiên)
+## 📚 Kiến thức vault dự án
 
-> [!important] Đã nạp kiến thức dự án từ vault (mở phiên mới là có)
-> | Thành phần | Trạng thái |
+> [!important] BẮT BUỘC nạp vault khi mỗi phiên mới
+> Khi bắt đầu phiên mới (hoặc `/resume-session`), PHẢI đọc:
+> 1. **Vault App_WebTADA:** `D:/CodeApp/Projects/ai-second-brain/vault/claude-memory/App_WebTADA/` (README, decision-log, lessons, progress)
+> 2. **Vault shared:** `D:/CodeApp/Projects/ai-second-brain/vault/claude-memory/_shared/` (lessons, patterns)
+> 3. **Vault knowledge:** `D:/CodeApp/Projects/App_WebTADA/vault/thue-ke-toan/_index.md` + `_cheatsheet-thue-2026.md`
+>
+> | Thành phần | Khi nào nạp |
 > |---|---|
-> | _shared (chung) | ✅ nạp tự động |
-> | App_WebTADA (dự án) | ✅ README + decision-log + lessons + progress |
-> | Lịch sử phiên | ✅ lược đồ các phiên làm việc |
+> | Memory (Claude Code) | Tự động qua MEMORY.md |
+> | Vault App_WebTADA | **Bắt buộc** — mỗi phiên mới hoặc `/resume-session` |
+> | Vault knowledge (thuế) | **Bắt buộc** — khi viết bài blog hoặc check kiến thức |
 
-**Nếu chưa thấy bảng ở đầu phiên:** kiến thức vẫn được nạp vào context — bạn có thể hỏi "nạp kiến thức vault dự án này giúp tôi" để Claude đọc lại từ vault.
+**Nếu chưa thấy vault đã nạp:** gõ "nạp vault kiến thức" để Claude đọc từ vault.

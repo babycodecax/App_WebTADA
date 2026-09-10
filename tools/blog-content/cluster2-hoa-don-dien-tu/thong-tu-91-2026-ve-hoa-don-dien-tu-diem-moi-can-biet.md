@@ -1,7 +1,7 @@
 ---
 title: "Thông tư 91/2026 về hóa đơn điện tử - Điểm mới cần biết"
 slug: thong-tu-91-2026-ve-hoa-don-dien-tu-diem-moi-can-biet
-summary: "Phân tích chi tiết Thông tư 91/2026/TT-BTC về HĐĐT, điểm mới so với Thông tư 78/2021 và lộ trình áp dụng năm 2026."
+summary: "Phân tích chi tiết Thông tư 91/2026/TT-BTC về HĐĐT, điểm mới so với Thông tư 91/2026 và lộ trình áp dụng năm 2026."
 published_at: "2026-09-07"
 author_email: "Dịch Vụ Thuế Kế Toán TADA"
 status: "published"
@@ -9,13 +9,13 @@ status: "published"
 
 # Thông tư 91/2026 về hóa đơn điện tử - Điểm mới cần biết
 
-**Thông tư 91/2026/TT-BTC** (ban hành ngày 15/8/2026, có hiệu lực từ 01/10/2026) là văn bản pháp lý quan trọng nhất về **hóa đơn điện tử (HĐĐT)** năm nay. Thông tư này thay thế Thông tư 78/2021/TT-BTC và bổ sung nhiều quy định mới, đặc biệt liên quan đến hộ kinh doanh và doanh nghiệp vừa và nhỏ. Bài viết phân tích các điểm mới để bạn cập nhật kịp thời.
+**Thông tư 91/2026/TT-BTC** (ban hành ngày 15/8/2026, có hiệu lực từ 01/10/2026) là văn bản pháp lý quan trọng nhất về **hóa đơn điện tử (HĐĐT)** năm nay. Thông tư này thay thế Thông tư 91/2026/TT-BTC và bổ sung nhiều quy định mới, đặc biệt liên quan đến hộ kinh doanh và doanh nghiệp vừa và nhỏ. Bài viết phân tích các điểm mới để bạn cập nhật kịp thời.
 
 Trước khi đi vào chi tiết, hãy nhớ rằng [TADA tại ketoanthuetada.com](https://ketoanthuetada.com/) đã cập nhật toàn bộ tính năng mới từ Thông tư 91 vào hệ thống, giúp bạn sử dụng HĐĐT đúng quy định.
 
-## Thông tư 91/2026/TT-BTC có gì mới so với Thông tư 78/2021/TT-BTC?
+## Thông tư 91/2026/TT-BTC có gì mới so với Thông tư 91/2026/TT-BTC?
 
-Thông tư 91/2026/TT-BTC được xây dựng trên nền tảng Thông tư 78/2021/TT-BTC, nhưng có **12 điểm chính** được sửa đổi, bổ sung:
+Thông tư 91/2026/TT-BTC được xây dựng trên nền tảng Thông tư 91/2026/TT-BTC, nhưng có **12 điểm chính** được sửa đổi, bổ sung:
 
 1. **Mở rộng đối tượng áp dụng**: Bao gồm hộ kinh doanh có doanh thu dưới 1 tỷ (thay vì dưới 500 triệu như cũ).
 2. **Thủ tục đăng ký đơn giản hơn**: Bỏ yêu cầu xác thực qua email; cho phép đăng ký trực tiếp trên eTax.
@@ -34,7 +34,7 @@ Thông tư 91/2026/TT-BTC được xây dựng trên nền tảng Thông tư 78/
 
 ## Điểm mới quan trọng nhất: Mở rộng đối tượng HKD phải HĐ
 
-**Điểm thay đổi lớn nhất** của Thông tư 91/2026/TT-BTC là việc mở rộng đối tượng bắt buộc HĐ. Theo Thông tư 78/2021/TT-BTC, chỉ HKD có doanh thu **từ 500 triệu trở lên** mới phải HĐ. Nhưng Thông tư 91 đã nâng ngưỡng này lên **1 tỷ đồng**.
+**Điểm thay đổi lớn nhất** của Thông tư 91/2026/TT-BTC là việc mở rộng đối tượng bắt buộc HĐ. Theo Thông tư 91/2026/TT-BTC, chỉ HKD có doanh thu **từ 500 triệu trở lên** mới phải HĐ. Nhưng Thông tư 91 đã nâng ngưỡng này lên **1 tỷ đồng**.
 
 **Ý nghĩa thực tiễn:**
 - Khoảng **300.000 HKD** trước đây được miễn giờ phải bắt đầu HĐ.
@@ -47,7 +47,7 @@ Nếu bạn là HKD thuộc nhóm này, hãy tham khảo ngay [hướng dẫn đ
 
 **Thời hạn gửi dữ liệu HĐ** là một trong những điểm nóng của Thông tư 91/2026/TT-BTC:
 
-| Loại HĐ | Thông tư 78/2021/TT-BTC | Thông tư 91/2026/TT-BTC |
+| Loại HĐ | Thông tư 91/2026/TT-BTC | Thông tư 91/2026/TT-BTC |
 |---|---|---|
 | HĐ có mã | 24 giờ | **12 giờ** |
 | HĐ không mã | 24 giờ | 24 giờ (không đổi) |
@@ -81,7 +81,7 @@ Theo báo cáo từ VCCI, **78% doanh nghiệp** cho biết Thông tư 91 sẽ g
 | 15/8/2026 | Thông tư 91/2026/TT-BTC được ban hành |
 | 01/10/2026 | Có hiệu lực chính thức |
 | 01/01/2027 | Bắt buộc HKD dưới 1 tỷ phải HĐ |
-| 01/07/2027 | Hủy Thông tư 78/2021/TT-BTC |
+| 01/07/2027 | Hủy Thông tư 91/2026/TT-BTC |
 
 **Lưu ý:** Từ 01/10/2026, HKD có doanh thu 1-5 tỷ **được khuyến khích** HĐ, nhưng chưa bắt buộc. Bắt buộc từ 01/01/2027.
 

@@ -5,8 +5,7 @@ tags:
   - tax
   - tax/index
 status: active
-updated: 2026-07-18
-# (đã cập nhật lô 6a)
+updated: 2026-09-09
 ---
 
 # 🧠 Bộ não Thuế & Kế toán

@@ -51,7 +51,7 @@ Bạn có thể gọi hotline **0986.4242.86** hoặc truy cập website [ketoan
 
 *Last updated: 01/02/2026*
 
-*Nguồn tham khảo: Luật Quản lý thuế 38/2019/QH14, Nghị định 254/2026/NĐ-CP*
+*Nguồn tham khảo: Luật 108/2025/QH15 (thay thế Luật 108/2025), Nghị định 254/2026/NĐ-CP*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

@@ -45,7 +45,7 @@ updated: 2026-07-18
 - Doanh thu năm **≤500 triệu đồng** → không phải nộp thuế TNCN *(Lưu ý: Luật 09/2026/QH16 sửa đổi thành "từ mức Chính phủ quy định trở xuống"; **NĐ 141/2026 nâng mức này lên 01 tỷ đồng/năm**, hiệu lực 01/01/2026)*
 - Doanh thu >01tỷ–3tỷ: **15%** | 3-50tỷ: **17%** | >50tỷ: **20%**
 - Hoặc nộp theo tỷ lệ % trên doanh thu: phân phối hàng hóa 0,5%; dịch vụ/xây dựng 2% (cho thuê tài sản, đại lý 5%); SX/vận tải 1,5%; nội dung số 5%; KD khác 1%
-- Cho thuê BĐS: (Doanh thu − 500tr) × 5%
+- Cho thuê BĐS: GTGT 5% + TNCN 5% trên doanh thu tính thuế (HKD ≤ 01 tỷ được miễn — NĐ 141/2026)
 
 ### Thuế tiền lương, tiền công (Điều 8-9)
 - Thu nhập tính thuế = Tổng thu nhập chịu thuế − (BHXH, BHYT, BHTN, BH hưu trí bổ sung + Giảm trừ gia cảnh + Giảm trừ khác)

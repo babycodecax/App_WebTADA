@@ -1,5 +1,5 @@
 ---
-title: "Thuế gọi tên, giám đốc chạy nợ: Kế toán nên ở lại \"chịu trận\" hay rút lui êm đẹp?"
+title: "Thuế gọi tên, giám đốc chạy nợ: Kế toán nên ở lại chịu trận hay rút lui êm đẹp?"
 slug: "thue-goi-ten-giam-doc-chay-no-ke-toan-nen-o-lai-chiu-tran-hay-rut-lui-em-dep"
 summary: "Giám đốc vỡ nợ bỏ trốn ngay trước thềm kiểm tra thuế, kế toán nên làm gì? Phân tích trách nhiệm pháp lý và quyền lợi của người làm kế toán."
 published_at: "2026-07-15"
@@ -55,7 +55,7 @@ Cần liên hệ ngay Hội đồng thành viên hoặc chủ sở hữu để c
 
 *Last updated: 15/07/2026*
 
-*Nguồn tham khảo: Luật Doanh nghiệp số 59/2020/QH14, Bộ luật Hình sự 2015, Luật Quản lý thuế số 38/2019/QH14*
+*Nguồn tham khảo: Luật Doanh nghiệp số 59/2020/QH14, Bộ luật Hình sự 2015, Luật 108/2025/QH15 (thay thế Luật 108/2025)*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

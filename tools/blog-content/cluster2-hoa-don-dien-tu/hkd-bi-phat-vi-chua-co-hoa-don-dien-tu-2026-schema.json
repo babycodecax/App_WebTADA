@@ -1,0 +1,25 @@
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Hộ kinh doanh bị phạt vì chưa có hóa đơn điện tử 2026: Mức phạt và cách xử lý",
+  "description": "Hộ kinh doanh chưa có HĐĐT có thể bị phạt 2-80 triệu đồng/lần. Tìm hiểu mức phạt cụ thể, ngoại lệ và hướng xử lý theo Nghị định 254/2026/NĐ-CP và Nghị định 310/2025/NĐ-CP.",
+  "datePublished": "2026-09-08",
+  "dateModified": "2026-09-08",
+  "author": {
+    "@type": "Organization",
+    "name": "Dịch Vụ Thuế Kế Toán TADA",
+    "url": "https://ketoanthuetada.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "TADA - Thuế Kế Toán",
+    "url": "https://ketoanthuetada.com"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ketoanthuetada.com/blog/hkd-bi-phat-vi-chua-co-hoa-don-dien-tu-2026"
+  },
+  "keywords": ["hộ kinh doanh", "hóa đơn điện tử", "phạt thuế 2026", "Nghị định 254", "Nghị định 310", "HĐĐT"],
+  "articleSection": "Thuế & Kế toán",
+  "inLanguage": "vi"
+}

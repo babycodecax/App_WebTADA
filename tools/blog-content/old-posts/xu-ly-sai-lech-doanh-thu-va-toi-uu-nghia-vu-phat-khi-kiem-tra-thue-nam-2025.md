@@ -13,7 +13,7 @@ Tình huống thực tế: Doanh nghiệp bị kiểm tra thuế 2025, phát hi�
 
 ## Khai bổ sung trước khi cơ quan thuế công bố quyết định kiểm tra có bị phạt không?
 
-Theo quy định tại Điều 10 Luật Quản lý thuế số 38/2019/QH14, người nộp thuế có quyền khai bổ sung hồ sơ khai thuế nếu phát hiện sai sót. Điểm mấu chốt để không bị xử phạt vi phạm hành chính là phải thực hiện khai bổ sung trước khi cơ quan thuế công bố quyết định kiểm tra hoặc thanh tra tại trụ sở doanh nghiệp. Nếu tự giác nộp đủ số tiền thuế còn thiếu cùng tiền chậm nộp trước thời điểm này, cơ quan thuế sẽ không áp dụng mức phạt 20% trên số thuế khai thiếu. Việc đầu tiên cần làm là rà soát thông báo hoặc quyết định kiểm tra để xác định còn trong thời gian được phép tự điều chỉnh hay không.
+Theo quy định tại Điều 10 Luật 108/2025/QH15 (thay thế Luật 108/2025), người nộp thuế có quyền khai bổ sung hồ sơ khai thuế nếu phát hiện sai sót. Điểm mấu chốt để không bị xử phạt vi phạm hành chính là phải thực hiện khai bổ sung trước khi cơ quan thuế công bố quyết định kiểm tra hoặc thanh tra tại trụ sở doanh nghiệp. Nếu tự giác nộp đủ số tiền thuế còn thiếu cùng tiền chậm nộp trước thời điểm này, cơ quan thuế sẽ không áp dụng mức phạt 20% trên số thuế khai thiếu. Việc đầu tiên cần làm là rà soát thông báo hoặc quyết định kiểm tra để xác định còn trong thời gian được phép tự điều chỉnh hay không.
 
 ## Tiền thuế thừa tháng này có bù trừ được với tháng thiếu không?
 
@@ -57,7 +57,7 @@ Mức phạt từ 500.000 đồng đến 8.000.000 đồng tùy khung lỗi, áp
 
 *Last updated: 14/06/2026*
 
-*Nguồn tham khảo: Luật Quản lý thuế 38/2019/QH14, Nghị định 252/2026/NĐ-CP, Thông tư 89/2026/TT-BTC*
+*Nguồn tham khảo: Luật 108/2025/QH15 (thay thế Luật 108/2025), Nghị định 252/2026/NĐ-CP, Thông tư 89/2026/TT-BTC*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

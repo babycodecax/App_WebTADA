@@ -27,7 +27,7 @@ Ví dụ thực tế: một chủ cửa hàng quần áo phát hiện tờ khai 
 
 ## Lý do 3: Giảm thiểu rủi ro phạt do thiếu hiểu biết pháp luật như thế nào?
 
-Theo Tổng cục Thuế, mỗi năm có hàng chục nghìn hộ kinh doanh bị xử phạt vi phạm hành chính về thuế. Nguyên nhân phổ biến nhất không phải là trốn thuế mà là thiếu hiểu biết về quy định mới. Căn cứ Khoản 1 Điều 10 Luật Quản lý thuế 2019 (Luật số 38/2019/QH14), các mức phạt từ 2-4 triệu đồng cho một sai sót nhỏ có thể là gánh nặng tài chính lớn với hộ kinh doanh nhỏ.
+Theo Tổng cục Thuế, mỗi năm có hàng chục nghìn hộ kinh doanh bị xử phạt vi phạm hành chính về thuế. Nguyên nhân phổ biến nhất không phải là trốn thuế mà là thiếu hiểu biết về quy định mới. Căn cứ Khoản 1 Điều 10 Luật 108/2025/QH15 (thay thế Luật 108/2025), các mức phạt từ 2-4 triệu đồng cho một sai sót nhỏ có thể là gánh nặng tài chính lớn với hộ kinh doanh nhỏ.
 
 Trợ lý ảo thuế giúp giảm rủi ro này bằng cách cung cấp thông tin quy định đúng lúc, đúng chỗ. Khi bạn thắc mắc "deadline nộp tờ khai VAT là ngày bao nhiêu?" hoặc "hóa đơn điện tử có cần đăng ký trước khi xuất không?", công cụ AI trả lời ngay với dẫn chiếu quy định cụ thể — giúp bạn hành động đúng thay vì phỏng đoán.
 

@@ -17,7 +17,7 @@ Trước hết, người đại diện theo pháp luật cần xác định tr�
 
 ## Doanh nghiệp ngừng hoạt động lâu năm có được khoanh tiền thuế nợ không?
 
-Vì doanh nghiệp thực tế không còn hoạt động tại địa điểm kinh doanh đã đăng ký, doanh nghiệp có thể thuộc diện được khoanh tiền thuế nợ theo quy định tại điểm d khoản 1 Điều 20 Luật Quản lý thuế số 38/2019/QH14 và Điều 34 Nghị định 252/2026/NĐ-CP. Thủ tục khoanh nợ được thực hiện khi cơ quan thuế quản lý trực tiếp có thông tin xác minh thực tế về việc doanh nghiệp không còn hoạt động. Khi ban hành Quyết định khoanh tiền thuế nợ, cơ quan thuế sẽ không tiếp tục tính tiền chậm nộp kể từ ngày quyết định có hiệu lực. Việc khoanh nợ giúp đóng băng khoản tiền chậm nộp phát sinh thêm, giảm bớt áp lực tài chính trong lúc xử lý nợ gốc.
+Vì doanh nghiệp thực tế không còn hoạt động tại địa điểm kinh doanh đã đăng ký, doanh nghiệp có thể thuộc diện được khoanh tiền thuế nợ theo quy định tại điểm d khoản 1 Điều 20 Luật 108/2025/QH15 (thay thế Luật 108/2025) và Điều 34 Nghị định 252/2026/NĐ-CP. Thủ tục khoanh nợ được thực hiện khi cơ quan thuế quản lý trực tiếp có thông tin xác minh thực tế về việc doanh nghiệp không còn hoạt động. Khi ban hành Quyết định khoanh tiền thuế nợ, cơ quan thuế sẽ không tiếp tục tính tiền chậm nộp kể từ ngày quyết định có hiệu lực. Việc khoanh nợ giúp đóng băng khoản tiền chậm nộp phát sinh thêm, giảm bớt áp lực tài chính trong lúc xử lý nợ gốc.
 
 ## Hồ sơ xóa nợ thuế quá 10 năm cần những giấy tờ gì?
 
@@ -37,7 +37,7 @@ Khi doanh nghiệp hoàn thành đầy đủ nghĩa vụ nộp thuế và tờ k
 
 ### Nợ thuế từ 2009 đến nay tiền chậm nộp tính bao nhiêu?
 
-Tiền chậm nộp tính theo tỷ lệ 0,03% mỗi ngày trên số tiền nợ theo Điều 22, Luật Quản lý thuế số 38/2019/QH14. Với khoản nợ 100 triệu từ 2009, tiền chậm nộp tích lũy đến 2026 có thể lên tới hơn 700 triệu đồng, chưa bao gồm tiền phạt hành chính.
+Tiền chậm nộp tính theo tỷ lệ 0,03% mỗi ngày trên số tiền nợ theo Điều 22, Luật 108/2025/QH15 (thay thế Luật 108/2025). Với khoản nợ 100 triệu từ 2009, tiền chậm nộp tích lũy đến 2026 có thể lên tới hơn 700 triệu đồng, chưa bao gồm tiền phạt hành chính.
 
 ### Không có quyết định giải thể thì có xóa nợ thuế được không?
 
@@ -57,7 +57,7 @@ Rất nên. Luật sư giúp rà soát hồ sơ pháp lý, đảm bảo đủ đ
 
 *Last updated: 13/06/2026*
 
-*Nguồn tham khảo: Luật Quản lý thuế số 38/2019/QH14, Nghị định 252/2026/NĐ-CP, Thông tư 96/2015/TT-BTC, Thông tư 89/2026/TT-BTC*
+*Nguồn tham khảo: Luật 108/2025/QH15 (thay thế Luật 108/2025), Nghị định 252/2026/NĐ-CP, Thông tư 96/2015/TT-BTC, Thông tư 89/2026/TT-BTC*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

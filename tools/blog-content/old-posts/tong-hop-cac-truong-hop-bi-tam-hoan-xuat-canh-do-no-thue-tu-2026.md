@@ -61,7 +61,7 @@ Sau khi nộp đủ và có xác nhận của ngân hàng, cơ quan thuế sẽ 
 
 *Last updated: 20/07/2026*
 
-*Nguồn tham khảo: Điều 28, Nghị định 252/2026/NĐ-CP, Luật Quản lý thuế 38/2019/QH14*
+*Nguồn tham khảo: Điều 28, Nghị định 252/2026/NĐ-CP, Luật 108/2025/QH15 (thay thế Luật 108/2025)*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

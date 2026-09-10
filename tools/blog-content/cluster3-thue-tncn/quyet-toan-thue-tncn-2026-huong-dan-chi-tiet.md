@@ -9,7 +9,7 @@ status: "published"
 
 # Quyết toán thuế TNCN 2026 - Hướng dẫn chi tiết từ A-Z
 
-Quyết toán thuế thu nhập cá nhân (TNCN) là nghĩa vụ bắt buộc đối với nhiều đối tượng người nộp thuế. Đây là bước cuối cùng trong chu kỳ thuế hàng năm, giúp xác định số thuế TNCN bạn đã nộp thiếu hoặc được hoàn lại. Theo Luật Thuế TNCN số 04/2007/QH12 và Thông tư 92/2015/TT-BTC (sửa đổi), quyết toán thuế TNCN năm 2026 phải thực hiện trước **ngày 30 tháng 4 năm 2027**.
+Quyết toán thuế thu nhập cá nhân (TNCN) là nghĩa vụ bắt buộc đối với nhiều đối tượng người nộp thuế. Đây là bước cuối cùng trong chu kỳ thuế hàng năm, giúp xác định số thuế TNCN bạn đã nộp thiếu hoặc được hoàn lại. Theo Luật 109/2025/QH15 và Thông tư 92/2015/TT-BTC (sửa đổi bởi Thông tư 50/2026/TT-BTC), quyết toán thuế TNCN năm 2026 phải thực hiện trước **ngày 30 tháng 4 năm 2027**.
 
 Bài viết hướng dẫn chi tiết từng bước, từ đối tượng phải quyết toán đến hồ sơ cần chuẩn bị và cách nộp trực tuyến trên eTax.
 
@@ -45,13 +45,13 @@ Theo Điều 9 Thông tư 92/2015/TT-BTC, hồ sơ quyết toán thuế TNCN bao
 
 ## Thời hạn quyết toán thuế TNCN năm 2026 là khi nào?
 
-Theo khoản 1 Điều 44 Luật Quản lý thuế số 38/2019/QH14, thời hạn nộp quyết toán thuế TNCN là:
+Theo khoản 1 Điều 44 Luật 108/2025/QH15 (thay thế Luật 108/2025), thời hạn nộp quyết toán thuế TNCN là:
 
 - **Cá nhân có thu nhập từ tiền lương, tiền công:** Trước ngày 30 tháng 4 năm 2027.
 - **Tổng thu nhập chịu thuế từ 2 nguồn trở lên trong năm:** Trước ngày 30 tháng 4 năm 2027.
 - **Hộ kinh doanh, cá nhân kinh doanh:** Trước ngày 30 tháng 4 năm 2027.
 
-**Xử phạt nếu nộp chậm:** Theo Nghị định 125/2020/NĐ-CP (sửa đổi), phạt hành chính từ 1.000.000 đồng đến 5.000.000 đồng tùy mức độ chậm, cộng với lãi chậm nộp tính theo lãi suất ngân hàng nhà nước.
+**Xử phạt nếu nộp chậm:** Theo Nghị định 310/2025/NĐ-CP (có hiệu lực từ 16/01/2026, thay thế NĐ 310/2025), phạt chậm nộp tờ khai là **2.000.000 đồng/lần** đối với tổ chức và **1.000.000 đồng/lần** đối với cá nhân, cộng với lãi chậm nộp **0,03%/ngày** trên số thuế chậm.
 
 ## Cách tính thuế khi quyết toán cho người có nhiều nguồn thu nhập như thế nào?
 
@@ -116,11 +116,11 @@ Bạn cần tổng hợp thu nhập từ cả 2 nguồn để quyết toán. Ngu
 
 **Hạn cuối nộp quyết toán thuế TNCN là khi nào?**
 
-Trước ngày 30/04/2027 (cho quyết toán thuế năm 2026). Nếu nộp chậm, bạn bị phạt hành chính từ 1-5 triệu đồng và tính lãi chậm nộp.
+Trước ngày 30/04/2027 (cho quyết toán thuế năm 2026). Nếu nộp chậm, bạn bị phạt **2.000.000 đồng/lần** (tổ chức) hoặc **1.000.000 đồng/lần** (cá nhân) theo NĐ 310/2025, cộng với lãi chậm nộp 0,03%/ngày.
 
 **Quyết toán thuế TNCN cần chuẩn bị những giấy tờ gì?**
 
 Bao gồm: Tờ khai quyết toán thuế (mẫu 02/QTT-TNCN hoặc 04/QTT-TNCN), hợp đồng lao động, biên lai thuế đã nộp, giấy tờ chứng minh giảm trừ gia cảnh (CMND người phụ thuộc, giấy khai sinh, xác nhận nuôi con nuôi).
 
 ---
-*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật số 109/2025/QH15, Luật Thuế TNCN số 04/2007/QH12, Luật Quản lý thuế số 38/2019/QH14, Thông tư 92/2015/TT-BTC, Nghị định 125/2020/NĐ-CP.*
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật 109/2025/QH15, Luật 108/2025/QH15 (thay thế Luật 108/2025), Thông tư 92/2015/TT-BTC (sửa đổi bởi TT 50/2026/TT-BTC), Nghị định 310/2025/NĐ-CP.*

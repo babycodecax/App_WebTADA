@@ -99,7 +99,7 @@ Sử dụng phần mềm giúp giảm sai sót trong khai báo và tiết kiệm
 
 **Câu 1: Tôi vừa mới bắt đầu kinh doanh, chưa có doanh thu năm trước, thuộc nhóm mấy?**
 
-Hộ kinh doanh mới thành lập trong năm đầu tiên thường được xếp vào nhóm 1 (doanh thu dưới 1 tỷ) và áp dụng thuế khoán trong 12 tháng đầu. Sau đó, cơ quan thuế sẽ phân loại nhóm dựa trên doanh thu thực tế của năm đầu.
+Hộ kinh doanh mới thành lập trong năm đầu tiên thường được xếp vào nhóm 1 (doanh thu dưới 1 tỷ) và được miễn thuế TNCN, GTGT. Theo TT 50/2026, HKD chỉ cần thông báo doanh thu, không phải khai số thuế phải nộp. Sau đó, cơ quan thuế sẽ phân loại nhóm dựa trên doanh thu thực tế của năm đầu.
 
 **Câu 2: Nếu doanh thu quý 1 vượt kỳ vọng, tôi có phải chuyển nhóm ngay không?**
 
@@ -115,10 +115,10 @@ Theo Luật Kế toán 2015, hóa đơn và chứng từ kế toán phải đư�
 
 **Câu 5: Nếu nộp tờ khai trễ hạn thì bị phạt thế nào?**
 
-Theo Luật Quản lý thuế 2019 (Khoản 1 Điều 14), hành vi nộp tờ khai thuế quá hạn bị phạt cảnh cáo hoặc phạt tiền từ 2.000.000 đồng đến 25.000.000 đồng tùy mức độ vi phạm. Ngoài ra, hộ kinh doanh còn phải nộp lãi chậm nộp tính trên số thuế chậm nộp theo lãi suất tiền gửi không kỳ hạn áp dụng tại thời điểm vi phạm.
+Theo Nghị định 310/2025/NĐ-CP (có hiệu lực từ 16/01/2026), hành vi nộp tờ khai thuế quá hạn bị xử phạt cố định: **2.000.000 đồng/lần** đối với tổ chức và **1.000.000 đồng/lần** đối với cá nhân. Ngoài ra, hộ kinh doanh còn phải nộp lãi chậm nộp **0,03%/ngày** trên số thuế chậm.
 
 ---
 
-*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Thông tư 92/2015/TT-BTC, Thông tư 152/2025/TT-BTC, Luật Quản lý thuế 2019.*
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Thông tư 92/2015/TT-BTC (sửa đổi bởi TT 50/2026/TT-BTC), Thông tư 152/2025/TT-BTC, Luật Quản lý thuế 2019, Nghị định 310/2025/NĐ-CP.*
 
 *Xem thêm: [Cách tính thuế TNCN hộ kinh doanh 2026](/blog/cach-tinh-thue-tncn-hkd-2026-4-nhom-doanh-thu) | [Lịch nộp thuế hộ kinh doanh 2026](/blog/lich-nop-thue-hkd-2026-thoi-han-cu-the) | [Trang chủ TADA](https://ketoanthuetada.com/)*

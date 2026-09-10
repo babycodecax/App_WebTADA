@@ -1,0 +1,46 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "HKD dưới 1 tỷ có bị phạt nếu chưa có HĐĐT không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nếu doanh thu năm trước liền kề dưới 1 tỷ và khách hàng không yêu cầu HĐ, bạn được miễn và không bị phạt. Tuy nhiên, nếu có giao dịch với doanh nghiệp yêu cầu HĐ mà bạn không xuất được, bạn có thể bị phạt cảnh cáo hoặc 2-4 triệu đồng tùy số lượng HĐ vi phạm theo Nghị định 310/2025/NĐ-CP."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Mức phạt cao nhất mà HKD có thể bị phạt vì chưa có HĐĐT là bao nhiêu?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Theo Thông tư 91/2026/TT-BTC, mức phạt cao nhất là 20 triệu đồng/lần đối với hành vi không lưu trữ HĐ đúng hạn. Tổng hợp nhiều hành vi vi phạm, mức phạt tích lũy có thể lên đến hàng chục triệu đồng."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Đăng ký HĐĐT trên eTax có mất phí không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hoàn toàn miễn phí. Bạn chỉ cần truy cập thuedientu.gdt.gov.vn và đăng ký theo hướng dẫn. Ngoài ra, TADA cũng cung cấp giải pháp HĐĐT miễn phí cho HKD tại ketoanthuetada.com."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "HKD bán hàng trên Shopee có phải tự làm HĐĐT không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Từ 2026, sàn Shopee sẽ tự động tích hợp HĐĐT cho người bán. Bạn chỉ cần kết nối tài khoản sàn với hệ thống HĐĐT. Tuy nhiên, bạn vẫn phải đảm bảo thông tin MST chính xác trên mỗi HĐ."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Nếu đã bị phạt thì có thể kháng cáo không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Có. Theo Luật 108/2025/QH15 (thay thế Luật 38/2019), bạn có quyền khiếu nại quyết định xử phạt trong thời hạn 30 ngày kể từ ngày nhận quyết định. Tuy nhiên, việc kháng cáo không tạm ngừng thực hiện quyết định phạt, nên bạn vẫn phải nộp phạt trước khi có kết quả giải quyết."
+      }
+    }
+  ]
+}

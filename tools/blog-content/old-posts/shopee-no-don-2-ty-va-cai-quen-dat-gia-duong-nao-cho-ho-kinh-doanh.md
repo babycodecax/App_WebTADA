@@ -21,11 +21,11 @@ Từ năm 2026, các hộ kinh doanh có doanh thu trên 1 tỷ đồng mỗi n�
 
 ## Nói quên xuất hóa đơn để né giải trình có được không?
 
-Nhiều người nghĩ đến việc đưa ra lý do máy tính bị hỏng, bị hack dữ liệu để né tránh việc giải trình về số hóa đơn còn thiếu. Tuy nhiên, đây là nước đi cực kỳ mạo hiểm. Dữ liệu trên sàn Shopee và dữ liệu hóa đơn điện tử có mã là dữ liệu liên thông. Ngay cả khi thiết bị gặp sự cố, dấu vết số của từng đơn hàng vẫn được lưu trữ vẹn nguyên trên hệ thống của sàn và các ngân hàng thương mại cung cấp dịch vụ thanh toán. Nếu cơ quan thuế xác định bạn cố tình dùng lý do thiếu logic để che giấu doanh thu, họ sẽ quy ngay vào hành vi trốn thuế theo Điều 22, Luật Quản lý thuế số 38/2019/QH14.
+Nhiều người nghĩ đến việc đưa ra lý do máy tính bị hỏng, bị hack dữ liệu để né tránh việc giải trình về số hóa đơn còn thiếu. Tuy nhiên, đây là nước đi cực kỳ mạo hiểm. Dữ liệu trên sàn Shopee và dữ liệu hóa đơn điện tử có mã là dữ liệu liên thông. Ngay cả khi thiết bị gặp sự cố, dấu vết số của từng đơn hàng vẫn được lưu trữ vẹn nguyên trên hệ thống của sàn và các ngân hàng thương mại cung cấp dịch vụ thanh toán. Nếu cơ quan thuế xác định bạn cố tình dùng lý do thiếu logic để che giấu doanh thu, họ sẽ quy ngay vào hành vi trốn thuế theo Điều 22, Luật 108/2025/QH15 (thay thế Luật 108/2025).
 
 ## Mức phạt hành chính khi không xuất hóa đơn cho đơn hàng Shopee là bao nhiêu?
 
-Đối với hành vi trốn thuế, mức phạt dao động từ 1 đến 3 lần số tiền thuế trốn, cộng với tiền chậm nộp 0,03% mỗi ngày theo Điều 22, Luật Quản lý thuế số 38/2019/QH14. Với 2 tỷ doanh thu, mức thuế tổng cộng (GTGT và TNCN) là 1,5%, tương đương khoảng 30 triệu đồng. Nếu bị phạt tối đa 3 lần, bạn có thể mất tới gần 100 triệu đồng, chưa kể tiền chậm nộp. Đặc biệt, nếu số tiền thuế trốn đạt ngưỡng từ 100 triệu đồng trở lên, rủi ro bị truy cứu trách nhiệm hình sự là hoàn toàn có thật trong bối cảnh luật pháp năm 2026 đang siết rất chặt các giao dịch số.
+Đối với hành vi trốn thuế, mức phạt dao động từ 1 đến 3 lần số tiền thuế trốn, cộng với tiền chậm nộp 0,03% mỗi ngày theo Điều 22, Luật 108/2025/QH15 (thay thế Luật 108/2025). Với 2 tỷ doanh thu, mức thuế tổng cộng (GTGT và TNCN) là 1,5%, tương đương khoảng 30 triệu đồng. Nếu bị phạt tối đa 3 lần, bạn có thể mất tới gần 100 triệu đồng, chưa kể tiền chậm nộp. Đặc biệt, nếu số tiền thuế trốn đạt ngưỡng từ 100 triệu đồng trở lên, rủi ro bị truy cứu trách nhiệm hình sự là hoàn toàn có thật trong bối cảnh luật pháp năm 2026 đang siết rất chặt các giao dịch số.
 
 ## Cách xử lý an toàn khi đã lỡ quên xuất hóa đơn trên Shopee?
 
@@ -45,7 +45,7 @@ Bạn nên khai báo bổ sung và nộp đủ số tiền thuế còn thiếu c
 
 ### Mức phạt cụ thể khi không xuất hóa đơn trên Shopee là bao nhiêu?
 
-Mức phạt từ 1 đến 3 lần số tiền thuế trốn theo Điều 22, Luật Quản lý thuế số 38/2019/QH14. Với doanh thu 2 tỷ, ước tính mức phạt có thể từ 30 đến 100 triệu đồng. Liên hệ chuyên gia tại [ketoanthuetada.com](https://ketoanthuetada.com) để được tư vấn phương án xử lý phù hợp.
+Mức phạt từ 1 đến 3 lần số tiền thuế trốn theo Điều 22, Luật 108/2025/QH15 (thay thế Luật 108/2025). Với doanh thu 2 tỷ, ước tính mức phạt có thể từ 30 đến 100 triệu đồng. Liên hệ chuyên gia tại [ketoanthuetada.com](https://ketoanthuetada.com) để được tư vấn phương án xử lý phù hợp.
 
 ---
 
@@ -53,7 +53,7 @@ Mức phạt từ 1 đến 3 lần số tiền thuế trốn theo Điều 22, Lu
 
 *Last updated: 15/07/2026*
 
-*Nguồn tham khảo: Nghị định 252/2026/NĐ-CP, Nghị định 254/2026/NĐ-CP, Điều 22 Luật Quản lý thuế số 38/2019/QH14*
+*Nguồn tham khảo: Nghị định 252/2026/NĐ-CP, Nghị định 254/2026/NĐ-CP, Điều 22 Luật 108/2025/QH15 (thay thế Luật 108/2025)*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

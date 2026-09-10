@@ -17,22 +17,22 @@ Hộ kinh doanh được chia thành 4 nhóm dựa trên tổng doanh thu năm t
 
 | Nhóm | Doanh thu năm trước | Phương thức khai GTGT | Khai TNCN |
 |---|---|---|---|
-| **Nhóm 1** | Dưới 1 tỷ đồng | Thuế khoán | Không kê khai (khoán) |
+| **Nhóm 1** | Dưới 1 tỷ đồng | **Miễn thuế** — chỉ thông báo DT | Miễn |
 | **Nhóm 2** | Từ 1 tỷ đến dưới 3 tỷ | Kê khai theo quý | Kê khai theo quý, quyết toán năm |
 | **Nhóm 3** | Từ 3 tỷ đến dưới 50 tỷ | Kê khai theo tháng, khấu trừ GTGT | Kê khai theo tháng, quyết toán năm |
 | **Nhóm 4** | Từ 50 tỷ trở lên | Kê khai theo tháng, khấu trừ GTGT | Kê khai theo tháng, quyết toán năm |
 
-**Lưu ý quan trọng:** Nhóm 1 được tính theo thuế khoán (cả TNCN và GTGT gộp chung một khoản cố định hàng tháng), nên cách tính TNCN cho nhóm này khác hoàn toàn với nhóm 2, 3, 4. Bài viết sẽ trình bày riêng cho từng nhóm.
+**Lưu ý quan trọng:** Nhóm 1 (dưới 1 tỷ) được **miễn thuế TNCN và GTGT** theo NĐ 141/2026. Theo TT 50/2026, HKD chỉ cần thông báo doanh thu, không phải khai số thuế phải nộp. Bài viết sẽ trình bày riêng cho từng nhóm.
 
-## Cách tính thuế TNCN nhóm 1 - Hộ khoán (dưới 1 tỷ) như thế nào?
+## Hộ kinh doanh nhóm 1 (dưới 1 tỷ) — Miễn thuế
 
-Hộ kinh doanh nhóm 1 áp dụng **thuế khoán**, có nghĩa là thuế TNCN đã được bao gồm trong khoản thuế khoán cố định hàng tháng. Hộ không cần tự tính TNCN riêng biệt.
+Hộ kinh doanh nhóm 1 có doanh thu năm trước dưới 1 tỷ đồng được **miễn thuế TNCN và GTGT** theo NĐ 141/2026. Theo TT 50/2026, HKD chỉ cần **thông báo doanh thu** cho cơ quan thuế, không phải khai số thuế GTGT, TNCN phải nộp.
 
-Cơ quan thuế ấn định mức thuế khoán dựa trên doanh thu giả định theo ngành nghề, kết hợp tỷ lệ thuế GTGT (thường 1% hoặc 5%) và tỷ lệ TNCN (phân phối 0,5%, sản xuất 1,5%, dịch vụ 2%, cho thuê BĐS 5%, cho thuê xe 3%). Tổng thuế khoán = (Doanh thu giả định x Tỷ lệ GTGT) + (Doanh thu giả định x Tỷ lệ TNCN).
+Tuy nhiên, theo TT 152/2025, HKD **vẫn phải lập sổ sách kế toán** theo mẫu (ổ S1a-HKD — sổ theo dõi doanh thu). Việc cập nhật sổ sách giúp theo dõi doanh thu và đối chiếu khi cơ quan thuế yêu cầu.
 
-**Ví dụ minh họa:** Hộ chị Hoa (bán tạp hóa), doanh thu giả định tháng 80 triệu. Tỷ lệ GTGT = 1%, TNCN = 0,5%. Thuế GTGT khoán = 800.000 đồng. Thuế TNCN khoán = 400.000 đồng. Tổng thuế khoán = 1.200.000 đồng/tháng (đã gồm lệ phí môn bài).
+**Ví dụ minh họa:** Hộ chị Hoa (bán tạp hóa), doanh thu năm 2025 là 800 triệu đồng. Năm 2026, chị Hoa thuộc nhóm 1 — được miễn thuế TNCN và GTGT. Chị chỉ cần thông báo doanh thu và lập sổ S1a-HKD, số thuế phải nộp bằng 0.
 
-Đặc điểm: Mức thuế khoán đã cố định, hộ không cần khai bổ sung cho dù doanh thu thực tế có tăng hay giảm trong năm. Đây là ưu điểm lớn nhất của nhóm 1 vì giúp hộ kinh doanh dự tính được chi phí thuế hàng tháng.
+Đặc điểm: HKD nhóm 1 được miễn thuế nhưng phải kê khai doanh thu thực tế. Nếu doanh thu năm hiện tại vượt 1 tỷ, năm sau sẽ chuyển sang nhóm 2 và phải kê khai theo quý.
 
 ## Cách tính thuế TNCN nhóm 2 - Kê khai theo quý (1 tỷ đến dưới 3 tỷ) như thế nào?
 
@@ -88,7 +88,7 @@ Cách tính TNCN nhóm 4: Vẫn theo tỷ lệ phần trăm trên doanh thu, nh�
 | **Tần suất khai TNCN** | Khoán (không khai) | Theo quý + QT năm | Theo tháng + QT năm | Theo tháng + QT năm |
 | **Mẫu tờ khai** | Không có | 01/CNKD | 01/CNKD + 01/GTGT | 01/CNKD + 01/GTGT |
 | **Thời hạn nộp quý** | Không | Cuối quý sau | Không | Không |
-| **Thời hạn nộp tháng** | Hàng tháng (khoán) | Không | Trước ngày 20 tháng sau | Trước ngày 20 tháng sau |
+| **Thời hạn nộp tháng** | Miễn thuế | Không | Trước ngày 20 tháng sau | Trước ngày 20 tháng sau |
 
 ## Ví dụ tính thuế thực tế cho hộ kinh doanh nhóm 2 năm 2026?
 
@@ -130,7 +130,7 @@ Khi hộ kinh doanh hoạt động nhiều ngành nghề có tỷ lệ TNCN khá
 
 **Câu 3: Hộ kinh doanh nhóm 2 có được chuyển sang nhóm 1 nếu doanh thu giảm không?**
 
-Được. Nếu doanh thu năm hiện tại giảm xuống dưới 1 tỷ, năm sau cơ quan thuế sẽ chuyển hộ sang nhóm 1 áp dụng thuế khoán. Hộ cần theo dõi doanh thu và liên hệ Chi cục Thuế để đề nghị chuyển nhóm sớm nếu muốn.
+Được. Nếu doanh thu năm hiện tại giảm xuống dưới 1 tỷ, năm sau cơ quan thuế sẽ chuyển hộ sang nhóm 1 — được miễn thuế TNCN và GTGT theo NĐ 141/2026. Hộ cần theo dõi doanh thu và liên hệ Chi cục Thuế để đề nghị chuyển nhóm sớm nếu muốn.
 
 **Câu 4: Người đại diện hộ kinh doanh đóng TNCN như thế nào?**
 
@@ -142,6 +142,6 @@ Tỷ lệ TNCN theo ngành nghề được quy định chi tiết tại **Điề
 
 ---
 
-*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Nghị định 141/2026/NĐ-CP, Thông tư 92/2015/TT-BTC, Thông tư 152/2025/TT-BTC, Luật Thuế thu nhập cá nhân 2007 (sửa đổi 2024).*
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Nghị định 141/2026/NĐ-CP, Thông tư 92/2015/TT-BTC (sửa đổi bởi TT 50/2026/TT-BTC), Thông tư 152/2025/TT-BTC, Luật 109/2025/QH15.*
 
 *Xem thêm: [Hộ kinh doanh dưới 1 tỷ có phải nộp thuế không?](/blog/ho-kinh-doanh-duoi-500-trieu-co-phai-nop-thue-khong) | [Hướng dẫn kê khai thuế nhóm 2](/blog/huong-dan-ke-khai-thue-hkd-nhom-2-nam-2026) | [Trang chủ TADA](https://ketoanthuetada.com/)*

@@ -63,6 +63,11 @@
 - Link đến: [Thông tư 91](thong-tu-91-2026-ve-hoa-don-dien-tu-diem-moi-can-biet.md)
 - Link đến: [Chatbot thuế](../cluster4-chatbot-ai/chatbot-thue-la-gi-tai-sao-hkd-can-su-dung.md)
 
+### 6. HKD bị phạt vì chưa có HĐĐT 2026
+- Link về: `/` (trang chủ)
+- Link đến: [HKD dưới 1 tỷ có phải làm HĐĐT](ho-kinh-doanh-duoi-1-ty-co-phai-lam-hoa-don-dien-tu-khong.md)
+- Link đến: [Cách đăng ký HĐĐT trên eTax](cach-dang-ky-hoa-don-dien-tu-tren-etax-cho-hkd.md)
+
 ---
 
 ## Cluster 3: Thuế TNCN
@@ -115,6 +120,15 @@
 - Link về: `/` (trang chủ)
 - Link đến: [Chatbot là gì](chatbot-thue-la-gi-tai-sao-hkd-can-su-dung.md)
 - Link đến: [So sánh chatbot vs đại lý](so-sanh-chatbot-thue-ai-va-thue-dai-ly-thue.md)
+
+---
+
+## Old Posts (bài bổ sung)
+
+### Bị giả mạo standing tên công ty, phải nộp đơn vị nào?
+- Link về: `/` (trang chủ)
+- Link đến: [HKD dưới 500 triệu](../cluster1-thue-hkd/1-ho-kinh-doanh-duoi-500-trieu-co-phai-nop-thue-khong.md)
+- Link đến: [Quyết toán thuế TNCN](../cluster3-thue-tncn/quyet-toan-thue-tncn-2026-huong-dan-chi-tiet.md)
 
 ---
 

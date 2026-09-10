@@ -23,7 +23,7 @@ Hiện nay, các văn bản quy phạm pháp luật không giới hạn cụ th�
 
 ## Doanh nghiệp tạm ngừng có còn nghĩa vụ thuế và bảo hiểm không?
 
-Dù đang ở trạng thái tạm ngừng, công ty vẫn không thoát khỏi các nghĩa vụ pháp lý đã phát sinh trước đó. Theo Luật Quản lý thuế số 38/2019/QH14, doanh nghiệp phải nộp đủ số thuế, tiền đóng bảo hiểm xã hội, bảo hiểm y tế và bảo hiểm thất nghiệp còn nợ tính đến thời điểm tạm dừng. Ngoài ra, công ty vẫn phải thanh toán các khoản nợ với chủ nợ và hoàn thành hợp đồng đã ký kết với khách hàng và người lao động, trừ khi có thỏa thuận khác.
+Dù đang ở trạng thái tạm ngừng, công ty vẫn không thoát khỏi các nghĩa vụ pháp lý đã phát sinh trước đó. Theo Luật 108/2025/QH15 (thay thế Luật 108/2025), doanh nghiệp phải nộp đủ số thuế, tiền đóng bảo hiểm xã hội, bảo hiểm y tế và bảo hiểm thất nghiệp còn nợ tính đến thời điểm tạm dừng. Ngoài ra, công ty vẫn phải thanh toán các khoản nợ với chủ nợ và hoàn thành hợp đồng đã ký kết với khách hàng và người lao động, trừ khi có thỏa thuận khác.
 
 Về hóa đơn và chứng từ, doanh nghiệp bị nghiêm cấm lập hóa đơn bán hàng hóa, cung cấp dịch vụ trong thời gian tạm ngừng, trừ trường hợp lập hóa đơn để thực hiện hợp đồng đã ký trước ngày thông báo. Trong suốt thời gian này, doanh nghiệp sẽ không phải nộp hồ sơ khai thuế tháng hoặc quý, trừ trường hợp kỳ tạm ngừng không trọn tháng hoặc trọn quý theo quy định của pháp luật thuế.
 
@@ -47,7 +47,7 @@ Việc chậm trễ thông báo tạm ngừng kinh doanh bị xử phạt theo N
 
 ### Doanh nghiệp tạm ngừng có phải nộp bảo hiểm xã hội không?
 
-Có. Theo Luật Quản lý thuế số 38/2019/QH14, doanh nghiệp tạm ngừng vẫn phải nộp đủ các khoản bảo hiểm xã hội, bảo hiểm y tế và bảo hiểm thất nghiệp còn nợ. Liên hệ chuyên gia thuế tại [ketoanthuetada.com](https://ketoanthuetada.com) để được tư vấn thủ tục tạm ngừng đúng luật.
+Có. Theo Luật 108/2025/QH15 (thay thế Luật 108/2025), doanh nghiệp tạm ngừng vẫn phải nộp đủ các khoản bảo hiểm xã hội, bảo hiểm y tế và bảo hiểm thất nghiệp còn nợ. Liên hệ chuyên gia thuế tại [ketoanthuetada.com](https://ketoanthuetada.com) để được tư vấn thủ tục tạm ngừng đúng luật.
 
 ---
 
@@ -55,7 +55,7 @@ Có. Theo Luật Quản lý thuế số 38/2019/QH14, doanh nghiệp tạm ngừ
 
 *Last updated: 15/07/2026*
 
-*Nguồn tham khảo: Luật Doanh nghiệp số 59/2020/QH14, Nghị định 01/2021/NĐ-CP, Luật Quản lý thuế số 38/2019/QH14, Nghị định 310/2025/NĐ-CP*
+*Nguồn tham khảo: Luật Doanh nghiệp số 59/2020/QH14, Nghị định 01/2021/NĐ-CP, Luật 108/2025/QH15 (thay thế Luật 108/2025), Nghị định 310/2025/NĐ-CP*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

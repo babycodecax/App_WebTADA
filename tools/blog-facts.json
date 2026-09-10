@@ -1,0 +1,164 @@
+{
+  "_meta": {
+    "description": "Vault facts — Single Source of Truth cho verify blog content",
+    "source": "vault/thue-ke-toan/_cheatsheet-thue-2026.md + NQ 198/2025",
+    "updated": "2026-09-10",
+    "usage": "node tools/validate-blog-facts.js"
+  },
+
+  "abolished": {
+    "thue_khoan": {
+      "name": "Thuế khoán HKD",
+      "effective_date": "2026-01-01",
+      "source": "NQ 198/2025/QH15 Điều 10",
+      "bad_patterns": [
+        "áp dụng thuế khoán",
+        "thuế khoán hàng tháng",
+        "nhóm khoán",
+        "định mức thuế khoán",
+        "khoán cố định",
+        "thuế khoán cố định"
+      ],
+      "ok_patterns": [
+        "chấm dứt.*khoán",
+        "khoán.*chấm dứt",
+        "bị bãi bỏ.*khoán",
+        "không còn.*khoán",
+        "đã chấm dứt",
+        "phương pháp khoán.*bị"
+      ],
+      "note": "HKD kê khai doanh thu thực tế. Dưới 1 tỷ miễn TNCN/GTGT."
+    },
+    "le_phi_mon_bai": {
+      "name": "Lệ phí môn bài",
+      "effective_date": "2026-01-01",
+      "source": "NQ 198/2025/QH15",
+      "bad_patterns": [
+        "phải nộp lệ phí môn bài",
+        "nộp môn bài",
+        "lệ phí môn bài hàng năm",
+        "mức lệ phí môn bài",
+        "đăng ký môn bài"
+      ],
+      "ok_patterns": [
+        "chấm dứt.*môn bài",
+        "môn bài.*chấm dứt",
+        "đã bị chấm dứt.*môn bài",
+        "môn bài.*đã bị chấm dứt",
+        "bị chấm dứt.*môn bài",
+        "môn bài.*bị chấm dứt",
+        "không còn.*môn bài",
+        "NQ 198.*môn bài"
+      ],
+      "note": "Bị bãi bỏ từ 01/01/2026. HKD không còn phải đóng."
+    }
+  },
+
+  "outdated_values": {
+    "mien_thue_hkd_500trieu": {
+      "name": "Ngưỡng miễn thuế HKD",
+      "old_value": "500 triệu",
+      "correct_value": "1 tỷ",
+      "effective_date": "2026-01-01",
+      "source": "NĐ 141/2026",
+      "bad_patterns": [
+        "500 triệu miễn thuế",
+        "dưới 500 triệu miễn"
+      ],
+      "ok_patterns": [
+        "nâng.*từ 500",
+        "500 triệu.*lên 1 tỷ",
+        "từ 500 triệu lên",
+        "từ 500tr",
+        "nâng từ 500"
+      ]
+    },
+    "gtgc_11trieu": {
+      "name": "Giảm trừ gia cảnh bản thân",
+      "old_value": "11 triệu/tháng",
+      "correct_value": "15.5 triệu/tháng",
+      "effective_date": "2026-07-01",
+      "source": "Luật 109/2025",
+      "bad_patterns": [
+        "11 triệu giảm trừ",
+        "giảm trừ 11 triệu"
+      ],
+      "ok_patterns": [
+        "từ 11.*lên 15",
+        "11 triệu.*đến 15",
+        "11.000.000.*15",
+        "mức cũ.*11",
+        "đến 30/06/2026.*11"
+      ]
+    },
+    "gtgc_phu_thuoc_4trieu": {
+      "name": "Giảm trừ người phụ thuộc",
+      "old_value": "4.4 triệu/tháng",
+      "correct_value": "6.2 triệu/tháng",
+      "effective_date": "2026-07-01",
+      "source": "Luật 109/2025",
+      "bad_patterns": [
+        "4.4 triệu giảm trừ",
+        "giảm trừ 4.4 triệu"
+      ],
+      "ok_patterns": [
+        "4.4.*đến 6.2",
+        "4.400.000.*6.2",
+        "mức cũ.*4.4",
+        "đến 30/06/2026.*4.4"
+      ]
+    },
+    "thanhtoan_20trieu": {
+      "name": "Thanh toán không tiền mặt",
+      "old_value": "20 triệu",
+      "correct_value": "5 triệu",
+      "effective_date": "2026-01-01",
+      "source": "NĐ 320/2025",
+      "bad_patterns": [
+        "thanh toán 20 triệu",
+        "trên 20 triệu phải qua ngân hàng",
+        "20 triệu không tiền mặt"
+      ],
+      "ok_patterns": [
+        "từ 20 triệu.*xuống 5 triệu"
+      ]
+    }
+  },
+
+  "rates": {
+    "gtgt": {
+      "phan_phoi": "1%",
+      "dich_vu": "5%",
+      "san_xuat": "3%",
+      "kd_khac": "2%",
+      "cho_thue_bds": "5%",
+      "cho_thue_xe": "3%",
+      "giam_thue": "8% (01/07/2025-31/12/2026)"
+    },
+    "tncn": {
+      "phan_phoi": "0.5%",
+      "dich_vu": "2%",
+      "san_xuat": "1.5%",
+      "kd_khac": "1%",
+      "cho_thue_ts": "5%",
+      "dai_ly": "5%",
+      "luy_tien": "5%-35% (5 bậc)"
+    },
+    "tndn": {
+      "thuong": "20%",
+      "dn_nho_3ty": "15%",
+      "dn_vua_3_50ty": "17%"
+    }
+  },
+
+  "hkd_groups": {
+    "note": "4 nhóm HKD theo TT 92/2015 (sđ bởi TT 50/2026)",
+    "nhom_1": "Dưới 1 tỷ — Miễn thuế, thông báo DT, lập sổ S1a-HKD",
+    "nhom_2": "1 tỷ - dưới 3 tỷ — Kê khai theo quý",
+    "nhom_3": "3 tỷ - dưới 50 tỷ — Kê khai theo tháng",
+    "nhom_4": "Từ 50 tỷ — Kê khai theo tháng, hạch toán đầy đủ"
+  },
+
+  "cjk_check": true,
+  "frontmatter_check": true
+}

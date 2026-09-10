@@ -13,11 +13,11 @@ Nhiều doanh nghiệp đang trong quá trình đóng mã số thuế (trạng t
 
 ## Tại sao mã số thuế bị chuyển từ trạng thái 03 sang 06?
 
-Theo quy định tại **Luật Quản lý thuế số 38/2019/QH14** và các văn bản hướng dẫn, trạng thái 03 là tình trạng người nộp thuế ngừng hoạt động nhưng chưa hoàn thành thủ tục chấm dứt hiệu lực mã số thuế. Trong khi đó, trạng thái 06 phản ánh việc người nộp thuế không còn hoạt động tại địa chỉ đã đăng ký với cơ quan thuế. Nguyên nhân phổ biến nhất là khi người nộp thuế đã nộp hồ sơ đề nghị chấm dứt hiệu lực mã số thuế nhưng chưa hoàn thành nghĩa vụ thuế, cơ quan quản lý tiến hành kiểm tra thực tế tại trụ sở. Nếu kết quả xác minh cho thấy doanh nghiệp không còn hiện diện tại địa điểm đã đăng ký, trạng thái sẽ được cập nhật sang 06. Ngoài ra, trong thời hạn 01 ngày làm việc kể từ khi tiếp nhận hồ sơ đề nghị chấm dứt mã số thuế, cơ quan thuế có quyền chuyển trạng thái người nộp thuế về 06 lý do 03 trên Hệ thống ứng dụng đăng ký thuế.
+Theo quy định tại **Luật 108/2025/QH15 (thay thế Luật 108/2025)** và các văn bản hướng dẫn, trạng thái 03 là tình trạng người nộp thuế ngừng hoạt động nhưng chưa hoàn thành thủ tục chấm dứt hiệu lực mã số thuế. Trong khi đó, trạng thái 06 phản ánh việc người nộp thuế không còn hoạt động tại địa chỉ đã đăng ký với cơ quan thuế. Nguyên nhân phổ biến nhất là khi người nộp thuế đã nộp hồ sơ đề nghị chấm dứt hiệu lực mã số thuế nhưng chưa hoàn thành nghĩa vụ thuế, cơ quan quản lý tiến hành kiểm tra thực tế tại trụ sở. Nếu kết quả xác minh cho thấy doanh nghiệp không còn hiện diện tại địa điểm đã đăng ký, trạng thái sẽ được cập nhật sang 06. Ngoài ra, trong thời hạn 01 ngày làm việc kể từ khi tiếp nhận hồ sơ đề nghị chấm dứt mã số thuế, cơ quan thuế có quyền chuyển trạng thái người nộp thuế về 06 lý do 03 trên Hệ thống ứng dụng đăng ký thuế.
 
 ## Hệ lụy pháp lý khi mã số thuế ở trạng thái 06 là gì?
 
-Khi mã số thuế ở trạng thái 06, doanh nghiệp **hoàn toàn không được sử dụng mã số này** trong các giao dịch kinh tế hay xuất hóa đơn. Đồng thời, cơ quan thuế sẽ lập danh sách các hồ sơ khai thuế còn thiếu và tình hình nợ ngân sách nhà nước để thực hiện xử phạt hành chính theo quy định. Các hành vi vi phạm về thời hạn thông báo hoặc bỏ địa chỉ kinh doanh có thể bị xử lý nghiêm theo **Nghị định 125/2020/NĐ-CP** về xử phạt vi phạm hành chính về thuế và hóa đơn. Đặc biệt, doanh nghiệp không thể thực hiện bất kỳ giao dịch mua bán, xuất hóa đơn hay kê khai thuế khi mã số thuế đang ở trạng thái này.
+Khi mã số thuế ở trạng thái 06, doanh nghiệp **hoàn toàn không được sử dụng mã số này** trong các giao dịch kinh tế hay xuất hóa đơn. Đồng thời, cơ quan thuế sẽ lập danh sách các hồ sơ khai thuế còn thiếu và tình hình nợ ngân sách nhà nước để thực hiện xử phạt hành chính theo quy định. Các hành vi vi phạm về thời hạn thông báo hoặc bỏ địa chỉ kinh doanh có thể bị xử lý nghiêm theo **Nghị định 310/2025/NĐ-CP** (có hiệu lực từ 16/01/2026, thay thế NĐ 310/2025) về xử phạt vi phạm hành chính về thuế và hóa đơn. Đặc biệt, doanh nghiệp không thể thực hiện bất kỳ giao dịch mua bán, xuất hóa đơn hay kê khai thuế khi mã số thuế đang ở trạng thái này.
 
 ## Cách xử lý để khôi phục mã số thuế từ trạng thái 06?
 
@@ -25,7 +25,7 @@ Khi mã số thuế ở trạng thái 06, doanh nghiệp **hoàn toàn không đ
 
 ## Làm thế nào để tránh bị chuyển trạng thái mã số thuế ngoài ý muốn?
 
-Cách tốt nhất là hoàn thành **tất cả nghĩa vụ thuế trước** khi nộp hồ sơ đề nghị chấm dứt mã số thuế. Cụ thể, doanh nghiệp cần quyết toán thuế các kỳ còn thiếu, nộp đầy đủ tiền thuế nợ, tiền phạt và tiền chậm nộp. Đồng thời, cần đảm bảo địa chỉ trụ sở đăng ký phải chính xác và còn hiện diện tại thời điểm cơ quan thuế kiểm tra. Nếu doanh nghiệp đã chuyển địa chỉ mà chưa cập nhật với cơ quan thuế, cần nộp tờ khai điều chỉnh thông tin đăng ký thuế trong vòng 10 ngày theo quy định tại Điều 35 Luật Quản lý thuế 2019.
+Cách tốt nhất là hoàn thành **tất cả nghĩa vụ thuế trước** khi nộp hồ sơ đề nghị chấm dứt mã số thuế. Cụ thể, doanh nghiệp cần quyết toán thuế các kỳ còn thiếu, nộp đầy đủ tiền thuế nợ, tiền phạt và tiền chậm nộp. Đồng thời, cần đảm bảo địa chỉ trụ sở đăng ký phải chính xác và còn hiện diện tại thời điểm cơ quan thuế kiểm tra. Nếu doanh nghiệp đã chuyển địa chỉ mà chưa cập nhật với cơ quan thuế, cần nộp tờ khai điều chỉnh thông tin đăng ký thuế trong vòng 10 ngày theo quy định tại Điều 35 Luật 108/2025/QH15.
 
 ## Quy trình chuẩn để đóng mã số thuế đúng cách năm 2026 được thực hiện như thế nào?
 
@@ -43,7 +43,7 @@ Không. Mã số thuế ở trạng thái 06 vẫn được giữ nguyên trên 
 
 ### Phạt bao nhiêu khi để mã số thuế ở trạng thái 06 quá lâu?
 
-Mức phạt theo Nghị định 125/2020/NĐ-CP dao động từ 2 triệu đến 25 triệu đồng tùy hành vi vi phạm, cộng với tiền chậm nộp tính theo tỷ lệ 0,03%/ngày.
+Mức phạt theo Nghị định 310/2025/NĐ-CP (có hiệu lực từ 16/01/2026): nộp tờ khai quá hạn bị phạt **2.000.000 đồng/lần** (tổ chức) hoặc **1.000.000 đồng/lần** (các nhân), cộng với tiền chậm nộp **0,03%/ngày**.
 
 ### Doanh nghiệp giải thể rồi có cần quan tâm trạng thái 06 không?
 
@@ -55,7 +55,7 @@ Có. Nếu doanh nghiệp chưa hoàn thành thủ tục giải thể theo quy �
 
 *Last updated: 20/03/2026*
 
-*Nguồn tham khảo: Luật Quản lý thuế 38/2019/QH14, Nghị định 125/2020/NĐ-CP, Điều 35 Luật Quản lý thuế 2019*
+*Nguồn tham khảo: Luật 108/2025/QH15 (thay thế Luật 108/2025), Nghị định 310/2025/NĐ-CP (thay thế NĐ 310/2025), Điều 35 Luật 108/2025/QH15*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

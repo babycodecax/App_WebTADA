@@ -49,7 +49,7 @@ Hành vi không lập hóa đơn khi bán hàng hóa, bao gồm hàng khuyến m
 
 *Last updated: 25/05/2026*
 
-*Nguồn tham khảo: Nghị định 254/2026/NĐ-CP, Nghị định 310/2025/NĐ-CP, Luật Quản lý thuế số 38/2019/QH14*
+*Nguồn tham khảo: Nghị định 254/2026/NĐ-CP, Nghị định 310/2025/NĐ-CP, Luật 108/2025/QH15 (thay thế Luật 108/2025)*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

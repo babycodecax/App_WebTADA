@@ -27,7 +27,7 @@ Hàng hóa, dịch vụ dùng cho SXKD và tiêu dùng tại VN, trừ đối t�
 - Khám chữa bệnh, dịch vụ y tế; giáo dục, dạy nghề
 - Bưu chính, viễn thông công ích; phát thanh, truyền hình
 - Hoạt động duy tu, sửa chữa công trình văn hóa, di tích... bằng nguồn vốn nhân dân/viện trợ (≥50%)
-- **Khoản 25**: Hộ/cá nhân SXKD có doanh thu năm từ mức CP quy định trở xuống (mốc 500tr từ 01/01/2026 theo Luật 149/2025)
+- **Khoản 25**: Hộ/cá nhân SXKD có doanh thu năm từ mức CP quy định trở xuống (NĐ 141/2026 nâng lên **01 tỷ đồng/năm**, hiệu lực 01/01/2026)
 
 ### Thuế suất (Điều 9)
 | Mức | Áp dụng cho |

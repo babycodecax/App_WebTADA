@@ -128,4 +128,4 @@ Không. Vợ/chồng chỉ được giảm trừ khi không có thu nhập hoặ
 Có. Nếu sau khi quyết toán xong mới kê khai bổ sung người phụ thuộc, bạn cần nộp tờ khai bổ sung và cơ quan thuế sẽ xử lý hoàn lại phần thuế thừa. Tuy nhiên, nên kê khai sớm để tránh phức tạp.
 
 ---
-*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật số 109/2025/QH15, Luật Thuế TNCN số 04/2007/QH12 (sửa đổi), Thông tư 92/2015/TT-BTC.*
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA. Cập nhật: Tháng 9/2026. Nguồn: Luật 109/2025/QH15, Thông tư 92/2015/TT-BTC (sửa đổi bởi TT 50/2026/TT-BTC).*

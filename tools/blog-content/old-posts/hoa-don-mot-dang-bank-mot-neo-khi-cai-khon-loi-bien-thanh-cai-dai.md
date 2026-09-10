@@ -13,7 +13,7 @@ Chào các bạn, hôm nay chúng ta sẽ cùng nói về một chiêu thức m�
 
 ## Xuất hóa đơn thấp hơn số tiền nhận thực tế có vi phạm pháp luật không?
 
-Hoàn toàn vi phạm. Hành vi kê khai không trung thực vi phạm Điều 22, Luật Quản lý thuế số 38/2019/QH14. Năm 2026, ngân hàng thương mại có trách nhiệm cung cấp dữ liệu giao dịch cho cơ quan thuế, nên sự vênh lệch giữa hóa đơn và sao kê sẽ bị phát hiện ngay qua hệ thống quản lý rủi ro tự động. Cố tình ghi giá trị trên hóa đơn thấp hơn giá thực tế là hành vi sử dụng không hợp pháp hóa đơn, cấu thành tội trốn thuế theo quy định hiện hành.
+Hoàn toàn vi phạm. Hành vi kê khai không trung thực vi phạm Điều 22, Luật 108/2025/QH15 (thay thế Luật 108/2025). Năm 2026, ngân hàng thương mại có trách nhiệm cung cấp dữ liệu giao dịch cho cơ quan thuế, nên sự vênh lệch giữa hóa đơn và sao kê sẽ bị phát hiện ngay qua hệ thống quản lý rủi ro tự động. Cố tình ghi giá trị trên hóa đơn thấp hơn giá thực tế là hành vi sử dụng không hợp pháp hóa đơn, cấu thành tội trốn thuế theo quy định hiện hành.
 
 ## Rủi ro pháp lý lớn nhất khi hóa đơn và sao kê không khớp là gì?
 
@@ -33,7 +33,7 @@ Cách xử lý an toàn nhất là chủ động lập hóa đơn điều chỉn
 
 ### Hộ kinh doanh xuất hóa đơn sai bị phạt bao nhiêu?
 
-Mức phạt 20% trên số thuế thiếu nếu khai sai vô ý, và từ 1 đến 3 lần số thuế trốn nếu cố tình gian lận theo Điều 22, Luật Quản lý thuế số 38/2019/QH14. Với hộ kinh doanh, số thuế chỉ khoảng 1,5% doanh thu nhưng mức phạt gấp hàng trăm lần số tiền tiết kiệm được.
+Mức phạt 20% trên số thuế thiếu nếu khai sai vô ý, và từ 1 đến 3 lần số thuế trốn nếu cố tình gian lận theo Điều 22, Luật 108/2025/QH15 (thay thế Luật 108/2025). Với hộ kinh doanh, số thuế chỉ khoảng 1,5% doanh thu nhưng mức phạt gấp hàng trăm lần số tiền tiết kiệm được.
 
 ### Ngân hàng có cung cấp sao kê cho cơ quan thuế không?
 
@@ -49,7 +49,7 @@ Bạn cần lập hóa đơn điều chỉnh hoặc hóa đơn thay thế theo M
 
 *Last updated: 20/05/2026*
 
-*Nguồn tham khảo: Điều 22 Luật Quản lý thuế số 38/2019/QH14, Nghị định 253/2026/NĐ-CP, Nghị định 254/2026/NĐ-CP, Điều 200 Bộ luật Hình sự 2015*
+*Nguồn tham khảo: Điều 22 Luật 108/2025/QH15 (thay thế Luật 108/2025), Nghị định 253/2026/NĐ-CP, Nghị định 254/2026/NĐ-CP, Điều 200 Bộ luật Hình sự 2015*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)

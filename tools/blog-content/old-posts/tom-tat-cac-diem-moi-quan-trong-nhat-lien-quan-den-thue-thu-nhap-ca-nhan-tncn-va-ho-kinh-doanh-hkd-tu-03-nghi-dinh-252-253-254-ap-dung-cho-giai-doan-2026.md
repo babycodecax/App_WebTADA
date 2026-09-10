@@ -25,9 +25,9 @@ Nghị định 253/2026/NĐ-CP thay thế Nghị định 65/2013/NĐ-CP và các
 
 ## Nghị định 252 quy định gì mới về quản lý thuế và thương mại điện tử?
 
-Nghị định 252/2026/NĐ-CP thay thế Nghị định 126/2020/NĐ-CP, siết chặt quản lý dòng tiền và định danh số:
+Nghị định 252/2026/NĐ-CP thay thế Nghị định 252/2026/NĐ-CP, siết chặt quản lý dòng tiền và định danh số:
 
-**Trách nhiệm của sàn TMĐT:** Các tổ chức quản lý sàn TMĐT hoặc nền tảng số có chức năng thanh toán bắt buộc phải thực hiện khấu trừ, nộp thuế thay và kê khai thuế cho HKD, cá nhân kinh doanh trên sàn theo Điều 17, Luật Quản lý thuế số 38/2019/QH14.
+**Trách nhiệm của sàn TMĐT:** Các tổ chức quản lý sàn TMĐT hoặc nền tảng số có chức năng thanh toán bắt buộc phải thực hiện khấu trừ, nộp thuế thay và kê khai thuế cho HKD, cá nhân kinh doanh trên sàn theo Điều 17, Luật 108/2025/QH15 (thay thế Luật 108/2025).
 
 **Sử dụng Số định danh cá nhân:** Từ ngày 01/07/2025, sử dụng số định danh cá nhân (12 chữ số) để thay thế hoàn toàn cho mã số thuế trong mọi giao dịch và quản lý thuế cá nhân.
 
@@ -35,7 +35,7 @@ Nghị định 252/2026/NĐ-CP thay thế Nghị định 126/2020/NĐ-CP, siết
 
 ## Nghị định 254 có quy định mới nào về hóa đơn điện tử?
 
-Nghị định 254/2026/NĐ-CP thay thế Nghị định 123/2020/NĐ-CP, có hiệu lực từ ngày 01/07/2026:
+Nghị định 254/2026/NĐ-CP thay thế Nghị định 254/2026/NĐ-CP, có hiệu lực từ ngày 01/07/2026:
 
 **Bắt buộc hóa đơn điện tử cho HKD quy mô vừa:** HKD có doanh thu năm trên 1 tỷ đồng bắt buộc phải sử dụng hóa đơn điện tử có mã của cơ quan thuế.
 
@@ -55,7 +55,7 @@ Từ Nghị định 253/2026/NĐ-CP, mức giảm trừ cho bản thân người
 
 ### Hộ kinh doanh dưới 1 tỷ có phải dùng hóa đơn điện tử không?
 
-Theo Nghị định 254/2026/NĐ-CP, HKD có doanh thu trên 1 tỷ đồng/năm bắt buộc phải sử dụng hóa đơn điện tử có mã cơ quan thuế. HKD dưới 1 tỷ vẫn được hưởng chính sách thuế khoán.
+Theo Nghị định 254/2026/NĐ-CP, HKD có doanh thu trên 1 tỷ đồng/năm bắt buộc phải sử dụng hóa đơn điện tử có mã cơ quan thuế. HKD dưới 1 tỷ được miễn thuế TNCN, GTGT theo NĐ 141/2026.
 
 ### Sàn Shopee, Lazada có nộp thuế thay cho người bán không?
 
@@ -67,7 +67,7 @@ Có. Theo Nghị định 252/2026/NĐ-CP, các sàn TMĐT có chức năng thanh
 
 *Last updated: 15/07/2026*
 
-*Nguồn tham khảo: Nghị định 252/2026/NĐ-CP, Nghị định 253/2026/NĐ-CP, Nghị định 254/2026/NĐ-CP, Luật Quản lý thuế số 38/2019/QH14*
+*Nguồn tham khảo: Nghị định 252/2026/NĐ-CP, Nghị định 253/2026/NĐ-CP, Nghị định 254/2026/NĐ-CP, Luật 108/2025/QH15 (thay thế Luật 108/2025)*
 
 **Đọc thêm:**
 - [Dịch vụ Thuế Kế toán TADA](https://ketoanthuetada.com/blog/dich-vu-thue-ke-toan-tada)
