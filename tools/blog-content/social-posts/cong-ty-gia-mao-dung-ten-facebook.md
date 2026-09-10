@@ -4,7 +4,7 @@
 
 ---
 
-🚨 BỐNG DƯƠNG LÀM "GIÁM ĐỐC" CỦA MỘT CÔNG TY CHƯA TỪNG NGHE TÊN?
+🚨 Bỗng dưng trở thành "GIÁM ĐỐC" CỦA MỘT CÔNG TY CHƯA TỪNG NGHE TÊN?
 
 Đây KHÔNG phải tình huống hiếm. Rất nhiều người dân Việt Nam đang phát hiện mình bị mạo danh đứng tên giám đốc, người đại diện pháp luật cho doanh nghiệp mà họ CHƯA TỪNG THÀNH LẬP hay tham gia.
 
