@@ -327,12 +327,15 @@
   }
 
   function renderMarkdown(md) {
+    var text = md || '';
+    // Strip YAML frontmatter (---...---) nếu có trong content
+    text = text.replace(/^---[\s\S]*?---\s*/, '');
     if (typeof marked !== 'undefined') {
       marked.setOptions({ breaks: true, gfm: true });
-      return marked.parse(md || '');
+      return marked.parse(text);
     }
     // fallback: simple line breaks
-    return (md || '').replace(/\n/g, '<br>');
+    return text.replace(/\n/g, '<br>');
   }
 
   function escHtml(s) {
