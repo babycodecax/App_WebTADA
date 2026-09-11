@@ -328,8 +328,8 @@
 
   function renderMarkdown(md) {
     var text = md || '';
-    // Strip YAML frontmatter (---...---) nếu có trong content
-    text = text.replace(/^---[\s\S]*?---\s*/, '');
+    // Strip YAML frontmatter (---\n...\n---) nếu có trong content
+    text = text.replace(/^---\n[\s\S]*?\n---\s*/, '');
     if (typeof marked !== 'undefined') {
       marked.setOptions({ breaks: true, gfm: true });
       return marked.parse(text);

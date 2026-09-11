@@ -300,10 +300,12 @@
     var content = document.getElementById('post-content').value;
     var preview = document.getElementById('preview-content');
     if (box.style.display === 'none') {
+      // Strip YAML frontmatter trước khi render markdown
+      var text = (content || '').replace(/^---\n[\s\S]*?\n---\s*/, '');
       if (typeof marked !== 'undefined') {
-        preview.innerHTML = marked.parse(content || '*Chưa có nội dung*');
+        preview.innerHTML = marked.parse(text || '*Chưa có nội dung*');
       } else {
-        preview.textContent = content || '(chưa có nội dung)';
+        preview.textContent = text || '(chưa có nội dung)';
       }
       box.style.display = 'block';
     } else {
