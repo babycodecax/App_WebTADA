@@ -1088,8 +1088,8 @@
       dom.step2Forms.innerHTML = "";
       dom.resultContainer.innerHTML = "";
       dom.resultContainer.style.display = "none";
-      dom.resultActions.style.display = "none";
-      dom.resultPlaceholder.style.display = "";
+      var rp = document.getElementById("result-placeholder");
+      if (rp) rp.style.display = "";
       updateSourceUI();
       goToStep(1);
     });
