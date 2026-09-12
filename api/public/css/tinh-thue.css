@@ -23,7 +23,7 @@
 
 /* ── Hero ── */
 .calc-hero {
-  padding: 48px 0 24px;
+  padding: 90px 0 24px;
   text-align: center;
   background: linear-gradient(180deg, #fdfbfa 0%, #f6f1ed 100%);
 }
@@ -52,6 +52,10 @@
   .calc-hero { padding: 80px 0 16px; }
   .calc-hero-title { font-size: 22px; }
   .calc-hero-desc { font-size: 13px; }
+}
+
+@media (max-width: 768px) {
+  .calc-hero { padding: 80px 0 20px; }
 }
 
 /* ── Calculator Section ── */
