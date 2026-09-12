@@ -219,8 +219,7 @@
 
   function renderSalaryForm(suffix) {
     suffix = suffix || '';
-    var showNPT = suffix === ''; // Chỉ hiện NPT ở nguồn lương ĐẦU TIÊN
-    var html = '' +
+    return '' +
       '<div class="calc-form-row">' +
       '  <div class="calc-form-group">' +
       '    <label class="calc-label">Lương gross hàng tháng</label>' +
@@ -241,20 +240,6 @@
       '    </div>' +
       '  </div>' +
       '</div>';
-    if (showNPT) {
-      html += '<div class="calc-source-tip" style="background:#f0fdf4;border-left:3px solid #2d8a4e;padding:8px 12px;margin-top:8px;border-radius:4px;font-size:13px;">' +
-        '✅ Được giảm trừ bản thân + NPT (1 lần trên tổng thu nhập lương). NPT áp dụng cho tất cả nguồn tiền lương.</div>';
-      html += '<div class="calc-form-group" style="margin-top:12px;">' +
-        '<label class="calc-label">Số người phụ thuộc</label>' +
-        '<div class="calc-stepper">' +
-        '<button class="calc-stepper-btn" data-action="decrease">−</button>' +
-        '<input type="number" id="npt-shared" class="calc-stepper-input" value="0" min="0" max="20" readonly>' +
-        '<button class="calc-stepper-btn" data-action="increase">+</button>' +
-        '</div>' +
-        '<span class="calc-hint">6,2 triệu/người/tháng — Điều 9 Luật 109/2025</span>' +
-        '</div>';
-    }
-    return html;
   }
 
   function renderHKDForm() {
@@ -337,19 +322,7 @@
       '      <span class="calc-input-suffix">VNĐ/năm</span>' +
       '    </div>' +
       '  </div>' +
-      '</div>' +
-      '<div id="freelancer-npt-section" style="display:none;">' +
-      '<div class="calc-source-tip" style="background:#f0fdf4;border-left:3px solid #2d8a4e;padding:8px 12px;margin-top:8px;border-radius:4px;font-size:13px;">' +
-      '✅ HĐDV = tiền lương, tiền công → được GTGC + NPT (quyết toán năm).</div>' +
-      '<div class="calc-form-group" style="margin-top:12px;">' +
-      '<label class="calc-label">Số người phụ thuộc</label>' +
-      '<div class="calc-stepper">' +
-      '<button class="calc-stepper-btn" data-action="decrease">−</button>' +
-      '<input type="number" id="npt-shared" class="calc-stepper-input" value="0" min="0" max="20" readonly>' +
-      '<button class="calc-stepper-btn" data-action="increase">+</button>' +
-      '</div>' +
-      '<span class="calc-hint">6,2 triệu/người/tháng</span>' +
-      '</div></div>';
+      '</div>';
   }
 
   function renderCorporateForm() {
@@ -434,17 +407,6 @@
   // ================================================================
 
   function bindFormEvents() {
-    // Freelancer mode radio — show/hide NPT
-    var freeModeFree = document.getElementById("freelancer-mode-free");
-    var freeModeBusiness = document.getElementById("freelancer-mode-business");
-    var freeNptSection = document.getElementById("freelancer-npt-section");
-    if (freeModeFree && freeNptSection) {
-      freeModeFree.addEventListener("change", function () { freeNptSection.style.display = this.checked ? "" : "none"; });
-    }
-    if (freeModeBusiness && freeNptSection) {
-      freeModeBusiness.addEventListener("change", function () { freeNptSection.style.display = this.checked ? "none" : ""; });
-    }
-
     // Format number inputs
     document.querySelectorAll(".calc-input[inputmode='numeric']").forEach(function (input) {
       input.addEventListener("input", function () {
@@ -1122,6 +1084,12 @@
     dom.btnCalculate.addEventListener("click", function () { calculateAll(); });
     dom.btnCalcAgain.addEventListener("click", function () {
       state.selectedSources = [];
+      state.sourceCounters = {};
+      dom.step2Forms.innerHTML = "";
+      dom.resultContainer.innerHTML = "";
+      dom.resultContainer.style.display = "none";
+      dom.resultActions.style.display = "none";
+      dom.resultPlaceholder.style.display = "";
       updateSourceUI();
       goToStep(1);
     });
