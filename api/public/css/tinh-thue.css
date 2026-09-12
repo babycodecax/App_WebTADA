@@ -23,36 +23,35 @@
 
 /* ── Hero ── */
 .calc-hero {
-  padding: 80px 0 40px;
+  padding: 48px 0 24px;
   text-align: center;
   background: linear-gradient(180deg, #fdfbfa 0%, #f6f1ed 100%);
 }
 
-.calc-hero-subtitle {
-  display: block;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--calc-accent);
-  margin-bottom: 12px;
-}
-
 .calc-hero-title {
   font-family: var(--font-sans);
-  font-size: clamp(28px, 5vw, 48px);
+  font-size: clamp(24px, 5vw, 40px);
   font-weight: 800;
   color: var(--calc-primary);
-  line-height: 1.15;
-  margin: 0 0 16px;
+  line-height: 1.2;
+  margin: 0 0 8px;
 }
 
 .calc-hero-desc {
-  font-size: 16px;
+  font-size: 14px;
   color: var(--calc-muted);
-  line-height: 1.6;
-  max-width: 600px;
-  margin: 0 auto;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.text-accent {
+  color: var(--calc-accent);
+}
+
+@media (max-width: 480px) {
+  .calc-hero { padding: 32px 0 16px; }
+  .calc-hero-title { font-size: 22px; }
+  .calc-hero-desc { font-size: 13px; }
 }
 
 /* ── Calculator Section ── */
