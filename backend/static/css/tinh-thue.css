@@ -60,14 +60,14 @@
 
 /* ── Deduction Box — compact inline ── */
 .calc-deduction-box {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 16px;
   background: #f0fdf4;
   border: 1.5px solid #bbf7d0;
   border-radius: 12px;
-  padding: 12px 16px;
-  margin-bottom: 16px;
+  padding: 10px 20px;
+  margin: 0 auto 16px;
 }
 
 .calc-deduction-box .calc-stepper {
@@ -93,6 +93,14 @@
 
 @media (max-width: 480px) {
   .calc-deduction-box { flex-wrap: wrap; gap: 8px; }
+}
+
+#step2-forms {
+  text-align: center;
+}
+
+#step2-forms .calc-source-form {
+  text-align: left;
 }
 
 /* ── Calculator Section ── */

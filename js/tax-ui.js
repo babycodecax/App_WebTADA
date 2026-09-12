@@ -62,17 +62,10 @@
   }
 
   function toggleSource(sourceId) {
-    var exists = state.selectedSources.some(function (s) { return s.id === sourceId; });
-    if (exists) {
-      // Đã có → xóa tất cả instances
-      state.selectedSources = state.selectedSources.filter(function (s) { return s.id !== sourceId; });
-      delete state.sourceCounters[sourceId];
-    } else {
-      // Chưa có → thêm 1 instance
-      if (!state.sourceCounters[sourceId]) state.sourceCounters[sourceId] = 0;
-      state.sourceCounters[sourceId]++;
-      state.selectedSources.push({ id: sourceId, key: sourceId + "_" + state.sourceCounters[sourceId] });
-    }
+    // Click card = luôn thêm instance mới (xóa qua nút ✕)
+    if (!state.sourceCounters[sourceId]) state.sourceCounters[sourceId] = 0;
+    state.sourceCounters[sourceId]++;
+    state.selectedSources.push({ id: sourceId, key: sourceId + "_" + state.sourceCounters[sourceId] });
     updateSourceUI();
   }
 
