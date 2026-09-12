@@ -81,10 +81,12 @@
       card.classList.toggle("selected", state.selectedSources.indexOf(src) !== -1);
     });
 
-    // Show common info if ≥1 source selected
-    var hasCommon = state.selectedSources.length > 0;
-    dom.commonInfo.style.display = hasCommon ? "block" : "none";
-    dom.btnToStep2.disabled = !hasCommon;
+    // NPT chỉ hiện khi chọn "Đi làm, nhận lương" (Điều 9 Luật 109/2025)
+    var hasSalary = state.selectedSources.indexOf("salary") !== -1;
+    dom.commonInfo.style.display = hasSalary ? "block" : "none";
+
+    var hasAny = state.selectedSources.length > 0;
+    dom.btnToStep2.disabled = !hasAny;
   }
 
   // ================================================================
@@ -671,8 +673,21 @@
 
     } else if (r.type === "freelancer") {
       html += '<tr><td>Doanh thu năm</td><td>' + C.fmt(r.revenue) + '</td></tr>';
-      if (r.costs > 0) html += '<tr class="deduction"><td>− Chi phí hợp lý</td><td>' + C.fmt(r.costs) + '</td></tr>';
+      if (r.costs > 0) {
+        html += '<tr class="deduction"><td>− Chi phí hợp lý</td><td>' + C.fmt(r.costs) + '</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">Giảm chi phí thực tế liên quan đến công việc</td></tr>';
+      }
+      html += '<tr class="deduction"><td>− Giảm trừ bản thân</td><td>' + C.fmt(R.getPersonalDeduction().yearly) + '</td></tr>';
+      html += '<tr class="formula-row"><td colspan="2">' + R.getPersonalDeduction().monthly.toLocaleString("vi-VN") + 'đ × 12 tháng</td></tr>';
+      html += '<tr class="formula-row"><td colspan="2">KHÔNG trừ NPT (hợp đồng dịch vụ → thu nhập khác)</td></tr>';
       html += '<tr class="subtotal"><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
+      html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.revenue) + ' − ' + C.fmt(r.costs || 0) + ' − ' + C.fmt(R.getPersonalDeduction().yearly) + '</td></tr>';
+      if (r.breakdown) {
+        r.breakdown.forEach(function (b) {
+          html += '<tr><td>' + b.label + ' (' + C.fmtPct(b.rate) + ')</td><td>' + C.fmt(b.tax) + '</td></tr>';
+          if (b.formula) html += '<tr class="formula-row"><td colspan="2">' + b.formula + '</td></tr>';
+        });
+      }
       html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
 
     } else {
