@@ -375,7 +375,7 @@
       '  <label class="calc-label">Thu nhập tại Việt Nam</label>' +
       '  <div class="calc-input-group">' +
       '    <input type="text" class="calc-input" id="foreign-revenue-input" placeholder="Ví dụ: 500.000.000" inputmode="numeric">' +
-      '    <span class="calc-input-suffix">VNĐ/tháng</span>' +
+      '    <span class="calc-input-suffix">VNĐ/năm</span>' +
       '  </div>' +
       '</div>' +
       '<div class="calc-source-tip" style="background:#fef9f0;border-left:3px solid var(--calc-accent);padding:8px 12px;margin-top:8px;border-radius:4px;font-size:13px;">' +
