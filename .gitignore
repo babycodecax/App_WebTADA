@@ -80,3 +80,6 @@ backend/extract_vault*.log
 tools/DataTest/test2_result*.log
 tools/DataTest/sync_run*.log
 backend/pip_out.txt
+
+# Local testing junctions (not needed on production — Next.js rewrite handles /static/ paths)
+api/public/static/
