@@ -62,18 +62,10 @@
   }
 
   function toggleSource(sourceId) {
-    // Step 1: click = toggle 1 lần (chọn/bỏ loại nguồn)
-    var exists = state.selectedSources.some(function (s) { return s.id === sourceId; });
-    if (exists) {
-      // Bỏ TẤT CẢ instances của loại này
-      state.selectedSources = state.selectedSources.filter(function (s) { return s.id !== sourceId; });
-      delete state.sourceCounters[sourceId];
-    } else {
-      // Thêm 1 instance đầu tiên
-      if (!state.sourceCounters[sourceId]) state.sourceCounters[sourceId] = 0;
-      state.sourceCounters[sourceId]++;
-      state.selectedSources.push({ id: sourceId, key: sourceId + "_" + state.sourceCounters[sourceId] });
-    }
+    // Click card = thêm 1 instance mới (luôn thêm, không toggle off)
+    if (!state.sourceCounters[sourceId]) state.sourceCounters[sourceId] = 0;
+    state.sourceCounters[sourceId]++;
+    state.selectedSources.push({ id: sourceId, key: sourceId + "_" + state.sourceCounters[sourceId] });
     updateSourceUI();
   }
 
@@ -494,7 +486,7 @@
 
       // Thu nhập tính thuế
       var taxableSalary = Math.max(0, totalSalaryIncome - totalPersonal - totalBHXH - totalDependent);
-      var salaryTax = progressiveTNCN(taxableSalary);
+      var salaryTax = C.progressiveTNCN(taxableSalary);
 
       results.unshift({
         type: "salary_group",
