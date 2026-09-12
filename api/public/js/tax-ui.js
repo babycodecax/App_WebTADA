@@ -121,22 +121,9 @@
     // ── Phần giảm trừ chung (nếu có nguồn tiền lương) ──
     if (hasSalaryType) {
       html += '<div class="calc-deduction-box">';
-      html += '<div class="calc-deduction-title">📋 Giảm trừ chung (chỉ tính 1 lần trên tổng thu nhập tiền lương)</div>';
       html += '<div class="calc-deduction-row">';
-      html += '<div class="calc-form-group" style="margin:0;">';
-      html += '<label class="calc-label">Giảm trừ bản thân</label>';
-      html += '<div style="font-size:15px;font-weight:700;color:var(--calc-primary);">' + C.fmt(R.getPersonalDeduction().yearly) + '/năm</div>';
-      html += '<span class="calc-hint">' + C.fmt(R.getPersonalDeduction().monthly) + '/tháng × 12 tháng</span>';
-      html += '</div>';
-      html += '<div class="calc-form-group" style="margin:0;">';
-      html += '<label class="calc-label">Người phụ thuộc</label>';
-      html += '<div class="calc-stepper">';
-      html += '<button class="calc-stepper-btn" data-action="decrease">−</button>';
-      html += '<input type="number" id="npt-shared" class="calc-stepper-input" value="0" min="0" max="20" readonly>';
-      html += '<button class="calc-stepper-btn" data-action="increase">+</button>';
-      html += '</div>';
-      html += '<span class="calc-hint" id="npt-hint">0 người × 6,2tr = 0đ/năm</span>';
-      html += '</div>';
+      html += '<div style="flex:1;"><span style="font-size:12px;font-weight:700;color:#166534;">📋 GTGC bản thân</span><br><span style="font-size:15px;font-weight:700;color:var(--calc-primary);">' + C.fmt(R.getPersonalDeduction().yearly) + '/năm</span> <span style="font-size:11px;color:#6b6b6b;">(' + C.fmt(R.getPersonalDeduction().monthly) + '/tháng × 12)</span></div>';
+      html += '<div style="flex:1;"><span style="font-size:12px;font-weight:700;color:#166534;">👨‍👩‍👧‍👦 Người phụ thuộc</span><br><div style="display:flex;align-items:center;gap:8px;margin-top:4px;"><div class="calc-stepper" style="height:36px;"><button class="calc-stepper-btn" data-action="decrease" style="width:36px;height:36px;">−</button><input type="number" id="npt-shared" class="calc-stepper-input" value="0" min="0" max="20" readonly style="width:48px;height:36px;font-size:16px;"><button class="calc-stepper-btn" data-action="increase" style="width:36px;height:36px;">+</button></div><span class="calc-hint" id="npt-hint" style="margin:0;">0 người × 6,2tr = 0đ/năm</span></div></div>';
       html += '</div></div>';
     }
 
