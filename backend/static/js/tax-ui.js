@@ -132,8 +132,7 @@
       html += renderSourceForm(s.id, s.key);
     });
 
-    // Nút thêm nguồn
-    html += renderAddButtons(["salary", "foreign", "hkd", "rental"]);
+    // Nút thêm nguồn — BỎ (user click card trên cùng để thêm)
 
     // Cache existing values before re-render
     var cachedValues = {};
@@ -392,10 +391,11 @@
         var action = this.getAttribute("data-action");
         if (action === "increase" && val < 20) inp.value = val + 1;
         if (action === "decrease" && val > 0) inp.value = val - 1;
-        // Update NPT hint
+        // Update NPT hint — dùng giá trị MỚI sau khi thay đổi
         var hint = document.getElementById("npt-hint");
         if (hint && inp.id === "npt-shared") {
-          hint.textContent = val + " người × 6,2tr = " + C.fmt(val * 6_200_000) + "/năm";
+          var newVal = parseInt(inp.value, 10) || 0;
+          hint.textContent = newVal + " người × 6,2tr = " + C.fmt(newVal * 6_200_000) + "/năm";
         }
       });
     });
