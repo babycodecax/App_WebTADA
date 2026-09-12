@@ -15,7 +15,6 @@
   // ── State ──
   var state = {
     selectedSources: [],   // ["salary", "hkd", ...]
-    dependents: 0,
     currentStep: 1,
   };
 
@@ -23,7 +22,6 @@
   var dom = {
     sourceGrid: document.getElementById("source-grid"),
     commonInfo: document.getElementById("common-info"),
-    dependentHint: document.getElementById("dependent-hint"),
     btnToStep2: document.getElementById("btn-to-step2"),
     btnBackStep1: document.getElementById("btn-back-step1"),
     btnCalculate: document.getElementById("btn-calculate"),
@@ -150,6 +148,15 @@
       '      <div><span class="calc-toggle-label">Phí công đoàn (1%)</span><div class="calc-toggle-hint">Tùy doanh nghiệp — thường có nếu có tổ chức CĐ</div></div>' +
       '    </div>' +
       '  </div>' +
+      '</div>' +
+      '<div class="calc-form-group">' +
+      '  <label class="calc-label">Số người phụ thuộc (không tính bạn)</label>' +
+      '  <div class="calc-stepper">' +
+      '    <button class="calc-stepper-btn" data-action="decrease" aria-label="Giảm">−</button>' +
+      '    <input type="number" id="salary-dependents" class="calc-stepper-input" value="0" min="0" max="20" readonly>' +
+      '    <button class="calc-stepper-btn" data-action="increase" aria-label="Tăng">+</button>' +
+      '  </div>' +
+      '  <span class="calc-hint">6,2 triệu/người/tháng — Điều 9 Luật 109/2025</span>' +
       '</div>';
   }
 
@@ -199,6 +206,13 @@
 
   function renderFreelancerForm() {
     return '' +
+      '<div class="calc-form-group">' +
+      '  <label class="calc-label">Loại hợp đồng</label>' +
+      '  <select class="calc-select" id="freelancer-contract-type">' +
+      '    <option value="service">Hợp đồng dịch vụ (thu nhập khác — KHÔNG giảm trừ)</option>' +
+      '    <option value="labor">Hợp đồng lao động (tiền lương — CÓ giảm trừ)</option>' +
+      '  </select>' +
+      '</div>' +
       '<div class="calc-form-row">' +
       '  <div class="calc-form-group">' +
       '    <label class="calc-label">Doanh thu năm</label>' +
@@ -214,6 +228,15 @@
       '      <span class="calc-input-suffix">VNĐ/năm</span>' +
       '    </div>' +
       '  </div>' +
+      '</div>' +
+      '<div class="calc-form-group" id="freelancer-dep-group" style="display:none;">' +
+      '  <label class="calc-label">Số người phụ thuộc</label>' +
+      '  <div class="calc-stepper">' +
+      '    <button class="calc-stepper-btn" data-action="decrease" aria-label="Giảm">−</button>' +
+      '    <input type="number" id="freelancer-dependents" class="calc-stepper-input" value="0" min="0" max="20" readonly>' +
+      '    <button class="calc-stepper-btn" data-action="increase" aria-label="Tăng">+</button>' +
+      '  </div>' +
+      '  <span class="calc-hint">Chỉ áp dụng khi có HĐLĐ</span>' +
       '</div>';
   }
 
@@ -362,6 +385,28 @@
         if (val > 0) { inp.value = val - 1; }
       });
     }
+
+    // Freelancer contract type — show/hide NPT
+    var freeContractType = document.getElementById("freelancer-contract-type");
+    var freeDepGroup = document.getElementById("freelancer-dep-group");
+    if (freeContractType && freeDepGroup) {
+      freeContractType.addEventListener("change", function () {
+        freeDepGroup.style.display = this.value === "labor" ? "" : "none";
+      });
+    }
+
+    // Generic stepper handler — any stepper inside forms
+    document.querySelectorAll(".calc-source-form .calc-stepper-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var stepper = this.closest(".calc-stepper");
+        var inp = stepper.querySelector(".calc-stepper-input");
+        if (!inp) return;
+        var val = parseInt(inp.value, 10) || 0;
+        var action = this.getAttribute("data-action");
+        if (action === "increase" && val < 20) inp.value = val + 1;
+        if (action === "decrease" && val > 0) inp.value = val - 1;
+      });
+    });
   }
 
   function onInputChange() {
@@ -421,13 +466,12 @@
     var results = [];
 
     state.selectedSources.forEach(function (sourceId) {
-      var dependents = state.dependents;
       var result = null;
 
       if (sourceId === "salary") {
         result = C.calculateSalaryTax({
           salary: parseNumber(getVal("salary-input")),
-          dependents: dependents,
+          dependents: parseNumber(getVal("salary-dependents")),
           hasBHXH: isChecked("bhxh-toggle"),
           hasUnion: isChecked("union-toggle"),
         });
@@ -436,17 +480,17 @@
           revenue: parseNumber(getVal("hkd-revenue-input")),
           businessType: getVal("hkd-biz-type"),
           costs: parseNumber(getVal("hkd-costs-input")),
-          dependents: dependents,
         });
       } else if (sourceId === "rental") {
         result = C.calculateRentalTax({
           revenue: parseNumber(getVal("rental-revenue-input")),
         });
       } else if (sourceId === "freelancer") {
+        var freeContractType = getVal("freelancer-contract-type");
         result = C.calculateFreelancerTax({
           revenue: parseNumber(getVal("freelancer-revenue-input")),
           costs: parseNumber(getVal("freelancer-costs-input")),
-          dependents: dependents,
+          dependents: freeContractType === "labor" ? parseNumber(getVal("freelancer-dependents")) : 0,
         });
       } else if (sourceId === "corporate") {
         result = C.calculateTNDNTax({
@@ -902,7 +946,7 @@
         parts.push("ia=" + parseNumber(getVal("invest-amount-input")));
       }
     });
-    parts.push("dep=" + state.dependents);
+    parts.push("dep=" + (parseNumber(getVal("salary-dependents")) || parseNumber(getVal("foreign-dependents")) || parseNumber(getVal("freelancer-dependents")) || 0));
     return "#!" + parts.join("&");
   }
 
@@ -961,9 +1005,9 @@
         setVal("invest-amount-input", params.ia);
         if (params.it) setSelect("invest-type", params.it);
       }
-      if (state.dependents > 0) {
-        document.getElementById("dependents").value = state.dependents;
-        dom.dependentHint.textContent = state.dependents + " người × " + C.fmt(R.DEPENDENT_DEDUCTION.monthly) + " = " + C.fmt(state.dependents * R.DEPENDENT_DEDUCTION.monthly) + " giảm trừ/tháng";
+      if (parseInt(params.dep, 10) > 0) {
+        var depEl = document.getElementById("salary-dependents") || document.getElementById("freelancer-dependents") || document.getElementById("foreign-dependents");
+        if (depEl) depEl.value = params.dep;
       }
       // Auto-calculate
       calculateAll();
@@ -1015,29 +1059,12 @@
       if (card) toggleSource(card.getAttribute("data-source"));
     });
 
-    // Dependents stepper
-    document.querySelectorAll(".calc-stepper-btn").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var action = this.getAttribute("data-action");
-        var input = document.getElementById("dependents");
-        var val = parseInt(input.value, 10) || 0;
-        if (action === "increase" && val < 20) val++;
-        if (action === "decrease" && val > 0) val--;
-        input.value = val;
-        state.dependents = val;
-        dom.dependentHint.textContent = val + " người × " + C.fmt(R.DEPENDENT_DEDUCTION.monthly) + " = " + C.fmt(val * R.DEPENDENT_DEDUCTION.monthly) + " giảm trừ/tháng";
-      });
-    });
-
     // Navigation
     dom.btnToStep2.addEventListener("click", function () { goToStep(2); });
     dom.btnBackStep1.addEventListener("click", function () { goToStep(1); });
     dom.btnCalculate.addEventListener("click", function () { calculateAll(); });
     dom.btnCalcAgain.addEventListener("click", function () {
       state.selectedSources = [];
-      state.dependents = 0;
-      document.getElementById("dependents").value = 0;
-      dom.dependentHint.textContent = "0 người × " + C.fmt(R.DEPENDENT_DEDUCTION.monthly) + " = 0đ giảm trừ/tháng";
       updateSourceUI();
       goToStep(1);
     });
