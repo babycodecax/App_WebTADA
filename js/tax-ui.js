@@ -588,12 +588,41 @@
     } else if (r.type === "hkd" && !r.exempt) {
       // Dual comparison
       html += '<tr><td>Doanh thu năm</td><td>' + C.fmt(r.revenue) + '</td></tr>';
+      html += '<tr class="formula-row"><td colspan="2">Thuộc ' + r.group.label + ' — ' + r.group.filingType + '</td></tr>';
       if (r.costs > 0) {
         html += '<tr><td>Chi phí vốn</td><td>' + C.fmt(r.costs) + '</td></tr>';
       }
+      html += '<tr><td>Ngành nghề</td><td>' + (r.gtgtRate?.label || '') + '</td></tr>';
       html += '</table>';
 
-      // Comparison boxes
+      // Cách 1 detail
+      html += '<div style="margin:12px 0 6px;font-size:13px;font-weight:700;color:var(--calc-primary);">Cách 1: Tính trên doanh thu</div>';
+      html += '<table class="calc-breakdown">';
+      html += '<tr><td>GTGT (' + C.fmtPct(r.method1.gtgtRate) + ' × DT)</td><td>' + C.fmt(r.method1.gtgt) + '</td></tr>';
+      html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.revenue) + ' × ' + C.fmtPct(r.method1.gtgtRate) + '</td></tr>';
+      html += '<tr><td>TNCN (' + C.fmtPct(r.method1.tncnRate) + ' × (DT−1 tỷ))</td><td>' + C.fmt(r.method1.tncn) + '</td></tr>';
+      html += '<tr class="formula-row"><td colspan="2">(' + C.fmt(r.revenue) + ' − 1.000.000.000) × ' + C.fmtPct(r.method1.tncnRate) + '</td></tr>';
+      html += '<tr class="subtotal"><td>Tổng Cách 1</td><td>' + C.fmt(r.method1.total) + '</td></tr>';
+      html += '</table>';
+
+      // Cách 2 detail
+      html += '<div style="margin:12px 0 6px;font-size:13px;font-weight:700;color:var(--calc-primary);">Cách 2: Tính trên thu nhập thực tế</div>';
+      html += '<table class="calc-breakdown">';
+      html += '<tr><td>GTGT (giống Cách 1)</td><td>' + C.fmt(r.method2.gtgt) + '</td></tr>';
+      html += '<tr><td>Thu nhập tính thuế</td><td>' + C.fmt(r.method2.taxableRevenue) + '</td></tr>';
+      html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.revenue) + ' − ' + C.fmt(r.costs) + '</td></tr>';
+      if (r.method2.breakdown && r.method2.breakdown.length > 0) {
+        r.method2.breakdown.forEach(function (b) {
+          html += '<tr><td>TNCN ' + b.label + ' (' + C.fmtPct(b.rate) + ')</td><td>' + C.fmt(b.tax) + '</td></tr>';
+          if (b.formula) html += '<tr class="formula-row"><td colspan="2">' + b.formula + '</td></tr>';
+        });
+      } else {
+        html += '<tr><td>TNCN</td><td>' + C.fmt(r.method2.tncn) + '</td></tr>';
+      }
+      html += '<tr class="subtotal"><td>Tổng Cách 2</td><td>' + C.fmt(r.method2.total) + '</td></tr>';
+      html += '</table>';
+
+      // So sánh
       html += '<div class="calc-compare">';
       html += '<div class="calc-compare-box' + (r.comparison.recommendation === "Cách 1" ? " winner" : "") + '">';
       html += '<div class="calc-compare-label">' + r.method1.label + '</div>';
