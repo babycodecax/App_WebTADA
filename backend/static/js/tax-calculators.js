@@ -173,6 +173,7 @@ window.TAX_CALC = (function () {
       totalTax: result.totalTax,
       monthlyTax: monthlyTax,
       effectiveRate: effectiveRate,
+      applyPersonalDed: applyPersonalDed,
       input: { salary: monthlySalary, dependents: dependents, hasBHXH: hasBHXH, hasUnion: hasUnion, months: months },
       deductions: {
         personal: totalPersonal,

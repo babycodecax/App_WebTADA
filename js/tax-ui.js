@@ -511,38 +511,114 @@
 
     var npt = parseNumber(getVal("npt-shared"));
     var results = [];
-    var salaryApplied = false; // GTGC + NPT chỉ 1 lần
 
+    // ── Nhóm 1: Tiền lương — gộp tổng, GTGC + NPT 1 lần ──
+    var salarySources = state.selectedSources.filter(function (s) {
+      return s.id === "salary" || s.id === "freelancer" || s.id === "foreign";
+    });
+
+    if (salarySources.length > 0) {
+      var totalSalaryIncome = 0;
+      var totalBHXH = 0;
+      var totalDependent = 0;
+      var salaryBreakdown = [];
+      var hasGTGC = false;
+      var dependents = npt;
+      var personalDed = R.getPersonalDeduction();
+
+      salarySources.forEach(function (s) {
+        var form = document.querySelector('.calc-source-form[data-key="' + s.key + '"]');
+        if (!form) return;
+        var g = function (id) { var el = form.querySelector("#" + id); return el ? el.value : ""; };
+        var p = function (id) { return parseNumber(g(id)); };
+        var c = function (id) { var el = form.querySelector("#" + id); return el ? el.checked : false; };
+
+        if (s.id === "salary") {
+          var monthlySalary = p("salary-input");
+          var annualSalary = monthlySalary * 12;
+          var si = R.SOCIAL_INSURANCE.employee;
+          var cappedSalary = Math.min(monthlySalary, si.bhxh.cap);
+          var bhxh = 0;
+          if (c("bhxh-toggle")) {
+            bhxh = cappedSalary * si.bhxh.rate * 12 + cappedSalary * si.bhtn.rate * 12 + cappedSalary * si.bhyt.rate * 12;
+          }
+          var union = c("union-toggle") ? cappedSalary * si.union.rate * 12 : 0;
+          totalSalaryIncome += annualSalary;
+          totalBHXH += bhxh + union;
+          salaryBreakdown.push({ label: "Lương", amount: annualSalary, formula: C.fmt(monthlySalary) + " × 12 tháng", source: s.key });
+          if (bhxh > 0) salaryBreakdown.push({ label: "BHXH+BHTN+BHYT", amount: bhxh, source: s.key });
+          if (union > 0) salaryBreakdown.push({ label: "Phí công đoàn", amount: union, source: s.key });
+        } else if (s.id === "freelancer") {
+          var ft = g("freelancer-contract-type");
+          if (ft === "business") {
+            // HĐKD — tính riêng theo tỷ lệ KD
+            results.push(C.calculateFreelancerTax({ revenue: p("freelancer-revenue-input"), costs: p("freelancer-costs-input"), mode: "business" }));
+          } else {
+            // HĐDV — gộp vào tổng tiền lương
+            var rev = p("freelancer-revenue-input");
+            var cost = p("freelancer-costs-input");
+            totalSalaryIncome += rev;
+            salaryBreakdown.push({ label: "Freelancer HĐDV", amount: rev, formula: "− chi phí " + C.fmt(cost), cost: cost, source: s.key });
+          }
+        } else if (s.id === "foreign") {
+          var ftype = g("foreign-type");
+          if (ftype === "salary") {
+            // NCNN lương — gộp vào tổng
+            var fRev = p("foreign-revenue-input");
+            totalSalaryIncome += fRev;
+            salaryBreakdown.push({ label: "NCNN lương", amount: fRev, source: s.key });
+          } else {
+            // HĐDV hoặc không cư trú — tính riêng
+            results.push(C.calculateForeignContractor({ grossRevenue: p("foreign-revenue-input"), contractorType: ftype, dependents: npt }));
+          }
+        }
+      });
+
+      // Tính GTGC + NPT 1 lần
+      var totalPersonal = personalDed.yearly;
+      var totalDep = R.DEPENDENT_DEDUCTION.yearly * dependents;
+      totalDependent = totalDep;
+      if (dependents > 0) hasGTGC = true;
+      if (totalSalaryIncome > 0) hasGTGC = true;
+
+      // Thu nhập tính thuế
+      var taxableSalary = Math.max(0, totalSalaryIncome - totalPersonal - totalBHXH - totalDependent);
+      var salaryTax = progressiveTNCN(taxableSalary);
+
+      results.unshift({
+        type: "salary_group",
+        label: "Thu nhập từ tiền lương, tiền công",
+        totalIncome: totalSalaryIncome,
+        totalBHXH: totalBHXH,
+        personalDeduction: totalPersonal,
+        dependentDeduction: totalDependent,
+        dependentCount: dependents,
+        taxableIncome: taxableSalary,
+        totalTax: salaryTax.totalTax,
+        effectiveRate: totalSalaryIncome > 0 ? salaryTax.totalTax / totalSalaryIncome : 0,
+        breakdown: salaryBreakdown,
+        taxBreakdown: salaryTax.breakdown,
+        forms: [R.FORMS_DATA.personal_salary],
+        tips: [
+          { icon: "📋", text: "Thuế TNCN từ tiền lương, tiền công: gộp tổng từ " + salarySources.length + " nguồn, GTGC + NPT tính 1 lần." },
+          { icon: "💡", text: "10% tạm khấu trừ tại nguồn. Cuối năm quyết toán, được hoàn/thiếu thuế." },
+        ],
+        disclaimer: C.getDisclaimer(),
+      });
+    }
+
+    // ── Nhóm 2: Mỗi nguồn kinh doanh/khác tính riêng (khác ngành → % khác) ──
     state.selectedSources.forEach(function (s) {
-      var result = null;
+      if (s.id === "salary" || s.id === "freelancer" || s.id === "foreign") return;
       var form = document.querySelector('.calc-source-form[data-key="' + s.key + '"]');
       if (!form) return;
       var g = function (id) { var el = form.querySelector("#" + id); return el ? el.value : ""; };
       var p = function (id) { return parseNumber(g(id)); };
-      var c = function (id) { var el = form.querySelector("#" + id); return el ? el.checked : false; };
-
-      var isSalaryType = (s.id === "salary" || s.id === "freelancer" || s.id === "foreign");
-      var firstSalary = isSalaryType && !salaryApplied;
-      if (isSalaryType) salaryApplied = true;
-
-      if (s.id === "salary") {
-        result = C.calculateSalaryTax({ salary: p("salary-input"), dependents: firstSalary ? npt : 0, hasBHXH: c("bhxh-toggle"), hasUnion: c("union-toggle"), applyPersonalDed: firstSalary, applyDependent: firstSalary });
-      } else if (s.id === "hkd") {
-        result = C.calculateHKDTax({ revenue: p("hkd-revenue-input"), businessType: g("hkd-biz-type"), costs: p("hkd-costs-input") });
-      } else if (s.id === "rental") {
-        result = C.calculateRentalTax({ revenue: p("rental-revenue-input") });
-      } else if (s.id === "freelancer") {
-        var freeMode = form.querySelector('input[name="freelancer-mode_form"]:checked');
-        var ft = freeMode ? freeMode.value : "free";
-        result = C.calculateFreelancerTax({ revenue: p("freelancer-revenue-input"), costs: p("freelancer-costs-input"), mode: ft, applyPersonalDed: firstSalary });
-      } else if (s.id === "corporate") {
-        result = C.calculateTNDNTax({ revenue: p("corp-revenue-input"), taxableIncome: p("corp-taxable-input"), charitableDonation: p("corp-charity-input"), rdFund: p("corp-rd-input") });
-      } else if (s.id === "foreign") {
-        result = C.calculateForeignContractor({ grossRevenue: p("foreign-revenue-input"), contractorType: g("foreign-type"), dependents: npt });
-      } else if (s.id === "investment") {
-        var type = g("invest-type"); var amt = p("invest-amount-input"); var ri = R.OTHER_INCOME_TAX[type];
-        if (ri && amt > 0) { var tx = ri.threshold ? Math.max(0, amt - ri.threshold) * ri.rate : amt * ri.rate; result = { type: "investment", revenue: amt, totalTax: tx, effectiveRate: amt > 0 ? tx / amt : 0, label: ri.label, tips: [{ icon: "📋", text: ri.label }, tx === 0 ? { icon: "✅", text: "MIỄN THUẾ" } : null].filter(Boolean), disclaimer: C.getDisclaimer() }; }
-      }
+      var result = null;
+      if (s.id === "hkd") result = C.calculateHKDTax({ revenue: p("hkd-revenue-input"), businessType: g("hkd-biz-type"), costs: p("hkd-costs-input") });
+      else if (s.id === "rental") result = C.calculateRentalTax({ revenue: p("rental-revenue-input") });
+      else if (s.id === "corporate") result = C.calculateTNDNTax({ revenue: p("corp-revenue-input"), taxableIncome: p("corp-taxable-input"), charitableDonation: p("corp-charity-input"), rdFund: p("corp-rd-input") });
+      else if (s.id === "investment") { var type = g("invest-type"); var amt = p("invest-amount-input"); var ri = R.OTHER_INCOME_TAX[type]; if (ri && amt > 0) { var tx = ri.threshold ? Math.max(0, amt - ri.threshold) * ri.rate : amt * ri.rate; result = { type: "investment", revenue: amt, totalTax: tx, effectiveRate: amt > 0 ? tx / amt : 0, label: ri.label, tips: [{ icon: "📋", text: ri.label }, tx === 0 ? { icon: "✅", text: "MIỄN THUẾ" } : null].filter(Boolean), disclaimer: C.getDisclaimer() }; } }
       if (result) results.push(result);
     });
 
@@ -679,7 +755,27 @@
   function renderDetailBreakdown(r) {
     var html = '<table class="calc-breakdown">';
 
-    if (r.type === "salary") {
+    if (r.type === "salary_group") {
+      // Gộp tổng tiền lương — 1 dòng/gốc
+      html += '<tr class="subtotal" style="color:var(--calc-primary);"><td colspan="2">📋 Tổng thu nhập tiền lương (' + (r.breakdown ? r.breakdown.length : 0) + ' nguồn)</td></tr>';
+      if (r.breakdown) {
+        r.breakdown.forEach(function (b) {
+          html += '<tr><td>' + b.label + '</td><td>' + C.fmt(b.amount) + '</td></tr>';
+        });
+      }
+      html += '<tr class="subtotal"><td>Tổng thu nhập</td><td>' + C.fmt(r.totalIncome) + '</td></tr>';
+      html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + '</td></tr>';
+      if (r.totalBHXH > 0) html += '<tr class="deduction"><td>− BHXH + BHTN + BHYT + CĐ</td><td>' + C.fmt(r.totalBHXH) + '</td></tr>';
+      if (r.dependentDeduction > 0) html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
+      html += '<tr class="subtotal"><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
+      if (r.taxBreakdown) {
+        r.taxBreakdown.forEach(function (b) {
+          html += '<tr class="formula-row"><td>' + b.label + '</td><td>' + b.formula + '</td></tr>';
+        });
+      }
+      html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
+
+    } else if (r.type === "salary") {
       var inp = r.input || {};
       var m = inp.months || 12;
       html += '<tr><td>Thu nhập gross</td><td>' + C.fmt(r.grossIncome) + '</td></tr>';
