@@ -62,10 +62,17 @@
   }
 
   function toggleSource(sourceId) {
-    // Click card = thêm 1 instance mới (luôn thêm, không toggle off)
-    if (!state.sourceCounters[sourceId]) state.sourceCounters[sourceId] = 0;
-    state.sourceCounters[sourceId]++;
-    state.selectedSources.push({ id: sourceId, key: sourceId + "_" + state.sourceCounters[sourceId] });
+    var exists = state.selectedSources.some(function (s) { return s.id === sourceId; });
+    if (exists) {
+      // Đã có → xóa tất cả instances
+      state.selectedSources = state.selectedSources.filter(function (s) { return s.id !== sourceId; });
+      delete state.sourceCounters[sourceId];
+    } else {
+      // Chưa có → thêm 1 instance
+      if (!state.sourceCounters[sourceId]) state.sourceCounters[sourceId] = 0;
+      state.sourceCounters[sourceId]++;
+      state.selectedSources.push({ id: sourceId, key: sourceId + "_" + state.sourceCounters[sourceId] });
+    }
     updateSourceUI();
   }
 
@@ -90,11 +97,17 @@
     var cards = dom.sourceGrid.querySelectorAll(".calc-source-card");
     cards.forEach(function (card) {
       var src = card.getAttribute("data-source");
-      var exists = state.selectedSources.some(function (s) { return s.id === src; });
-      card.classList.toggle("selected", exists);
+      var count = getSourceCount(src);
+      card.classList.toggle("selected", count > 0);
+      // Badge ×N
+      var badge = card.querySelector(".calc-source-count");
+      if (count > 1) {
+        if (!badge) { badge = document.createElement("span"); badge.className = "calc-source-count"; card.appendChild(badge); }
+        badge.textContent = "×" + count;
+        badge.style.display = "";
+      } else if (badge) { badge.style.display = "none"; }
     });
     dom.commonInfo.style.display = "none";
-    // Auto-render forms khi thay đổi sources
     renderStep2Forms();
   }
 
@@ -113,10 +126,9 @@
     // ── Phần giảm trừ chung (nếu có nguồn tiền lương) ──
     if (hasSalaryType) {
       html += '<div class="calc-deduction-box">';
-      html += '<div class="calc-deduction-row">';
-      html += '<div style="flex:1;"><span style="font-size:12px;font-weight:700;color:#166534;">📋 GTGC bản thân</span><br><span style="font-size:15px;font-weight:700;color:var(--calc-primary);">' + C.fmt(R.getPersonalDeduction().yearly) + '/năm</span> <span style="font-size:11px;color:#6b6b6b;">(' + C.fmt(R.getPersonalDeduction().monthly) + '/tháng × 12)</span></div>';
-      html += '<div style="flex:1;"><span style="font-size:12px;font-weight:700;color:#166534;">👨‍👩‍👧‍👦 Người phụ thuộc</span><br><div style="display:flex;align-items:center;gap:8px;margin-top:4px;"><div class="calc-stepper" style="height:36px;"><button class="calc-stepper-btn" data-action="decrease" style="width:36px;height:36px;">−</button><input type="number" id="npt-shared" class="calc-stepper-input" value="0" min="0" max="20" readonly style="width:48px;height:36px;font-size:16px;"><button class="calc-stepper-btn" data-action="increase" style="width:36px;height:36px;">+</button></div><span class="calc-hint" id="npt-hint" style="margin:0;">0 người × 6,2tr = 0đ/năm</span></div></div>';
-      html += '</div></div>';
+      html += '<div><span style="font-size:12px;font-weight:700;color:#166534;">📋 GTGC bản thân</span><br><span style="font-size:14px;font-weight:700;color:var(--calc-primary);">' + C.fmt(R.getPersonalDeduction().yearly) + '/năm</span></div>';
+      html += '<div><span style="font-size:12px;font-weight:700;color:#166534;">👨‍👩‍👧‍👦 NPT</span><br><div style="display:flex;align-items:center;gap:6px;"><div class="calc-stepper"><button class="calc-stepper-btn" data-action="decrease">−</button><input type="number" id="npt-shared" class="calc-stepper-input" value="0" min="0" max="20" readonly><button class="calc-stepper-btn" data-action="increase">+</button></div><span class="calc-hint" id="npt-hint">0 × 6,2tr = 0đ</span></div></div>';
+      html += '</div>';
     }
 
     // ── Các nguồn thu nhập ──
@@ -525,7 +537,7 @@
       if (result) results.push(result);
     });
 
-    if (results.length > 0) { renderResults(results); goToStep(3); showConfetti(); }
+    if (results.length > 0) { renderResults(results); goToStep(2); showConfetti(); }
   }
 
   function calculateInvestment() {

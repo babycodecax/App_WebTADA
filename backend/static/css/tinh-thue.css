@@ -58,8 +58,11 @@
   .calc-hero { padding: 90px 0 20px; }
 }
 
-/* ── Deduction Box ── */
+/* ── Deduction Box — compact inline ── */
 .calc-deduction-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   background: #f0fdf4;
   border: 1.5px solid #bbf7d0;
   border-radius: 12px;
@@ -67,31 +70,29 @@
   margin-bottom: 16px;
 }
 
-.calc-deduction-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #166534;
-  margin-bottom: 8px;
+.calc-deduction-box .calc-stepper {
+  height: 36px;
 }
 
-.calc-deduction-row {
-  display: flex;
-  gap: 16px;
-  align-items: flex-end;
+.calc-deduction-box .calc-stepper-btn {
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
 }
 
-.calc-deduction-row .calc-form-group {
-  flex: 1;
+.calc-deduction-box .calc-stepper-input {
+  width: 48px;
+  height: 36px;
+  font-size: 16px;
+}
+
+.calc-deduction-box .calc-hint {
   margin: 0;
-}
-
-.calc-deduction-row .calc-label {
-  font-size: 12px;
-  margin-bottom: 4px;
+  font-size: 11px;
 }
 
 @media (max-width: 480px) {
-  .calc-deduction-row { flex-direction: column; gap: 8px; }
+  .calc-deduction-box { flex-wrap: wrap; gap: 8px; }
 }
 
 /* ── Calculator Section ── */
