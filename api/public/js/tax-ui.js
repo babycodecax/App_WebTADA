@@ -100,9 +100,9 @@
       var src = card.getAttribute("data-source");
       var count = getSourceCount(src);
       card.classList.toggle("selected", count > 0);
-      // Badge ×N
+      // Badge ×N (hiển thị từ ×1)
       var badge = card.querySelector(".calc-source-count");
-      if (count > 1) {
+      if (count >= 1) {
         if (!badge) { badge = document.createElement("span"); badge.className = "calc-source-count"; card.appendChild(badge); }
         badge.textContent = "×" + count;
         badge.style.display = "";
@@ -334,7 +334,7 @@
       '  <label class="calc-label">Loại đầu tư</label>' +
       '  <select class="calc-select" id="invest-type">' +
       '    <option value="lai_tiet_kiem">💰 Lãi tiết kiệm (MIỄN thuế)</option>' +
-      '    <option value="co_phieu">📈 Cổ phiếu (0.1%)</option>' +
+      '    <option value="chuyen_nhuong_co_phieu">📈 Cổ phiếu (0.1%)</option>' +
       '    <option value="chuyen_nhuong_bds">🏠 Chuyển nhượng BĐS (2%)</option>' +
       '    <option value="dau_tu_von">💼 Đầu tư vốn (5%)</option>' +
       '  </select>' +
@@ -426,13 +426,15 @@
   function calculateAll() {
     // Validate
     var hasInput = false;
+    var missingForms = [];
     state.selectedSources.forEach(function (s) {
       var form = document.querySelector('.calc-source-form[data-key="' + s.key + '"]');
-      if (!form) return;
+      if (!form) { missingForms.push(s.key); return; }
       form.querySelectorAll('.calc-input[inputmode="numeric"]').forEach(function (inp) {
         if (parseNumber(inp.value) > 0) hasInput = true;
       });
     });
+    if (missingForms.length > 0) { renderStep2Forms(); alert("Đang tải form, vui lòng thử lại."); return; }
     if (!hasInput) { alert("Vui lòng nhập ít nhất một số tiền."); return; }
 
     var npt = parseNumber(getVal("npt-shared"));
@@ -459,16 +461,19 @@
         var p = function (id) { return parseNumber(g(id)); };
         var c = function (id) { var el = form.querySelector("#" + id); return el ? el.checked : false; };
 
+        // Tính suffix từ key để đọc đúng input ID (salary_1 → input_1)
+        var suffix = s.key.replace(/^[^_]+/, "");
+
         if (s.id === "salary") {
-          var monthlySalary = p("salary-input");
+          var monthlySalary = p("salary-input" + suffix);
           var annualSalary = monthlySalary * 12;
           var si = R.SOCIAL_INSURANCE.employee;
           var cappedSalary = Math.min(monthlySalary, si.bhxh.cap);
           var bhxh = 0;
-          if (c("bhxh-toggle")) {
+          if (c("bhxh-toggle" + suffix)) {
             bhxh = cappedSalary * si.bhxh.rate * 12 + cappedSalary * si.bhtn.rate * 12 + cappedSalary * si.bhyt.rate * 12;
           }
-          var union = c("union-toggle") ? cappedSalary * si.union.rate * 12 : 0;
+          var union = c("union-toggle" + suffix) ? cappedSalary * si.union.rate * 12 : 0;
           totalSalaryIncome += annualSalary;
           totalBHXH += bhxh + union;
           salaryBreakdown.push({ label: "Lương", amount: annualSalary, formula: C.fmt(monthlySalary) + " × 12 tháng", source: s.key });
@@ -499,26 +504,29 @@
       var taxableSalary = Math.max(0, totalSalaryIncome - totalPersonal - totalBHXH - totalDependent);
       var salaryTax = C.progressiveTNCN(taxableSalary);
 
-      results.unshift({
-        type: "salary_group",
-        label: "Thu nhập từ tiền lương, tiền công",
-        totalIncome: totalSalaryIncome,
-        totalBHXH: totalBHXH,
-        personalDeduction: totalPersonal,
-        dependentDeduction: totalDependent,
-        dependentCount: dependents,
-        taxableIncome: taxableSalary,
-        totalTax: salaryTax.totalTax,
-        effectiveRate: totalSalaryIncome > 0 ? salaryTax.totalTax / totalSalaryIncome : 0,
-        breakdown: salaryBreakdown,
-        taxBreakdown: salaryTax.breakdown,
-        forms: [R.FORMS_DATA.personal_salary],
-        tips: [
-          { icon: "📋", text: "Thuế TNCN từ tiền lương, tiền công: gộp tổng từ " + salarySources.length + " nguồn, GTGC + NPT tính 1 lần." },
-          { icon: "💡", text: "10% tạm khấu trừ tại nguồn. Cuối năm quyết toán, được hoàn/thiếu thuế." },
-        ],
-        disclaimer: C.getDisclaimer(),
-      });
+      // Chỉ push khi có thật thu nhập tiền lương
+      if (totalSalaryIncome > 0) {
+        results.unshift({
+          type: "salary_group",
+          label: "Thu nhập từ tiền lương, tiền công",
+          totalIncome: totalSalaryIncome,
+          totalBHXH: totalBHXH,
+          personalDeduction: totalPersonal,
+          dependentDeduction: totalDependent,
+          dependentCount: dependents,
+          taxableIncome: taxableSalary,
+          totalTax: salaryTax.totalTax,
+          effectiveRate: totalSalaryIncome > 0 ? salaryTax.totalTax / totalSalaryIncome : 0,
+          breakdown: salaryBreakdown,
+          taxBreakdown: salaryTax.breakdown,
+          forms: [R.FORMS_DATA.personal_salary],
+          tips: [
+            { icon: "📋", text: "Thuế TNCN từ tiền lương, tiền công: gộp tổng từ " + salarySources.length + " nguồn, GTGC + NPT tính 1 lần." },
+            { icon: "💡", text: "10% tạm khấu trừ tại nguồn. Cuối năm quyết toán, được hoàn/thiếu thuế." },
+          ],
+          disclaimer: C.getDisclaimer(),
+        });
+      }
     }
 
     // ── Nhóm 2: Mỗi nguồn kinh doanh/khác tính riêng (khác ngành → % khác) ──
@@ -536,7 +544,7 @@
       if (result) results.push(result);
     });
 
-    if (results.length > 0) { renderResults(results); goToStep(2); showConfetti(); }
+    if (results.length > 0) { dom.resultContainer.style.display = ""; renderResults(results); goToStep(2); showConfetti(); }
   }
 
   function calculateInvestment() {
@@ -604,7 +612,8 @@
       results.forEach(function (r) {
         var icon = getSourceIcon(r.type);
         var label = getSourceLabel(r.type);
-        html += '<div style="margin:16px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--calc-border);font-size:15px;font-weight:700;color:var(--calc-primary);">' + icon + ' ' + label + ' — ' + C.fmt(r.totalTax || 0) + '</div>';
+        var sub = getResultSubLabel(r);
+        html += '<div style="margin:16px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--calc-border);font-size:15px;font-weight:700;color:var(--calc-primary);">' + icon + ' ' + label + (sub ? ' — ' + sub : '') + ' — ' + C.fmt(r.totalTax || 0) + '</div>';
         html += renderDetailBreakdown(r);
       });
     } else {
@@ -671,7 +680,7 @@
 
     if (r.type === "salary_group") {
       // Gộp tổng tiền lương — 1 dòng/gốc
-      html += '<tr class="subtotal" style="color:var(--calc-primary);"><td colspan="2">📋 Tổng thu nhập tiền lương (' + (r.breakdown ? r.breakdown.length : 0) + ' nguồn)</td></tr>';
+      html += '<tr class="subtotal" style="color:var(--calc-primary);"><td colspan="2">📋 Tổng thu nhập tiền lương</td></tr>';
       if (r.breakdown) {
         r.breakdown.forEach(function (b) {
           html += '<tr><td>' + b.label + '</td><td>' + C.fmt(b.amount) + '</td></tr>';
@@ -711,6 +720,8 @@
 
     } else if (r.type === "hkd" && !r.exempt) {
       // Dual comparison
+      var hkdSubLabel = getResultSubLabel(r);
+      html += '<tr class="subtotal" style="color:var(--calc-primary);"><td colspan="2">🏪 Kinh doanh' + (hkdSubLabel ? ' — ' + hkdSubLabel : '') + '</td></tr>';
       html += '<tr><td>Doanh thu năm</td><td>' + C.fmt(r.revenue) + '</td></tr>';
       html += '<tr class="formula-row"><td colspan="2">Thuộc ' + r.group.label + ' — ' + r.group.filingType + '</td></tr>';
       if (r.costs > 0) {
@@ -810,6 +821,9 @@
       }
 
     } else {
+      var genericSubLabel = getResultSubLabel(r);
+      var genericIcon = getSourceIcon(r.type);
+      html += '<tr class="subtotal" style="color:var(--calc-primary);"><td colspan="2">' + genericIcon + ' ' + getSourceLabel(r.type) + (genericSubLabel ? ' — ' + genericSubLabel : '') + '</td></tr>';
       html += '<tr><td>Thu nhập</td><td>' + C.fmt(r.revenue) + '</td></tr>';
       html += '<tr><td>Loại</td><td>' + (r.label || '') + '</td></tr>';
       if (r.totalTax > 0) {
@@ -965,8 +979,12 @@
     if (params.ia) sources.push("investment");
     if (sources.length === 0) return;
 
-    // Select sources
-    sources.forEach(function (s) { state.selectedSources.push(s); });
+    // Select sources — push {id, key} objects (not strings)
+    sources.forEach(function (s) {
+      if (!state.sourceCounters[s]) state.sourceCounters[s] = 0;
+      state.sourceCounters[s]++;
+      state.selectedSources.push({ id: s, key: s + "_" + state.sourceCounters[s] });
+    });
     state.dependents = parseInt(params.dep, 10) || 0;
     updateSourceUI();
 
@@ -1035,7 +1053,28 @@
 
   function getSourceLabel(type) {
     var src = findSource(type);
-    return src ? src.label : type;
+    if (src) return src.label;
+    var map = { salary_group: "Thu nhập từ tiền lương, tiền công", foreign_contractor: "Nhà thầu nước ngoài" };
+    return map[type] || type;
+  }
+
+  // Lấy tên loại/ ngành cụ thể cho mỗi kết quả
+  function getResultSubLabel(r) {
+    if (r.type === "salary_group") return "";
+    if (r.type === "hkd") {
+      if (r.exempt) return "Miễn thuế (DT ≤ 1 tỷ)";
+      var parts = [];
+      if (r.group) parts.push(r.group.label || "");
+      if (r.gtgtRate) parts.push(r.gtgtRate.label || "");
+      return parts.filter(Boolean).join(", ");
+    }
+    if (r.type === "corporate" && r.rateInfo) return r.rateInfo.label || "";
+    if (r.type === "foreign_contractor") {
+      var fcMap = { salary: "NC cư trú + lương", service: "NC cư trú + HĐ dịch vụ", non_resident: "NC không cư trú" };
+      return fcMap[r.subType] || "";
+    }
+    if (r.type === "investment" && r.label) return r.label;
+    return "";
   }
 
   // ================================================================

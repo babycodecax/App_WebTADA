@@ -45,7 +45,7 @@
 }
 
 .text-accent {
-  color: var(--calc-accent);
+  color: var(--calc-primary);
 }
 
 @media (max-width: 480px) {
