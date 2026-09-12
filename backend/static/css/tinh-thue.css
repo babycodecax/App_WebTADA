@@ -283,6 +283,53 @@
   border-style: solid;
 }
 
+/* ── Radio Group ── */
+.calc-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calc-radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 2px solid var(--calc-border);
+  border-radius: var(--calc-radius-sm);
+  cursor: pointer;
+  transition: var(--calc-transition);
+}
+
+.calc-radio:hover {
+  border-color: var(--calc-accent);
+}
+
+.calc-radio:has(input:checked) {
+  border-color: var(--calc-primary);
+  background: linear-gradient(135deg, #fdf2f4 0%, #fef9f0 100%);
+}
+
+.calc-radio input[type="radio"] {
+  margin-top: 2px;
+  accent-color: var(--calc-primary);
+}
+
+.calc-radio-title {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--calc-text);
+}
+
+.calc-radio-desc {
+  display: block;
+  font-size: 12px;
+  color: var(--calc-muted);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
 .calc-source-icon {
   font-size: 28px;
   margin-bottom: 8px;

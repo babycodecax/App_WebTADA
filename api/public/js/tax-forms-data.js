@@ -41,7 +41,7 @@ window.TAX_FORMS = (function () {
     { id: "corporate", icon: "🏢", label: "Công ty, doanh nghiệp",
       description: "TNDN + GTGT cho DN",
       badge: "TNDN 15-20%" },
-    { id: "foreign", icon: "🌏", label: "Nhà thầu nước ngoài",
+    { id: "foreign", icon: "🌏", label: "Cá nhân nước ngoài",
       description: "Tư vấn, dịch vụ từ nước ngoài",
       badge: "1% TNDN + 5% GTGT" },
   ];

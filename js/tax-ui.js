@@ -114,57 +114,14 @@
   // ================================================================
 
   function renderStep2Forms() {
-    var salaryTypes = ["salary", "freelancer", "foreign"];
-    var businessTypes = ["hkd", "rental", "corporate"];
-    var otherTypes = ["investment"];
-
-    var salarySources = [];
-    var businessSources = [];
-    var otherSources = [];
-
-    state.selectedSources.forEach(function (s) {
-      if (salaryTypes.indexOf(s.id) !== -1) salarySources.push(s);
-      else if (businessTypes.indexOf(s.id) !== -1) businessSources.push(s);
-      else otherSources.push(s);
-    });
-
     var html = "";
 
-    // Nhóm 1: Tiền lương
-    if (salarySources.length > 0) {
-      html += '<div class="calc-group-title">💼 Nguồn tiền lương</div>';
-      html += '<p class="calc-group-desc">Được giảm trừ bản thân (1 lần) + NPT (1 lần) trên tổng thu nhập</p>';
-      salarySources.forEach(function (s) { html += renderSourceForm(s.id, s.key); });
-      html += renderAddButtons(["salary", "freelancer", "foreign"]);
-      // NPT chung
-      html += '<div class="calc-source-form" style="background:#f0fdf4;border-color:#2d8a4e;">';
-      html += '<div class="calc-source-header"><span class="calc-source-header-icon">👨‍👩‍👧‍👦</span>';
-      html += '<span class="calc-source-header-title" style="color:#2d8a4e;">Giảm trừ người phụ thuộc</span></div>';
-      html += '<p style="font-size:13px;color:#6b6b6b;margin:0 0 12px;">Áp dụng chung cho TẤT CẢ nguồn tiền lương. Chỉ tính 1 lần trên tổng thu nhập.</p>';
-      html += '<div class="calc-form-group">';
-      html += '<label class="calc-label">Số người phụ thuộc (không tính bạn)</label>';
-      html += '<div class="calc-stepper">';
-      html += '<button class="calc-stepper-btn" data-action="decrease">−</button>';
-      html += '<input type="number" id="npt-shared" class="calc-stepper-input" value="0" min="0" max="20" readonly>';
-      html += '<button class="calc-stepper-btn" data-action="increase">+</button>';
-      html += '</div>';
-      html += '<span class="calc-hint">6,2 triệu/người/tháng — Điều 9 Luật 109/2025</span>';
-      html += '</div></div>';
-    }
+    state.selectedSources.forEach(function (s) {
+      html += renderSourceForm(s.id, s.key);
+    });
 
-    // Nhóm 2: Kinh doanh
-    if (businessSources.length > 0) {
-      html += '<div class="calc-group-title">🏪 Nguồn kinh doanh / dịch vụ</div>';
-      html += '<p class="calc-group-desc">Không giảm trừ bản thân, không NPT</p>';
-      businessSources.forEach(function (s) { html += renderSourceForm(s.id, s.key); });
-      html += renderAddButtons(["hkd", "rental"]);
-    }
-
-    // Nhóm 3: Khác
-    if (otherSources.length > 0) {
-      html += '<div class="calc-group-title">💰 Nguồn khác</div>';
-      otherSources.forEach(function (s) { html += renderSourceForm(s.id, s.key); });
-    }
+    // Nút thêm nguồn
+    html += renderAddButtons(["salary", "freelancer", "foreign", "hkd", "rental"]);
 
     // Cache existing values before re-render
     var cachedValues = {};
@@ -224,7 +181,8 @@
 
   function renderSalaryForm(suffix) {
     suffix = suffix || '';
-    return '' +
+    var showNPT = suffix === ''; // Chỉ hiện NPT ở nguồn lương ĐẦU TIÊN
+    var html = '' +
       '<div class="calc-form-row">' +
       '  <div class="calc-form-group">' +
       '    <label class="calc-label">Lương gross hàng tháng</label>' +
@@ -245,6 +203,20 @@
       '    </div>' +
       '  </div>' +
       '</div>';
+    if (showNPT) {
+      html += '<div class="calc-source-tip" style="background:#f0fdf4;border-left:3px solid #2d8a4e;padding:8px 12px;margin-top:8px;border-radius:4px;font-size:13px;">' +
+        '✅ Được giảm trừ bản thân + NPT (1 lần trên tổng thu nhập lương). NPT áp dụng cho tất cả nguồn tiền lương.</div>';
+      html += '<div class="calc-form-group" style="margin-top:12px;">' +
+        '<label class="calc-label">Số người phụ thuộc</label>' +
+        '<div class="calc-stepper">' +
+        '<button class="calc-stepper-btn" data-action="decrease">−</button>' +
+        '<input type="number" id="npt-shared" class="calc-stepper-input" value="0" min="0" max="20" readonly>' +
+        '<button class="calc-stepper-btn" data-action="increase">+</button>' +
+        '</div>' +
+        '<span class="calc-hint">6,2 triệu/người/tháng — Điều 9 Luật 109/2025</span>' +
+        '</div>';
+    }
+    return html;
   }
 
   function renderHKDForm() {
@@ -294,11 +266,23 @@
   function renderFreelancerForm() {
     return '' +
       '<div class="calc-form-group">' +
-      '  <label class="calc-label">Loại hợp đồng</label>' +
-      '  <select class="calc-select" id="freelancer-contract-type">' +
-      '    <option value="service">Hợp đồng dịch vụ (thu nhập khác — KHÔNG giảm trừ)</option>' +
-      '    <option value="labor">Hợp đồng lao động (tiền lương — CÓ giảm trừ)</option>' +
-      '  </select>' +
+      '  <label class="calc-label">Bạn hoạt động theo hình thức nào?</label>' +
+      '  <div class="calc-radio-group">' +
+      '    <label class="calc-radio">' +
+      '      <input type="radio" name="freelancer-mode' + '_form" id="freelancer-mode-free" value="free" checked>' +
+      '      <div class="calc-radio-content">' +
+      '        <span class="calc-radio-title">💼 HĐDV — Cá nhân tự do</span>' +
+      '        <span class="calc-radio-desc">Chưa đăng ký kinh doanh. Thuế: tạm khấu trừ 10% tại nguồn, cuối năm quyết toán theo lũy tiến 5 bậc + GTGC + NPT.</span>' +
+      '      </div>' +
+      '    </label>' +
+      '    <label class="calc-radio">' +
+      '      <input type="radio" name="freelancer-mode' + '_form" id="freelancer-mode-business" value="business">' +
+      '      <div class="calc-radio-content">' +
+      '        <span class="calc-radio-title">🏪 HĐKD — Có đăng ký kinh doanh</span>' +
+      '        <span class="calc-radio-desc">Thuế GTGT + TNCN theo tỷ lệ % trên doanh thu. KHÔNG giảm trừ gia cảnh.</span>' +
+      '      </div>' +
+      '    </label>' +
+      '  </div>' +
       '</div>' +
       '<div class="calc-form-row">' +
       '  <div class="calc-form-group">' +
@@ -315,7 +299,19 @@
       '      <span class="calc-input-suffix">VNĐ/năm</span>' +
       '    </div>' +
       '  </div>' +
-      '</div>';
+      '</div>' +
+      '<div id="freelancer-npt-section" style="display:none;">' +
+      '<div class="calc-source-tip" style="background:#f0fdf4;border-left:3px solid #2d8a4e;padding:8px 12px;margin-top:8px;border-radius:4px;font-size:13px;">' +
+      '✅ HĐDV = tiền lương, tiền công → được GTGC + NPT (quyết toán năm).</div>' +
+      '<div class="calc-form-group" style="margin-top:12px;">' +
+      '<label class="calc-label">Số người phụ thuộc</label>' +
+      '<div class="calc-stepper">' +
+      '<button class="calc-stepper-btn" data-action="decrease">−</button>' +
+      '<input type="number" id="npt-shared" class="calc-stepper-input" value="0" min="0" max="20" readonly>' +
+      '<button class="calc-stepper-btn" data-action="increase">+</button>' +
+      '</div>' +
+      '<span class="calc-hint">6,2 triệu/người/tháng</span>' +
+      '</div></div>';
   }
 
   function renderCorporateForm() {
@@ -357,20 +353,22 @@
   function renderForeignForm() {
     return '' +
       '<div class="calc-form-group">' +
-      '  <label class="calc-label">Loại nhà thầu</label>' +
+      '  <label class="calc-label">Trường hợp thuế</label>' +
       '  <select class="calc-select" id="foreign-type">' +
-      '    <option value="service">HĐ dịch vụ + NC cư trú (1% TNDN + 5% GTGT)</option>' +
-      '    <option value="salary">Thu nhập dạng lương + NC cư trú (lũy tiến 5 bậc)</option>' +
-      '    <option value="non_resident">NC không cư trú (20% + 5%)</option>' +
+      '    <option value="service">NC cư trú + HĐ dịch vụ → 1% TNDN + 5% GTGT trên gross</option>' +
+      '    <option value="salary">NC cư trú + thu nhập dạng lương → lũy tiến 5 bậc + GTGC</option>' +
+      '    <option value="non_resident">NC không cư trú → 20% + 5% trên gross</option>' +
       '  </select>' +
       '</div>' +
       '<div class="calc-form-group">' +
-      '  <label class="calc-label">Thu nhập/thuế suất tại Việt Nam</label>' +
+      '  <label class="calc-label">Thu nhập tại Việt Nam</label>' +
       '  <div class="calc-input-group">' +
       '    <input type="text" class="calc-input" id="foreign-revenue-input" placeholder="Ví dụ: 500.000.000" inputmode="numeric">' +
       '    <span class="calc-input-suffix">VNĐ/tháng</span>' +
       '  </div>' +
-      '</div>';
+      '</div>' +
+      '<div class="calc-source-tip" style="background:#fef9f0;border-left:3px solid var(--calc-accent);padding:8px 12px;margin-top:8px;border-radius:4px;font-size:13px;">' +
+      '💡 NC cư trú + lương → được GTGC + NPT. NC cư trú + HĐDV hoặc NC không cư trú → KHÔNG giảm trừ.</div>';
   }
 
   function renderInvestmentForm() {
@@ -398,6 +396,17 @@
   // ================================================================
 
   function bindFormEvents() {
+    // Freelancer mode radio — show/hide NPT
+    var freeModeFree = document.getElementById("freelancer-mode-free");
+    var freeModeBusiness = document.getElementById("freelancer-mode-business");
+    var freeNptSection = document.getElementById("freelancer-npt-section");
+    if (freeModeFree && freeNptSection) {
+      freeModeFree.addEventListener("change", function () { freeNptSection.style.display = this.checked ? "" : "none"; });
+    }
+    if (freeModeBusiness && freeNptSection) {
+      freeModeBusiness.addEventListener("change", function () { freeNptSection.style.display = this.checked ? "none" : ""; });
+    }
+
     // Format number inputs
     document.querySelectorAll(".calc-input[inputmode='numeric']").forEach(function (input) {
       input.addEventListener("input", function () {
@@ -518,8 +527,9 @@
       } else if (s.id === "rental") {
         result = C.calculateRentalTax({ revenue: p("rental-revenue-input") });
       } else if (s.id === "freelancer") {
-        var ft = g("freelancer-contract-type");
-        result = C.calculateFreelancerTax({ revenue: p("freelancer-revenue-input"), costs: p("freelancer-costs-input"), contractType: ft, applyPersonalDed: firstSalary });
+        var freeMode = form.querySelector('input[name="freelancer-mode_form"]:checked');
+        var ft = freeMode ? freeMode.value : "free";
+        result = C.calculateFreelancerTax({ revenue: p("freelancer-revenue-input"), costs: p("freelancer-costs-input"), mode: ft, applyPersonalDed: firstSalary });
       } else if (s.id === "corporate") {
         result = C.calculateTNDNTax({ revenue: p("corp-revenue-input"), taxableIncome: p("corp-taxable-input"), charitableDonation: p("corp-charity-input"), rdFund: p("corp-rd-input") });
       } else if (s.id === "foreign") {
