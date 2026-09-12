@@ -81,7 +81,7 @@
 
     // NPT chỉ hiện khi chọn "Đi làm, nhận lương" (Điều 9 Luật 109/2025)
     var hasSalary = state.selectedSources.indexOf("salary") !== -1;
-    dom.commonInfo.style.display = hasSalary ? "block" : "none";
+    dom.commonInfo.style.display = "none";
 
     var hasAny = state.selectedSources.length > 0;
     dom.btnToStep2.disabled = !hasAny;
@@ -742,22 +742,40 @@
       html += '<tr class="subtotal"><td>TRẠNG THÁI</td><td style="color:var(--calc-success);">✅ MIỄN THUẾ</td></tr>';
 
     } else if (r.type === "tndn") {
-      html += '<tr><td>Doanh thu năm</td><td>' + C.fmt(r.revenue) + '</td></tr>';
-      html += '<tr><td>Thuế suất</td><td>' + r.rateInfo.label + '</td></tr>';
-      html += '<tr><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
-      if (r.deductions.charitable > 0) html += '<tr class="deduction"><td>− Quyên góp từ thiện</td><td>' + C.fmt(r.deductions.charitable) + '</td></tr>';
-      if (r.deductions.rd > 0) html += '<tr class="deduction"><td>− Quỹ R&D</td><td>' + C.fmt(r.deductions.rd) + '</td></tr>';
-      if (r.deductions.lossCarryforward > 0) html += '<tr class="deduction"><td>− Bù lỗ năm trước</td><td>' + C.fmt(r.deductions.lossCarryforward) + '</td></tr>';
-      html += '<tr class="subtotal"><td>Thu nhập sau giảm trừ</td><td>' + C.fmt(r.incomeAfterDeductions) + '</td></tr>';
-      html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
+      if (r.exempt) {
+        html += '<tr><td>Doanh thu năm</td><td>' + C.fmt(r.revenue) + '</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">DN doanh thu ≤ 1 tỷ → MIỄN (NĐ 141/2026)</td></tr>';
+        html += '<tr class="subtotal"><td>TRẠNG THÁI</td><td style="color:var(--calc-success);">✅ MIỄN THUẾ TNDN</td></tr>';
+      } else {
+        html += '<tr><td>Doanh thu năm</td><td>' + C.fmt(r.revenue) + '</td></tr>';
+        html += '<tr><td>Thuế suất</td><td>' + r.rateInfo.label + '</td></tr>';
+        html += '<tr><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.revenue) + ' (DT) → xác định thuế suất theo nhóm DN</td></tr>';
+        if (r.deductions.charitable > 0) {
+          html += '<tr class="deduction"><td>− Quyên góp từ thiện</td><td>' + C.fmt(r.deductions.charitable) + '</td></tr>';
+          html += '<tr class="formula-row"><td colspan="2">Tối đa 20% thu nhập tính thuế</td></tr>';
+        }
+        if (r.deductions.rd > 0) {
+          html += '<tr class="deduction"><td>− Quỹ R&D</td><td>' + C.fmt(r.deductions.rd) + '</td></tr>';
+          html += '<tr class="formula-row"><td colspan="2">Tối đa 10% thu nhập tính thuế</td></tr>';
+        }
+        if (r.deductions.lossCarryforward > 0) html += '<tr class="deduction"><td>− Bù lỗ năm trước</td><td>' + C.fmt(r.deductions.lossCarryforward) + '</td></tr>';
+        html += '<tr class="subtotal"><td>Thu nhập sau giảm trừ</td><td>' + C.fmt(r.incomeAfterDeductions) + '</td></tr>';
+        html += '<tr><td>Thuế TNDN</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.incomeAfterDeductions) + ' × ' + C.fmtPct(r.rateInfo.rate) + '</td></tr>';
+        html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
+      }
 
     } else if (r.type === "rental") {
       html += '<tr><td>Doanh thu cho thuê</td><td>' + C.fmt(r.revenue) + '</td></tr>';
       if (r.exempt) {
+        html += '<tr class="formula-row"><td colspan="2">DT ≤ 1 tỷ → MIỄN GTGT + TNCN</td></tr>';
         html += '<tr class="subtotal"><td>TRẠNG THÁI</td><td style="color:var(--calc-success);">✅ MIỄN THUẾ</td></tr>';
       } else {
         html += '<tr><td>GTGT (5%)</td><td>' + C.fmt(r.gtgt) + '</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.revenue) + ' × 5%</td></tr>';
         html += '<tr><td>TNCN (5%)</td><td>' + C.fmt(r.tncn) + '</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.revenue) + ' × 5%</td></tr>';
         html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
       }
 
@@ -820,6 +838,13 @@
 
     } else {
       html += '<tr><td>Thu nhập</td><td>' + C.fmt(r.revenue) + '</td></tr>';
+      html += '<tr><td>Loại</td><td>' + (r.label || '') + '</td></tr>';
+      if (r.totalTax > 0) {
+        html += '<tr><td>Thuế</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.revenue) + ' × tỷ lệ theo loại thu nhập</td></tr>';
+      } else {
+        html += '<tr class="formula-row"><td colspan="2">✅ MIỄN THUẾ</td></tr>';
+      }
       html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
     }
 
