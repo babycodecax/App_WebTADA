@@ -43,6 +43,8 @@
   function init() {
     renderSourceCards();
     bindEvents();
+    // Auto-fill from URL hash (shareable link)
+    restoreFromHash();
   }
 
   // ================================================================
@@ -172,7 +174,7 @@
       '</div>' +
       '<div class="calc-form-row">' +
       '  <div class="calc-form-group">' +
-      '    <label class="calc-label">Chi phí vốn hàng hóa (nếu biết) — اختيار</label>' +
+      '    <label class="calc-label">Chi phí vốn hàng hóa (nếu biết) — tùy chọn</label>' +
       '    <div class="calc-input-group">' +
       '      <input type="text" class="calc-input" id="hkd-costs-input" placeholder="Để trống nếu không biết" inputmode="numeric">' +
       '      <span class="calc-input-suffix">VNĐ/năm</span>' +
@@ -553,18 +555,29 @@
     var html = '<table class="calc-breakdown">';
 
     if (r.type === "salary") {
+      var inp = r.input || {};
+      var m = inp.months || 12;
       html += '<tr><td>Thu nhập gross</td><td>' + C.fmt(r.grossIncome) + '</td></tr>';
+      html += '<tr class="formula-row"><td colspan="2">' + C.fmt(inp.salary || 0) + ' × ' + m + ' tháng</td></tr>';
       html += '<tr class="deduction"><td>− ' + r.deductions.deductionLabel + '</td><td>' + C.fmt(r.deductions.personal) + '</td></tr>';
-      if (r.deductions.bhxh > 0) {
-        html += '<tr class="deduction"><td>− BHXH + BHTN + BHYT</td><td>' + C.fmt(r.deductions.bhxh) + '</td></tr>';
+      if (r.deductions.personalFormula) html += '<tr class="formula-row"><td colspan="2">' + r.deductions.personalFormula + '</td></tr>';
+      if (r.deductions.bhxh > 0 && r.deductions.bhxhBreakdown) {
+        r.deductions.bhxhBreakdown.forEach(function (b) {
+          html += '<tr class="deduction"><td>− ' + b.label + '</td><td>' + C.fmt(b.amount) + '</td></tr>';
+          if (b.formula) html += '<tr class="formula-row"><td colspan="2">' + b.formula + '</td></tr>';
+        });
+        html += '<tr class="deduction" style="font-weight:600;"><td>− Tổng BHXH + CĐ</td><td>' + C.fmt(r.deductions.bhxh) + '</td></tr>';
       }
       if (r.deductions.dependent > 0) {
         html += '<tr class="deduction"><td>− GTGC NPT (' + r.deductions.dependentCount + ' người)</td><td>' + C.fmt(r.deductions.dependent) + '</td></tr>';
+        if (r.deductions.dependentFormula) html += '<tr class="formula-row"><td colspan="2">' + r.deductions.dependentFormula + '</td></tr>';
       }
       html += '<tr class="subtotal"><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
+      html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossIncome) + ' − ' + C.fmt(r.deductions.total) + '</td></tr>';
       if (r.breakdown) {
         r.breakdown.forEach(function (b) {
           html += '<tr><td>' + b.label + ' (' + C.fmtPct(b.rate) + ')</td><td>' + C.fmt(b.tax) + '</td></tr>';
+          if (b.formula) html += '<tr class="formula-row"><td colspan="2">' + b.formula + '</td></tr>';
         });
       }
       html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
@@ -731,6 +744,118 @@
     return el ? el.checked : false;
   }
 
+  // ── Shareable Link ──
+  function encodeToHash() {
+    var parts = ["v=1"];
+    state.selectedSources.forEach(function (s) {
+      if (s === "salary") {
+        parts.push("s=" + parseNumber(getVal("salary-input")));
+        parts.push("bhxh=" + (isChecked("bhxh-toggle") ? 1 : 0));
+        parts.push("uni=" + (isChecked("union-toggle") ? 1 : 0));
+      } else if (s === "hkd") {
+        parts.push("hr=" + parseNumber(getVal("hkd-revenue-input")));
+        parts.push("hb=" + getVal("hkd-biz-type"));
+        parts.push("hc=" + parseNumber(getVal("hkd-costs-input")));
+      } else if (s === "rental") {
+        parts.push("rr=" + parseNumber(getVal("rental-revenue-input")));
+      } else if (s === "freelancer") {
+        parts.push("fr=" + parseNumber(getVal("freelancer-revenue-input")));
+        parts.push("fc=" + parseNumber(getVal("freelancer-costs-input")));
+      } else if (s === "corporate") {
+        parts.push("cr=" + parseNumber(getVal("corp-revenue-input")));
+        parts.push("ct=" + parseNumber(getVal("corp-taxable-input")));
+      } else if (s === "foreign") {
+        parts.push("fg=" + parseNumber(getVal("foreign-revenue-input")));
+      } else if (s === "investment") {
+        parts.push("it=" + getVal("invest-type"));
+        parts.push("ia=" + parseNumber(getVal("invest-amount-input")));
+      }
+    });
+    parts.push("dep=" + state.dependents);
+    return "#!" + parts.join("&");
+  }
+
+  function restoreFromHash() {
+    var hash = window.location.hash;
+    if (!hash || hash.indexOf("#!") !== 0) return;
+    var params = {};
+    hash.substring(2).split("&").forEach(function (p) {
+      var kv = p.split("=");
+      if (kv.length === 2) params[kv[0]] = kv[1];
+    });
+    if (!params.v) return;
+
+    // Detect sources from params
+    var sources = [];
+    if (params.s) sources.push("salary");
+    if (params.hr) sources.push("hkd");
+    if (params.rr) sources.push("rental");
+    if (params.fr) sources.push("freelancer");
+    if (params.cr) sources.push("corporate");
+    if (params.fg) sources.push("foreign");
+    if (params.ia) sources.push("investment");
+    if (sources.length === 0) return;
+
+    // Select sources
+    sources.forEach(function (s) { state.selectedSources.push(s); });
+    state.dependents = parseInt(params.dep, 10) || 0;
+    updateSourceUI();
+
+    // Go to step 2 to render forms
+    goToStep(2);
+
+    // Wait for DOM, then fill values
+    setTimeout(function () {
+      if (params.s) {
+        setVal("salary-input", params.s);
+        setChecked("bhxh-toggle", params.bhxh !== "0");
+        setChecked("union-toggle", params.uni !== "0");
+      }
+      if (params.hr) {
+        setVal("hkd-revenue-input", params.hr);
+        if (params.hb) setSelect("hkd-biz-type", params.hb);
+        if (params.hc) setVal("hkd-costs-input", params.hc);
+      }
+      if (params.rr) setVal("rental-revenue-input", params.rr);
+      if (params.fr) {
+        setVal("freelancer-revenue-input", params.fr);
+        if (params.fc) setVal("freelancer-costs-input", params.fc);
+      }
+      if (params.cr) {
+        setVal("corp-revenue-input", params.cr);
+        if (params.ct) setVal("corp-taxable-input", params.ct);
+      }
+      if (params.fg) setVal("foreign-revenue-input", params.fg);
+      if (params.ia) {
+        setVal("invest-amount-input", params.ia);
+        if (params.it) setSelect("invest-type", params.it);
+      }
+      if (state.dependents > 0) {
+        document.getElementById("dependents").value = state.dependents;
+        dom.dependentHint.textContent = state.dependents + " người × " + C.fmt(R.DEPENDENT_DEDUCTION.monthly) + " = " + C.fmt(state.dependents * R.DEPENDENT_DEDUCTION.monthly) + " giảm trừ/tháng";
+      }
+      // Auto-calculate
+      calculateAll();
+    }, 200);
+  }
+
+  function setVal(id, val) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.value = Number(val).toLocaleString("vi-VN");
+    el.dispatchEvent(new Event("input"));
+  }
+
+  function setChecked(id, checked) {
+    var el = document.getElementById(id);
+    if (el) el.checked = checked;
+  }
+
+  function setSelect(id, val) {
+    var el = document.getElementById(id);
+    if (el) el.value = val;
+  }
+
   function findSource(id) {
     for (var i = 0; i < F.INCOME_SOURCES.length; i++) {
       if (F.INCOME_SOURCES[i].id === id) return F.INCOME_SOURCES[i];
@@ -786,10 +911,14 @@
       goToStep(1);
     });
     dom.btnShare.addEventListener("click", function () {
-      var text = "Kết quả tính thuế TADA: " + dom.resultContainer.querySelector(".calc-result-total").textContent + "\nhttps://ketoanthuetada.com/tinh-thue";
+      var hash = encodeToHash();
+      var shareUrl = window.location.origin + "/tinh-thue" + hash;
+      var total = dom.resultContainer.querySelector(".calc-result-total")?.textContent || "";
+      var text = "Kết quả tính thuế TADA: " + total + "\n" + shareUrl;
       if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(function () {
-          dom.btnShare.textContent = "✅ Đã copy!";
+          dom.btnShare.textContent = "✅ Đã copy link!";
+          window.history.replaceState(null, "", hash);
           setTimeout(function () { dom.btnShare.textContent = "📤 Chia sẻ kết quả"; }, 2000);
         });
       }

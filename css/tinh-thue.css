@@ -716,6 +716,14 @@
   font-size: 15px;
 }
 
+.calc-breakdown tr.formula-row td {
+  padding: 2px 0 8px 16px;
+  font-size: 12px;
+  color: var(--calc-muted);
+  font-style: italic;
+  border-bottom: none;
+}
+
 .calc-breakdown .deduction {
   color: var(--calc-success);
 }

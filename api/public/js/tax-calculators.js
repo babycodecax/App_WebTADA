@@ -63,6 +63,7 @@ window.TAX_CALC = (function () {
         income: amountInBracket,
         rate: b.rate,
         tax: tax,
+        formula: fmt(amountInBracket) + " × " + fmtPct(b.rate) + " = " + fmt(tax),
       });
       remaining -= amountInBracket;
     }
@@ -102,9 +103,12 @@ window.TAX_CALC = (function () {
 
       bhxhEmployee = bhxh + bhtn + bhyt;
       bhxhBreakdown = [
-        { label: "BHXH (8%)", amount: bhxh },
-        { label: "BHTN (1%)", amount: bhtn },
-        { label: "BHYT (1.5%)", amount: bhyt },
+        { label: "BHXH (8%)", amount: bhxh,
+          formula: fmt(cappedSalary) + " × 8% × " + months + " tháng" },
+        { label: "BHTN (1%)", amount: bhtn,
+          formula: fmt(cappedSalary) + " × 1% × " + months + " tháng" },
+        { label: "BHYT (1.5%)", amount: bhyt,
+          formula: fmt(cappedSalary) + " × 1.5% × " + months + " tháng" },
       ];
     }
 
@@ -112,7 +116,8 @@ window.TAX_CALC = (function () {
     var union = hasUnion ? cappedSalary * si.union.rate * months : 0;
     bhxhEmployee += union;
     if (union > 0) {
-      bhxhBreakdown.push({ label: "Phí công đoàn (1%)", amount: union });
+      bhxhBreakdown.push({ label: "Phí công đoàn (1%)", amount: union,
+        formula: fmt(cappedSalary) + " × 1% × " + months + " tháng" });
     }
 
     // 3. Thu nhập tính thuế
@@ -165,10 +170,13 @@ window.TAX_CALC = (function () {
       totalTax: result.totalTax,
       monthlyTax: monthlyTax,
       effectiveRate: effectiveRate,
+      input: { salary: monthlySalary, dependents: dependents, hasBHXH: hasBHXH, hasUnion: hasUnion, months: months },
       deductions: {
         personal: totalPersonal,
+        personalFormula: personalDed.monthly.toLocaleString("vi-VN") + "đ × " + months + " tháng",
         dependent: totalDependent,
         dependentCount: dependents,
+        dependentFormula: dependents > 0 ? dependentDed.monthly.toLocaleString("vi-VN") + "đ × " + dependents + " người × " + months + " tháng" : null,
         bhxh: bhxhEmployee,
         bhxhBreakdown: bhxhBreakdown,
         total: totalDeductions,
