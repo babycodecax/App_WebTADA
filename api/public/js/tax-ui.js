@@ -79,7 +79,15 @@
 
   function removeSource(key) {
     state.selectedSources = state.selectedSources.filter(function (s) { return s.key !== key; });
-    renderStep2Forms();
+    // Re-sequence
+    var counters = {};
+    state.selectedSources.forEach(function (s) {
+      if (!counters[s.id]) counters[s.id] = 0;
+      counters[s.id]++;
+      s.key = s.id + "_" + counters[s.id];
+    });
+    state.sourceCounters = counters;
+    updateSourceUI();
   }
 
   function getSourceCount(sourceId) {
@@ -180,9 +188,7 @@
     html += '<div class="calc-source-header">';
     html += '<span class="calc-source-header-icon">' + src.icon + '</span>';
     html += '<span class="calc-source-header-title">' + label + '</span>';
-    if (count > 1) {
-      html += '<button class="calc-source-remove" data-key="' + key + '" title="Xóa nguồn này">✕</button>';
-    }
+    html += '<button class="calc-source-remove" data-key="' + key + '" title="Xóa nguồn này">✕</button>';
     html += '</div>';
     // Tính key suffix cho input IDs (salary → salary-input_1, salary-input_2)
     var suffix = count > 1 ? '_' + key.split('_').pop() : '';
