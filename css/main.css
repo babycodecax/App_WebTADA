@@ -2167,37 +2167,91 @@ h1, h2, h3, h4, h5, h6 {
 /* ── Quick Tools Row — dưới chatbox ── */
 .quick-tools {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-shrink: 0;
 }
 
 .quick-tool-btn {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px 12px;
+  gap: 10px;
+  padding: 18px 12px 14px;
   background: #fff;
   border: 1.5px solid var(--border-light, #e8e0da);
-  border-radius: 12px;
-  font-size: 14px;
+  border-radius: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--primary-burgundy, #800020);
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
+  text-align: center;
 }
 
 .quick-tool-btn:hover {
   border-color: var(--accent-gold, #d4af37);
-  box-shadow: 0 4px 16px rgba(128, 0, 32, 0.08);
-  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(128, 0, 32, 0.1);
+  transform: translateY(-3px);
 }
 
-.quick-tool-btn svg {
-  flex-shrink: 0;
-  color: var(--primary-burgundy, #800020);
+.quick-tool-btn:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: 0 2px 8px rgba(128, 0, 32, 0.08);
+}
+
+/* ── 3D Icon Circle ── */
+.quick-tool-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #9a0028 0%, #800020 50%, #600018 100%);
+  box-shadow:
+    0 4px 12px rgba(128, 0, 32, 0.35),
+    0 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  color: #fff;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.quick-tool-icon svg {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.quick-tool-btn:hover .quick-tool-icon {
+  transform: translateY(-2px) scale(1.08);
+  box-shadow:
+    0 6px 18px rgba(128, 0, 32, 0.4),
+    0 3px 6px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.quick-tool-btn:active .quick-tool-icon {
+  transform: translateY(1px) scale(0.95);
+  box-shadow:
+    0 2px 6px rgba(128, 0, 32, 0.25),
+    inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Gold variant cho nút Tính thuế */
+.quick-tool-icon--gold {
+  background: linear-gradient(145deg, #e5c040 0%, #d4af37 50%, #b8960f 100%);
+  box-shadow:
+    0 4px 12px rgba(212, 175, 55, 0.35),
+    0 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  color: #5a3e00;
+}
+
+.quick-tool-btn:hover .quick-tool-icon--gold {
+  box-shadow:
+    0 6px 18px rgba(212, 175, 55, 0.45),
+    0 3px 6px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3);
 }
 /* ==========================================================================
    LIBRARY SECTION — Thư Viện Biểu Mẫu & Văn Bản Luật (landing page)
