@@ -255,6 +255,34 @@
   border-color: #c00;
 }
 
+.calc-add-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.calc-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  background: #f8f6f4;
+  border: 1.5px dashed var(--calc-border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--calc-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calc-add-btn:hover {
+  background: #fdf2f4;
+  border-color: var(--calc-primary);
+  border-style: solid;
+}
+
 .calc-source-icon {
   font-size: 28px;
   margin-bottom: 8px;

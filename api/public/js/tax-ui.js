@@ -65,17 +65,32 @@
   }
 
   function toggleSource(sourceId) {
-    // Click = thêm 1 instance mới
+    // Step 1: click = toggle 1 lần (chọn/bỏ loại nguồn)
+    var exists = state.selectedSources.some(function (s) { return s.id === sourceId; });
+    if (exists) {
+      // Bỏ TẤT CẢ instances của loại này
+      state.selectedSources = state.selectedSources.filter(function (s) { return s.id !== sourceId; });
+      delete state.sourceCounters[sourceId];
+    } else {
+      // Thêm 1 instance đầu tiên
+      if (!state.sourceCounters[sourceId]) state.sourceCounters[sourceId] = 0;
+      state.sourceCounters[sourceId]++;
+      state.selectedSources.push({ id: sourceId, key: sourceId + "_" + state.sourceCounters[sourceId] });
+    }
+    updateSourceUI();
+  }
+
+  function addSourceInstance(sourceId) {
+    // Step 2: nút "+ Thêm nguồn" — thêm 1 instance mới
     if (!state.sourceCounters[sourceId]) state.sourceCounters[sourceId] = 0;
     state.sourceCounters[sourceId]++;
-    var key = sourceId + "_" + state.sourceCounters[sourceId];
-    state.selectedSources.push({ id: sourceId, key: key });
-    updateSourceUI();
+    state.selectedSources.push({ id: sourceId, key: sourceId + "_" + state.sourceCounters[sourceId] });
+    renderStep2Forms();
   }
 
   function removeSource(key) {
     state.selectedSources = state.selectedSources.filter(function (s) { return s.key !== key; });
-    updateSourceUI();
+    renderStep2Forms();
   }
 
   function getSourceCount(sourceId) {
@@ -86,23 +101,9 @@
     var cards = dom.sourceGrid.querySelectorAll(".calc-source-card");
     cards.forEach(function (card) {
       var src = card.getAttribute("data-source");
-      var count = getSourceCount(src);
-      card.classList.toggle("selected", count > 0);
-      // Badge số lượng
-      var badge = card.querySelector(".calc-source-count");
-      if (count > 1) {
-        if (!badge) {
-          badge = document.createElement("span");
-          badge.className = "calc-source-count";
-          card.appendChild(badge);
-        }
-        badge.textContent = "×" + count;
-        badge.style.display = "";
-      } else if (badge) {
-        badge.style.display = "none";
-      }
+      var exists = state.selectedSources.some(function (s) { return s.id === src; });
+      card.classList.toggle("selected", exists);
     });
-
     dom.commonInfo.style.display = "none";
     var hasAny = state.selectedSources.length > 0;
     dom.btnToStep2.disabled = !hasAny;
@@ -129,13 +130,12 @@
 
     var html = "";
 
-    // Nhóm 1: Tiền lương — GTGC 1 lần, NPT 1 lần
+    // Nhóm 1: Tiền lương
     if (salarySources.length > 0) {
       html += '<div class="calc-group-title">💼 Nguồn tiền lương</div>';
       html += '<p class="calc-group-desc">Được giảm trừ bản thân (1 lần) + NPT (1 lần) trên tổng thu nhập</p>';
-      salarySources.forEach(function (s) {
-        html += renderSourceForm(s.id, s.key);
-      });
+      salarySources.forEach(function (s) { html += renderSourceForm(s.id, s.key); });
+      html += renderAddButtons(["salary", "freelancer", "foreign"]);
       // NPT chung
       html += '<div class="calc-source-form" style="background:#f0fdf4;border-color:#2d8a4e;">';
       html += '<div class="calc-source-header"><span class="calc-source-header-icon">👨‍👩‍👧‍👦</span>';
@@ -156,21 +156,29 @@
     if (businessSources.length > 0) {
       html += '<div class="calc-group-title">🏪 Nguồn kinh doanh / dịch vụ</div>';
       html += '<p class="calc-group-desc">Không giảm trừ bản thân, không NPT</p>';
-      businessSources.forEach(function (s) {
-        html += renderSourceForm(s.id, s.key);
-      });
+      businessSources.forEach(function (s) { html += renderSourceForm(s.id, s.key); });
+      html += renderAddButtons(["hkd", "rental"]);
     }
 
     // Nhóm 3: Khác
     if (otherSources.length > 0) {
       html += '<div class="calc-group-title">💰 Nguồn khác</div>';
-      otherSources.forEach(function (s) {
-        html += renderSourceForm(s.id, s.key);
-      });
+      otherSources.forEach(function (s) { html += renderSourceForm(s.id, s.key); });
     }
 
     dom.step2Forms.innerHTML = html;
     bindFormEvents();
+  }
+
+  function renderAddButtons(types) {
+    var html = '<div class="calc-add-buttons">';
+    types.forEach(function (t) {
+      var src = findSource(t);
+      if (!src) return;
+      html += '<button class="calc-add-btn" data-add-source="' + t + '">+ ' + src.icon + ' ' + src.label + '</button>';
+    });
+    html += '</div>';
+    return html;
   }
 
   function renderSourceForm(sourceId, key) {
@@ -1077,8 +1085,12 @@
       if (btn) {
         e.stopPropagation();
         removeSource(btn.getAttribute("data-key"));
-        // Re-render step 2
-        renderStep2Forms();
+      }
+      // Add source button (in step 2)
+      var addBtn = e.target.closest(".calc-add-btn");
+      if (addBtn) {
+        e.stopPropagation();
+        addSourceInstance(addBtn.getAttribute("data-add-source"));
       }
     });
 
