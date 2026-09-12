@@ -81,14 +81,17 @@ window.TAX_CALC = (function () {
     var hasBHXH = input.hasBHXH !== false;
     var hasUnion = input.hasUnion || false;
     var period = input.period || "year";
+    // GTGC chỉ tính 1 lần — nguồn đầu tiên apply, các nguồn sau không apply
+    var applyPersonalDed = input.applyPersonalDed !== false;
+    var applyDependentDed = input.applyDependent !== false;
 
     // 1. Tính tổng GTGC trong kỳ
     var personalDed = R.getPersonalDeduction();
     var dependentDed = R.DEPENDENT_DEDUCTION;
     var months = period === "quarter" ? 3 : 12;
 
-    var totalPersonal = personalDed.monthly * months;
-    var totalDependent = dependentDed.monthly * dependents * months;
+    var totalPersonal = applyPersonalDed ? personalDed.monthly * months : 0;
+    var totalDependent = applyDependentDed ? dependentDed.monthly * dependents * months : 0;
 
     // 2. Tính BHXH (phần NLĐ đóng)
     var bhxhEmployee = 0;
@@ -620,52 +623,66 @@ window.TAX_CALC = (function () {
   function calculateFreelancerTax(input) {
     var revenue = num(input.revenue);
     var costs = num(input.costs);
-    var dependents = num(input.dependents);
+    var contractType = input.contractType || "service"; // service | labor
 
-    var personalDed = R.getPersonalDeduction();
-    // Freelancer: KHÔNG trừ NPT (hợp đồng dịch vụ → thu nhập khác, Điều 9 Luật 109/2025)
-    var taxableIncome = Math.max(0, revenue - costs - personalDed.yearly);
+    if (contractType === "service") {
+      // Hợp đồng dịch vụ → Thu nhập khác → 10% trên DOANH THU (không trừ chi phí)
+      var tax = revenue * 0.10;
+      return {
+        type: "freelancer",
+        subType: "service",
+        revenue: revenue,
+        costs: costs,
+        taxRate: 0.10,
+        taxableIncome: revenue, // tính trên gross
+        totalTax: tax,
+        effectiveRate: revenue > 0 ? tax / revenue : 0,
+        breakdown: [{ label: "Thuế TNCN (10% trên DT)", income: revenue, rate: 0.10, tax: tax,
+          formula: fmt(revenue) + " × 10%" }],
+        forms: [R.FORMS_DATA.personal_salary],
+        tips: [
+          { icon: "📋", text: "HĐ dịch vụ → thu nhập khác → thuế 10% trên doanh thu gross, KHÔNG trừ chi phí, KHÔNG giảm trừ." },
+          { icon: "💡", text: "Nếu doanh thu > 100tr/năm → phải quyết toán thuế TNCN trước 31/07." },
+          { icon: "📁", text: "Giữ hợp đồng, hóa đơn để quyết toán." },
+        ],
+        disclaimer: getDisclaimer(),
+      };
 
-    var result = progressiveTNCN(taxableIncome);
-    var effectiveRate = revenue > 0 ? result.totalTax / revenue : 0;
+    } else {
+      // Hợp đồng lao động → Tiền lương → biểu lũy tiến 5 bậc + GTGC + NPT
+      var personalDed = R.getPersonalDeduction();
+      var applyPersonalDed = input.applyPersonalDed !== false;
+      var totalPersonal = applyPersonalDed ? personalDed.yearly : 0;
+      var taxableIncome = Math.max(0, revenue - costs - totalPersonal);
+      var result = progressiveTNCN(taxableIncome);
+      var effectiveRate = revenue > 0 ? result.totalTax / revenue : 0;
 
-    var tips = [
-      {
-        icon: "📋",
-        text: "Freelancer hợp đồng dịch vụ → thu nhập khác, KHÔNG được giảm trừ bản thân & người phụ thuộc.",
-      },
-      {
-        icon: "💡",
-        text: "Nếu có HĐLĐ → chọn nguồn 'Đi làm, nhận lương' để được giảm trừ bản thân (15,5tr/tháng) + NPT (6,2tr/người).",
-      },
-      {
-        icon: "📁",
-        text: "Giữ hợp đồng, hóa đơn đầu vào để chứng minh chi phí hợp lý.",
-      },
-    ];
+      var tips = [
+        { icon: "📋", text: "HĐLĐ → tiền lương, tiền công → biểu lũy tiến 5 bậc + được GTGC + NPT." },
+        { icon: "📁", text: "Giữ hợp đồng, hóa đơn để quyết toán." },
+      ];
 
-    if (taxableIncome > 0 && result.breakdown.length > 0) {
-      var lastBracket = result.breakdown[result.breakdown.length - 1];
-      if (lastBracket.rate >= 0.20) {
-        tips.push({
-          icon: "⚠️",
-          text: "Thuế suất cao (" + fmtPct(lastBracket.rate) + ")! Xem xét đăng ký hộ kinh doanh — có thể tiết kiệm hơn nếu doanh thu > 1 tỷ.",
-        });
+      if (taxableIncome > 0 && result.breakdown.length > 0) {
+        var lastBracket = result.breakdown[result.breakdown.length - 1];
+        if (lastBracket.rate >= 0.20) {
+          tips.push({ icon: "⚠️", text: "Thuế suất cao (" + fmtPct(lastBracket.rate) + ")! Xem xét đăng ký HKD." });
+        }
       }
-    }
 
-    return {
-      type: "freelancer",
-      revenue: revenue,
-      costs: costs,
-      taxableIncome: taxableIncome,
-      totalTax: result.totalTax,
-      effectiveRate: effectiveRate,
-      breakdown: result.breakdown,
-      forms: [R.FORMS_DATA.personal_salary],
-      tips: tips,
-      disclaimer: getDisclaimer(),
-    };
+      return {
+        type: "freelancer",
+        subType: "labor",
+        revenue: revenue,
+        costs: costs,
+        taxableIncome: taxableIncome,
+        totalTax: result.totalTax,
+        effectiveRate: effectiveRate,
+        breakdown: result.breakdown,
+        forms: [R.FORMS_DATA.personal_salary],
+        tips: tips,
+        disclaimer: getDisclaimer(),
+      };
+    }
   }
 
   // ──────────────────────────────────────────────

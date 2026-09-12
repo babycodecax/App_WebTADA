@@ -166,7 +166,22 @@
       otherSources.forEach(function (s) { html += renderSourceForm(s.id, s.key); });
     }
 
+    // Cache existing values before re-render
+    var cachedValues = {};
+    dom.step2Forms.querySelectorAll(".calc-input, .calc-select, .calc-stepper-input").forEach(function (el) {
+      if (el.id) cachedValues[el.id] = el.type === "checkbox" ? el.checked : el.value;
+    });
+
     dom.step2Forms.innerHTML = html;
+
+    // Restore cached values
+    Object.keys(cachedValues).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      if (el.type === "checkbox") el.checked = cachedValues[id];
+      else el.value = cachedValues[id];
+    });
+
     bindFormEvents();
   }
 
@@ -482,6 +497,7 @@
 
     var npt = parseNumber(getVal("npt-shared"));
     var results = [];
+    var salaryApplied = false; // GTGC + NPT chỉ 1 lần
 
     state.selectedSources.forEach(function (s) {
       var result = null;
@@ -491,15 +507,19 @@
       var p = function (id) { return parseNumber(g(id)); };
       var c = function (id) { var el = form.querySelector("#" + id); return el ? el.checked : false; };
 
+      var isSalaryType = (s.id === "salary" || s.id === "freelancer" || s.id === "foreign");
+      var firstSalary = isSalaryType && !salaryApplied;
+      if (isSalaryType) salaryApplied = true;
+
       if (s.id === "salary") {
-        result = C.calculateSalaryTax({ salary: p("salary-input"), dependents: npt, hasBHXH: c("bhxh-toggle"), hasUnion: c("union-toggle") });
+        result = C.calculateSalaryTax({ salary: p("salary-input"), dependents: firstSalary ? npt : 0, hasBHXH: c("bhxh-toggle"), hasUnion: c("union-toggle"), applyPersonalDed: firstSalary, applyDependent: firstSalary });
       } else if (s.id === "hkd") {
         result = C.calculateHKDTax({ revenue: p("hkd-revenue-input"), businessType: g("hkd-biz-type"), costs: p("hkd-costs-input") });
       } else if (s.id === "rental") {
         result = C.calculateRentalTax({ revenue: p("rental-revenue-input") });
       } else if (s.id === "freelancer") {
         var ft = g("freelancer-contract-type");
-        result = C.calculateFreelancerTax({ revenue: p("freelancer-revenue-input"), costs: p("freelancer-costs-input"), dependents: ft === "labor" ? npt : 0 });
+        result = C.calculateFreelancerTax({ revenue: p("freelancer-revenue-input"), costs: p("freelancer-costs-input"), contractType: ft, applyPersonalDed: firstSalary });
       } else if (s.id === "corporate") {
         result = C.calculateTNDNTax({ revenue: p("corp-revenue-input"), taxableIncome: p("corp-taxable-input"), charitableDonation: p("corp-charity-input"), rdFund: p("corp-rd-input") });
       } else if (s.id === "foreign") {
