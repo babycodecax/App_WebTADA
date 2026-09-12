@@ -256,11 +256,28 @@
   function renderForeignForm() {
     return '' +
       '<div class="calc-form-group">' +
-      '  <label class="calc-label">Doanh thu gross tại Việt Nam</label>' +
+      '  <label class="calc-label">Loại nhà thầu</label>' +
+      '  <select class="calc-select" id="foreign-type">' +
+      '    <option value="service">HĐ dịch vụ + NC cư trú (1% TNDN + 5% GTGT)</option>' +
+      '    <option value="salary">Thu nhập dạng lương + NC cư trú (lũy tiến 5 bậc)</option>' +
+      '    <option value="non_resident">NC không cư trú (20% + 5%)</option>' +
+      '  </select>' +
+      '</div>' +
+      '<div class="calc-form-group">' +
+      '  <label class="calc-label">Thu nhập/thuế suất tại Việt Nam</label>' +
       '  <div class="calc-input-group">' +
       '    <input type="text" class="calc-input" id="foreign-revenue-input" placeholder="Ví dụ: 500.000.000" inputmode="numeric">' +
-      '    <span class="calc-input-suffix">VNĐ</span>' +
+      '    <span class="calc-input-suffix">VNĐ/tháng</span>' +
       '  </div>' +
+      '</div>' +
+      '<div class="calc-form-group" id="foreign-dep-group" style="display:none;">' +
+      '  <label class="calc-label">Số người phụ thuộc</label>' +
+      '  <div class="calc-stepper">' +
+      '    <button class="calc-stepper-btn" data-action="decrease" aria-label="Giảm">−</button>' +
+      '    <input type="number" id="foreign-dependents" class="calc-stepper-input" value="0" min="0" max="20" readonly>' +
+      '    <button class="calc-stepper-btn" data-action="increase" aria-label="Tăng">+</button>' +
+      '  </div>' +
+      '  <span class="calc-hint">Chỉ áp dụng khi thu nhập dạng lương (HĐLĐ)</span>' +
       '</div>';
   }
 
@@ -316,6 +333,33 @@
         } else {
           badgeEl.innerHTML = '';
         }
+      });
+    }
+
+    // Foreign contractor type — show/hide NPT
+    var foreignType = document.getElementById("foreign-type");
+    var foreignDepGroup = document.getElementById("foreign-dep-group");
+    if (foreignType && foreignDepGroup) {
+      foreignType.addEventListener("change", function () {
+        foreignDepGroup.style.display = this.value === "salary" ? "" : "none";
+      });
+    }
+
+    // Foreign NPT stepper
+    var foreignDepInc = document.querySelector("#foreign-dep-group .calc-stepper-btn[data-action='increase']");
+    var foreignDepDec = document.querySelector("#foreign-dep-group .calc-stepper-btn[data-action='decrease']");
+    if (foreignDepInc) {
+      foreignDepInc.addEventListener("click", function () {
+        var inp = document.getElementById("foreign-dependents");
+        var val = parseInt(inp.value, 10) || 0;
+        if (val < 20) { inp.value = val + 1; }
+      });
+    }
+    if (foreignDepDec) {
+      foreignDepDec.addEventListener("click", function () {
+        var inp = document.getElementById("foreign-dependents");
+        var val = parseInt(inp.value, 10) || 0;
+        if (val > 0) { inp.value = val - 1; }
       });
     }
   }
@@ -414,6 +458,8 @@
       } else if (sourceId === "foreign") {
         result = C.calculateForeignContractor({
           grossRevenue: parseNumber(getVal("foreign-revenue-input")),
+          contractorType: getVal("foreign-type"),
+          dependents: parseNumber(getVal("foreign-dependents")),
         });
       } else if (sourceId === "investment") {
         result = calculateInvestment();
@@ -689,6 +735,44 @@
         });
       }
       html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
+
+    } else if (r.type === "foreign_contractor") {
+      if (r.subType === "salary") {
+        // NCNN cư trú + HĐLĐ → lũy tiến
+        html += '<tr><td>Thu nhập gross/tháng</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
+        html += '<tr class="deduction"><td>− Giảm trừ bản thân</td><td>' + C.fmt(R.getPersonalDeduction().monthly) + '/tháng</td></tr>';
+        html += '<tr><td>Thu nhập tính thuế/năm</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.annualRevenue) + ' − GTGC − NPT</td></tr>';
+        if (r.breakdown) {
+          r.breakdown.forEach(function (b) {
+            html += '<tr><td>' + b.label + ' (' + C.fmtPct(b.rate) + ')</td><td>' + C.fmt(b.tax) + '</td></tr>';
+            if (b.formula) html += '<tr class="formula-row"><td colspan="2">' + b.formula + '</td></tr>';
+          });
+        }
+        html += '<tr class="subtotal"><td>Thuế TNCN/tháng</td><td>' + C.fmt(r.monthlyTax) + '</td></tr>';
+        html += '<tr><td>GTGT 5%/tháng</td><td>' + C.fmt(r.gtgt) + '</td></tr>';
+        html += '<tr class="subtotal"><td>TỔNG THUẾ/tháng</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
+
+      } else if (r.subType === "non_resident") {
+        // NC không cư trú → 20% + 5%
+        html += '<tr><td>Thu nhập gross</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
+        html += '<tr><td>TNDN (20% × gross)</td><td>' + C.fmt(r.tndn) + '</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × 20%</td></tr>';
+        html += '<tr><td>GTGT (5% × gross)</td><td>' + C.fmt(r.gtgt) + '</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × 5%</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">⚠️ KHÔNG giảm trừ — NC không cư trú</td></tr>';
+        html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
+
+      } else {
+        // NC cư trú + HĐ dịch vụ → 1% + 5%
+        html += '<tr><td>Doanh thu gross</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
+        html += '<tr><td>TNDN (1% × gross)</td><td>' + C.fmt(r.tndn) + '</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × 1%</td></tr>';
+        html += '<tr><td>GTGT (5% × gross)</td><td>' + C.fmt(r.gtgt) + '</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × 5%</td></tr>';
+        html += '<tr class="formula-row"><td colspan="2">NC cư trú + HĐ dịch vụ → không giảm trừ</td></tr>';
+        html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
+      }
 
     } else {
       html += '<tr><td>Thu nhập</td><td>' + C.fmt(r.revenue) + '</td></tr>';

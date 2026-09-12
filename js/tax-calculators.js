@@ -483,26 +483,90 @@ window.TAX_CALC = (function () {
 
   function calculateForeignContractor(input) {
     var grossRevenue = num(input.grossRevenue);
+    var contractorType = input.contractorType || "service"; // salary | service | non_resident
+    var dependents = num(input.dependents);
     var fc = R.FOREIGN_CONTRACTOR;
-
-    var tndn = grossRevenue * fc.tndn.rate;
+    var tips = [];
+    var tndn = 0;
     var gtgt = grossRevenue * fc.gtgt.rate;
-    var total = tndn + gtgt;
 
-    return {
-      type: "foreign_contractor",
-      grossRevenue: grossRevenue,
-      tndn: tndn,
-      gtgt: gtgt,
-      totalTax: total,
-      effectiveRate: grossRevenue > 0 ? total / grossRevenue : 0,
-      forms: [R.FORMS_DATA.foreign_contractor],
-      tips: [
-        { icon: "📋", text: "Nhà thầu nước ngoài KHÔNG được trừ chi phí. Thuế tính trên doanh thu gross." },
+    if (contractorType === "salary") {
+      // Trường hợp A: Thu nhập dạng lương + NC cư trú → lũy tiến 5 bậc
+      var personalDed = R.getPersonalDeduction();
+      var totalPersonal = personalDed.yearly;
+      var totalDependent = R.DEPENDENT_DEDUCTION.yearly * dependents;
+      var taxableIncome = Math.max(0, grossRevenue * 12 - totalPersonal - totalDependent);
+      var result = progressiveTNCN(taxableIncome);
+      tndn = result.totalTax;
+      gtgt = grossRevenue * 12 * fc.gtgt.rate;
+      tips = [
+        { icon: "✅", text: "NC cư trú + HĐLĐ → được giảm trừ bản thân + NPT, tính theo biểu lũy tiến 5 bậc." },
+        { icon: "📅", text: "Nộp tờ khai quyết toán TNCN trước 31/07." },
+      ];
+      return {
+        type: "foreign_contractor",
+        subType: "salary",
+        grossRevenue: grossRevenue,
+        period: "month",
+        annualRevenue: grossRevenue * 12,
+        taxableIncome: taxableIncome,
+        tndn: tndn,
+        monthlyTax: tndn / 12,
+        gtgt: gtgt / 12,
+        totalTax: tndn / 12 + gtgt / 12,
+        effectiveRate: grossRevenue > 0 ? (tndn / 12 + gtgt / 12) / grossRevenue : 0,
+        breakdown: result.breakdown,
+        forms: [R.FORMS_DATA.foreign_contractor],
+        tips: tips,
+        disclaimer: getDisclaimer(),
+      };
+
+    } else if (contractorType === "non_resident") {
+      // Trường hợp C: NC không cư trú → 20% + 5%
+      tndn = grossRevenue * 0.20;
+      var total = tndn + gtgt;
+      tips = [
+        { icon: "⚠️", text: "NC không cư trú → thuế suất cố định 20% trên tổng thu nhập, KHÔNG giảm trừ." },
         { icon: "📅", text: "Nộp tờ khai theo quý trước 30 ngày cuối quý." },
-      ],
-      disclaimer: getDisclaimer(),
-    };
+      ];
+      return {
+        type: "foreign_contractor",
+        subType: "non_resident",
+        grossRevenue: grossRevenue,
+        tndn: tndn,
+        tndnRate: 0.20,
+        gtgt: gtgt,
+        gtgtRate: fc.gtgt.rate,
+        totalTax: total,
+        effectiveRate: grossRevenue > 0 ? total / grossRevenue : 0,
+        forms: [R.FORMS_DATA.foreign_contractor],
+        tips: tips,
+        disclaimer: getDisclaimer(),
+      };
+
+    } else {
+      // Trường hợp B: HĐ dịch vụ + NC cư trú → 1% + 5%
+      tndn = grossRevenue * fc.tndn.rate;
+      var total2 = tndn + gtgt;
+      tips = [
+        { icon: "📋", text: "NC cư trú + HĐ dịch vụ → 1% TNDN + 5% GTGT trên doanh thu gross, KHÔNG giảm trừ." },
+        { icon: "📅", text: "Nộp tờ khai theo quý trước 30 ngày cuối quý." },
+      ];
+      return {
+        type: "foreign_contractor",
+        subType: "service",
+        grossRevenue: grossRevenue,
+        tndn: tndn,
+        tndnRate: fc.tndn.rate,
+        gtgt: gtgt,
+        gtgtRate: fc.gtgt.rate,
+        totalTax: total2,
+        effectiveRate: grossRevenue > 0 ? total2 / grossRevenue : 0,
+        forms: [R.FORMS_DATA.foreign_contractor],
+        tips: tips,
+        disclaimer: getDisclaimer(),
+      };
+    }
   }
 
   // ──────────────────────────────────────────────

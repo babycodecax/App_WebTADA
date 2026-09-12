@@ -225,39 +225,67 @@ Mức giảm trừ: **bản thân 15,5tr/tháng** (186tr/năm), **NPT 6,2tr/thá
 
 ---
 
-## 8. Thuế TNDN nhà thầu nước ngoài
-**Căn cứ:** [[luat-67-2025-tndn|Luật 67/2025 TNDN]] (Điều 2, Điều 3) · [[nd-320-2025-tndn|NĐ 320/2025 chi tiết]]
+## 8. Thuế NCNN (cá nhân nước ngoài) tại Việt Nam
+**Căn cứ:** [[luat-109-2025-tncn|Luật 109/2025]] (Điều 2, Điều 3, Điều 18) · [[luat-67-2025-tndn|Luật 67/2025]] · [[nd-320-2025-tndn|NĐ 320/2025]] · [[tt-20-2026-tndn|TT 20/2026]]
 
-### Đối tượng áp dụng
-| Điều kiện | Nhà thầu nước ngoài chịu thuế |
-|---|---|
-| **Không có cơ sở thường trú** tại Việt Nam | YES |
-| **Không thành lập pháp nhân** tại Việt Nam (chi nhánh, VPĐD...) | YES |
-| Có **thu nhập phát sinh tại Việt Nam** từ: tư vấn, dịch vụ, lãi tiền vay, bản quyền, nhượng quyền, chuyển nhượng vốn... | YES |
+### 3 trường hợp tính thuế
 
-> **Lưu ý:** Nếu nhà thầu có cơ sở thường trú tại VN → chịu thuế TNDN DN thông thường (20%), KHÔNG áp dụng mức 1%.
+| Trường hợp | Thuế TNCN/TNDN | GTGT | Giảm trừ (GTGC + NPT) | Điều kiện |
+|---|---|---|---|---|
+| **A. Thu nhập dạng lương (HĐLĐ)** + cá nhân cư trú | Biểu lũy tiến 5 bậc (5-35%) | 5% | ✅ Được | NC cư trú + có quan hệ lao động |
+| **B. HĐ dịch vụ, kinh doanh độc lập** + NC cư trú | **1% trên DT gross** | 5% | ❌ Không | NC cư trú + không có HĐLĐ |
+| **C. Cá nhân không cư trú** | **20% trên tổng thu nhập** | 5% | ❌ Không | Không cư trú tại VN |
 
-### Thuế suất
-- **1% trên doanh thu** phát sinh tại Việt Nam (thu nhập trước khi trừ chi phí).
-- Áp dụng cho hầu hết loại hình: tư vấn, dịch vụ, kỹ thuật, quản lý, lãi tiền vay, bản quyền, nhượng quyền, chuyển nhượng vốn...
-- **Không được trừ chi phí** — tính trên tổng doanh thu.
+> **Quan trọng:**
+> - **Cư trú** = có mặt tại VN ≥183 ngày trong 12 tháng liên tục, hoặc có nơi ở thường xuyên, hoặc có HĐLĐ ≥183 ngày.
+> - **Không cư trú** = không đáp ứng các điều kiện trên → thuế suất cố định 20%, KHÔNG giảm trừ.
+> - Thu nhập mang tính **tiền lương, tiền công** (HĐLĐ) → được giảm trừ. Thu nhập từ **HĐ dịch vụ, kinh doanh độc lập** → KHÔNG giảm trừ, dù là NCNN cư trú.
+
+### Thuế suất chi tiết
+
+**Trường hợp A (lương + NC cư trú):**
+- Biểu lũy tiến 5 bậc: 5%/10%/20%/30%/35% (xem phần 3)
+- Được giảm trừ bản thân 15,5tr/tháng + NPT 6,2tr/người/tháng
+- BHXH, BHTN, BHYT nếu có HĐLĐ tại VN
+
+**Trường hợp B (HĐ dịch vụ + NC cư trú):**
+- TNDN: **1% trên doanh thu gross** (không trừ chi phí)
+- GTGT: **5% trên doanh thu gross**
+- KHÔNG giảm trừ, KHÔNG GTGC
+
+**Trường hợp C (NC không cư trú):**
+- TNCN: **20% trên tổng thu nhập** (không trừ chi phí, không giảm trừ)
+- GTGT: **5% trên doanh thu gross**
+- Áp dụng cho cả lương, dịch vụ, bản quyền, nhượng quyền...
 
 ### Hồ sơ, thủ tục khai nộp
 | Bước | Chi tiết |
 |---|---|
-| **Đăng ký thuế** | Đăng ký MST nhà thầu tại cơ quan thuế nơi phát sinh thu nhập |
-| **Khai thuế** | Tờ khai thuế TNDN nhà thầu (theo mẫu TT 20/2026) |
-| **Nộp thuế** | Thực hiện trước khi trả tiền cho nhà thầu (trừ trường hợp tự khai tự nộp) |
-| **Quyết toán** | QTT năm theo thời hạn Luật Quản lý thuế |
-| **Chứng từ** | Hợp đồng nhà thầu + xác nhận đã nộp thuế (để nhà thầu chứng minh đã hoàn thành nghĩa vụ) |
+| **Xác định cư trú** | Kiểm tra ≥183 ngày tại VN trong 12 tháng, hoặc HĐLĐ ≥183 ngày |
+| **Đăng ký thuế** | Đăng ký MST tại cơ quan thuế nơi phát sinh thu nhập |
+| **Khai thuế** | Tờ khai theo mẫu TT 20/2026 |
+| **Nộp thuế** | Trước khi trả tiền cho NCNN (trừ trường hợp tự khai tự nộp) |
+| **Chứng từ** | Hợp đồng + xác nhận đã nộp thuế |
 
 ### Ví dụ tính thuế
-- Nhà thầu nước ngoài tư vấn tại VN, doanh thu 500 triệu → Thuế TNDN = 500 x 1% = **5 triệu đồng**.
-- Nhà thầu cho vay lãi 200 triệu → Thuế TNDN = 200 x 1% = **2 triệu đồng**.
+
+**Trường hợp A:**NCNN cư trú, HĐLĐ, lương 30tr/tháng, 1 NPT:
+- Thuế TNCN = lũy tiến trên (360tr − 186tr − 74.4tr − BHXH) = mức thấp
+
+**Trường hợp B:**NCNN cư trú, HĐ dịch vụ, DT 500 triệu:
+- TNDN = 500 × 1% = **5 triệu**
+- GTGT = 500 × 5% = **25 triệu**
+- Tổng = **30 triệu**
+
+**Trường hợp C:**NCNN không cư trú, DT 500 triệu:
+- TNCN = 500 × 20% = **100 triệu**
+- GTGT = 500 × 5% = **25 triệu**
+- Tổng = **125 triệu**
 
 ### So sánh với hộ kinh doanh/cá thể (xem phần 3)
-- Nhà thầu nước ngoài: **1% trên doanh thu** (không phân loại).
-- HKD/CNKD VN: tỷ lệ % theo ngành nghề (0,5%–5%) trên doanh thu tính thuế, hoặc lũy tiến 15%–20%.
+- NCNN cư trú (HĐ dịch vụ): **1% TNDN + 5% GTGT** trên gross.
+- NCNN không cư trú: **20% TNCN + 5% GTGT** trên gross.
+- HKD VN: tỷ lệ % theo ngành nghề (0,5%–5%), hoặc lũy tiến 15%–20%.
 
 ---
 
