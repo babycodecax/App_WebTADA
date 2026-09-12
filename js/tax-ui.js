@@ -264,7 +264,7 @@
       '      <span class="calc-input-suffix">VNĐ/năm</span>' +
       '    </div>' +
       '  </div>' +
-      '</div>' +
+      '</div>';
   }
 
   function renderCorporateForm() {
@@ -319,7 +319,7 @@
       '    <input type="text" class="calc-input" id="foreign-revenue-input" placeholder="Ví dụ: 500.000.000" inputmode="numeric">' +
       '    <span class="calc-input-suffix">VNĐ/tháng</span>' +
       '  </div>' +
-      '</div>' +
+      '</div>';
   }
 
   function renderInvestmentForm() {
