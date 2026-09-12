@@ -490,7 +490,10 @@
 
     if (isMulti) {
       results.forEach(function (r) {
-        html += renderSourceSummary(r);
+        var icon = getSourceIcon(r.type);
+        var label = getSourceLabel(r.type);
+        html += '<div style="margin:16px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--calc-border);font-size:15px;font-weight:700;color:var(--calc-primary);">' + icon + ' ' + label + ' — ' + C.fmt(r.totalTax || 0) + '</div>';
+        html += renderDetailBreakdown(r);
       });
     } else {
       html += renderDetailBreakdown(results[0]);
