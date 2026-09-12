@@ -23,18 +23,15 @@ window.TAX_FORMS = (function () {
   // ──────────────────────────────────────────────
 
   var INCOME_SOURCES = [
-    { id: "salary", icon: "👤", label: "Đi làm, nhận lương",
-      description: "Nhân viên có hợp đồng lao động, nhận lương hàng tháng",
-      badge: "TNCN lũy tiến 5 bậc" },
+    { id: "salary", icon: "💼", label: "Thu nhập từ lao động",
+      description: "Lương HĐLĐ, thù lao HĐDV, tiền công — quyết toán lũy tiến",
+      badge: "Lũy tiến 5 bậc + GTGC + NPT" },
     { id: "hkd", icon: "🏪", label: "Kinh doanh, hộ kinh doanh",
-      description: "Hộ kinh doanh cá thể, CNKD, SHKD",
+      description: "Hộ kinh doanh cá thể, CNKD, SHKD, freelancer HĐKD",
       badge: "4 nhóm, 2 cách tính" },
     { id: "rental", icon: "🏠", label: "Cho thuê nhà, đất, tài sản",
       description: "Cho thuê BĐS, cho thuê mặt bằng",
       badge: "5% GTGT + 5% TNCN" },
-    { id: "freelancer", icon: "💻", label: "Freelancer, tư vấn, dịch vụ",
-      description: "Thu nhập từ hợp đồng dịch vụ (không có HĐLĐ)",
-      badge: "TNCN lũy tiến" },
     { id: "investment", icon: "💰", label: "Đầu tư, cổ phiếu, lãi tiết kiệm",
       description: "Lãi tiết kiệm, cổ phiếu, chuyển nhượng BĐS",
       badge: "Nhiều tỷ lệ khác nhau" },

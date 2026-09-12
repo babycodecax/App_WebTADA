@@ -13,10 +13,10 @@
   var F = window.TAX_FORMS;
 
   // ── State ──
-  // selectedSources: [{id: "salary", key: "salary_1"}, {id: "freelancer", key: "freelancer_1"}, ...]
+  // selectedSources: [{id: "salary", key: "salary_1"}, ...]
   var state = {
     selectedSources: [],
-    sourceCounters: {},    // {salary: 1, freelancer: 2, ...}
+    sourceCounters: {},
     currentStep: 1,
   };
 
@@ -116,7 +116,7 @@
   function renderStep2Forms() {
     // Kiểm tra có nguồn tiền lương không (cần GTGC + NPT)
     var hasSalaryType = state.selectedSources.some(function (s) {
-      return s.id === "salary" || s.id === "freelancer" || s.id === "foreign";
+      return s.id === "salary" || s.id === "foreign";
     });
 
     var html = "";
@@ -149,7 +149,7 @@
     });
 
     // Nút thêm nguồn
-    html += renderAddButtons(["salary", "freelancer", "foreign", "hkd", "rental"]);
+    html += renderAddButtons(["salary", "foreign", "hkd", "rental"]);
 
     // Cache existing values before re-render
     var cachedValues = {};
@@ -209,7 +209,6 @@
     if (sourceId === "salary") html += renderSalaryForm(suffix);
     else if (sourceId === "hkd") html += renderHKDForm();
     else if (sourceId === "rental") html += renderRentalForm();
-    else if (sourceId === "freelancer") html += renderFreelancerForm();
     else if (sourceId === "corporate") html += renderCorporateForm();
     else if (sourceId === "foreign") html += renderForeignForm();
     else if (sourceId === "investment") html += renderInvestmentForm();
@@ -282,45 +281,6 @@
       '  <div class="calc-input-group">' +
       '    <input type="text" class="calc-input" id="rental-revenue-input" placeholder="Ví dụ: 600.000.000" inputmode="numeric">' +
       '    <span class="calc-input-suffix">VNĐ/năm</span>' +
-      '  </div>' +
-      '</div>';
-  }
-
-  function renderFreelancerForm() {
-    return '' +
-      '<div class="calc-form-group">' +
-      '  <label class="calc-label">Bạn hoạt động theo hình thức nào?</label>' +
-      '  <div class="calc-radio-group">' +
-      '    <label class="calc-radio">' +
-      '      <input type="radio" name="freelancer-mode' + '_form" id="freelancer-mode-free" value="free" checked>' +
-      '      <div class="calc-radio-content">' +
-      '        <span class="calc-radio-title">💼 HĐDV — Cá nhân tự do</span>' +
-      '        <span class="calc-radio-desc">Chưa đăng ký kinh doanh. Thuế: tạm khấu trừ 10% tại nguồn, cuối năm quyết toán theo lũy tiến 5 bậc + GTGC + NPT.</span>' +
-      '      </div>' +
-      '    </label>' +
-      '    <label class="calc-radio">' +
-      '      <input type="radio" name="freelancer-mode' + '_form" id="freelancer-mode-business" value="business">' +
-      '      <div class="calc-radio-content">' +
-      '        <span class="calc-radio-title">🏪 HĐKD — Có đăng ký kinh doanh</span>' +
-      '        <span class="calc-radio-desc">Thuế GTGT + TNCN theo tỷ lệ % trên doanh thu. KHÔNG giảm trừ gia cảnh.</span>' +
-      '      </div>' +
-      '    </label>' +
-      '  </div>' +
-      '</div>' +
-      '<div class="calc-form-row">' +
-      '  <div class="calc-form-group">' +
-      '    <label class="calc-label">Doanh thu năm</label>' +
-      '    <div class="calc-input-group">' +
-      '      <input type="text" class="calc-input" id="freelancer-revenue-input" placeholder="Ví dụ: 200.000.000" inputmode="numeric">' +
-      '      <span class="calc-input-suffix">VNĐ/năm</span>' +
-      '    </div>' +
-      '  </div>' +
-      '  <div class="calc-form-group">' +
-      '    <label class="calc-label">Chi phí hợp lý (nếu có)</label>' +
-      '    <div class="calc-input-group">' +
-      '      <input type="text" class="calc-input" id="freelancer-costs-input" placeholder="Để trống nếu không có" inputmode="numeric">' +
-      '      <span class="calc-input-suffix">VNĐ/năm</span>' +
-      '    </div>' +
       '  </div>' +
       '</div>';
   }
@@ -514,7 +474,7 @@
 
     // ── Nhóm 1: Tiền lương — gộp tổng, GTGC + NPT 1 lần ──
     var salarySources = state.selectedSources.filter(function (s) {
-      return s.id === "salary" || s.id === "freelancer" || s.id === "foreign";
+      return s.id === "salary" || s.id === "foreign";
     });
 
     if (salarySources.length > 0) {
@@ -548,18 +508,6 @@
           salaryBreakdown.push({ label: "Lương", amount: annualSalary, formula: C.fmt(monthlySalary) + " × 12 tháng", source: s.key });
           if (bhxh > 0) salaryBreakdown.push({ label: "BHXH+BHTN+BHYT", amount: bhxh, source: s.key });
           if (union > 0) salaryBreakdown.push({ label: "Phí công đoàn", amount: union, source: s.key });
-        } else if (s.id === "freelancer") {
-          var ft = g("freelancer-contract-type");
-          if (ft === "business") {
-            // HĐKD — tính riêng theo tỷ lệ KD
-            results.push(C.calculateFreelancerTax({ revenue: p("freelancer-revenue-input"), costs: p("freelancer-costs-input"), mode: "business" }));
-          } else {
-            // HĐDV — gộp vào tổng tiền lương
-            var rev = p("freelancer-revenue-input");
-            var cost = p("freelancer-costs-input");
-            totalSalaryIncome += rev;
-            salaryBreakdown.push({ label: "Freelancer HĐDV", amount: rev, formula: "− chi phí " + C.fmt(cost), cost: cost, source: s.key });
-          }
         } else if (s.id === "foreign") {
           var ftype = g("foreign-type");
           if (ftype === "salary") {
@@ -609,7 +557,7 @@
 
     // ── Nhóm 2: Mỗi nguồn kinh doanh/khác tính riêng (khác ngành → % khác) ──
     state.selectedSources.forEach(function (s) {
-      if (s.id === "salary" || s.id === "freelancer" || s.id === "foreign") return;
+      if (s.id === "salary" || s.id === "foreign") return;
       var form = document.querySelector('.calc-source-form[data-key="' + s.key + '"]');
       if (!form) return;
       var g = function (id) { var el = form.querySelector("#" + id); return el ? el.value : ""; };
@@ -878,22 +826,6 @@
         html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
       }
 
-    } else if (r.type === "freelancer") {
-      html += '<tr><td>Doanh thu năm</td><td>' + C.fmt(r.revenue) + '</td></tr>';
-      if (r.costs > 0) {
-        html += '<tr class="deduction"><td>− Chi phí hợp lý</td><td>' + C.fmt(r.costs) + '</td></tr>';
-      }
-      if (r.totalTax > 0 && r.taxableIncome !== undefined) {
-        html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(R.getPersonalDeduction().yearly) + '</td></tr>';
-        html += '<tr class="subtotal"><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
-        if (r.breakdown) {
-          r.breakdown.forEach(function (b) {
-            html += '<tr class="formula-row"><td>' + b.label + '</td><td>' + b.formula + '</td></tr>';
-          });
-        }
-      }
-      html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
-
     } else if (r.type === "foreign_contractor") {
       if (r.subType === "salary") {
         html += '<tr><td>Thu nhập gross/tháng</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
@@ -1033,9 +965,6 @@
         parts.push("hc=" + parseNumber(getVal("hkd-costs-input")));
       } else if (s === "rental") {
         parts.push("rr=" + parseNumber(getVal("rental-revenue-input")));
-      } else if (s === "freelancer") {
-        parts.push("fr=" + parseNumber(getVal("freelancer-revenue-input")));
-        parts.push("fc=" + parseNumber(getVal("freelancer-costs-input")));
       } else if (s === "corporate") {
         parts.push("cr=" + parseNumber(getVal("corp-revenue-input")));
         parts.push("ct=" + parseNumber(getVal("corp-taxable-input")));
@@ -1065,7 +994,6 @@
     if (params.s) sources.push("salary");
     if (params.hr) sources.push("hkd");
     if (params.rr) sources.push("rental");
-    if (params.fr) sources.push("freelancer");
     if (params.cr) sources.push("corporate");
     if (params.fg) sources.push("foreign");
     if (params.ia) sources.push("investment");
@@ -1092,10 +1020,6 @@
         if (params.hc) setVal("hkd-costs-input", params.hc);
       }
       if (params.rr) setVal("rental-revenue-input", params.rr);
-      if (params.fr) {
-        setVal("freelancer-revenue-input", params.fr);
-        if (params.fc) setVal("freelancer-costs-input", params.fc);
-      }
       if (params.cr) {
         setVal("corp-revenue-input", params.cr);
         if (params.ct) setVal("corp-taxable-input", params.ct);
@@ -1139,7 +1063,7 @@
   }
 
   function getSourceIcon(type) {
-    var map = { salary: "👤", hkd: "🏪", rental: "🏠", freelancer: "💻", corporate: "🏢", foreign: "🌏", investment: "💰" };
+    var map = { salary: "💼", hkd: "🏪", rental: "🏠", corporate: "🏢", foreign: "🌏", investment: "💰" };
     return map[type] || "📋";
   }
 
