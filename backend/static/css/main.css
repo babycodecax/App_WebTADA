@@ -2163,6 +2163,42 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 991px) {
   .chatbox-col { width: 100%; }
 }
+
+/* ── Quick Tools Row — dưới chatbox ── */
+.quick-tools {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.quick-tool-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 12px;
+  background: #fff;
+  border: 1.5px solid var(--border-light, #e8e0da);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary-burgundy, #800020);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+
+.quick-tool-btn:hover {
+  border-color: var(--accent-gold, #d4af37);
+  box-shadow: 0 4px 16px rgba(128, 0, 32, 0.08);
+  transform: translateY(-2px);
+}
+
+.quick-tool-btn svg {
+  flex-shrink: 0;
+  color: var(--primary-burgundy, #800020);
+}
 /* ==========================================================================
    LIBRARY SECTION — Thư Viện Biểu Mẫu & Văn Bản Luật (landing page)
    Branding: Burgundy (#800020) & Gold (#D4AF37) — đồng bộ css/styles.css

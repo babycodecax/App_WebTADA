@@ -165,7 +165,12 @@
   if (fileInput) {
     fileInput.addEventListener('change', function () {
       var file = fileInput.files && fileInput.files[0];
-      if (file) runAudit(file);
+      if (file) {
+        // Hiện audit section khi có file
+        var section = document.getElementById('audit-section');
+        if (section) section.style.display = '';
+        runAudit(file);
+      }
     });
   }
 

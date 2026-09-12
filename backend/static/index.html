@@ -6,6 +6,7 @@
   <title>Dịch Vụ Thuế Kế Toán TADA — Đồng hành tối ưu thuế, an toàn pháp lý</title>
   <meta name="description" content="Dịch vụ Thuế Kế Toán TADA chuyên nghiệp, uy tín cho doanh nghiệp, hộ kinh doanh và cá nhân. Tư vấn thuế, kế toán, quyết toán, hóa đơn điện tử, bảo hiểm xã hội. Đồng hành tối ưu thuế, an toàn pháp lý.">
   <meta name="robots" content="index, follow">
+  <meta name="google-site-verification" content="C3vzsUep2m0aYfPyVIfOG1s6vWoAhjb0ZqShPc7VyeY" />
   <link rel="canonical" href="https://ketoanthuetada.com/">
   <link rel="icon" type="image/jpeg" href="static/img/logo.jpg">
 
@@ -15,14 +16,16 @@
   <meta property="og:title" content="Dịch Vụ Thuế Kế Toán TADA — Đồng hành tối ưu thuế, an toàn pháp lý">
   <meta property="og:description" content="Tư vấn thuế, kế toán, quyết toán, hóa đơn điện tử, BHXH cho doanh nghiệp, hộ kinh doanh và cá nhân. Chat AI tra cứu luật thuế 24/7.">
   <meta property="og:url" content="https://ketoanthuetada.com/">
-  <meta property="og:image" content="https://ketoanthuetada.com/static/img/logo.jpg">
+  <meta property="og:image" content="https://ketoanthuetada.com/static/img/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:locale" content="vi_VN">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Dịch Vụ Thuế Kế Toán TADA — Đồng hành tối ưu thuế, an toàn pháp lý">
   <meta name="twitter:description" content="Tư vấn thuế, kế toán, quyết toán, hóa đơn điện tử, BHXH. Chat AI tra cứu luật thuế 24/7.">
-  <meta name="twitter:image" content="https://ketoanthuetada.com/static/img/logo.jpg">
+  <meta name="twitter:image" content="https://ketoanthuetada.com/static/img/og-image.svg">
 
   <!-- Structured data: ProfessionalService + WebSite -->
   <script type="application/ld+json">
@@ -32,7 +35,7 @@
     "name": "Dịch Vụ Thuế Kế Toán TADA",
     "description": "Dịch vụ thuế kế toán chuyên nghiệp: tư vấn thuế TNCN, TNDN, GTGT, quyết toán thuế, hóa đơn điện tử, bảo hiểm xã hội cho doanh nghiệp, hộ kinh doanh và cá nhân.",
     "url": "https://ketoanthuetada.com/",
-    "image": "https://ketoanthuetada.com/static/img/logo.jpg",
+    "image": "https://ketoanthuetada.com/static/img/og-image.svg",
     "telephone": "+84986424286",
     "priceRange": "$$",
     "address": {
@@ -59,14 +62,14 @@
       "name": "Dịch Vụ Thuế Kế Toán TADA",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://ketoanthuetada.com/static/img/logo.jpg"
+        "url": "https://ketoanthuetada.com/static/img/og-image.svg"
       }
     }
   }
   </script>
   <!-- Fonts: preconnect + link song song (thay @import render-blocking) -->
-  <link rel="stylesheet" href="static/css/fonts.css">
-  <link rel="stylesheet" href="static/css/main.css">
+  <link rel="stylesheet" href="static/css/fonts.css?v=20260912">
+  <link rel="stylesheet" href="static/css/main.css?v=20260912">
   <link rel="stylesheet" href="static/css/blog.css" media="print" onload="this.media='all'">
 </head>
 <body>
@@ -88,7 +91,7 @@
         <a href="#hero" class="nav-link">Trang chủ</a>
         <a href="#blog" class="nav-link">Bài viết</a>
         <a href="#services" class="nav-link">Dịch vụ</a>
-        <a href="/library" class="nav-link">Thư viện</a>
+        <a href="#library" class="nav-link">Thư viện</a>
         <div class="nav-dropdown">
           <a href="#" class="nav-link dropdown-trigger">Kênh nền tảng ▾</a>
           <div class="dropdown-menu">
@@ -248,14 +251,22 @@
           </div>
         </div>
 
-        <!-- Audit BCTC — bên phải dưới chatbox, form đầy đủ -->
-        <div class="audit-section" id="audit-section">
-          <div class="audit-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M21 21H4.6c-.56 0-.84 0-1.054-.109a1 1 0 0 1-.437-.437C3 20.24 3 19.96 3 19.4V4.6c0-.56 0-.84.109-1.054a1 1 0 0 1 .437-.437C3.76 3 4.04 3 4.6 3H8"/><path d="M10 3h4"/><path d="M16 3h3.4c.56 0 .84 0 1.054.109a1 1 0 0 1 .437.437C21 3.76 21 4.04 21 4.6V8"/><path d="M3 13h4"/><path d="M3 17h4"/><path d="M17 17l2 2m0 0l2 2m-2-2l2-2m-2 2l-2 2"/></svg> Rà soát Báo cáo Tài chính</div>
+        <!-- Quick tools — dưới chatbox, 2 nút icon nổi bật -->
+        <div class="quick-tools" id="quick-tools">
+          <label class="quick-tool-btn" id="audit-upload-label">
+            <input type="file" id="audit-file-input" accept=".xlsx,.xls,.docx" multiple hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M21 21H4.6c-.56 0-.84 0-1.054-.109a1 1 0 0 1-.437-.437C3 20.24 3 19.96 3 19.4V4.6c0-.56 0-.84.109-1.054a1 1 0 0 1 .437-.437C3.76 3 4.04 3 4.6 3H8"/><path d="M10 3h4"/><path d="M16 3h3.4c.56 0 .84 0 1.054.109a1 1 0 0 1 .437.437C21 3.76 21 4.04 21 4.6V8"/><path d="M3 13h4"/><path d="M3 17h4"/><path d="M17 17l2 2m0 0l2 2m-2-2l2-2m-2 2l-2 2"/></svg>
+            <span>Audit BCTC</span>
+          </label>
+          <a href="/tinh-thue" class="quick-tool-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 10h8"/><path d="M8 14h4"/></svg>
+            <span>Tính thuế</span>
+          </a>
+        </div>
+
+        <!-- Audit details — ẩn mặc định, hiện khi upload file -->
+        <div class="audit-section" id="audit-section" style="display:none">
           <div class="audit-row">
-            <label class="audit-btn" id="audit-upload-label">
-              <input type="file" id="audit-file-input" accept=".xlsx,.xls,.docx" multiple hidden>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> Chọn file BCTC
-            </label>
             <button class="audit-btn audit-btn-outline" id="audit-export-btn" style="display:none">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Xuất PDF
             </button>
@@ -263,7 +274,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Tải Word
             </button>
           </div>
-          <div class="audit-hint" id="audit-file-name">.xlsx / .xls / .docx (B01 B02 B03 theo TT200/TT99)</div>
+          <div class="audit-hint" id="audit-file-name"></div>
           <div class="audit-progress" id="audit-progress" style="display:none">
             <div class="audit-spinner-sm"></div>
             <span>Đang rà soát…</span>
@@ -314,6 +325,32 @@
 
       <div id="services-content" class="services-content">
         <!-- Render động từ /api/services (js/app.js). Fallback tĩnh nếu API lỗi. -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       LIBRARY SECTION — Thư viện (2 tab: Văn bản luật / Biểu mẫu, mỗi tab 5 mục đầu)
+       ========================================== -->
+  <section class="library-mini-section section-padding" id="library">
+    <div class="container">
+      <div class="section-header center text-center">
+        <span class="section-subtitle">THƯ VIỆN</span>
+        <h2 class="section-title">Biểu Mẫu &amp; Văn Bản Luật</h2>
+        <p class="section-desc">Biểu mẫu kê khai, văn bản pháp luật thuế kế toán mới nhất — tải về &amp; tra cứu toàn văn miễn phí.</p>
+      </div>
+
+      <div class="library-mini-tabs" id="library-mini-tabs">
+        <button type="button" class="library-mini-tab active" data-tab="legal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg> Văn bản luật</button>
+        <button type="button" class="library-mini-tab" data-tab="forms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> Biểu mẫu</button>
+      </div>
+
+      <div class="library-mini-grid" id="library-mini-grid">
+        <div class="library-mini-loading">Đang tải thư viện...</div>
+      </div>
+
+      <div class="library-see-all">
+        <a href="/thu-vien" class="btn btn-primary">Xem tất cả biểu mẫu &amp; văn bản →</a>
       </div>
     </div>
   </section>
@@ -410,16 +447,15 @@
   <script>
     window.OB_CONFIG = { apiUrl: '' };
   </script>
-  <script src="static/js/chatbox.js"></script>
-  <script src="static/js/app.js"></script>
-  <script src="static/js/audit.js"></script>
+  <script src="static/js/chatbox.js" defer></script>
+  <script src="static/js/app.js" defer></script>
+  <script src="static/js/audit.js" defer></script>
   <script>
     /* ====================================
        AUTH — Supabase Google OAuth
        ==================================== */
     (function () {
       var SUPABASE_URL = '', SUPABASE_ANON_KEY = '';
-      var ADMIN_EMAILS = [];  // danh sách admin từ backend
       var MAX_FREE = 3;
       var FREE_KEY = 'tada_free_count';
       var supabase = null;
@@ -450,7 +486,6 @@
         .then(function (cfg) {
           SUPABASE_URL = cfg.supabaseUrl;
           SUPABASE_ANON_KEY = cfg.supabaseAnonKey;
-          ADMIN_EMAILS = cfg.adminEmails || [];
           if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return;
           return loadSupabaseSdk();
         })
@@ -490,17 +525,27 @@
           loginBtn.style.display = 'none';
           avatar.style.display = 'flex';
           var img = document.getElementById('avatar-img');
-          if (img) img.src = session.user.user_metadata.avatar_url || '';
+          if (img) {
+            var avatarUrl = session.user.user_metadata.avatar_url || '';
+            // Chống XSS: chỉ chấp nhận URL https:// (chặn javascript:/data:/vbscript:)
+            img.src = /^https:\/\//i.test(avatarUrl) ? avatarUrl : '';
+          }
           var name = document.getElementById('user-name');
           if (name) name.textContent = session.user.user_metadata.full_name || session.user.email || 'User';
           var email = document.getElementById('user-email');
           if (email) email.textContent = session.user.email || '';
 
-          // Hiện nút "Viết bài" nếu email thuộc admin list
+          // Hiện nút "Viết bài" nếu là ADMIN — kiểm tra SERVER (/api/admin/check),
+          // không lộ danh sách ADMIN_EMAILS ra client (fix review 2026-08-10)
           var writeBtn = document.getElementById('btn-write-post');
           if (writeBtn) {
-            var userEmail = (session.user.email || '').toLowerCase().trim();
-            writeBtn.style.display = (ADMIN_EMAILS.indexOf(userEmail) !== -1) ? 'block' : 'none';
+            var token = session.access_token;
+            if (!token) { writeBtn.style.display = 'none'; }
+            else {
+              fetch('/api/admin/check', { headers: { 'Authorization': 'Bearer ' + token } })
+                .then(function (r) { writeBtn.style.display = r.ok ? 'block' : 'none'; })
+                .catch(function () { writeBtn.style.display = 'none'; });
+            }
           }
 
           chatbox.dataset.loggedIn = 'true';
@@ -590,13 +635,13 @@
         },
         log: function (action, detail, qCount) {
           if (!session) return;
-          var email = session.user.email || '';
+          var token = session.access_token;
+          if (!token) return;
           var name = session.user.user_metadata?.full_name || '';
           fetch('/api/log', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
             body: JSON.stringify({
-              email: email,
               user_name: name,
               action: action,
               detail: detail || '',
@@ -613,7 +658,7 @@
       function fmt(iso) { if (!iso) return ''; return new Date(iso).toLocaleDateString('vi-VN', {year:'numeric',month:'long',day:'numeric'}); }
       var grid = document.getElementById('blog-mini-grid');
       if (!grid) return;
-      fetch('/api/blog?limit=10')
+      fetch('/api/blog?limit=5')
         .then(function (r) { return r.json(); })
         .then(function (posts) {
           if (!posts || !posts.length) {
@@ -624,16 +669,121 @@
           posts.forEach(function (p) {
             var card = document.createElement('a');
             card.className = 'blog-mini-card';
-            card.href = '/blog?slug=' + encodeURIComponent(p.slug);
+            card.href = '/blog/' + encodeURIComponent(p.slug);
+            // Thu gọn đồng nhất với card Dịch vụ/Thư viện: title đậm + ngày,
+            // bỏ summary dài → card 1 dòng, đủ thông tin, tối ưu mobile
             card.innerHTML =
               '<h3>' + esc(p.title) + '</h3>' +
-              '<p>' + esc((p.summary || '').substring(0, 150)) + '</p>' +
               '<div class="date">' + fmt(p.published_at) + '</div>';
             grid.appendChild(card);
           });
         })
         .catch(function () { grid.innerHTML = ''; });
     })();
+
+    /* Library mini section — 2 tab Văn bản luật / Biểu mẫu, mỗi tab 5 mục đầu */
+    (function () {
+      function esc(s) { if (!s) return ''; var d=document.createElement('div'); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
+      function fmtDate(iso) {
+        if (!iso) return '';
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return '';
+        return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      }
+      function docTypeLabel(t) {
+        return { luat: 'Luật', nd: 'Nghị định', tt: 'Thông tư', nq: 'Nghị quyết', vbhn: 'VBHN' }[t] || 'Văn bản';
+      }
+
+      var grid = document.getElementById('library-mini-grid');
+      var tabsWrap = document.getElementById('library-mini-tabs');
+      if (!grid) return;
+
+      var allLegal = [];
+      var allForms = [];
+      var currentTab = 'legal';
+
+      function render() {
+        var items = currentTab === 'legal' ? allLegal : allForms;
+        grid.innerHTML = '';
+        if (!items.length) {
+          grid.innerHTML = '<div class="library-empty">Chưa có nội dung trong thư viện.</div>';
+          return;
+        }
+        // Chỉ hiện 5 mục đầu. Card CHỈ HIỂN THỊ (không link) — xem chi tiết phải qua
+        // nút "Xem toàn văn" (link sang /thu-vien) hoặc nút "Xem tất cả". Nút ⬇
+        // tải file hoạt động trực tiếp không rời trang.
+        items.slice(0, 5).forEach(function (item) {
+          var card = document.createElement('div');
+          card.className = 'library-mini-card';
+          if (currentTab === 'legal') {
+            var badge = docTypeLabel(item.doc_type);
+            var eff = item.effective_date || item.created_at || '';
+            var download = item.file_name
+              ? '<a class="library-mini-dl" href="/api/library/legal-docs/download?file_name=' + encodeURIComponent(item.file_name) + '" target="_blank" rel="noopener nofollow" aria-label="Tải file: ' + esc(item.title || item.file_name) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>'
+              : '';
+            card.innerHTML =
+              '<span class="library-mini-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg></span>' +
+              '<div class="library-mini-main">' +
+                '<h3 class="library-mini-title">' + esc(item.title || item.file_name || 'Văn bản luật') + '</h3>' +
+                '<div class="library-mini-meta">' +
+                  '<span class="library-badge" style="display:inline-block;background:var(--bg-light-alt);border:1px solid var(--border-light);border-radius:6px;padding:1px 8px;font-size:11px;color:var(--primary-burgundy)">' + esc(badge) + '</span>' +
+                  (eff ? '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ' + esc(fmtDate(eff)) + '</span>' : '') +
+                  (item.doc_number ? '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> ' + esc(item.doc_number) + '</span>' : '') +
+                '</div>' +
+              '</div>' +
+              '<a class="library-mini-btn" href="/thu-vien" aria-label="Xem toàn văn: ' + esc(item.title || item.file_name || 'Văn bản luật') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Xem toàn văn</a>' + download;
+          } else {
+            var size = item.file_size;
+            var sizeTxt = size && size > 0 ? (size < 1024 ? size + ' B' : size < 1048576 ? (size / 1024).toFixed(1) + ' KB' : (size / 1048576).toFixed(1) + ' MB') : '';
+            var dlBtn = item.file_url
+              ? '<a class="library-mini-btn" href="' + esc(item.file_url) + '" target="_blank" rel="noopener nofollow" aria-label="Tải biểu mẫu: ' + esc(item.name) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Tải</a>'
+              : '<span class="library-mini-btn" style="opacity:.6;cursor:default">Chưa có file</span>';
+            card.innerHTML =
+              '<span class="library-mini-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>' +
+              '<div class="library-mini-main">' +
+                '<h3 class="library-mini-title">' + esc(item.name) + '</h3>' +
+                '<div class="library-mini-meta">' +
+                  '<span class="library-badge" style="display:inline-block;background:var(--bg-light-alt);border:1px solid var(--border-light);border-radius:6px;padding:1px 8px;font-size:11px;color:var(--primary-burgundy)">Biểu mẫu</span>' +
+                  '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> ' + esc(item.file_name || 'File tải xuống') + '</span>' +
+                  (sizeTxt ? '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg> ' + esc(sizeTxt) + '</span>' : '') +
+                '</div>' +
+              '</div>' +
+              dlBtn;
+          }
+          grid.appendChild(card);
+        });
+      }
+
+      function setTab(tab) {
+        currentTab = tab;
+        var btns = document.querySelectorAll('.library-mini-tab');
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].classList.toggle('active', btns[i].dataset.tab === tab);
+        }
+        render();
+      }
+
+      if (tabsWrap) {
+        tabsWrap.addEventListener('click', function (e) {
+          var btn = e.target.closest('.library-mini-tab');
+          if (btn) setTab(btn.dataset.tab);
+        });
+      }
+
+      
+      fetch('/api/library?_t=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (!data || (data.error && !data.forms && !data.legal_documents && !data.legal_docs)) throw new Error('empty');
+          var legalDocs = Array.isArray(data.legal_docs) ? data.legal_docs : [];
+          var legalVault = Array.isArray(data.legal_documents) ? data.legal_documents : [];
+          allLegal = legalDocs.length ? legalDocs : legalVault;
+          allForms = Array.isArray(data.forms) ? data.forms : [];
+          render();
+        })
+        .catch(function () { grid.innerHTML = '<div class="library-empty">Không tải được thư viện.</div>'; });
+    })();
   </script>
 </body>
 </html>
+<!-- deploy 1788840172 -->

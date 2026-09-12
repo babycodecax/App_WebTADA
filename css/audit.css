@@ -120,19 +120,4 @@
 @media (max-width: 991px) {
   .chatbox-col { width: 100%; }
 }
-
-/* ── Calculator Tool Section ── */
-.calc-tool-section {
-  margin-top: 16px;
-  padding: 16px;
-  border: 1px solid var(--border, #e8e0da);
-  border-radius: 12px;
-  background: linear-gradient(135deg, #fdf2f4 0%, #fef9f0 100%);
-}
-
-.calc-tool-desc {
-  font-size: 13px;
-  color: var(--muted, #6b6b6b);
-  line-height: 1.5;
-  margin: 6px 0 12px;
 }

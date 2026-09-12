@@ -68,8 +68,8 @@
   }
   </script>
   <!-- Fonts: preconnect + link song song (thay @import render-blocking) -->
-  <link rel="stylesheet" href="static/css/fonts.css">
-  <link rel="stylesheet" href="static/css/main.css">
+  <link rel="stylesheet" href="static/css/fonts.css?v=20260912">
+  <link rel="stylesheet" href="static/css/main.css?v=20260912">
   <link rel="stylesheet" href="static/css/blog.css" media="print" onload="this.media='all'">
 </head>
 <body>
@@ -251,14 +251,22 @@
           </div>
         </div>
 
-        <!-- Audit BCTC — bên phải dưới chatbox, form đầy đủ -->
-        <div class="audit-section" id="audit-section">
-          <div class="audit-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M21 21H4.6c-.56 0-.84 0-1.054-.109a1 1 0 0 1-.437-.437C3 20.24 3 19.96 3 19.4V4.6c0-.56 0-.84.109-1.054a1 1 0 0 1 .437-.437C3.76 3 4.04 3 4.6 3H8"/><path d="M10 3h4"/><path d="M16 3h3.4c.56 0 .84 0 1.054.109a1 1 0 0 1 .437.437C21 3.76 21 4.04 21 4.6V8"/><path d="M3 13h4"/><path d="M3 17h4"/><path d="M17 17l2 2m0 0l2 2m-2-2l2-2m-2 2l-2 2"/></svg> Rà soát Báo cáo Tài chính</div>
+        <!-- Quick tools — dưới chatbox, 2 nút icon nổi bật -->
+        <div class="quick-tools" id="quick-tools">
+          <label class="quick-tool-btn" id="audit-upload-label">
+            <input type="file" id="audit-file-input" accept=".xlsx,.xls,.docx" multiple hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M21 21H4.6c-.56 0-.84 0-1.054-.109a1 1 0 0 1-.437-.437C3 20.24 3 19.96 3 19.4V4.6c0-.56 0-.84.109-1.054a1 1 0 0 1 .437-.437C3.76 3 4.04 3 4.6 3H8"/><path d="M10 3h4"/><path d="M16 3h3.4c.56 0 .84 0 1.054.109a1 1 0 0 1 .437.437C21 3.76 21 4.04 21 4.6V8"/><path d="M3 13h4"/><path d="M3 17h4"/><path d="M17 17l2 2m0 0l2 2m-2-2l2-2m-2 2l-2 2"/></svg>
+            <span>Audit BCTC</span>
+          </label>
+          <a href="/tinh-thue" class="quick-tool-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 10h8"/><path d="M8 14h4"/></svg>
+            <span>Tính thuế</span>
+          </a>
+        </div>
+
+        <!-- Audit details — ẩn mặc định, hiện khi upload file -->
+        <div class="audit-section" id="audit-section" style="display:none">
           <div class="audit-row">
-            <label class="audit-btn" id="audit-upload-label">
-              <input type="file" id="audit-file-input" accept=".xlsx,.xls,.docx" multiple hidden>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> Chọn file BCTC
-            </label>
             <button class="audit-btn audit-btn-outline" id="audit-export-btn" style="display:none">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Xuất PDF
             </button>
@@ -266,7 +274,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Tải Word
             </button>
           </div>
-          <div class="audit-hint" id="audit-file-name">.xlsx / .xls / .docx (B01 B02 B03 theo TT200/TT99)</div>
+          <div class="audit-hint" id="audit-file-name"></div>
           <div class="audit-progress" id="audit-progress" style="display:none">
             <div class="audit-spinner-sm"></div>
             <span>Đang rà soát…</span>
@@ -276,19 +284,6 @@
             <span class="audit-summary" id="audit-summary"></span>
           </div>
           <div class="audit-error" id="audit-error" style="display:none"></div>
-        </div>
-
-        <!-- Tính thuế online — block riêng, tách khỏi Audit -->
-        <div class="calc-tool-section">
-          <div class="audit-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 10h8"/><path d="M8 14h4"/><path d="M8 18h4"/></svg>
-            Công cụ tính thuế miễn phí
-          </div>
-          <p class="calc-tool-desc">TNCN lũy tiến, HKD 4 nhóm so sánh 2 cách tính, TNDN, GTGT, nhà thầu nước ngoài — kết quả tức thì + lời khuyên tối ưu.</p>
-          <a href="/tinh-thue" class="audit-btn" style="background:var(--primary);color:#fff;border-color:var(--primary);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 10h8"/><path d="M8 14h4"/></svg>
-            Tính thuế ngay
-          </a>
         </div>
 
       </div><!-- end chatbox-col -->
