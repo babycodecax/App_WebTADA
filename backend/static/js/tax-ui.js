@@ -114,8 +114,36 @@
   // ================================================================
 
   function renderStep2Forms() {
+    // Kiểm tra có nguồn tiền lương không (cần GTGC + NPT)
+    var hasSalaryType = state.selectedSources.some(function (s) {
+      return s.id === "salary" || s.id === "freelancer" || s.id === "foreign";
+    });
+
     var html = "";
 
+    // ── Phần giảm trừ chung (nếu có nguồn tiền lương) ──
+    if (hasSalaryType) {
+      html += '<div class="calc-deduction-box">';
+      html += '<div class="calc-deduction-title">📋 Giảm trừ chung (chỉ tính 1 lần trên tổng thu nhập tiền lương)</div>';
+      html += '<div class="calc-deduction-row">';
+      html += '<div class="calc-form-group" style="margin:0;">';
+      html += '<label class="calc-label">Giảm trừ bản thân</label>';
+      html += '<div style="font-size:15px;font-weight:700;color:var(--calc-primary);">' + C.fmt(R.getPersonalDeduction().yearly) + '/năm</div>';
+      html += '<span class="calc-hint">' + C.fmt(R.getPersonalDeduction().monthly) + '/tháng × 12 tháng</span>';
+      html += '</div>';
+      html += '<div class="calc-form-group" style="margin:0;">';
+      html += '<label class="calc-label">Người phụ thuộc</label>';
+      html += '<div class="calc-stepper">';
+      html += '<button class="calc-stepper-btn" data-action="decrease">−</button>';
+      html += '<input type="number" id="npt-shared" class="calc-stepper-input" value="0" min="0" max="20" readonly>';
+      html += '<button class="calc-stepper-btn" data-action="increase">+</button>';
+      html += '</div>';
+      html += '<span class="calc-hint" id="npt-hint">0 người × 6,2tr = 0đ/năm</span>';
+      html += '</div>';
+      html += '</div></div>';
+    }
+
+    // ── Các nguồn thu nhập ──
     state.selectedSources.forEach(function (s) {
       html += renderSourceForm(s.id, s.key);
     });
@@ -438,8 +466,8 @@
     }
 
 
-    // Generic stepper handler — any stepper inside forms
-    document.querySelectorAll(".calc-source-form .calc-stepper-btn").forEach(function (btn) {
+    // Generic stepper handler — any stepper
+    document.querySelectorAll(".calc-stepper-btn").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var stepper = this.closest(".calc-stepper");
         var inp = stepper.querySelector(".calc-stepper-input");
@@ -448,6 +476,11 @@
         var action = this.getAttribute("data-action");
         if (action === "increase" && val < 20) inp.value = val + 1;
         if (action === "decrease" && val > 0) inp.value = val - 1;
+        // Update NPT hint
+        var hint = document.getElementById("npt-hint");
+        if (hint && inp.id === "npt-shared") {
+          hint.textContent = val + " người × 6,2tr = " + C.fmt(val * 6_200_000) + "/năm";
+        }
       });
     });
   }
@@ -679,25 +712,17 @@
       var m = inp.months || 12;
       html += '<tr><td>Thu nhập gross</td><td>' + C.fmt(r.grossIncome) + '</td></tr>';
       html += '<tr class="formula-row"><td colspan="2">' + C.fmt(inp.salary || 0) + ' × ' + m + ' tháng</td></tr>';
-      html += '<tr class="deduction"><td>− ' + r.deductions.deductionLabel + '</td><td>' + C.fmt(r.deductions.personal) + '</td></tr>';
-      if (r.deductions.personalFormula) html += '<tr class="formula-row"><td colspan="2">' + r.deductions.personalFormula + '</td></tr>';
-      if (r.deductions.bhxh > 0 && r.deductions.bhxhBreakdown) {
-        r.deductions.bhxhBreakdown.forEach(function (b) {
-          html += '<tr class="deduction"><td>− ' + b.label + '</td><td>' + C.fmt(b.amount) + '</td></tr>';
-          if (b.formula) html += '<tr class="formula-row"><td colspan="2">' + b.formula + '</td></tr>';
-        });
-        html += '<tr class="deduction" style="font-weight:600;"><td>− Tổng BHXH + CĐ</td><td>' + C.fmt(r.deductions.bhxh) + '</td></tr>';
+      html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.deductions.personal) + '</td></tr>';
+      if (r.deductions.bhxh > 0) {
+        html += '<tr class="deduction"><td>− BHXH + BHTN + BHYT + CĐ</td><td>' + C.fmt(r.deductions.bhxh) + '</td></tr>';
       }
       if (r.deductions.dependent > 0) {
-        html += '<tr class="deduction"><td>− GTGC NPT (' + r.deductions.dependentCount + ' người)</td><td>' + C.fmt(r.deductions.dependent) + '</td></tr>';
-        if (r.deductions.dependentFormula) html += '<tr class="formula-row"><td colspan="2">' + r.deductions.dependentFormula + '</td></tr>';
+        html += '<tr class="deduction"><td>− NPT (' + r.deductions.dependentCount + ' người)</td><td>' + C.fmt(r.deductions.dependent) + '</td></tr>';
       }
       html += '<tr class="subtotal"><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
-      html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossIncome) + ' − ' + C.fmt(r.deductions.total) + '</td></tr>';
       if (r.breakdown) {
         r.breakdown.forEach(function (b) {
-          html += '<tr><td>' + b.label + ' (' + C.fmtPct(b.rate) + ')</td><td>' + C.fmt(b.tax) + '</td></tr>';
-          if (b.formula) html += '<tr class="formula-row"><td colspan="2">' + b.formula + '</td></tr>';
+          html += '<tr class="formula-row"><td>' + b.label + '</td><td>' + b.formula + '</td></tr>';
         });
       }
       html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
@@ -769,38 +794,19 @@
     } else if (r.type === "tndn") {
       if (r.exempt) {
         html += '<tr><td>Doanh thu năm</td><td>' + C.fmt(r.revenue) + '</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">DN doanh thu ≤ 1 tỷ → MIỄN (NĐ 141/2026)</td></tr>';
-        html += '<tr class="subtotal"><td>TRẠNG THÁI</td><td style="color:var(--calc-success);">✅ MIỄN THUẾ TNDN</td></tr>';
+        html += '<tr class="subtotal"><td>TRẠNG THÁI</td><td style="color:var(--calc-success);">✅ MIỄN (DT ≤ 1 tỷ, NĐ 141/2026)</td></tr>';
       } else {
-        html += '<tr><td>Doanh thu năm</td><td>' + C.fmt(r.revenue) + '</td></tr>';
-        html += '<tr><td>Thuế suất</td><td>' + r.rateInfo.label + '</td></tr>';
-        html += '<tr><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.revenue) + ' (DT) → xác định thuế suất theo nhóm DN</td></tr>';
-        if (r.deductions.charitable > 0) {
-          html += '<tr class="deduction"><td>− Quyên góp từ thiện</td><td>' + C.fmt(r.deductions.charitable) + '</td></tr>';
-          html += '<tr class="formula-row"><td colspan="2">Tối đa 20% thu nhập tính thuế</td></tr>';
-        }
-        if (r.deductions.rd > 0) {
-          html += '<tr class="deduction"><td>− Quỹ R&D</td><td>' + C.fmt(r.deductions.rd) + '</td></tr>';
-          html += '<tr class="formula-row"><td colspan="2">Tối đa 10% thu nhập tính thuế</td></tr>';
-        }
-        if (r.deductions.lossCarryforward > 0) html += '<tr class="deduction"><td>− Bù lỗ năm trước</td><td>' + C.fmt(r.deductions.lossCarryforward) + '</td></tr>';
-        html += '<tr class="subtotal"><td>Thu nhập sau giảm trừ</td><td>' + C.fmt(r.incomeAfterDeductions) + '</td></tr>';
-        html += '<tr><td>Thuế TNDN</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.incomeAfterDeductions) + ' × ' + C.fmtPct(r.rateInfo.rate) + '</td></tr>';
+        html += '<tr><td>Thu nhập tính thuế</td><td>' + C.fmt(r.incomeAfterDeductions) + '</td></tr>';
+        html += '<tr class="formula-row"><td>' + r.rateInfo.label + '</td><td>' + C.fmt(r.incomeAfterDeductions) + ' × ' + C.fmtPct(r.rateInfo.rate) + '</td></tr>';
         html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
       }
 
     } else if (r.type === "rental") {
       html += '<tr><td>Doanh thu cho thuê</td><td>' + C.fmt(r.revenue) + '</td></tr>';
       if (r.exempt) {
-        html += '<tr class="formula-row"><td colspan="2">DT ≤ 1 tỷ → MIỄN GTGT + TNCN</td></tr>';
-        html += '<tr class="subtotal"><td>TRẠNG THÁI</td><td style="color:var(--calc-success);">✅ MIỄN THUẾ</td></tr>';
+        html += '<tr class="subtotal"><td>TRẠNG THÁI</td><td style="color:var(--calc-success);">✅ MIỄN (DT ≤ 1 tỷ)</td></tr>';
       } else {
-        html += '<tr><td>GTGT (5%)</td><td>' + C.fmt(r.gtgt) + '</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.revenue) + ' × 5%</td></tr>';
-        html += '<tr><td>TNCN (5%)</td><td>' + C.fmt(r.tncn) + '</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.revenue) + ' × 5%</td></tr>';
+        html += '<tr class="formula-row"><td>GTGT 5% + TNCN 5%</td><td>' + C.fmt(r.revenue) + ' × 10% = ' + C.fmt(r.totalTax) + '</td></tr>';
         html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
       }
 
@@ -808,56 +814,32 @@
       html += '<tr><td>Doanh thu năm</td><td>' + C.fmt(r.revenue) + '</td></tr>';
       if (r.costs > 0) {
         html += '<tr class="deduction"><td>− Chi phí hợp lý</td><td>' + C.fmt(r.costs) + '</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">Giảm chi phí thực tế liên quan đến công việc</td></tr>';
       }
-      html += '<tr class="deduction"><td>− Giảm trừ bản thân</td><td>' + C.fmt(R.getPersonalDeduction().yearly) + '</td></tr>';
-      html += '<tr class="formula-row"><td colspan="2">' + R.getPersonalDeduction().monthly.toLocaleString("vi-VN") + 'đ × 12 tháng</td></tr>';
-      html += '<tr class="formula-row"><td colspan="2">KHÔNG trừ NPT (hợp đồng dịch vụ → thu nhập khác)</td></tr>';
-      html += '<tr class="subtotal"><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
-      html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.revenue) + ' − ' + C.fmt(r.costs || 0) + ' − ' + C.fmt(R.getPersonalDeduction().yearly) + '</td></tr>';
-      if (r.breakdown) {
-        r.breakdown.forEach(function (b) {
-          html += '<tr><td>' + b.label + ' (' + C.fmtPct(b.rate) + ')</td><td>' + C.fmt(b.tax) + '</td></tr>';
-          if (b.formula) html += '<tr class="formula-row"><td colspan="2">' + b.formula + '</td></tr>';
-        });
+      if (r.totalTax > 0 && r.taxableIncome !== undefined) {
+        html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(R.getPersonalDeduction().yearly) + '</td></tr>';
+        html += '<tr class="subtotal"><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
+        if (r.breakdown) {
+          r.breakdown.forEach(function (b) {
+            html += '<tr class="formula-row"><td>' + b.label + '</td><td>' + b.formula + '</td></tr>';
+          });
+        }
       }
       html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
 
     } else if (r.type === "foreign_contractor") {
       if (r.subType === "salary") {
-        // NCNN cư trú + HĐLĐ → lũy tiến
         html += '<tr><td>Thu nhập gross/tháng</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
-        html += '<tr class="deduction"><td>− Giảm trừ bản thân</td><td>' + C.fmt(R.getPersonalDeduction().monthly) + '/tháng</td></tr>';
-        html += '<tr><td>Thu nhập tính thuế/năm</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.annualRevenue) + ' − GTGC − NPT</td></tr>';
-        if (r.breakdown) {
-          r.breakdown.forEach(function (b) {
-            html += '<tr><td>' + b.label + ' (' + C.fmtPct(b.rate) + ')</td><td>' + C.fmt(b.tax) + '</td></tr>';
-            if (b.formula) html += '<tr class="formula-row"><td colspan="2">' + b.formula + '</td></tr>';
-          });
-        }
-        html += '<tr class="subtotal"><td>Thuế TNCN/tháng</td><td>' + C.fmt(r.monthlyTax) + '</td></tr>';
+        html += '<tr class="formula-row"><td>Biểu lũy tiến 5 bậc + GTGC + NPT</td><td>' + C.fmt(r.annualRevenue) + ' − GTGC − NPT</td></tr>';
+        html += '<tr><td>TNCN/tháng</td><td>' + C.fmt(r.monthlyTax) + '</td></tr>';
         html += '<tr><td>GTGT 5%/tháng</td><td>' + C.fmt(r.gtgt) + '</td></tr>';
-        html += '<tr class="subtotal"><td>TỔNG THUẾ/tháng</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
-
+        html += '<tr class="subtotal"><td>TỔNG/tháng</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
       } else if (r.subType === "non_resident") {
-        // NC không cư trú → 20% + 5%
         html += '<tr><td>Thu nhập gross</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
-        html += '<tr><td>TNDN (20% × gross)</td><td>' + C.fmt(r.tndn) + '</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × 20%</td></tr>';
-        html += '<tr><td>GTGT (5% × gross)</td><td>' + C.fmt(r.gtgt) + '</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × 5%</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">⚠️ KHÔNG giảm trừ — NC không cư trú</td></tr>';
+        html += '<tr class="formula-row"><td>TNCN 20% + GTGT 5%</td><td>' + C.fmt(r.grossRevenue) + ' × 25% = ' + C.fmt(r.totalTax) + '</td></tr>';
         html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
-
       } else {
-        // NC cư trú + HĐ dịch vụ → 1% + 5%
-        html += '<tr><td>Doanh thu gross</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
-        html += '<tr><td>TNDN (1% × gross)</td><td>' + C.fmt(r.tndn) + '</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × 1%</td></tr>';
-        html += '<tr><td>GTGT (5% × gross)</td><td>' + C.fmt(r.gtgt) + '</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × 5%</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">NC cư trú + HĐ dịch vụ → không giảm trừ</td></tr>';
+        html += '<tr><td>Thu nhập gross</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
+        html += '<tr class="formula-row"><td>TNDN 1% + GTGT 5%</td><td>' + C.fmt(r.grossRevenue) + ' × 6% = ' + C.fmt(r.totalTax) + '</td></tr>';
         html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
       }
 

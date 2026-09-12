@@ -58,20 +58,30 @@
   .calc-hero { padding: 90px 0 20px; }
 }
 
-/* ── Group Titles ── */
-.calc-group-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--calc-primary);
-  margin: 24px 0 4px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--calc-border);
+/* ── Deduction Box ── */
+.calc-deduction-box {
+  background: #f0fdf4;
+  border: 1.5px solid #bbf7d0;
+  border-radius: var(--calc-radius);
+  padding: 16px 20px;
+  margin-bottom: 20px;
 }
 
-.calc-group-desc {
-  font-size: 13px;
-  color: var(--calc-muted);
-  margin: 0 0 16px;
+.calc-deduction-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #166534;
+  margin-bottom: 12px;
+}
+
+.calc-deduction-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 480px) {
+  .calc-deduction-row { grid-template-columns: 1fr; }
 }
 
 /* ── Calculator Section ── */
