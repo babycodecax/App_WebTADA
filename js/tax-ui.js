@@ -156,6 +156,9 @@
     dom.step2Forms.querySelectorAll(".calc-input, .calc-select, .calc-stepper-input").forEach(function (el) {
       if (el.id) cachedValues[el.id] = el.type === "checkbox" ? el.checked : el.value;
     });
+    // Preserve NPT specifically (number input)
+    var nptEl = document.getElementById("npt-shared");
+    var nptVal = nptEl ? nptEl.value : "0";
 
     dom.step2Forms.innerHTML = html;
 
@@ -166,6 +169,13 @@
       if (el.type === "checkbox") el.checked = cachedValues[id];
       else el.value = cachedValues[id];
     });
+    // Force restore NPT
+    var nptElNew = document.getElementById("npt-shared");
+    if (nptElNew) {
+      nptElNew.value = nptVal;
+      var hint = document.getElementById("npt-hint");
+      if (hint) hint.textContent = nptVal + " người × 6,2tr = " + C.fmt(parseInt(nptVal, 10) * 6_200_000) + "/năm";
+    }
 
     bindFormEvents();
   }
