@@ -132,52 +132,30 @@
   </section>
 
   <!-- ==========================================
-       CALCULATOR WIZARD
+       CALCULATOR — 2 BƯỚC
        ========================================== -->
   <section class="calc-section" id="calculator">
     <div class="container">
 
-      <!-- Progress Bar -->
-      <div class="calc-progress" id="calc-progress">
-        <div class="calc-progress-step active" data-step="1">
-          <div class="calc-progress-dot">1</div>
-          <span class="calc-progress-label">Nguồn thu nhập</span>
-        </div>
-        <div class="calc-progress-line"></div>
-        <div class="calc-progress-step" data-step="2">
-          <div class="calc-progress-dot">2</div>
-          <span class="calc-progress-label">Thông tin chi tiết</span>
-        </div>
-        <div class="calc-progress-line"></div>
-        <div class="calc-progress-step" data-step="3">
-          <div class="calc-progress-dot">3</div>
-          <span class="calc-progress-label">Kết quả</span>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           STEP 1: CHỌN NGUỒN THU NHẬP
-           ========================================== -->
+      <!-- ═══ BƯỚC 1: NHẬP LIỆU ═══ -->
       <div class="calc-step active" id="step-1">
-        <h2 class="calc-step-title">Bạn có những nguồn thu nhập nào?</h2>
-        <p class="calc-step-hint">Chọn TẤT CẢ các nguồn phù hợp. Có thể chọn nhiều.</p>
+        <h2 class="calc-step-title">Chọn nguồn thu nhập & nhập thông tin</h2>
+        <p class="calc-step-hint">Chọn nguồn bên dưới → điền thông tin → bấm tính thuế.</p>
 
+        <!-- Source cards — compact -->
         <div class="calc-source-grid" id="source-grid">
           <!-- Rendered by JS -->
         </div>
 
-        <div class="calc-common-info" id="common-info" style="display:none;">
-        </div>
+        <!-- Forms + Deduction box — rendered by JS -->
+        <div id="step2-forms"></div>
+
+        <div class="calc-common-info" id="common-info" style="display:none;"></div>
 
         <div class="calc-step-actions">
-          <button class="calc-btn calc-btn-next" id="btn-to-step2" disabled>Tiếp theo →</button>
+          <button class="calc-btn calc-btn-calc" id="btn-calculate">🧮 Tính thuế ngay!</button>
         </div>
       </div>
-
-      <!-- ==========================================
-           STEP 2: NHẬP THÔNG TIN CHI TIẾT
-           ========================================== -->
-      <div class="calc-step" id="step-2">
         <h2 class="calc-step-title">Kể về từng nguồn thu nhập</h2>
         <p class="calc-step-hint">Điền thông tin cho mỗi nguồn bạn đã chọn ở bước 1.</p>
 
