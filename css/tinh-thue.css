@@ -58,6 +58,22 @@
   .calc-hero { padding: 90px 0 20px; }
 }
 
+/* ── Group Titles ── */
+.calc-group-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--calc-primary);
+  margin: 24px 0 4px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--calc-border);
+}
+
+.calc-group-desc {
+  font-size: 13px;
+  color: var(--calc-muted);
+  margin: 0 0 16px;
+}
+
 /* ── Calculator Section ── */
 .calc-section {
   padding: 20px 0 60px;

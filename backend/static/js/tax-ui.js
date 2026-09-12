@@ -92,39 +92,84 @@
   // ================================================================
 
   function renderStep2Forms() {
+    // Phân loại sources
+    var salaryTypes = ["salary", "freelancer", "foreign"];
+    var businessTypes = ["hkd", "rental", "corporate"];
+    var otherTypes = ["investment"];
+
+    var salarySources = [];
+    var businessSources = [];
+    var otherSources = [];
+
+    state.selectedSources.forEach(function (s) {
+      if (salaryTypes.indexOf(s) !== -1) salarySources.push(s);
+      else if (businessTypes.indexOf(s) !== -1) businessSources.push(s);
+      else otherSources.push(s);
+    });
+
     var html = "";
 
-    state.selectedSources.forEach(function (sourceId) {
-      var src = findSource(sourceId);
-      if (!src) return;
-
-      html += '<div class="calc-source-form" data-source="' + sourceId + '">';
-      html += '<div class="calc-source-header">';
-      html += '<span class="calc-source-header-icon">' + src.icon + '</span>';
-      html += '<span class="calc-source-header-title">' + src.label + '</span>';
+    // Nhóm 1: Tiền lương — có GTGC, NPT
+    if (salarySources.length > 0) {
+      html += '<div class="calc-group-title">💼 Nguồn tiền lương</div>';
+      html += '<p class="calc-group-desc">Được giảm trừ bản thân + người phụ thuộc (Điều 9 Luật 109/2025)</p>';
+      salarySources.forEach(function (sourceId) {
+        html += renderSourceForm(sourceId);
+      });
+      // NPT chung — 1 lần duy nhất cho tất cả nguồn tiền lương
+      html += '<div class="calc-source-form" style="background:#f0fdf4;border-color:#2d8a4e;">';
+      html += '<div class="calc-source-header"><span class="calc-source-header-icon">👨‍👩‍👧‍👦</span>';
+      html += '<span class="calc-source-header-title" style="color:#2d8a4e;">Giảm trừ người phụ thuộc</span></div>';
+      html += '<p style="font-size:13px;color:#6b6b6b;margin:0 0 12px;">Áp dụng chung cho TẤT CẢ nguồn tiền lương. Chỉ tính 1 lần trên tổng thu nhập.</p>';
+      html += '<div class="calc-form-group">';
+      html += '<label class="calc-label">Số người phụ thuộc (không tính bạn)</label>';
+      html += '<div class="calc-stepper">';
+      html += '<button class="calc-stepper-btn" data-action="decrease" aria-label="Giảm">−</button>';
+      html += '<input type="number" id="npt-shared" class="calc-stepper-input" value="0" min="0" max="20" readonly>';
+      html += '<button class="calc-stepper-btn" data-action="increase" aria-label="Tăng">+</button>';
       html += '</div>';
+      html += '<span class="calc-hint">6,2 triệu/người/tháng — Điều 9 Luật 109/2025</span>';
+      html += '</div></div>';
+    }
 
-      if (sourceId === "salary") {
-        html += renderSalaryForm();
-      } else if (sourceId === "hkd") {
-        html += renderHKDForm();
-      } else if (sourceId === "rental") {
-        html += renderRentalForm();
-      } else if (sourceId === "freelancer") {
-        html += renderFreelancerForm();
-      } else if (sourceId === "corporate") {
-        html += renderCorporateForm();
-      } else if (sourceId === "foreign") {
-        html += renderForeignForm();
-      } else if (sourceId === "investment") {
-        html += renderInvestmentForm();
-      }
+    // Nhóm 2: Kinh doanh / Dịch vụ — không GTGC, không NPT
+    if (businessSources.length > 0) {
+      html += '<div class="calc-group-title">🏪 Nguồn kinh doanh / dịch vụ</div>';
+      html += '<p class="calc-group-desc">Không giảm trừ bản thân, không NPT</p>';
+      businessSources.forEach(function (sourceId) {
+        html += renderSourceForm(sourceId);
+      });
+    }
 
-      html += '</div>';
-    });
+    // Nhóm 3: Đầu tư, khác
+    if (otherSources.length > 0) {
+      html += '<div class="calc-group-title">💰 Nguồn khác</div>';
+      otherSources.forEach(function (sourceId) {
+        html += renderSourceForm(sourceId);
+      });
+    }
 
     dom.step2Forms.innerHTML = html;
     bindFormEvents();
+  }
+
+  function renderSourceForm(sourceId) {
+    var src = findSource(sourceId);
+    if (!src) return '';
+    var html = '<div class="calc-source-form" data-source="' + sourceId + '">';
+    html += '<div class="calc-source-header">';
+    html += '<span class="calc-source-header-icon">' + src.icon + '</span>';
+    html += '<span class="calc-source-header-title">' + src.label + '</span>';
+    html += '</div>';
+    if (sourceId === "salary") html += renderSalaryForm();
+    else if (sourceId === "hkd") html += renderHKDForm();
+    else if (sourceId === "rental") html += renderRentalForm();
+    else if (sourceId === "freelancer") html += renderFreelancerForm();
+    else if (sourceId === "corporate") html += renderCorporateForm();
+    else if (sourceId === "foreign") html += renderForeignForm();
+    else if (sourceId === "investment") html += renderInvestmentForm();
+    html += '</div>';
+    return html;
   }
 
   function renderSalaryForm() {
@@ -148,15 +193,6 @@
       '      <div><span class="calc-toggle-label">Phí công đoàn (1%)</span><div class="calc-toggle-hint">Tùy doanh nghiệp — thường có nếu có tổ chức CĐ</div></div>' +
       '    </div>' +
       '  </div>' +
-      '</div>' +
-      '<div class="calc-form-group">' +
-      '  <label class="calc-label">Số người phụ thuộc (không tính bạn)</label>' +
-      '  <div class="calc-stepper">' +
-      '    <button class="calc-stepper-btn" data-action="decrease" aria-label="Giảm">−</button>' +
-      '    <input type="number" id="salary-dependents" class="calc-stepper-input" value="0" min="0" max="20" readonly>' +
-      '    <button class="calc-stepper-btn" data-action="increase" aria-label="Tăng">+</button>' +
-      '  </div>' +
-      '  <span class="calc-hint">6,2 triệu/người/tháng — Điều 9 Luật 109/2025</span>' +
       '</div>';
   }
 
@@ -229,15 +265,6 @@
       '    </div>' +
       '  </div>' +
       '</div>' +
-      '<div class="calc-form-group" id="freelancer-dep-group" style="display:none;">' +
-      '  <label class="calc-label">Số người phụ thuộc</label>' +
-      '  <div class="calc-stepper">' +
-      '    <button class="calc-stepper-btn" data-action="decrease" aria-label="Giảm">−</button>' +
-      '    <input type="number" id="freelancer-dependents" class="calc-stepper-input" value="0" min="0" max="20" readonly>' +
-      '    <button class="calc-stepper-btn" data-action="increase" aria-label="Tăng">+</button>' +
-      '  </div>' +
-      '  <span class="calc-hint">Chỉ áp dụng khi có HĐLĐ</span>' +
-      '</div>';
   }
 
   function renderCorporateForm() {
@@ -293,15 +320,6 @@
       '    <span class="calc-input-suffix">VNĐ/tháng</span>' +
       '  </div>' +
       '</div>' +
-      '<div class="calc-form-group" id="foreign-dep-group" style="display:none;">' +
-      '  <label class="calc-label">Số người phụ thuộc</label>' +
-      '  <div class="calc-stepper">' +
-      '    <button class="calc-stepper-btn" data-action="decrease" aria-label="Giảm">−</button>' +
-      '    <input type="number" id="foreign-dependents" class="calc-stepper-input" value="0" min="0" max="20" readonly>' +
-      '    <button class="calc-stepper-btn" data-action="increase" aria-label="Tăng">+</button>' +
-      '  </div>' +
-      '  <span class="calc-hint">Chỉ áp dụng khi thu nhập dạng lương (HĐLĐ)</span>' +
-      '</div>';
   }
 
   function renderInvestmentForm() {
@@ -359,41 +377,6 @@
       });
     }
 
-    // Foreign contractor type — show/hide NPT
-    var foreignType = document.getElementById("foreign-type");
-    var foreignDepGroup = document.getElementById("foreign-dep-group");
-    if (foreignType && foreignDepGroup) {
-      foreignType.addEventListener("change", function () {
-        foreignDepGroup.style.display = this.value === "salary" ? "" : "none";
-      });
-    }
-
-    // Foreign NPT stepper
-    var foreignDepInc = document.querySelector("#foreign-dep-group .calc-stepper-btn[data-action='increase']");
-    var foreignDepDec = document.querySelector("#foreign-dep-group .calc-stepper-btn[data-action='decrease']");
-    if (foreignDepInc) {
-      foreignDepInc.addEventListener("click", function () {
-        var inp = document.getElementById("foreign-dependents");
-        var val = parseInt(inp.value, 10) || 0;
-        if (val < 20) { inp.value = val + 1; }
-      });
-    }
-    if (foreignDepDec) {
-      foreignDepDec.addEventListener("click", function () {
-        var inp = document.getElementById("foreign-dependents");
-        var val = parseInt(inp.value, 10) || 0;
-        if (val > 0) { inp.value = val - 1; }
-      });
-    }
-
-    // Freelancer contract type — show/hide NPT
-    var freeContractType = document.getElementById("freelancer-contract-type");
-    var freeDepGroup = document.getElementById("freelancer-dep-group");
-    if (freeContractType && freeDepGroup) {
-      freeContractType.addEventListener("change", function () {
-        freeDepGroup.style.display = this.value === "labor" ? "" : "none";
-      });
-    }
 
     // Generic stepper handler — any stepper inside forms
     document.querySelectorAll(".calc-source-form .calc-stepper-btn").forEach(function (btn) {
@@ -471,7 +454,7 @@
       if (sourceId === "salary") {
         result = C.calculateSalaryTax({
           salary: parseNumber(getVal("salary-input")),
-          dependents: parseNumber(getVal("salary-dependents")),
+          dependents: parseNumber(getVal("npt-shared")),
           hasBHXH: isChecked("bhxh-toggle"),
           hasUnion: isChecked("union-toggle"),
         });
@@ -490,7 +473,7 @@
         result = C.calculateFreelancerTax({
           revenue: parseNumber(getVal("freelancer-revenue-input")),
           costs: parseNumber(getVal("freelancer-costs-input")),
-          dependents: freeContractType === "labor" ? parseNumber(getVal("freelancer-dependents")) : 0,
+          dependents: freeContractType === "labor" ? parseNumber(getVal("npt-shared")) : 0,
         });
       } else if (sourceId === "corporate") {
         result = C.calculateTNDNTax({
@@ -503,7 +486,7 @@
         result = C.calculateForeignContractor({
           grossRevenue: parseNumber(getVal("foreign-revenue-input")),
           contractorType: getVal("foreign-type"),
-          dependents: parseNumber(getVal("foreign-dependents")),
+          dependents: parseNumber(getVal("npt-shared")),
         });
       } else if (sourceId === "investment") {
         result = calculateInvestment();
@@ -971,7 +954,7 @@
         parts.push("ia=" + parseNumber(getVal("invest-amount-input")));
       }
     });
-    parts.push("dep=" + (parseNumber(getVal("salary-dependents")) || parseNumber(getVal("foreign-dependents")) || parseNumber(getVal("freelancer-dependents")) || 0));
+    parts.push("dep=" + (parseNumber(getVal("npt-shared")) || parseNumber(getVal("npt-shared")) || parseNumber(getVal("npt-shared")) || 0));
     return "#!" + parts.join("&");
   }
 
@@ -1031,7 +1014,7 @@
         if (params.it) setSelect("invest-type", params.it);
       }
       if (parseInt(params.dep, 10) > 0) {
-        var depEl = document.getElementById("salary-dependents") || document.getElementById("freelancer-dependents") || document.getElementById("foreign-dependents");
+        var depEl = document.getElementById("npt-shared") || document.getElementById("npt-shared") || document.getElementById("npt-shared");
         if (depEl) depEl.value = params.dep;
       }
       // Auto-calculate
