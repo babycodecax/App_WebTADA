@@ -24,13 +24,10 @@
   var dom = {
     sourceGrid: document.getElementById("source-grid"),
     commonInfo: document.getElementById("common-info"),
-    btnToStep2: document.getElementById("btn-to-step2"),
-    btnBackStep1: document.getElementById("btn-back-step1"),
     btnCalculate: document.getElementById("btn-calculate"),
     btnCalcAgain: document.getElementById("btn-calc-again"),
     btnShare: document.getElementById("btn-share"),
     step1: document.getElementById("step-1"),
-    step2: document.getElementById("step-2"),
     step3: document.getElementById("step-3"),
     step2Forms: document.getElementById("step2-forms"),
     resultContainer: document.getElementById("result-container"),
@@ -105,8 +102,8 @@
       card.classList.toggle("selected", exists);
     });
     dom.commonInfo.style.display = "none";
-    var hasAny = state.selectedSources.length > 0;
-    dom.btnToStep2.disabled = !hasAny;
+    // Auto-render forms khi thay đổi sources
+    renderStep2Forms();
   }
 
   // ================================================================
@@ -427,29 +424,8 @@
 
   function goToStep(step) {
     state.currentStep = step;
-
-    // Hide all steps
-    dom.step1.classList.remove("active");
-    dom.step2.classList.remove("active");
-    dom.step3.classList.remove("active");
-
-    // Show target step
-    document.getElementById("step-" + step).classList.add("active");
-
-    // Update progress
-    document.querySelectorAll(".calc-progress-step").forEach(function (el) {
-      var s = parseInt(el.getAttribute("data-step"));
-      el.classList.remove("active", "done");
-      if (s === step) el.classList.add("active");
-      if (s < step) el.classList.add("done");
-    });
-
-    // Render step 2 forms when entering step 2
-    if (step === 2) {
-      renderStep2Forms();
-    }
-
-    // Scroll to calculator
+    dom.step1.classList.toggle("active", step === 1);
+    dom.step3.classList.toggle("active", step === 2);
     document.getElementById("calculator").scrollIntoView({ behavior: "smooth" });
   }
 
@@ -1098,9 +1074,7 @@
       }
     });
 
-    // Navigation
-    dom.btnToStep2.addEventListener("click", function () { goToStep(2); });
-    dom.btnBackStep1.addEventListener("click", function () { goToStep(1); });
+    // Calculate button
     dom.btnCalculate.addEventListener("click", function () { calculateAll(); });
     dom.btnCalcAgain.addEventListener("click", function () {
       state.selectedSources = [];
