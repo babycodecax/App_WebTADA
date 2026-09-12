@@ -559,8 +559,8 @@ window.TAX_CALC = (function () {
     var dependents = num(input.dependents);
 
     var personalDed = R.getPersonalDeduction();
-    var taxableIncome = Math.max(0, revenue - costs - personalDed.yearly -
-                                  (R.DEPENDENT_DEDUCTION.yearly * dependents));
+    // Freelancer: KHÔNG trừ NPT (hợp đồng dịch vụ → thu nhập khác, Điều 9 Luật 109/2025)
+    var taxableIncome = Math.max(0, revenue - costs - personalDed.yearly);
 
     var result = progressiveTNCN(taxableIncome);
     var effectiveRate = revenue > 0 ? result.totalTax / revenue : 0;
@@ -568,11 +568,15 @@ window.TAX_CALC = (function () {
     var tips = [
       {
         icon: "📋",
-        text: "Freelancer không có HĐLĐ → tự kê khai và nộp thuế TNCN. Cần đăng ký MST cá nhân.",
+        text: "Freelancer hợp đồng dịch vụ → thu nhập khác, KHÔNG được giảm trừ bản thân & người phụ thuộc.",
       },
       {
         icon: "💡",
-        text: "Giữ hợp đồng, hóa đơn đầu vào để chứng minh chi phí hợp lý. Chi phí được trừ phải liên quan trực tiếp đến công việc.",
+        text: "Nếu có HĐLĐ → chọn nguồn 'Đi làm, nhận lương' để được giảm trừ bản thân (15,5tr/tháng) + NPT (6,2tr/người).",
+      },
+      {
+        icon: "📁",
+        text: "Giữ hợp đồng, hóa đơn đầu vào để chứng minh chi phí hợp lý.",
       },
     ];
 
