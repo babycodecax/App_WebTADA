@@ -19,6 +19,8 @@
     currentStep: 1,
   };
 
+  function isDesktop() { return window.innerWidth >= 992; }
+
   // ── DOM cache ──
   var dom = {
     sourceGrid: document.getElementById("source-grid"),
@@ -34,6 +36,9 @@
     step3: document.getElementById("step-3"),
     step2Forms: document.getElementById("step2-forms"),
     resultContainer: document.getElementById("result-container"),
+    calcRight: document.getElementById("calc-right"),
+    resultPlaceholder: document.getElementById("result-placeholder"),
+    resultActions: document.getElementById("result-actions"),
   };
 
   // ================================================================
@@ -41,10 +46,91 @@
   // ================================================================
 
   function init() {
+    // Re-capture DOM elements (IIFE runs before DOM ready)
+    dom.btnToStep2 = document.getElementById("btn-to-step2");
+    dom.btnBackStep1 = document.getElementById("btn-back-step1");
+    dom.btnCalculate = document.getElementById("btn-calculate");
+    dom.btnCalcAgain = document.getElementById("btn-calc-again");
+    dom.btnShare = document.getElementById("btn-share");
+    dom.step1 = document.getElementById("step-1");
+    dom.step2 = document.getElementById("step-2");
+    dom.step3 = document.getElementById("step-3");
+    dom.step2Forms = document.getElementById("step2-forms");
+    dom.resultContainer = document.getElementById("result-container");
+    dom.calcRight = document.getElementById("calc-right");
+    dom.resultPlaceholder = document.getElementById("result-placeholder");
+    dom.resultActions = document.getElementById("result-actions");
+
     renderSourceCards();
     bindEvents();
-    // Auto-fill from URL hash (shareable link)
+    // Delay desktop setup to ensure viewport is settled
+    setTimeout(function () { if (isDesktop()) setupDesktop(); }, 100);
     restoreFromHash();
+    // Re-check on resize (responsive switching)
+    window.addEventListener("resize", function () {
+      if (isDesktop() && !state._desktopSetup) setupDesktop();
+    });
+  }
+
+  function setupDesktop() {
+    if (state._desktopSetup) return;
+    state._desktopSetup = true;
+    // Desktop: step2 always visible below step1, step3 hidden (results go to right panel)
+    dom.step2.style.display = "";
+    dom.step2.classList.add("active");
+    dom.step3.style.display = "none";
+    // Hide calculate button on desktop — auto-calculate
+    if (dom.btnCalculate) dom.btnCalculate.style.display = "none";
+    // Add live calc on input change
+    document.addEventListener("input", function (e) {
+      if (e.target.classList.contains("calc-input") && state.selectedSources.length > 0) {
+        clearTimeout(state._liveCalcTimer);
+        state._liveCalcTimer = setTimeout(function () { calculateAndShow(); }, 300);
+      }
+    });
+  }
+
+  function calculateAndShow() {
+    if (state.selectedSources.length === 0) return;
+    var hasInput = false;
+    state.selectedSources.forEach(function (s) {
+      document.querySelectorAll('.calc-source-form[data-source="' + s + '"] .calc-input[inputmode="numeric"]').forEach(function (inp) {
+        if (parseNumber(inp.value) > 0) hasInput = true;
+      });
+    });
+    if (!hasInput) return;
+    var results = collectResults();
+    if (results.length > 0) {
+      renderResults(results);
+      dom.resultPlaceholder.style.display = "none";
+      dom.resultContainer.style.display = "";
+      dom.resultActions.style.display = "";
+    }
+  }
+
+  function collectResults() {
+    var results = [];
+    state.selectedSources.forEach(function (sourceId) {
+      var dependents = state.dependents;
+      var result = null;
+      if (sourceId === "salary") {
+        result = C.calculateSalaryTax({ salary: parseNumber(getVal("salary-input")), dependents: dependents, hasBHXH: isChecked("bhxh-toggle"), hasUnion: isChecked("union-toggle") });
+      } else if (sourceId === "hkd") {
+        result = C.calculateHKDTax({ revenue: parseNumber(getVal("hkd-revenue-input")), businessType: getVal("hkd-biz-type"), costs: parseNumber(getVal("hkd-costs-input")), dependents: dependents });
+      } else if (sourceId === "rental") {
+        result = C.calculateRentalTax({ revenue: parseNumber(getVal("rental-revenue-input")) });
+      } else if (sourceId === "freelancer") {
+        result = C.calculateFreelancerTax({ revenue: parseNumber(getVal("freelancer-revenue-input")), costs: parseNumber(getVal("freelancer-costs-input")), dependents: dependents });
+      } else if (sourceId === "corporate") {
+        result = C.calculateTNDNTax({ revenue: parseNumber(getVal("corp-revenue-input")), taxableIncome: parseNumber(getVal("corp-taxable-input")), charitableDonation: parseNumber(getVal("corp-charity-input")), rdFund: parseNumber(getVal("corp-rd-input")) });
+      } else if (sourceId === "foreign") {
+        result = C.calculateForeignContractor({ grossRevenue: parseNumber(getVal("foreign-revenue-input")) });
+      } else if (sourceId === "investment") {
+        result = calculateInvestment();
+      }
+      if (result) results.push(result);
+    });
+    return results;
   }
 
   // ================================================================
@@ -85,6 +171,11 @@
     var hasCommon = state.selectedSources.length > 0;
     dom.commonInfo.style.display = hasCommon ? "block" : "none";
     dom.btnToStep2.disabled = !hasCommon;
+
+    // Desktop: auto-render forms + auto-calculate
+    if (isDesktop() && hasCommon) {
+      renderStep2Forms();
+    }
   }
 
   // ================================================================
@@ -329,15 +420,18 @@
   function goToStep(step) {
     state.currentStep = step;
 
-    // Hide all steps
+    if (isDesktop()) {
+      // Desktop: step1 + step2 always visible, render forms
+      if (step === 2) renderStep2Forms();
+      return;
+    }
+
+    // Mobile: wizard flow
     dom.step1.classList.remove("active");
     dom.step2.classList.remove("active");
     dom.step3.classList.remove("active");
-
-    // Show target step
     document.getElementById("step-" + step).classList.add("active");
 
-    // Update progress
     document.querySelectorAll(".calc-progress-step").forEach(function (el) {
       var s = parseInt(el.getAttribute("data-step"));
       el.classList.remove("active", "done");
@@ -345,12 +439,7 @@
       if (s < step) el.classList.add("done");
     });
 
-    // Render step 2 forms when entering step 2
-    if (step === 2) {
-      renderStep2Forms();
-    }
-
-    // Scroll to calculator
+    if (step === 2) renderStep2Forms();
     document.getElementById("calculator").scrollIntoView({ behavior: "smooth" });
   }
 
@@ -422,7 +511,14 @@
 
     if (results.length > 0) {
       renderResults(results);
-      goToStep(3);
+      if (isDesktop()) {
+        // Desktop: show results in right panel
+        dom.resultPlaceholder.style.display = "none";
+        dom.resultContainer.style.display = "";
+        dom.resultActions.style.display = "";
+      } else {
+        goToStep(3);
+      }
       showConfetti();
     }
   }
@@ -907,6 +1003,13 @@
       state.dependents = 0;
       document.getElementById("dependents").value = 0;
       dom.dependentHint.textContent = "0 người × " + C.fmt(R.DEPENDENT_DEDUCTION.monthly) + " = 0đ giảm trừ/tháng";
+      // Reset right panel
+      dom.resultContainer.style.display = "none";
+      dom.resultContainer.innerHTML = "";
+      dom.resultActions.style.display = "none";
+      dom.resultPlaceholder.style.display = "";
+      // Clear forms
+      dom.step2Forms.innerHTML = "";
       updateSourceUI();
       goToStep(1);
     });

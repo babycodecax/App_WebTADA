@@ -133,12 +133,12 @@
   </section>
 
   <!-- ==========================================
-       CALCULATOR WIZARD
+       CALCULATOR — Split Panel
        ========================================== -->
   <section class="calc-section" id="calculator">
     <div class="container">
 
-      <!-- Progress Bar -->
+      <!-- Progress Bar (mobile only) -->
       <div class="calc-progress" id="calc-progress">
         <div class="calc-progress-step active" data-step="1">
           <div class="calc-progress-dot">1</div>
@@ -156,67 +156,73 @@
         </div>
       </div>
 
-      <!-- ==========================================
-           STEP 1: CHỌN NGUỒN THU NHẬP
-           ========================================== -->
-      <div class="calc-step active" id="step-1">
-        <h2 class="calc-step-title">Bạn có những nguồn thu nhập nào?</h2>
-        <p class="calc-step-hint">Chọn TẤT CẢ các nguồn phù hợp. Có thể chọn nhiều.</p>
+      <div class="calc-split">
 
-        <div class="calc-source-grid" id="source-grid">
-          <!-- Rendered by JS -->
-        </div>
+        <!-- ═══ LEFT PANEL — Input ═══ -->
+        <div class="calc-left" id="calc-left">
 
-        <div class="calc-common-info" id="common-info" style="display:none;">
-          <h3 class="calc-sub-title">Thông tin chung</h3>
-          <div class="calc-form-row">
-            <div class="calc-form-group">
-              <label class="calc-label">Số người phụ thuộc (không tính bạn)</label>
-              <div class="calc-stepper">
-                <button class="calc-stepper-btn" data-action="decrease" aria-label="Giảm">−</button>
-                <input type="number" id="dependents" class="calc-stepper-input" value="0" min="0" max="20" readonly>
-                <button class="calc-stepper-btn" data-action="increase" aria-label="Tăng">+</button>
-              </div>
-              <span class="calc-hint" id="dependent-hint">0 người × 6.2 triệu = 0đ giảm trừ/tháng</span>
+          <!-- Step 1: Source selection (always visible on desktop) -->
+          <div class="calc-step active" id="step-1">
+            <h2 class="calc-step-title">Bạn có những nguồn thu nhập nào?</h2>
+            <p class="calc-step-hint">Chọn TẤT CẢ các nguồn phù hợp. Có thể chọn nhiều.</p>
+
+            <div class="calc-source-grid" id="source-grid">
+              <!-- Rendered by JS -->
             </div>
+
+            <div class="calc-common-info" id="common-info" style="display:none;">
+              <h3 class="calc-sub-title">Thông tin chung</h3>
+              <div class="calc-form-row">
+                <div class="calc-form-group">
+                  <label class="calc-label">Số người phụ thuộc (không tính bạn)</label>
+                  <div class="calc-stepper">
+                    <button class="calc-stepper-btn" data-action="decrease" aria-label="Giảm">−</button>
+                    <input type="number" id="dependents" class="calc-stepper-input" value="0" min="0" max="20" readonly>
+                    <button class="calc-stepper-btn" data-action="increase" aria-label="Tăng">+</button>
+                  </div>
+                  <span class="calc-hint" id="dependent-hint">0 người × 6.2 triệu = 0đ giảm trừ/tháng</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="calc-step-actions" id="step1-actions">
+              <button class="calc-btn calc-btn-next" id="btn-to-step2" disabled>Tiếp theo →</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Detail forms (hidden on desktop, shown after step 1 on mobile) -->
+          <div class="calc-step" id="step-2">
+            <h2 class="calc-step-title">Kể về từng nguồn thu nhập</h2>
+            <p class="calc-step-hint">Điền thông tin cho mỗi nguồn bạn đã chọn ở bước 1.</p>
+
+            <div id="step2-forms">
+              <!-- Rendered dynamically by JS -->
+            </div>
+
+            <div class="calc-step-actions">
+              <button class="calc-btn calc-btn-back" id="btn-back-step1">← Quay lại</button>
+              <button class="calc-btn calc-btn-calc" id="btn-calculate">🧮 Tính thuế ngay!</button>
+            </div>
+          </div>
+
+        </div><!-- end calc-left -->
+
+        <!-- ═══ RIGHT PANEL — Live Result ═══ -->
+        <div class="calc-right" id="calc-right">
+          <div class="calc-right-placeholder" id="result-placeholder">
+            <div class="calc-right-icon">📊</div>
+            <p>Chọn nguồn thu nhập và nhập thông tin bên trái.<br>Kết quả sẽ hiển thị ở đây.</p>
+          </div>
+          <div id="result-container" style="display:none;">
+            <!-- Rendered dynamically by JS -->
+          </div>
+          <div class="calc-step-actions" id="result-actions" style="display:none;">
+            <button class="calc-btn calc-btn-back" id="btn-calc-again">🔄 Tính lại</button>
+            <button class="calc-btn calc-btn-share" id="btn-share">📤 Chia sẻ kết quả</button>
           </div>
         </div>
 
-        <div class="calc-step-actions">
-          <button class="calc-btn calc-btn-next" id="btn-to-step2" disabled>Tiếp theo →</button>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           STEP 2: NHẬP THÔNG TIN CHI TIẾT
-           ========================================== -->
-      <div class="calc-step" id="step-2">
-        <h2 class="calc-step-title">Kể về từng nguồn thu nhập</h2>
-        <p class="calc-step-hint">Điền thông tin cho mỗi nguồn bạn đã chọn ở bước 1.</p>
-
-        <div id="step2-forms">
-          <!-- Rendered dynamically by JS -->
-        </div>
-
-        <div class="calc-step-actions">
-          <button class="calc-btn calc-btn-back" id="btn-back-step1">← Quay lại</button>
-          <button class="calc-btn calc-btn-calc" id="btn-calculate">🧮 Tính thuế ngay!</button>
-        </div>
-      </div>
-
-      <!-- ==========================================
-           STEP 3: KẾT QUẢ
-           ========================================== -->
-      <div class="calc-step" id="step-3">
-        <div id="result-container">
-          <!-- Rendered dynamically by JS -->
-        </div>
-
-        <div class="calc-step-actions" style="justify-content:center;">
-          <button class="calc-btn calc-btn-back" id="btn-calc-again">🔄 Tính lại</button>
-          <button class="calc-btn calc-btn-share" id="btn-share">📤 Chia sẻ kết quả</button>
-        </div>
-      </div>
+      </div><!-- end calc-split -->
 
     </div>
   </section>
