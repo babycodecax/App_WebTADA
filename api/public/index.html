@@ -75,20 +75,8 @@
     }
   }
   </script>
-  <!-- Critical CSS inline (above-the-fold) -->
-  <style>
-    :root{--primary-burgundy:#800020;--accent-gold:#d4af37;--bg-light:#fdfbfa;--text-dark:#1f1416;--text-muted:#6e6063}
-    body{margin:0;font-family:'Be Vietnam Pro',sans-serif;background:var(--bg-light);color:var(--text-dark)}
-    .header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(253,251,250,0.95);backdrop-filter:blur(10px);border-bottom:1px solid #e8e0da}
-    .hero{padding:100px 0 40px;text-align:center;background:linear-gradient(180deg,#fdfbfa,#f6f1ed)}
-    .hero-title{font-size:clamp(24px,5vw,40px);font-weight:800;color:var(--primary-burgundy);line-height:1.2;margin:0}
-    .section-title{font-size:clamp(20px,3vw,28px);font-weight:700;color:var(--primary-burgundy);text-align:center;margin:0 0 8px}
-    .container{max-width:1200px;margin:0 auto;padding:0 20px}
-  </style>
-
-  <!-- Main CSS: non-blocking -->
-  <link rel="preload" href="static/css/main.css?v=20260913" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="static/css/main.css?v=20260913"></noscript>
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="static/css/main.css?v=20260913">
   <link rel="stylesheet" href="static/css/blog.css" media="print" onload="this.media='all'">
 </head>
 <body>
