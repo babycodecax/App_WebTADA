@@ -266,8 +266,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 .btn-outline-gold:hover {
   background-color: rgba(212, 175, 55, 0.1);
-  color: var(--accent-gold-light);
-  border-color: var(--accent-gold-light);
+  color: var(--accent-gold-text);
+  border-color: var(--accent-gold-text);
   transform: translateY(-2px);
 }
 
@@ -704,7 +704,7 @@ h1, h2, h3, h4, h5, h6 {
 .hero-feature-icon {
   width: 20px;
   height: 20px;
-  color: var(--accent-gold);
+  color: var(--accent-gold-text);
   flex-shrink: 0;
 }
 .hero-feature-text {
