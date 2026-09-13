@@ -10,6 +10,14 @@
   <link rel="canonical" href="https://ketoanthuetada.com/">
   <link rel="icon" type="image/jpeg" href="static/img/logo.jpg">
 
+  <!-- Preload critical fonts (above-the-fold) -->
+  <link rel="preload" href="static/fonts/be-vietnam-pro-400-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="static/fonts/be-vietnam-pro-700-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="static/fonts/be-vietnam-pro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Fonts: non-blocking load -->
+  <link rel="stylesheet" href="static/css/fonts.css?v=20260913" media="print" onload="this.media='all'">
+
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Dịch Vụ Thuế Kế Toán TADA">
@@ -67,9 +75,8 @@
     }
   }
   </script>
-  <!-- Fonts: preconnect + link song song (thay @import render-blocking) -->
-  <link rel="stylesheet" href="static/css/fonts.css?v=20260912">
-  <link rel="stylesheet" href="static/css/main.css?v=20260912">
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="static/css/main.css?v=20260913">
   <link rel="stylesheet" href="static/css/blog.css" media="print" onload="this.media='all'">
 </head>
 <body>
