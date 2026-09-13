@@ -1151,3 +1151,21 @@
   z-index: 9999;
   animation: calcConfetti 1.5s ease forwards;
 }
+
+/* ── Sector hint & badge ── */
+.calc-input-hint {
+  display: block;
+  font-size: 12px;
+  color: var(--calc-muted, #888);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.calc-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
