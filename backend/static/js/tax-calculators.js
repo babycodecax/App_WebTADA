@@ -523,7 +523,7 @@ window.TAX_CALC = (function () {
     var gtgt = grossRevenue * fc.gtgt.rate;
 
     if (contractorType === "salary") {
-      // Trường hợp A: Thu nhập dạng lương + NC cư trú → lũy tiến 5 bậc
+      // Trường hợp A: Thu nhập dạng lương + Cá nhân nước ngoài cư trú → lũy tiến 5 bậc
       // grossRevenue đã là thu nhập NĂM (UI ghi VNĐ/năm)
       var personalDed = R.getPersonalDeduction();
       var totalPersonal = personalDed.yearly;
@@ -533,7 +533,7 @@ window.TAX_CALC = (function () {
       tndn = result.totalTax;
       gtgt = grossRevenue * fc.gtgt.rate;
       tips = [
-        { icon: "✅", text: "NC cư trú + HĐLĐ → được giảm trừ bản thân + NPT, tính theo biểu lũy tiến 5 bậc." },
+        { icon: "✅", text: "Cá nhân nước ngoài cư trú + HĐLĐ → được giảm trừ bản thân + NPT, tính theo biểu lũy tiến 5 bậc." },
         { icon: "📅", text: "Nộp tờ khai quyết toán TNCN trước 31/07." },
       ];
       return {
@@ -554,11 +554,11 @@ window.TAX_CALC = (function () {
       };
 
     } else if (contractorType === "non_resident") {
-      // Trường hợp C: NC không cư trú → 20% + 5%
+      // Trường hợp C: Cá nhân nước ngoài không cư trú → 20% + 5%
       tndn = grossRevenue * 0.20;
       var total = tndn + gtgt;
       tips = [
-        { icon: "⚠️", text: "NC không cư trú → thuế suất cố định 20% trên tổng thu nhập, KHÔNG giảm trừ." },
+        { icon: "⚠️", text: "Cá nhân nước ngoài không cư trú → thuế suất cố định 20% trên tổng thu nhập, KHÔNG giảm trừ." },
         { icon: "📅", text: "Nộp tờ khai theo quý trước 30 ngày cuối quý." },
       ];
       return {
@@ -577,11 +577,11 @@ window.TAX_CALC = (function () {
       };
 
     } else {
-      // Trường hợp B: HĐ dịch vụ + NC cư trú → 1% + 5%
+      // Trường hợp B: HĐ dịch vụ + Cá nhân nước ngoài cư trú → 1% + 5%
       tndn = grossRevenue * fc.tndn.rate;
       var total2 = tndn + gtgt;
       tips = [
-        { icon: "📋", text: "NC cư trú + HĐ dịch vụ → 1% TNDN + 5% GTGT trên doanh thu gross, KHÔNG giảm trừ." },
+        { icon: "📋", text: "Cá nhân nước ngoài cư trú + HĐ dịch vụ → 1% TNDN + 5% GTGT trên doanh thu gross, KHÔNG giảm trừ." },
         { icon: "📅", text: "Nộp tờ khai theo quý trước 30 ngày cuối quý." },
       ];
       return {

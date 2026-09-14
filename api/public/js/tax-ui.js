@@ -372,9 +372,9 @@
       '<div class="calc-form-group">' +
       '  <label class="calc-label">Trường hợp thuế</label>' +
       '  <select class="calc-select" id="foreign-type' + suffix + '">' +
-      '    <option value="service">NC cư trú + HĐ dịch vụ → 1% TNDN + 5% GTGT trên gross</option>' +
-      '    <option value="salary">NC cư trú + thu nhập dạng lương → lũy tiến 5 bậc + GTGC</option>' +
-      '    <option value="non_resident">NC không cư trú → 20% + 5% trên gross</option>' +
+      '    <option value="service">Cá nhân nước ngoài cư trú + HĐ dịch vụ → 1% TNDN + 5% GTGT trên gross</option>' +
+      '    <option value="salary">Cá nhân nước ngoài cư trú + thu nhập dạng lương → lũy tiến 5 bậc + GTGC</option>' +
+      '    <option value="non_resident">Cá nhân nước ngoài không cư trú → 20% + 5% trên gross</option>' +
       '  </select>' +
       '</div>' +
       '<div class="calc-form-group">' +
@@ -385,7 +385,7 @@
       '  </div>' +
       '</div>' +
       '<div class="calc-source-tip" style="background:#fef9f0;border-left:3px solid var(--calc-accent);padding:8px 12px;margin-top:8px;border-radius:4px;font-size:13px;">' +
-      '💡 NC cư trú + lương → được GTGC + NPT. NC cư trú + HĐDV hoặc NC không cư trú → KHÔNG giảm trừ.</div>';
+      '💡 Cá nhân nước ngoài cư trú + lương → được GTGC + NPT. Cá nhân nước ngoài cư trú + HĐDV hoặc Cá nhân nước ngoài không cư trú → KHÔNG giảm trừ.</div>';
   }
 
   function renderInvestmentForm() {
@@ -1174,7 +1174,7 @@
     var label = map[r.type] || r.type;
     // Phân biệt sub-type cho nhà thầu nước ngoài
     if (r.type === "foreign_contractor" && r.subType) {
-      var fcMap = { salary: "NC cư trú — tiền lương, tiền công", service: "NC cư trú — HĐ dịch vụ", non_resident: "NC không cư trú" };
+      var fcMap = { salary: "Cá nhân nước ngoài cư trú — tiền lương, tiền công", service: "Cá nhân nước ngoài cư trú — HĐ dịch vụ", non_resident: "Cá nhân nước ngoài không cư trú" };
       if (fcMap[r.subType]) label = fcMap[r.subType];
     }
     // Phân biệt ngành nghề cho doanh nghiệp — luôn hiện sector
