@@ -549,6 +549,8 @@ window.TAX_CALC = (function () {
         subType: "salary",
         grossRevenue: grossRevenue,
         ncnnMonths: ncnnMonths,
+        arrivalMonth: arrivalMonth,
+        arrivalYear: arrivalYear,
         annualRevenue: grossRevenue,
         taxableIncome: taxableIncome,
         personalDeduction: totalPersonal,

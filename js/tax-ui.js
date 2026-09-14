@@ -701,6 +701,8 @@
           breakdown: salaryBreakdown,
           taxBreakdown: salaryTax.breakdown,
           workingDays: foreignMonths,
+          ncnnArrMonth: ncnnArrMonth,
+          ncnnArrYear: ncnnArrYear,
           forms: [R.FORMS_DATA.personal_salary],
           tips: [
             { icon: "📋", text: "Thuế TNCN từ tiền lương, tiền công: gộp tổng từ " + salarySources.length + " nguồn, GTGC + NPT tính 1 lần." },
@@ -846,10 +848,10 @@
         });
       }
       html += '<tr class="subtotal"><td>Tổng thu nhập</td><td>' + C.fmt(r.totalIncome) + '</td></tr>';
-      // Hiển thị GTGC — tính lại split-year để show formula đúng
+      // Hiển thị GTGC — tính split-year từ tháng/năm đến thực tế
       var gtgcM11 = 0, gtgcM155 = 0;
       var splitDate = new Date(2026, 6, 1);
-      var curM = 1, curY = 2026;
+      var curM = r.ncnnArrMonth || 1, curY = r.ncnnArrYear || 2026;
       for (var gi = 0; gi < (r.workingDays || 12); gi++) {
         var gd = new Date(curY, curM - 1, 1);
         if (gd >= splitDate) gtgcM155++; else gtgcM11++;
@@ -993,10 +995,10 @@
       var isAlloc = r.allocatedRevenue && r.allocatedRevenue < r.grossRevenue;
       if (r.subType === "salary") {
         html += '<tr><td>Thu nhập gross/năm</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
-        // Hiển thị GTGC split-year
+        // Hiển thị GTGC split-year từ tháng/năm đến thực tế
         var ncnnM11 = 0, ncnnM155 = 0;
         var ncnnSplitDate = new Date(2026, 6, 1);
-        var ncnnCM = 1, ncnnCY = 2026;
+        var ncnnCM = r.arrivalMonth || 1, ncnnCY = r.arrivalYear || 2026;
         for (var ni = 0; ni < (r.ncnnMonths || 12); ni++) {
           var nd = new Date(ncnnCY, ncnnCM - 1, 1);
           if (nd >= ncnnSplitDate) ncnnM155++; else ncnnM11++;
