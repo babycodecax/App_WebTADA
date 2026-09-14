@@ -455,14 +455,8 @@
 
 
     // Foreign type: ẩn/hiện GTGC section + ô nhập ngày khi đổi subtype
-    // Dùng event delegation trên step2-forms cho reliable
-    dom.step2Forms.addEventListener("change", function (e) {
-      if (!e.target.id || !e.target.id.startsWith("foreign-type")) return;
-      // Ẩn/hiện ô nhập số ngày
-      var sfx = e.target.id.replace("foreign-type", "");
-      var daysGroup = document.getElementById("foreign-days-group" + sfx);
-      if (daysGroup) daysGroup.style.display = e.target.value === "salary" ? "" : "none";
-      // Ẩn/hiện GTGC section — kiểm tra TẤT CẢ foreign dropdowns
+    function refreshForeignUI() {
+      // Check TẤT CẢ foreign dropdowns
       var deductionBox = document.querySelector(".calc-deduction-box");
       if (deductionBox) {
         var hasSalarySource = state.selectedSources.some(function (s) {
@@ -475,27 +469,18 @@
         });
         deductionBox.style.display = hasSalarySource ? "" : "none";
       }
-    });
-    // Set đúng state ban đầu: ẩn GTGC nếu tất cả foreign đều là service/non_resident
-    (function () {
-      var deductionBox = document.querySelector(".calc-deduction-box");
-      if (!deductionBox) return;
-      var hasSalarySource = state.selectedSources.some(function (s) {
-        if (s.id === "salary") return true;
-        if (s.id === "foreign") {
-          var el = document.getElementById("foreign-type" + (s.key.includes("_") ? "_" + s.key.split("_").pop() : ""));
-          return el && el.value === "salary";
-        }
-        return false;
-      });
-      deductionBox.style.display = hasSalarySource ? "" : "none";
-      // Cũng ẩn days field cho foreign non-salary
+      // Ẩn/hiện ô nhập số ngày
       document.querySelectorAll("[id^='foreign-type']").forEach(function (fsel) {
         var sfx = fsel.id.replace("foreign-type", "");
         var dg = document.getElementById("foreign-days-group" + sfx);
         if (dg) dg.style.display = fsel.value === "salary" ? "" : "none";
       });
-    })();
+    }
+    document.querySelectorAll("[id^='foreign-type']").forEach(function (sel) {
+      sel.addEventListener("change", refreshForeignUI);
+    });
+    // Set đúng state ban đầu
+    refreshForeignUI();
 
     // Generic stepper handler — any stepper
     document.querySelectorAll(".calc-stepper-btn").forEach(function (btn) {
@@ -794,7 +779,13 @@
         html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + '</td></tr>';
       }
       if (r.totalBHXH > 0) html += '<tr class="deduction"><td>− BHXH + BHTN + BHYT + CĐ</td><td>' + C.fmt(r.totalBHXH) + '</td></tr>';
-      if (r.dependentDeduction > 0) html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
+      if (r.dependentDeduction > 0) {
+        if (r.workingDays > 0 && r.workingDays < 365) {
+          html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr × ' + r.workingDays + '/365)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
+        } else {
+          html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
+        }
+      }
       html += '<tr class="subtotal"><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
       if (r.taxBreakdown) {
         r.taxBreakdown.forEach(function (b) {
