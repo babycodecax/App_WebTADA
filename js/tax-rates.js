@@ -135,6 +135,22 @@ window.TAX_RATES = (function () {
     label: "Miễn thuế TNDN (DN doanh thu ≤ 1 tỷ, NĐ 141/2026)",
   };
 
+  // Ngành nghề áp dụng thuế suất TNDN
+  var TNDN_SECTORS = [
+    { value: "general",         label: "DN sản xuất / thương mại / DV thông thường",       rate: null, note: "Thuế suất theo doanh thu (15-20%)" },
+    { value: "high_tech",       label: "Sản xuất / sản phẩm công nghệ cao",                rate: 0.10, incentive: "Thuế suất ưu đãi 10% + miễn giảm đầu tư" },
+    { value: "digital_product", label: "Sản phẩm / DV nội dung thông tin số",              rate: 0.15, incentive: "Thuế suất ưu đãi 15%" },
+    { value: "support_industry",label: "Công nghiệp hỗ trợ",                               rate: 0.10, incentive: "Thuế suất ưu đãi 10%" },
+    { value: "socialized",      label: "GD, y tế, văn hóa, môi trường (xã hội hóa)",      rate: 0.10, incentive: "Thuế suất ưu đãi 10% + miễn giảm" },
+    { value: "social_housing",  label: "Đầu tư xây dựng nhà ở xã hội",                     rate: 0.10, incentive: "Thuế suất ưu đãi 10%" },
+    { value: "agri_processing", label: "Chế biến nông — thủy sản",                         rate: 0.15, incentive: "Thuế suất ưu đãi 15%" },
+    { value: "oil_gas",         label: "Tìm kiếm, thăm dò, khai thác dầu khí",             rate: 0.25, incentive: "Thuế suất đặc biệt 25-50%" },
+    { value: "rare_resource",   label: "Khai thác tài nguyên quý hiếm",                    rate: 0.40, incentive: "Thuế suất đặc biệt 40-50%" },
+    { value: "pct_distribution",label: "Phân phối, cung cấp HĐ (không kê khai)",           pctOnRevenue: 0.003, note: "0.3% trên DT gross" },
+    { value: "pct_transport",   label: "SX, vận tải, DV gắn với HĐ (không kê khai)",      pctOnRevenue: 0.012, note: "1.2% trên DT gross" },
+    { value: "pct_service",     label: "Dịch vụ, cho thuê tài sản (không kê khai)",        pctOnRevenue: null, customPct: true, minPct: 0.015, note: "User tự nhập tỷ lệ % trên DT (thường 1.5-4%)" },
+  ];
+
   /* ================================================================
    * 6. THUẾ GTGT — Giá trị gia tăng
    *    Căn cứ: Luật 48/2024, NĐ 174/2025 (giảm tạm thời)
@@ -356,6 +372,7 @@ window.TAX_RATES = (function () {
     TNDN_RATES: TNDN_RATES,
     TNDN_DEDUCTIONS: TNDN_DEDUCTIONS,
     TNDN_EXEMPTION: TNDN_EXEMPTION,
+    TNDN_SECTORS: TNDN_SECTORS,
     GTGT_RATES: GTGT_RATES,
     GTGT_EXEMPT: GTGT_EXEMPT,
     FOREIGN_CONTRACTOR: FOREIGN_CONTRACTOR,
@@ -392,6 +409,13 @@ window.TAX_RATES = (function () {
         if (revenue <= TNDN_RATES[i].maxRevenue) return TNDN_RATES[i];
       }
       return TNDN_RATES[TNDN_RATES.length - 1];
+    },
+
+    getTNDNSector: function (sectorValue) {
+      for (var i = 0; i < TNDN_SECTORS.length; i++) {
+        if (TNDN_SECTORS[i].value === sectorValue) return TNDN_SECTORS[i];
+      }
+      return TNDN_SECTORS[0];
     },
 
     // Helper: kiểm tra có trong thời gian giảm 8% GTGT không
