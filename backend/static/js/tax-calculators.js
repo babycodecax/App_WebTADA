@@ -525,7 +525,7 @@ window.TAX_CALC = (function () {
     var gtgt = grossRevenue * fc.gtgt.rate;
 
     if (contractorType === "salary") {
-      // Trường hợp A: NCNN cư trú + HĐLĐ → lũy tiến 5 bậc + GTGC + NPT theo tháng
+      // Trường hợp A: Cá nhân nước ngoài cư trú + HĐLĐ → lũy tiến 5 bậc + GTGC + NPT theo tháng
       var personalDed = R.getPersonalDeduction();
       var totalPersonal = personalDed.monthly * ncnnMonths;
       var totalDependent = R.DEPENDENT_DEDUCTION.monthly * dependents * ncnnMonths;
@@ -561,7 +561,7 @@ window.TAX_CALC = (function () {
       };
 
     } else if (contractorType === "non_resident") {
-      // Trường hợp C: NCNN không cư trú → 20% + 5%
+      // Trường hợp C: Cá nhân nước ngoài không cư trú → 20% + 5%
       tndn = grossRevenue * 0.20;
       var total = tndn + gtgt;
       tips = [
@@ -584,7 +584,7 @@ window.TAX_CALC = (function () {
       };
 
     } else {
-      // Trường hợp B: NCNN cư trú + HĐDV → 1% + 5% trên gross
+      // Trường hợp B: Cá nhân nước ngoài cư trú + HĐDV → 1% + 5% trên gross
       tndn = grossRevenue * fc.tndn.rate;
       var total2 = tndn + gtgt;
       tips = [

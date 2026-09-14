@@ -375,9 +375,9 @@
       '<div class="calc-form-group">' +
       '  <label class="calc-label">Trường hợp thuế</label>' +
       '  <select class="calc-select" id="foreign-type' + suffix + '">' +
-      '    <option value="salary">NCNN cư trú + lương → lũy tiến 5 bậc + GTGC/NPT</option>' +
-      '    <option value="service">NCNN cư trú + HĐ dịch vụ → 1% TNCN + 5% GTGT</option>' +
-      '    <option value="non_resident">NCNN không cư trú → 20% + 5% trên gross</option>' +
+      '    <option value="salary">Cá nhân nước ngoài cư trú + lương → lũy tiến 5 bậc + GTGC/NPT</option>' +
+      '    <option value="service">Cá nhân nước ngoài cư trú + HĐ dịch vụ → 1% TNCN + 5% GTGT</option>' +
+      '    <option value="non_resident">Cá nhân nước ngoài không cư trú → 20% + 5% trên gross</option>' +
       '  </select>' +
       '</div>' +
       '<div class="calc-form-group">' +
@@ -411,7 +411,7 @@
       '</div>' +
       // ── Tip ──
       '<div class="calc-source-tip" style="background:#fef9f0;border-left:3px solid var(--calc-accent);padding:8px 12px;margin-top:8px;border-radius:4px;font-size:13px;">' +
-      '💡 NCNN cư trú + lương → được GTGC + NPT. NCNN cư trú + HĐDV hoặc NCNN không cư trú → KHÔNG giảm trừ.</div>';
+      '💡 Cá nhân nước ngoài cư trú + lương → được GTGC + NPT. Cá nhân nước ngoài cư trú + HĐDV hoặc Cá nhân nước ngoài không cư trú → KHÔNG giảm trừ.</div>';
   }
 
   function renderInvestmentForm() {
@@ -514,18 +514,24 @@
       el.addEventListener("change", function () {
         var sfx = this.id.replace(/foreign-(arrival|depart)-(month|year)/, "");
         updatePeriodInfo(sfx);
-        // Validate < 183 ngày → auto chuyển không cư trú
+        // Validate < 6 tháng (~183 ngày) → khóa salary/service, chỉ cho non_resident
         var fsel = document.getElementById("foreign-type" + sfx);
-        if (fsel && (fsel.value === "salary" || fsel.value === "service")) {
-          var aM = parseInt((document.getElementById("foreign-arrival-month" + sfx) || {}).value) || 1;
-          var aY = parseInt((document.getElementById("foreign-arrival-year" + sfx) || {}).value) || 2026;
-          var dM = parseInt((document.getElementById("foreign-depart-month" + sfx) || {}).value) || 12;
-          var dY = parseInt((document.getElementById("foreign-depart-year" + sfx) || {}).value) || 2026;
-          var totalDays = ((dY - aY) * 12 + (dM - aM) + 1) * 30;
-          if (totalDays < 183) {
-            fsel.value = "non_resident";
-            refreshForeignUI();
-          }
+        if (!fsel) return;
+        var aM = parseInt((document.getElementById("foreign-arrival-month" + sfx) || {}).value) || 1;
+        var aY = parseInt((document.getElementById("foreign-arrival-year" + sfx) || {}).value) || 2026;
+        var dM = parseInt((document.getElementById("foreign-depart-month" + sfx) || {}).value) || 12;
+        var dY = parseInt((document.getElementById("foreign-depart-year" + sfx) || {}).value) || 2026;
+        var totalMonths = (dY - aY) * 12 + (dM - aM) + 1;
+        var isShort = totalMonths < 6;
+        // Disable/enable salary và service options
+        var optSalary = fsel.querySelector('option[value="salary"]');
+        var optService = fsel.querySelector('option[value="service"]');
+        if (optSalary) optSalary.disabled = isShort;
+        if (optService) optService.disabled = isShort;
+        // Nếu đang chọn salary/service mà chuyển sang ngắn → buộc non_resident
+        if (isShort && (fsel.value === "salary" || fsel.value === "service")) {
+          fsel.value = "non_resident";
+          refreshForeignUI();
         }
       });
     });
@@ -607,7 +613,7 @@
       var totalDependent = 0;
       var ncnnArrMonth = 0, ncnnArrYear = 0, ncnnDepMonth = 0, ncnnDepYear = 0;
       var salaryBreakdown = [];
-      var foreignMonths = 12; // mặc định 12 tháng (người VN hoặc NCNN ở lại cả năm)
+      var foreignMonths = 12; // mặc định 12 tháng (người VN hoặc cá nhân nước ngoài ở lại cả năm)
       var dependents = npt;
       var personalDed = R.getPersonalDeduction();
 
@@ -640,7 +646,7 @@
         } else if (s.id === "foreign") {
           var ftype = g("foreign-type" + suffix);
           if (ftype === "salary") {
-            // NCNN lương — gộp vào tổng
+            // Cá nhân nước ngoài lương — gộp vào tổng
             var fMonthlyRev = p("foreign-revenue-input" + suffix);
             var fArrM = parseInt(g("foreign-arrival-month" + suffix)) || 1;
             var fArrY = parseInt(g("foreign-arrival-year" + suffix)) || 2026;

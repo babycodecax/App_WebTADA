@@ -426,7 +426,7 @@ window.TAX_RATES = (function () {
       return d >= new Date("2025-07-01") && d <= new Date("2026-12-31");
     },
 
-    // Helper: tính số tháng GTGC cho NCNN năm đầu
+    // Helper: tính số tháng GTGC cho cá nhân nước ngoài năm đầu
     // arrivalMonth: tháng đến VN (1-12)
     // departureMonth: tháng rời VN (1-12), null nếu ở lại
     // Trả về: số tháng (1-12)
@@ -435,12 +435,12 @@ window.TAX_RATES = (function () {
       return Math.max(1, departureMonth - arrivalMonth + 1); // rời: tháng đến → tháng rời
     },
 
-    // Helper: tính tổng GTGC cho NCNN = 15,5tr × số tháng tại VN
+    // Helper: tính tổng GTGC cho cá nhân nước ngoài = 15,5tr × số tháng tại VN
     calcNcnnGTGC: function (totalMonths) {
       return 15_500_000 * totalMonths;
     },
 
-    // Helper: tính tổng NPT cho NCNN = 6,2tr × N người × số tháng
+    // Helper: tính tổng NPT cho cá nhân nước ngoài = 6,2tr × N người × số tháng
     calcNcnnNPT: function (totalMonths, dependents) {
       return 6_200_000 * dependents * totalMonths;
     },
