@@ -97,7 +97,7 @@ window.TAX_CALC = (function () {
     var dependentDed = R.DEPENDENT_DEDUCTION;
     var months = period === "quarter" ? 3 : 12;
 
-    var totalPersonal = applyPersonalDed ? personalDed.monthly * months : 0;
+    var totalPersonal = applyPersonalDed ? R.splitYearGTGC(months, 1, 2026) : 0;
     var totalDependent = applyDependentDed ? dependentDed.monthly * dependents * months : 0;
 
     // 2. Tính BHXH (phần NLĐ đóng)
@@ -549,6 +549,9 @@ window.TAX_CALC = (function () {
         ncnnMonths: ncnnMonths,
         annualRevenue: grossRevenue,
         taxableIncome: taxableIncome,
+        personalDeduction: totalPersonal,
+        dependentDeduction: totalDependent,
+        dependentCount: dependents,
         tndn: tndn,
         monthlyTax: Math.round(tndn / 12),
         gtgt: Math.round(gtgt / 12),

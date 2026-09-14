@@ -440,6 +440,24 @@ window.TAX_RATES = (function () {
       return 15_500_000 * totalMonths;
     },
 
+    // Helper: tính GTGC split-year (năm 2026 có 2 kỳ: trước/sau 01/07)
+    // Trả về tổng GTGC cho numMonths tháng bắt đầu từ startMonth/startYear
+    splitYearGTGC: function (numMonths, startMonth, startYear) {
+      var rate1 = 11_000_000; // trước 01/07/2026
+      var rate2 = 15_500_000; // từ 01/07/2026
+      var splitDate = new Date(2026, 6, 1); // 01/07/2026
+      var total = 0;
+      var curMonth = startMonth;
+      var curYear = startYear;
+      for (var i = 0; i < numMonths; i++) {
+        var d = new Date(curYear, curMonth - 1, 1);
+        total += (d >= splitDate) ? rate2 : rate1;
+        curMonth++;
+        if (curMonth > 12) { curMonth = 1; curYear++; }
+      }
+      return total;
+    },
+
     // Helper: tính tổng NPT cho cá nhân nước ngoài = 6,2tr × N người × số tháng
     calcNcnnNPT: function (totalMonths, dependents) {
       return 6_200_000 * dependents * totalMonths;

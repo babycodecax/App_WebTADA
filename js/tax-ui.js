@@ -676,7 +676,7 @@
       });
 
       // Tính GTGC + NPT: 15,5tr × tháng, 6,2tr × N × tháng
-      var totalPersonal = (ncnnArrYear > 0) ? R.calcNcnnGTGC(foreignMonths) : personalDed.yearly;
+      var totalPersonal = (ncnnArrYear > 0) ? R.calcNcnnGTGC(foreignMonths) : R.splitYearGTGC(12, 1, 2026);
       var totalDep = (ncnnArrYear > 0) ? R.calcNcnnNPT(foreignMonths, dependents) : R.DEPENDENT_DEDUCTION.monthly * dependents * 12;
       totalDependent = totalDep;
 
@@ -1234,7 +1234,7 @@
         if (params.it) setSelect("invest-type", params.it);
       }
       if (parseInt(params.dep, 10) > 0) {
-        var depEl = document.getElementById("npt-shared") || document.getElementById("npt-shared") || document.getElementById("npt-shared");
+        var depEl = document.getElementById("npt-shared");
         if (depEl) depEl.value = params.dep;
       }
       // Auto-calculate
