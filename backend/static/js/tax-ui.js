@@ -523,17 +523,18 @@
         var dY = parseInt((document.getElementById("foreign-depart-year" + sfx) || {}).value) || 2026;
         var totalMonths = (dY - aY) * 12 + (dM - aM) + 1;
         var isShort = totalMonths < 6;
-        // Disable/enable salary và service options
-        var optSalary = fsel.querySelector('option[value="salary"]');
-        var optService = fsel.querySelector('option[value="service"]');
-        if (optSalary) optSalary.disabled = isShort;
-        if (optService) optService.disabled = isShort;
-        // Nếu đang chọn salary/service bị disable → hiện cảnh báo
+        // Luôn enable/disable đúng trạng thái
+        fsel.querySelectorAll('option').forEach(function (opt) {
+          if (opt.value === "salary" || opt.value === "service") {
+            opt.disabled = isShort;
+          }
+        });
+        // Nếu đang chọn salary/service bị disable → cảnh báo + chuyển
         if (isShort && (fsel.value === "salary" || fsel.value === "service")) {
           alert("Khoảng thời gian dưới 6 tháng (~183 ngày) không đủ điều kiện là cá nhân cư trú. Vui lòng chọn 'Cá nhân nước ngoài không cư trú'.");
           fsel.value = "non_resident";
-          refreshForeignUI();
         }
+        refreshForeignUI();
       });
     });
     // Set đúng state ban đầu
