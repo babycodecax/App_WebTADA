@@ -368,6 +368,9 @@
 
   function renderForeignForm(suffix) {
     suffix = suffix || '';
+    var monthOpts = '';
+    for (var i = 1; i <= 12; i++) { monthOpts += '<option value="' + i + '">Tháng ' + i + '</option>'; }
+    var year = new Date().getFullYear();
     return '' +
       '<div class="calc-form-group">' +
       '  <label class="calc-label">Trường hợp thuế</label>' +
@@ -384,16 +387,32 @@
       '    <span class="calc-input-suffix">VNĐ/năm</span>' +
       '  </div>' +
       '</div>' +
-      '<div class="calc-form-group" id="foreign-days-group' + suffix + '" style="display:none;">' +
-      '  <label class="calc-label">Thời gian làm việc tại Việt Nam (năm đầu cư trú)</label>' +
-      '  <div class="calc-input-group">' +
-      '    <input type="text" class="calc-input" id="foreign-days-input' + suffix + '" placeholder="Để trống nếu trọn năm" inputmode="numeric">' +
-      '    <span class="calc-input-suffix">ngày</span>' +
+      // ── Nhóm tháng (chỉ hiện khi salary) ──
+      '<div id="foreign-months-group' + suffix + '" style="display:none;">' +
+      '<div class="calc-form-row">' +
+      '  <div class="calc-form-group">' +
+      '    <label class="calc-label">Tháng đến Việt Nam</label>' +
+      '    <select class="calc-select" id="foreign-arrival-month' + suffix + '">' + monthOpts + '</select>' +
       '  </div>' +
-      '  <span class="calc-hint">GTGC bản thân tính từ tháng đến VN đến tháng rời VN. Để trống = 12 tháng (186tr/năm).</span>' +
+      '  <div class="calc-form-group">' +
+      '    <label class="calc-label">Tháng rời Việt Nam</label>' +
+      '    <div class="calc-toggle-row">' +
+      '      <label class="calc-toggle"><input type="radio" name="foreign-depart' + suffix + '" value="stay" checked onchange="document.getElementById(\'foreign-depart-month' + suffix + '\').disabled=true"><span class="calc-toggle-slider"></span></label>' +
+      '      <span style="font-size:14px;">Ở lại hết năm ' + year + '</span>' +
+      '    </div>' +
+      '    <div class="calc-toggle-row" style="margin-top:8px;">' +
+      '      <label class="calc-toggle"><input type="radio" name="foreign-depart' + suffix + '" value="custom" onchange="document.getElementById(\'foreign-depart-month' + suffix + '\').disabled=false"><span class="calc-toggle-slider"></span></label>' +
+      '      <select class="calc-select" id="foreign-depart-month' + suffix + '" disabled>' + monthOpts + '</select>' +
+      '    </div>' +
+      '  </div>' +
       '</div>' +
+      '<div id="foreign-period-info' + suffix + '" style="background:#f0f9ff;border-left:3px solid #3b82f6;padding:8px 12px;border-radius:4px;font-size:13px;color:#1e40af;margin-top:8px;">' +
+      '  Kỳ tính thuế: 12 tháng (Tháng 1/' + year + ' → Tháng 12/' + year + ')' +
+      '</div>' +
+      '</div>' +
+      // ── Tip ──
       '<div class="calc-source-tip" style="background:#fef9f0;border-left:3px solid var(--calc-accent);padding:8px 12px;margin-top:8px;border-radius:4px;font-size:13px;">' +
-      '💡 Cá nhân nước ngoài cư trú + lương → được GTGC + NPT. Cá nhân nước ngoài cư trú + HĐDV hoặc Cá nhân nước ngoài không cư trú → KHÔNG giảm trừ.</div>';
+      '💡 NCNN cư trú + lương → được GTGC + NPT. NCNN cư trú + HĐDV hoặc NCNN không cư trú → KHÔNG giảm trừ.</div>';
   }
 
   function renderInvestmentForm() {
@@ -454,9 +473,9 @@
     }
 
 
-    // Foreign type: ẩn/hiện GTGC section + ô nhập ngày khi đổi subtype
+    // Foreign type: ẩn/hiện GTGC section + input tháng khi đổi subtype
     function refreshForeignUI() {
-      // Check trực tiếp TẤT CẢ dropdown foreign-type trên DOM (không cần key lookup)
+      // Check trực tiếp TẤT CẢ dropdown foreign-type trên DOM
       var hasSalarySource = state.selectedSources.some(function (s) { return s.id === "salary"; });
       if (!hasSalarySource) {
         document.querySelectorAll("[id^='foreign-type']").forEach(function (fsel) {
@@ -465,12 +484,30 @@
       }
       var deductionBox = document.querySelector(".calc-deduction-box");
       if (deductionBox) deductionBox.style.display = hasSalarySource ? "" : "none";
-      // Ẩn/hiện ô nhập số ngày
+      // Ẩn/hiện nhóm input tháng (chỉ salary)
       document.querySelectorAll("[id^='foreign-type']").forEach(function (fsel) {
         var sfx = fsel.id.replace("foreign-type", "");
-        var dg = document.getElementById("foreign-days-group" + sfx);
-        if (dg) dg.style.display = fsel.value === "salary" ? "" : "none";
+        var mg = document.getElementById("foreign-months-group" + sfx);
+        if (mg) mg.style.display = fsel.value === "salary" ? "" : "none";
+        if (fsel.value === "salary") updatePeriodInfo(sfx);
       });
+    }
+    function updatePeriodInfo(suffix) {
+      var arrivalEl = document.getElementById("foreign-arrival-month" + suffix);
+      var periodEl = document.getElementById("foreign-period-info" + suffix);
+      if (!arrivalEl || !periodEl) return;
+      var arrival = parseInt(arrivalEl.value) || 1;
+      var departRadios = document.querySelectorAll("input[name='foreign-depart" + suffix + "']");
+      var isStaying = true;
+      var departMonth = 12;
+      departRadios.forEach(function (r) { if (r.checked && r.value === "stay") isStaying = true; if (r.checked && r.value === "custom") isStaying = false; });
+      if (!isStaying) {
+        var departEl = document.getElementById("foreign-depart-month" + suffix);
+        departMonth = parseInt(departEl ? departEl.value : 12) || 12;
+      }
+      var months = isStaying ? (13 - arrival) : Math.max(1, departMonth - arrival + 1);
+      var year = new Date().getFullYear();
+      periodEl.textContent = "Kỳ tính thuế: " + months + " tháng (Tháng " + arrival + "/" + year + " → Tháng " + (isStaying ? 12 : departMonth) + "/" + year + ")";
     }
     document.querySelectorAll("[id^='foreign-type']").forEach(function (sel) {
       sel.addEventListener("change", refreshForeignUI);
@@ -552,7 +589,7 @@
       var totalBHXH = 0;
       var totalDependent = 0;
       var salaryBreakdown = [];
-      var foreignWorkingDays = 0;
+      var foreignMonths = 12; // mặc định 12 tháng (người VN hoặc NCNN ở lại cả năm)
       var dependents = npt;
       var personalDed = R.getPersonalDeduction();
 
@@ -584,24 +621,28 @@
           if (union > 0) salaryBreakdown.push({ label: "Phí công đoàn", amount: union, source: s.key });
         } else if (s.id === "foreign") {
           var ftype = g("foreign-type" + suffix);
-          var fDays = p("foreign-days-input" + suffix);
           if (ftype === "salary") {
             // NCNN lương — gộp vào tổng
             var fRev = p("foreign-revenue-input" + suffix);
+            var fArrival = parseInt(g("foreign-arrival-month" + suffix)) || 1;
+            var fDepartRadios = form.querySelectorAll("input[name='foreign-depart" + suffix + "']");
+            var fIsStaying = true;
+            fDepartRadios.forEach(function (r) { if (r.checked && r.value === "custom") fIsStaying = false; });
+            var fDepartMonth = fIsStaying ? null : (parseInt(g("foreign-depart-month" + suffix)) || 12);
+            foreignMonths = R.calcNcnnMonths(fArrival, fDepartMonth);
             totalSalaryIncome += fRev;
-            foreignWorkingDays = fDays || 0;
-            salaryBreakdown.push({ label: "Cá nhân nước ngoài — lương", amount: fRev, source: s.key });
+            salaryBreakdown.push({ label: "Cá nhân nước ngoài — lương (" + foreignMonths + " tháng)", amount: fRev, source: s.key });
           } else {
             // HĐDV hoặc không cư trú — tính riêng
-            results.push(C.calculateForeignContractor({ grossRevenue: p("foreign-revenue-input" + suffix), contractorType: ftype, dependents: npt, workingDays: fDays || 0 }));
+            var fArrival2 = parseInt(g("foreign-arrival-month" + suffix)) || 1;
+            results.push(C.calculateForeignContractor({ grossRevenue: p("foreign-revenue-input" + suffix), contractorType: ftype, dependents: npt, arrivalMonth: fArrival2 }));
           }
         }
       });
 
-      // Tính GTGC + NPT 1 lần (prorate nếu NCNN năm đầu có working days)
-      var allocRate = (foreignWorkingDays > 0 && foreignWorkingDays < 365) ? foreignWorkingDays / 365 : 1;
-      var totalPersonal = allocRate < 1 ? Math.round(personalDed.yearly * allocRate) : personalDed.yearly;
-      var totalDep = allocRate < 1 ? Math.round(R.DEPENDENT_DEDUCTION.yearly * dependents * allocRate) : R.DEPENDENT_DEDUCTION.yearly * dependents;
+      // Tính GTGC + NPT 1 lần theo tháng (NCNN năm đầu < 12 tháng, người VN luôn 12)
+      var totalPersonal = personalDed.monthly * foreignMonths;
+      var totalDep = R.DEPENDENT_DEDUCTION.monthly * dependents * foreignMonths;
       totalDependent = totalDep;
 
       // Thu nhập tính thuế
@@ -623,12 +664,12 @@
           effectiveRate: totalSalaryIncome > 0 ? salaryTax.totalTax / totalSalaryIncome : 0,
           breakdown: salaryBreakdown,
           taxBreakdown: salaryTax.breakdown,
-          workingDays: foreignWorkingDays,
+          workingDays: foreignMonths,
           forms: [R.FORMS_DATA.personal_salary],
           tips: [
             { icon: "📋", text: "Thuế TNCN từ tiền lương, tiền công: gộp tổng từ " + salarySources.length + " nguồn, GTGC + NPT tính 1 lần." },
-          ].concat(foreignWorkingDays > 0 && foreignWorkingDays < 365 ? [
-            { icon: "⚠️", text: "Năm đầu cư trú: GTGC bản thân = 186tr × " + foreignWorkingDays + "/365 ngày = " + C.fmt(totalPersonal) + ". NPT cũng phân bổ tương ứng." },
+          ].concat(foreignMonths < 12 ? [
+            { icon: "⚠️", text: "Năm đầu cư trú: GTGC bản thân = 15,5tr × " + foreignMonths + " tháng = " + C.fmt(totalPersonal) + ". NPT = 6,2tr × N người × " + foreignMonths + " tháng." },
           ] : []).concat([
             { icon: "💡", text: "10% tạm khấu trừ tại nguồn. Cuối năm quyết toán, được hoàn/thiếu thuế." },
           ]),
@@ -769,17 +810,17 @@
         });
       }
       html += '<tr class="subtotal"><td>Tổng thu nhập</td><td>' + C.fmt(r.totalIncome) + '</td></tr>';
-      if (r.workingDays > 0 && r.workingDays < 365) {
-        html += '<tr class="deduction"><td>− GTGC bản thân (năm đầu)</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(186tr × ' + r.workingDays + '/365)</span></td></tr>';
+      if (r.workingDays < 12) {
+        html += '<tr class="deduction"><td>− GTGC bản thân (năm đầu)</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + r.workingDays + ' tháng)</span></td></tr>';
       } else {
         html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + '</td></tr>';
       }
       if (r.totalBHXH > 0) html += '<tr class="deduction"><td>− BHXH + BHTN + BHYT + CĐ</td><td>' + C.fmt(r.totalBHXH) + '</td></tr>';
       if (r.dependentDeduction > 0) {
-        if (r.workingDays > 0 && r.workingDays < 365) {
-          html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr × 12 × ' + r.workingDays + '/365)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
+        if (r.workingDays < 12) {
+          html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr × ' + r.workingDays + ' tháng)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
         } else {
-          html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
+          html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr × 12 tháng)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
         }
       }
       html += '<tr class="subtotal"><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
@@ -912,10 +953,8 @@
       var isAlloc = r.allocatedRevenue && r.allocatedRevenue < r.grossRevenue;
       if (r.subType === "salary") {
         html += '<tr><td>Thu nhập gross/năm</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
-        if (isAlloc) {
-          html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × ' + (r.workingDays || "?") + '/365 ngày</td></tr>';
-          html += '<tr><td>Thu nhập phân bổ tại VN</td><td>' + C.fmt(r.allocatedRevenue) + '</td></tr>';
-          html += '<tr class="deduction"><td>− GTGC bản thân (năm đầu)</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(186tr × ' + (r.workingDays || "?") + '/365)</span></td></tr>';
+        if (r.ncnnMonths && r.ncnnMonths < 12) {
+          html += '<tr class="deduction"><td>− GTGC bản thân (năm đầu)</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + r.ncnnMonths + ' tháng)</span></td></tr>';
         } else {
           html += '<tr class="formula-row"><td>Biểu lũy tiến 5 bậc + GTGC + NPT</td><td>' + C.fmt(r.annualRevenue) + ' − GTGC − NPT</td></tr>';
         }
@@ -1081,7 +1120,9 @@
       } else if (s.id === "foreign") {
         parts.push("fg=" + parseNumber(getVal("foreign-revenue-input" + sx)));
         parts.push("fv=" + getVal("foreign-type" + sx));
-        parts.push("fd=" + parseNumber(getVal("foreign-days-input" + sx)));
+        parts.push("fm=" + parseNumber(getVal("foreign-arrival-month" + sx)));
+        var stayRadio = form.querySelector("input[name='foreign-depart']:checked");
+        parts.push("fx=" + (stayRadio && stayRadio.value === "stay" ? "s" : parseNumber(getVal("foreign-depart-month" + sx))));
       } else if (s.id === "investment") {
         parts.push("it=" + getVal("invest-type"));
         parts.push("ia=" + parseNumber(getVal("invest-amount-input")));
@@ -1155,7 +1196,20 @@
       if (params.fg) {
         setVal("foreign-revenue-input", params.fg);
         if (params.fv) setSelect("foreign-type", params.fv);
-        if (params.fd) setVal("foreign-days-input", params.fd);
+        if (params.fm) setSelect("foreign-arrival-month", params.fm);
+        if (params.fx) {
+          if (params.fx === "s") {
+            var stayR = document.querySelector("input[name='foreign-depart'][value='stay']");
+            if (stayR) { stayR.checked = true; }
+            var dpEl = document.getElementById("foreign-depart-month");
+            if (dpEl) dpEl.disabled = true;
+          } else {
+            var custR = document.querySelector("input[name='foreign-depart'][value='custom']");
+            if (custR) { custR.checked = true; }
+            var dpEl2 = document.getElementById("foreign-depart-month");
+            if (dpEl2) { dpEl2.disabled = false; dpEl2.value = params.fx; }
+          }
+        }
       }
       if (params.ia) {
         setVal("invest-amount-input", params.ia);

@@ -425,5 +425,14 @@ window.TAX_RATES = (function () {
       var d = dateStr ? new Date(dateStr) : new Date();
       return d >= new Date("2025-07-01") && d <= new Date("2026-12-31");
     },
+
+    // Helper: tính số tháng GTGC cho NCNN năm đầu
+    // arrivalMonth: tháng đến VN (1-12)
+    // departureMonth: tháng rời VN (1-12), null nếu ở lại
+    // Trả về: số tháng (1-12)
+    calcNcnnMonths: function (arrivalMonth, departureMonth) {
+      if (!departureMonth) return 13 - arrivalMonth; // ở lại: từ tháng đến hết năm
+      return Math.max(1, departureMonth - arrivalMonth + 1); // rời: tháng đến → tháng rời
+    },
   };
 })();
