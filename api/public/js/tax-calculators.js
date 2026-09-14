@@ -510,7 +510,7 @@ window.TAX_CALC = (function () {
   }
 
   // ──────────────────────────────────────────────
-  // CALCULATOR 5: Nhà thầu nước ngoài
+  // CALCULATOR 5: Cá nhân nước ngoài
   // ──────────────────────────────────────────────
 
   function calculateForeignContractor(input) {

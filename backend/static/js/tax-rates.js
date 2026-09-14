@@ -186,8 +186,8 @@ window.TAX_RATES = (function () {
    * ================================================================ */
 
   var FOREIGN_CONTRACTOR = {
-    tndn: { rate: 0.01, label: "TNDN nhà thầu: 1% trên DT gross (không trừ CP)" },
-    gtgt: { rate: 0.05, label: "GTGT nhà thầu: 5% trên DT gross" },
+    tndn: { rate: 0.01, label: "TNDN cá nhân nước ngoài: 1% trên DT gross (không trừ CP)" },
+    gtgt: { rate: 0.05, label: "GTGT cá nhân nước ngoài: 5% trên DT gross" },
   };
 
   /* ================================================================
@@ -335,7 +335,7 @@ window.TAX_RATES = (function () {
     },
     foreign_contractor: {
       formCode: "01/NTNN",
-      formName: "Tờ khai thuế nhà thầu nước ngoài",
+      formName: "Tờ khai thuế cá nhân nước ngoài",
       deadline: "30 ngày cuối quý",
       where: "eTax hoặc Cục Thuế",
       steps: [

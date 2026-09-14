@@ -555,7 +555,7 @@
             // NCNN lương — gộp vào tổng
             var fRev = p("foreign-revenue-input" + suffix);
             totalSalaryIncome += fRev;
-            salaryBreakdown.push({ label: "NCNN lương", amount: fRev, source: s.key });
+            salaryBreakdown.push({ label: "Cá nhân nước ngoài — lương", amount: fRev, source: s.key });
           } else {
             // HĐDV hoặc không cư trú — tính riêng
             results.push(C.calculateForeignContractor({ grossRevenue: p("foreign-revenue-input" + suffix), contractorType: ftype, dependents: npt }));
@@ -1135,7 +1135,7 @@
   function getSourceLabel(type) {
     var src = findSource(type);
     if (src) return src.label;
-    var map = { salary_group: "Thu nhập từ tiền lương, tiền công", foreign_contractor: "Nhà thầu nước ngoài" };
+    var map = { salary_group: "Thu nhập từ tiền lương, tiền công", foreign_contractor: "Cá nhân nước ngoài" };
     return map[type] || type;
   }
 
@@ -1147,8 +1147,8 @@
       salary: "Thu nhập từ tiền lương, tiền công",
       hkd: "Hộ kinh doanh",
       rental: "Thu nhập cho thuê",
-      foreign: "Nhà thầu nước ngoài",
-      foreign_contractor: "Nhà thầu nước ngoài",
+      foreign: "Cá nhân nước ngoài",
+      foreign_contractor: "Cá nhân nước ngoài",
       investment: "Thu nhập đầu tư",
     };
     var label = map[r.type] || r.type;
