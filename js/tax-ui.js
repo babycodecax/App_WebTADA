@@ -504,7 +504,13 @@
       var dy = parseInt(dYear.value) || 2026;
       var totalMonths = (dy - ay) * 12 + (dm - am) + 1;
       if (totalMonths < 1) totalMonths = 1;
-      periodEl.textContent = "Kỳ tính thuế: " + totalMonths + " tháng (Tháng " + am + "/" + ay + " → Tháng " + dm + "/" + dy + ")";
+      var text = "Kỳ tính thuế: " + totalMonths + " tháng (Tháng " + am + "/" + ay + " → Tháng " + dm + "/" + dy + ")";
+      // Cảnh báo nếu < 6 tháng và đang chọn cư trú
+      var fsel = document.getElementById("foreign-type" + suffix);
+      if (fsel && totalMonths < 6 && (fsel.value === "salary" || fsel.value === "service")) {
+        text += '<br><span style="color:#dc2626;font-weight:700;">⚠️ Dưới 6 tháng (~183 ngày) — không đủ điều kiện cá nhân cư trú. Chọn "Không cư trú" hoặc tăng thời gian.</span>';
+      }
+      periodEl.innerHTML = text;
     }
     document.querySelectorAll("[id^='foreign-type']").forEach(function (sel) {
       sel.addEventListener("change", refreshForeignUI);
@@ -523,16 +529,13 @@
         var dY = parseInt((document.getElementById("foreign-depart-year" + sfx) || {}).value) || 2026;
         var totalMonths = (dY - aY) * 12 + (dM - aM) + 1;
         var isShort = totalMonths < 6;
-        // Luôn enable/disable đúng trạng thái
-        fsel.querySelectorAll('option').forEach(function (opt) {
-          if (opt.value === "salary" || opt.value === "service") {
-            opt.disabled = isShort;
-          }
-        });
-        // Nếu đang chọn salary/service bị disable → cảnh báo + chuyển
-        if (isShort && (fsel.value === "salary" || fsel.value === "service")) {
-          alert("Khoảng thời gian dưới 6 tháng (~183 ngày) không đủ điều kiện là cá nhân cư trú. Vui lòng chọn 'Cá nhân nước ngoài không cư trú'.");
-          fsel.value = "non_resident";
+        var isResidentType = fsel.value === "salary" || fsel.value === "service";
+        // Khóa/mở nút tính thuế
+        dom.btnCalculate.disabled = isShort && isResidentType;
+        if (isShort && isResidentType) {
+          dom.btnCalculate.title = "Khoảng thời gian dưới 6 tháng (~183 ngày) — không đủ điều kiện cá nhân cư trú. Chọn 'Không cư trú' hoặc tăng thời gian.";
+        } else {
+          dom.btnCalculate.title = "";
         }
         refreshForeignUI();
       });
