@@ -608,7 +608,7 @@
       if (s.id === "hkd") result = C.calculateHKDTax({ revenue: p("hkd-revenue-input"), businessType: g("hkd-biz-type"), costs: p("hkd-costs-input") });
       else if (s.id === "rental") result = C.calculateRentalTax({ revenue: p("rental-revenue-input") });
       else if (s.id === "corporate") { var corpCount = state.selectedSources.filter(function (x) { return x.id === "corporate"; }).length; var cs = corpCount > 1 ? '_' + s.key.split('_').pop() : ''; result = C.calculateTNDNTax({ revenue: p("corp-revenue-input" + cs), taxableIncome: p("corp-taxable-input" + cs), charitableDonation: p("corp-charity-input" + cs), rdFund: p("corp-rd-input" + cs), sector: getVal("corp-sector-select" + cs), lossCarryforward: p("corp-loss-input" + cs), pctRate: getVal("corp-pct-input" + cs) }); }
-      else if (s.id === "investment") { var type = g("invest-type"); var amt = p("invest-amount-input"); var ri = R.OTHER_INCOME_TAX[type]; if (ri && amt > 0) { var tx = ri.threshold ? Math.max(0, amt - ri.threshold) * ri.rate : amt * ri.rate; var invTips = [{ icon: "📋", text: ri.label }]; if (tx === 0) { invTips.push({ icon: "✅", text: "MIỄN THUẾ" }); } if (type === "thua_ke_qua_tang") { invTips.push({ icon: "📋", text: "Khai thuế trực tiếp với CQT theo từng lần phát sinh." }); invTips.push({ icon: "⚠️", text: "Thuế TNCN 10% trên phần >20 triệu. BĐS thừa kế giữa thân nhân (vợ chồng, cha mẹ-con, anh chị em ruột) được MIỄN (cần giấy tờ chứng minh quan hệ)." }); } if (type === "trung_thuong") { invTips.push({ icon: "📋", text: "Nếu tổ chức trả đã khấu trừ 10% thì KHÔNG cần khai lại. Nếu chưa khấu trừ → khai trực tiếp với CQT." }); } result = { type: "investment", revenue: amt, totalTax: tx, effectiveRate: amt > 0 ? tx / amt : 0, label: ri.label, tips: invTips, disclaimer: C.getDisclaimer() }; } }
+      else if (s.id === "investment") { var type = g("invest-type"); var amt = p("invest-amount-input"); var ri = R.OTHER_INCOME_TAX[type]; if (ri && amt > 0) { var tx = ri.threshold ? Math.max(0, amt - ri.threshold) * ri.rate : amt * ri.rate; var invTips = [{ icon: "📋", text: ri.label }]; if (tx === 0) { invTips.push({ icon: "✅", text: "MIỄN THUẾ" }); } if (type === "thua_ke_qua_tang") { invTips.push({ icon: "📋", text: "Khai thuế trực tiếp với CQT theo từng lần phát sinh." }); invTips.push({ icon: "⚠️", text: "Thuế TNCN 10% trên phần >20 triệu. BĐS thừa kế giữa thân nhân (vợ chồng, cha mẹ-con, anh chị em ruột) được MIỄN (cần giấy tờ chứng minh quan hệ)." }); } if (type === "trung_thuong") { invTips.push({ icon: "📋", text: "Nếu tổ chức trả đã khấu trừ 10% thì KHÔNG cần khai lại. Nếu chưa khấu trừ → khai trực tiếp với CQT." }); } result = { type: "investment", revenue: amt, totalTax: tx, effectiveRate: amt > 0 ? tx / amt : 0, label: ri.label, rate: ri.rate, threshold: ri.threshold, tips: invTips, disclaimer: C.getDisclaimer() }; } }
       if (result) results.push(result);
     });
 
@@ -884,7 +884,11 @@
       html += '<tr><td>Loại</td><td>' + (r.label || '') + '</td></tr>';
       if (r.totalTax > 0) {
         html += '<tr><td>Thuế</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
-        html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.revenue) + ' × tỷ lệ theo loại thu nhập</td></tr>';
+        if (r.threshold) {
+          html += '<tr class="formula-row"><td colspan="2">(' + C.fmt(r.revenue) + ' − ' + C.fmt(r.threshold) + ') × ' + C.fmtPct(r.rate) + '</td></tr>';
+        } else {
+          html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.revenue) + ' × ' + C.fmtPct(r.rate) + '</td></tr>';
+        }
       } else {
         html += '<tr class="formula-row"><td colspan="2">✅ MIỄN THUẾ</td></tr>';
       }
