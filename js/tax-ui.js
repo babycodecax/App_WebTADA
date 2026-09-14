@@ -474,20 +474,6 @@
 
     // Foreign type: ẩn/hiện GTGC section + input tháng khi đổi subtype
     function refreshForeignUI() {
-      // Validate < 183 ngày → auto chuyển không cư trú
-      document.querySelectorAll("[id^='foreign-type']").forEach(function (fsel) {
-        if (fsel.value === "salary" || fsel.value === "service") {
-          var sfx = fsel.id.replace("foreign-type", "");
-          var aM = parseInt((document.getElementById("foreign-arrival-month" + sfx) || {}).value) || 1;
-          var aY = parseInt((document.getElementById("foreign-arrival-year" + sfx) || {}).value) || 2026;
-          var dM = parseInt((document.getElementById("foreign-depart-month" + sfx) || {}).value) || 12;
-          var dY = parseInt((document.getElementById("foreign-depart-year" + sfx) || {}).value) || 2026;
-          var totalDays = ((dY - aY) * 12 + (dM - aM) + 1) * 30;
-          if (totalDays < 183) {
-            fsel.value = "non_resident";
-          }
-        }
-      });
       // Check TẤT CẢ dropdown foreign-type trên DOM
       var hasSalarySource = state.selectedSources.some(function (s) { return s.id === "salary"; });
       if (!hasSalarySource) {
@@ -528,7 +514,19 @@
       el.addEventListener("change", function () {
         var sfx = this.id.replace(/foreign-(arrival|depart)-(month|year)/, "");
         updatePeriodInfo(sfx);
-        refreshForeignUI(); // validate < 183 ngày
+        // Validate < 183 ngày → auto chuyển không cư trú
+        var fsel = document.getElementById("foreign-type" + sfx);
+        if (fsel && (fsel.value === "salary" || fsel.value === "service")) {
+          var aM = parseInt((document.getElementById("foreign-arrival-month" + sfx) || {}).value) || 1;
+          var aY = parseInt((document.getElementById("foreign-arrival-year" + sfx) || {}).value) || 2026;
+          var dM = parseInt((document.getElementById("foreign-depart-month" + sfx) || {}).value) || 12;
+          var dY = parseInt((document.getElementById("foreign-depart-year" + sfx) || {}).value) || 2026;
+          var totalDays = ((dY - aY) * 12 + (dM - aM) + 1) * 30;
+          if (totalDays < 183) {
+            fsel.value = "non_resident";
+            refreshForeignUI();
+          }
+        }
       });
     });
     // Set đúng state ban đầu
