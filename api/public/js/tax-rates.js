@@ -435,35 +435,14 @@ window.TAX_RATES = (function () {
       return Math.max(1, departureMonth - arrivalMonth + 1); // rời: tháng đến → tháng rời
     },
 
-    // Helper: tính tổng GTGC cho NCNN multi-year
-    // arrMonth/arrYear: tháng/năm đến VN
-    // depMonth/depYear: tháng/năm rời VN
-    // Trả về: { totalMonths, totalGTGC, yearBreakdown: [{year, months, gtgc}] }
-    calcNcnnGTGC: function (arrMonth, arrYear, depMonth, depYear) {
-      var monthlyRate = 15_500_000;
-      var totalMonths = (depYear - arrYear) * 12 + (depMonth - arrMonth) + 1;
-      if (totalMonths < 1) totalMonths = 1;
-      var totalGTGC = 0;
-      var breakdown = [];
-      var curMonth = arrMonth;
-      var curYear = arrYear;
-      while (curYear < depYear || (curYear === depYear && curMonth <= depMonth)) {
-        var monthsInYear = Math.min(12, (depYear - curYear) * 12 + (depMonth - curMonth) + 1);
-        var gtgc = monthlyRate * monthsInYear;
-        totalGTGC += gtgc;
-        breakdown.push({ year: curYear, months: monthsInYear, gtgc: gtgc });
-        curYear++;
-        curMonth = 1;
-      }
-      return { totalMonths: totalMonths, totalGTGC: totalGTGC, breakdown: breakdown };
+    // Helper: tính tổng GTGC cho NCNN = 15,5tr × số tháng tại VN
+    calcNcnnGTGC: function (totalMonths) {
+      return 15_500_000 * totalMonths;
     },
 
-    // Helper: tính tổng NPT cho NCNN multi-year
-    calcNcnnNPT: function (arrMonth, arrYear, depMonth, depYear, dependents) {
-      var monthlyRate = 6_200_000;
-      var totalMonths = (depYear - arrYear) * 12 + (depMonth - arrMonth) + 1;
-      if (totalMonths < 1) totalMonths = 1;
-      return monthlyRate * dependents * totalMonths;
+    // Helper: tính tổng NPT cho NCNN = 6,2tr × N người × số tháng
+    calcNcnnNPT: function (totalMonths, dependents) {
+      return 6_200_000 * dependents * totalMonths;
     },
   };
 })();
