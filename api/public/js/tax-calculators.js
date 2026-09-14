@@ -517,13 +517,10 @@ window.TAX_CALC = (function () {
     var grossRevenue = num(input.grossRevenue);
     var contractorType = input.contractorType || "service"; // salary | service | non_resident
     var dependents = num(input.dependents);
-    var arrivalMonth = num(input.arrivalMonth) || 1;
+    var ncnnMonths = num(input.ncnnMonths) || 12;
     var fc = R.FOREIGN_CONTRACTOR;
     var tips = [];
     var tndn = 0;
-
-    // Tính số tháng hiện diện tại VN (dùng cho GTGC/NPT)
-    var ncnnMonths = (contractorType === "salary") ? R.calcNcnnMonths(arrivalMonth) : 12;
     var allocatedRevenue = grossRevenue; // service/non_resident: tính trên gross đầy đủ
     var gtgt = grossRevenue * fc.gtgt.rate;
 

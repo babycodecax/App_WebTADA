@@ -371,8 +371,6 @@
     var monthOpts = '';
     for (var i = 1; i <= 12; i++) { monthOpts += '<option value="' + i + '">Tháng ' + i + '</option>'; }
     var curYear = new Date().getFullYear();
-    var yearOpts = '';
-    for (var y = curYear - 2; y <= curYear + 2; y++) { yearOpts += '<option value="' + y + '"' + (y === curYear ? ' selected' : '') + '>' + y + '</option>'; }
     return '' +
       '<div class="calc-form-group">' +
       '  <label class="calc-label">Trường hợp thuế</label>' +
@@ -385,8 +383,8 @@
       '<div class="calc-form-group">' +
       '  <label class="calc-label">Thu nhập tại Việt Nam</label>' +
       '  <div class="calc-input-group">' +
-      '    <input type="text" class="calc-input" id="foreign-revenue-input' + suffix + '" placeholder="Ví dụ: 500.000.000" inputmode="numeric">' +
-      '    <span class="calc-input-suffix">VNĐ/năm</span>' +
+      '    <input type="text" class="calc-input" id="foreign-revenue-input' + suffix + '" placeholder="Ví dụ: 20.000.000" inputmode="numeric">' +
+      '    <span class="calc-input-suffix">VNĐ/tháng</span>' +
       '  </div>' +
       '</div>' +
       // ── Nhóm thời gian (chỉ hiện khi salary) ──
@@ -396,19 +394,19 @@
       '    <label class="calc-label">Từ tháng/năm</label>' +
       '    <div class="calc-form-row">' +
       '      <select class="calc-select" id="foreign-arrival-month' + suffix + '" style="flex:1;">' + monthOpts + '</select>' +
-      '      <select class="calc-select" id="foreign-arrival-year' + suffix + '" style="flex:1;">' + yearOpts + '</select>' +
+      '      <input type="number" class="calc-input" id="foreign-arrival-year' + suffix + '" value="' + curYear + '" min="2000" max="2099" style="flex:1;">' +
       '    </div>' +
       '  </div>' +
       '  <div class="calc-form-group">' +
       '    <label class="calc-label">Đến tháng/năm</label>' +
       '    <div class="calc-form-row">' +
       '      <select class="calc-select" id="foreign-depart-month' + suffix + '" style="flex:1;">' + monthOpts + '</select>' +
-      '      <select class="calc-select" id="foreign-depart-year' + suffix + '" style="flex:1;">' + yearOpts + '</select>' +
+      '      <input type="number" class="calc-input" id="foreign-depart-year' + suffix + '" value="' + curYear + '" min="2000" max="2099" style="flex:1;">' +
       '    </div>' +
       '  </div>' +
       '</div>' +
       '<div id="foreign-period-info' + suffix + '" style="background:#f0f9ff;border-left:3px solid #3b82f6;padding:8px 12px;border-radius:4px;font-size:13px;color:#1e40af;margin-top:8px;">' +
-      '  Kỳ tính thuế: 12 tháng (Tháng 1/2026 → Tháng 12/2026)' +
+      '  Kỳ tính thuế: 12 tháng (Tháng 1/' + curYear + ' → Tháng 12/' + curYear + ')' +
       '</div>' +
       '</div>' +
       // ── Tip ──
@@ -629,18 +627,24 @@
           var ftype = g("foreign-type" + suffix);
           if (ftype === "salary") {
             // NCNN lương — gộp vào tổng
-            var fRev = p("foreign-revenue-input" + suffix);
+            var fMonthlyRev = p("foreign-revenue-input" + suffix);
             var fArrM = parseInt(g("foreign-arrival-month" + suffix)) || 1;
             var fArrY = parseInt(g("foreign-arrival-year" + suffix)) || 2026;
             var fDepM = parseInt(g("foreign-depart-month" + suffix)) || 12;
             var fDepY = parseInt(g("foreign-depart-year" + suffix)) || 2026;
             foreignMonths = Math.max(1, (fDepY - fArrY) * 12 + (fDepM - fArrM) + 1);
-            totalSalaryIncome += fRev;
-            salaryBreakdown.push({ label: "Cá nhân nước ngoài — lương (" + foreignMonths + " tháng)", amount: fRev, source: s.key });
+            var fAnnualRev = fMonthlyRev * foreignMonths;
+            totalSalaryIncome += fAnnualRev;
+            salaryBreakdown.push({ label: "Cá nhân nước ngoài — lương (" + C.fmt(fMonthlyRev) + " × " + foreignMonths + " tháng)", amount: fAnnualRev, source: s.key });
           } else {
-            // HĐDV hoặc không cư trú — tính riêng
-            var fArrival2 = parseInt(g("foreign-arrival-month" + suffix)) || 1;
-            results.push(C.calculateForeignContractor({ grossRevenue: p("foreign-revenue-input" + suffix), contractorType: ftype, dependents: npt, arrivalMonth: fArrival2 }));
+            // HĐDV hoặc không cư trú — tính riêng, nhân tháng
+            var fArrM2 = parseInt(g("foreign-arrival-month" + suffix)) || 1;
+            var fArrY2 = parseInt(g("foreign-arrival-year" + suffix)) || 2026;
+            var fDepM2 = parseInt(g("foreign-depart-month" + suffix)) || 12;
+            var fDepY2 = parseInt(g("foreign-depart-year" + suffix)) || 2026;
+            var fMonths2 = Math.max(1, (fDepY2 - fArrY2) * 12 + (fDepM2 - fArrM2) + 1);
+            var fAnnualRev2 = p("foreign-revenue-input" + suffix) * fMonths2;
+            results.push(C.calculateForeignContractor({ grossRevenue: fAnnualRev2, contractorType: ftype, dependents: npt, arrivalMonth: fArrM2, ncnnMonths: fMonths2 }));
           }
         }
       });
