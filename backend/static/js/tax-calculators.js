@@ -24,6 +24,13 @@ window.TAX_CALC = (function () {
     return n;
   }
 
+  function numPct(v) {
+    var s = String(v).replace(/[^\d.,\-]/g, "").replace(",", ".");
+    var n = parseFloat(s);
+    if (!isFinite(n) || n < 0) return 0;
+    return n / 100;
+  }
+
   // ──────────────────────────────────────────────
   // HELPER: Format số tiền VND
   // ──────────────────────────────────────────────
@@ -342,19 +349,16 @@ window.TAX_CALC = (function () {
     var charitableDonation = num(input.charitableDonation);
     var rdFund = num(input.rdFund);
     var lossCarryforward = num(input.lossCarryforward);
+    var sectorValue = input.sector || "general";
+    var customPctRate = numPct(input.pctRate);
 
-    // 1. Xác định thuế suất theo doanh thu
-    var rateInfo = R.getTNDNRate(revenue);
+    var sectorInfo = R.getTNDNSector(sectorValue);
 
-    // 2. Miễn thuế DN nhỏ (doanh thu ≤ 1 tỷ)
-    if (revenue <= R.TNDN_EXEMPTION.threshold) {
+    // 1. Miễn thuế DN nhỏ (doanh thu > 0 và ≤ 1 tỷ)
+    if (revenue > 0 && revenue <= R.TNDN_EXEMPTION.threshold) {
       return {
-        type: "tndn",
-        exempt: true,
-        revenue: revenue,
-        totalTax: 0,
-        effectiveRate: 0,
-        exemption: R.TNDN_EXEMPTION,
+        type: "tndn", exempt: true, revenue: revenue, sector: sectorInfo,
+        totalTax: 0, effectiveRate: 0, exemption: R.TNDN_EXEMPTION,
         forms: [R.FORMS_DATA.corporate],
         tips: [
           { icon: "✅", text: "DN có doanh thu ≤ 1 tỷ → MIỄN thuế TNDN (NĐ 141/2026)." },
@@ -364,73 +368,97 @@ window.TAX_CALC = (function () {
       };
     }
 
-    // 3. Giảm trừ
+    // 2. Phương pháp % trên DT — rate cố định
+    if (sectorInfo.pctOnRevenue !== undefined && sectorInfo.pctOnRevenue !== null) {
+      var tax = revenue * sectorInfo.pctOnRevenue;
+      return {
+        type: "tndn", exempt: false, method: "pct_on_revenue",
+        revenue: revenue, taxableIncome: 0, sector: sectorInfo, pctRate: sectorInfo.pctOnRevenue,
+        rateInfo: { rate: sectorInfo.pctOnRevenue, label: (sectorInfo.pctOnRevenue * 100).toFixed(1) + "% trên DT gross", maxRevenue: Infinity },
+        deductions: { charitable: 0, charitableMax: 0, rd: 0, rdMax: 0, lossCarryforward: 0 },
+        incomeAfterDeductions: 0, totalTax: tax, effectiveRate: revenue > 0 ? tax / revenue : 0,
+        forms: [R.FORMS_DATA.corporate],
+        tips: [
+          { icon: "📊", text: sectorInfo.label },
+          { icon: "📋", text: sectorInfo.note || ("Tính theo tỷ lệ " + (sectorInfo.pctOnRevenue * 100).toFixed(1) + "% trên DT gross") },
+          { icon: "⚠️", text: "Thanh toán tiền mặt ≥5 triệu KHÔNG được trừ chi phí. Phải qua ngân hàng (NĐ 320/2025 Đ9.1c)." },
+        ],
+        disclaimer: getDisclaimer(),
+      };
+    }
+
+    // 2b. Phương pháp % trên DT — user tự nhập
+    if (sectorInfo.customPct) {
+      if (customPctRate <= 0) {
+        return {
+          type: "tndn", exempt: false, method: "pct_on_revenue",
+          revenue: revenue, taxableIncome: 0, sector: sectorInfo, pctRate: 0,
+          rateInfo: { rate: 0, label: "Chưa nhập tỷ lệ %", maxRevenue: Infinity },
+          deductions: { charitable: 0, charitableMax: 0, rd: 0, rdMax: 0, lossCarryforward: 0 },
+          incomeAfterDeductions: 0, totalTax: 0, effectiveRate: 0,
+          forms: [R.FORMS_DATA.corporate],
+          tips: [{ icon: "⚠️", text: "Vui lòng nhập tỷ lệ % trên doanh thu. Tham khảo: DV thường 1.5%, cho thuê 1.5-4%." }],
+          disclaimer: getDisclaimer(),
+        };
+      }
+      var tax = revenue * customPctRate;
+      return {
+        type: "tndn", exempt: false, method: "pct_on_revenue",
+        revenue: revenue, taxableIncome: 0, sector: sectorInfo, pctRate: customPctRate,
+        rateInfo: { rate: customPctRate, label: (customPctRate * 100).toFixed(1) + "% trên DT gross", maxRevenue: Infinity },
+        deductions: { charitable: 0, charitableMax: 0, rd: 0, rdMax: 0, lossCarryforward: 0 },
+        incomeAfterDeductions: 0, totalTax: tax, effectiveRate: revenue > 0 ? tax / revenue : 0,
+        forms: [R.FORMS_DATA.corporate],
+        tips: [
+          { icon: "📊", text: sectorInfo.label },
+          { icon: "📋", text: "Tính theo tỷ lệ " + (customPctRate * 100).toFixed(1) + "% trên DT gross (user nhập)" },
+          { icon: "⚠️", text: "Thanh toán tiền mặt ≥5 triệu KHÔNG được trừ chi phí. Phải qua ngân hàng (NĐ 320/2025 Đ9.1c)." },
+        ],
+        disclaimer: getDisclaimer(),
+      };
+    }
+
+    // 3. Phương pháp kê khai
+    var rateInfo;
+    if (sectorInfo.rate !== null && sectorInfo.rate !== undefined) {
+      rateInfo = { rate: sectorInfo.rate, label: sectorInfo.label + " — " + (sectorInfo.rate * 100).toFixed(0) + "%", maxRevenue: Infinity };
+    } else {
+      rateInfo = R.getTNDNRate(revenue);
+    }
+
     var maxCharitable = taxableIncome * R.TNDN_DEDUCTIONS.charitableMax;
     var maxRD = taxableIncome * R.TNDN_DEDUCTIONS.rdFundMax;
     var actualCharitable = Math.min(charitableDonation, maxCharitable);
     var actualRD = Math.min(rdFund, maxRD);
 
-    // 4. Thu nhập tính thuế sau giảm trừ
     var incomeAfterDeductions = taxableIncome - actualCharitable - actualRD - lossCarryforward;
     incomeAfterDeductions = Math.max(0, incomeAfterDeductions);
 
-    // 5. Tính thuế
     var tax = incomeAfterDeductions * rateInfo.rate;
     var effectiveRate = revenue > 0 ? tax / revenue : 0;
 
-    // 6. Lời khuyên
     var tips = [];
-    tips.push({
-      icon: "📊",
-      text: "Thuế suất áp dụng: " + rateInfo.label,
-    });
-
+    tips.push({ icon: "📊", text: "Thuế suất áp dụng: " + rateInfo.label });
+    if (sectorInfo.incentive) tips.push({ icon: "🎯", text: sectorInfo.incentive });
     if (actualCharitable > 0 && actualCharitable < charitableDonation) {
-      tips.push({
-        icon: "💡",
-        text: "Quyên góp từ thiện được trừ tối đa 20% thu nhập tính thuế. Bạn chỉ được trừ " + fmt(actualCharitable) +
-              " (trong số " + fmt(charitableDonation) + " đã đóng).",
-      });
+      tips.push({ icon: "💡", text: "Quyên góp từ thiện được trừ tối đa 20% thu nhập tính thuế. Bạn chỉ được trừ " + fmt(actualCharitable) + " (trong số " + fmt(charitableDonation) + " đã đóng)." });
     }
-
     if (actualRD > 0 && actualRD < rdFund) {
-      tips.push({
-        icon: "💡",
-        text: "Quỹ R&D được trừ tối đa 10% thu nhập tính thuế. Bạn chỉ được trừ " + fmt(actualRD) +
-              " (trong số " + fmt(rdFund) + " đã trích).",
-      });
+      tips.push({ icon: "💡", text: "Quỹ R&D được trừ tối đa 10% thu nhập tính thuế. Bạn chỉ được trừ " + fmt(actualRD) + " (trong số " + fmt(rdFund) + " đã trích)." });
     }
-
     if (lossCarryforward > 0) {
-      tips.push({
-        icon: "📉",
-        text: "Lỗ năm trước được bù tối đa 5 năm. Đảm bảo còn chứng từ lỗ từ các năm trước.",
-      });
+      tips.push({ icon: "📉", text: "Lỗ năm trước được bù tối đa 5 năm. Đảm bảo còn chứng từ lỗ từ các năm trước." });
     }
-
-    tips.push({
-      icon: "⚠️",
-      text: "Thanh toán tiền mặt ≥5 triệu/kinh doanh KHÔNG được trừ chi phí. Phải thanh toán qua ngân hàng (NĐ 320/2025 Đ9.1c).",
-    });
+    tips.push({ icon: "⚠️", text: "Thanh toán tiền mặt ≥5 triệu/kinh doanh KHÔNG được trừ chi phí. Phải thanh toán qua ngân hàng (NĐ 320/2025 Đ9.1c)." });
 
     return {
-      type: "tndn",
-      exempt: false,
-      revenue: revenue,
-      taxableIncome: taxableIncome,
+      type: "tndn", exempt: false, method: "ke_khai",
+      revenue: revenue, taxableIncome: taxableIncome, sector: sectorInfo,
       rateInfo: rateInfo,
-      deductions: {
-        charitable: actualCharitable,
-        charitableMax: maxCharitable,
-        rd: actualRD,
-        rdMax: maxRD,
-        lossCarryforward: lossCarryforward,
-      },
+      deductions: { charitable: actualCharitable, charitableMax: maxCharitable, rd: actualRD, rdMax: maxRD, lossCarryforward: lossCarryforward },
       incomeAfterDeductions: incomeAfterDeductions,
-      totalTax: tax,
-      effectiveRate: effectiveRate,
-      forms: [R.FORMS_DATA.corporate],
-      tips: tips,
+      totalTax: tax, effectiveRate: effectiveRate,
+      forms: [R.FORMS_DATA.corporate], tips: tips,
       disclaimer: getDisclaimer(),
     };
   }
@@ -496,13 +524,14 @@ window.TAX_CALC = (function () {
 
     if (contractorType === "salary") {
       // Trường hợp A: Thu nhập dạng lương + NC cư trú → lũy tiến 5 bậc
+      // grossRevenue đã là thu nhập NĂM (UI ghi VNĐ/năm)
       var personalDed = R.getPersonalDeduction();
       var totalPersonal = personalDed.yearly;
       var totalDependent = R.DEPENDENT_DEDUCTION.yearly * dependents;
-      var taxableIncome = Math.max(0, grossRevenue * 12 - totalPersonal - totalDependent);
+      var taxableIncome = Math.max(0, grossRevenue - totalPersonal - totalDependent);
       var result = progressiveTNCN(taxableIncome);
       tndn = result.totalTax;
-      gtgt = grossRevenue * 12 * fc.gtgt.rate;
+      gtgt = grossRevenue * fc.gtgt.rate;
       tips = [
         { icon: "✅", text: "NC cư trú + HĐLĐ → được giảm trừ bản thân + NPT, tính theo biểu lũy tiến 5 bậc." },
         { icon: "📅", text: "Nộp tờ khai quyết toán TNCN trước 31/07." },

@@ -113,6 +113,11 @@ def admin_page() -> FileResponse:
     return FileResponse(os.path.join(STATIC_DIR, "admin.html"))
 
 
+@app.get("/tinh-thue")
+def tax_calculator() -> FileResponse:
+    return FileResponse(os.path.join(STATIC_DIR, "tinh-thue.html"))
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok", "service": "obsidian-chatbot", "phase": "4-frontend"}
