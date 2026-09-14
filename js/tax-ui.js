@@ -846,13 +846,19 @@
         });
       }
       html += '<tr class="subtotal"><td>Tổng thu nhập</td><td>' + C.fmt(r.totalIncome) + '</td></tr>';
-      // Hiển thị GTGC split-year nếu cần
-      if (r.workingDays >= 12) {
-        var gtgcFormula = (r.personalDeduction === 159_000_000) ? "11tr×6 + 15,5tr×6" : "15,5tr × " + r.workingDays;
-        html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(' + gtgcFormula + ')</span></td></tr>';
-      } else {
-        html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + r.workingDays + ' tháng)</span></td></tr>';
+      // Hiển thị GTGC — tính lại split-year để show formula đúng
+      var gtgcM11 = 0, gtgcM155 = 0;
+      var splitDate = new Date(2026, 6, 1);
+      var curM = 1, curY = 2026;
+      for (var gi = 0; gi < (r.workingDays || 12); gi++) {
+        var gd = new Date(curY, curM - 1, 1);
+        if (gd >= splitDate) gtgcM155++; else gtgcM11++;
+        curM++; if (curM > 12) { curM = 1; curY++; }
       }
+      var gtgcParts = [];
+      if (gtgcM11 > 0) gtgcParts.push("11tr×" + gtgcM11);
+      if (gtgcM155 > 0) gtgcParts.push("15,5tr×" + gtgcM155);
+      html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(' + gtgcParts.join(" + ") + ')</span></td></tr>';
       if (r.totalBHXH > 0) html += '<tr class="deduction"><td>− BHXH + BHTN + BHYT + CĐ</td><td>' + C.fmt(r.totalBHXH) + '</td></tr>';
       if (r.dependentDeduction > 0) {
         html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr × ' + r.workingDays + ' tháng)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
@@ -988,13 +994,18 @@
       if (r.subType === "salary") {
         html += '<tr><td>Thu nhập gross/năm</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
         // Hiển thị GTGC split-year
-        if (r.personalDeduction === 159_000_000) {
-          html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(11tr×6 + 15,5tr×6)</span></td></tr>';
-        } else if (r.ncnnMonths && r.ncnnMonths < 12) {
-          html += '<tr class="deduction"><td>− GTGC bản thân (năm đầu)</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + r.ncnnMonths + ' tháng)</span></td></tr>';
-        } else {
-          html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × 12 tháng)</span></td></tr>';
+        var ncnnM11 = 0, ncnnM155 = 0;
+        var ncnnSplitDate = new Date(2026, 6, 1);
+        var ncnnCM = 1, ncnnCY = 2026;
+        for (var ni = 0; ni < (r.ncnnMonths || 12); ni++) {
+          var nd = new Date(ncnnCY, ncnnCM - 1, 1);
+          if (nd >= ncnnSplitDate) ncnnM155++; else ncnnM11++;
+          ncnnCM++; if (ncnnCM > 12) { ncnnCM = 1; ncnnCY++; }
         }
+        var ncnnParts = [];
+        if (ncnnM11 > 0) ncnnParts.push("11tr×" + ncnnM11);
+        if (ncnnM155 > 0) ncnnParts.push("15,5tr×" + ncnnM155);
+        html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(' + ncnnParts.join(" + ") + ')</span></td></tr>';
         html += '<tr><td>TNCN/năm</td><td>' + C.fmt(r.tndn) + '</td></tr>';
         html += '<tr><td>GTGT 5%/năm</td><td>' + C.fmt(r.gtgt) + '</td></tr>';
         html += '<tr class="subtotal"><td>TỔNG THUẾ/năm</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
