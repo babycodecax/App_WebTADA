@@ -391,16 +391,18 @@
   function renderInvestmentForm() {
     return '' +
       '<div class="calc-form-group">' +
-      '  <label class="calc-label">Loại đầu tư</label>' +
+      '  <label class="calc-label">Loại thu nhập</label>' +
       '  <select class="calc-select" id="invest-type">' +
       '    <option value="lai_tiet_kiem">💰 Lãi tiết kiệm (MIỄN thuế)</option>' +
       '    <option value="chuyen_nhuong_co_phieu">📈 Cổ phiếu (0.1%)</option>' +
       '    <option value="chuyen_nhuong_bds">🏠 Chuyển nhượng BĐS (2%)</option>' +
       '    <option value="dau_tu_von">💼 Đầu tư vốn (5%)</option>' +
+      '    <option value="thua_ke_qua_tang">🎁 Thừa kế, quà tặng — tiền, xe, cổ phiếu (10% phần >20 triệu)</option>' +
+      '    <option value="trung_thuong">🎰 Trúng thưởng (10% phần >20 triệu)</option>' +
       '  </select>' +
       '</div>' +
       '<div class="calc-form-group">' +
-      '  <label class="calc-label">Doanh thu/Thu nhập</label>' +
+      '  <label class="calc-label">Giá trị nhận được</label>' +
       '  <div class="calc-input-group">' +
       '    <input type="text" class="calc-input" id="invest-amount-input" placeholder="Số tiền thu được" inputmode="numeric">' +
       '    <span class="calc-input-suffix">VNĐ</span>' +
@@ -606,40 +608,14 @@
       if (s.id === "hkd") result = C.calculateHKDTax({ revenue: p("hkd-revenue-input"), businessType: g("hkd-biz-type"), costs: p("hkd-costs-input") });
       else if (s.id === "rental") result = C.calculateRentalTax({ revenue: p("rental-revenue-input") });
       else if (s.id === "corporate") { var corpCount = state.selectedSources.filter(function (x) { return x.id === "corporate"; }).length; var cs = corpCount > 1 ? '_' + s.key.split('_').pop() : ''; result = C.calculateTNDNTax({ revenue: p("corp-revenue-input" + cs), taxableIncome: p("corp-taxable-input" + cs), charitableDonation: p("corp-charity-input" + cs), rdFund: p("corp-rd-input" + cs), sector: getVal("corp-sector-select" + cs), lossCarryforward: p("corp-loss-input" + cs), pctRate: getVal("corp-pct-input" + cs) }); }
-      else if (s.id === "investment") { var type = g("invest-type"); var amt = p("invest-amount-input"); var ri = R.OTHER_INCOME_TAX[type]; if (ri && amt > 0) { var tx = ri.threshold ? Math.max(0, amt - ri.threshold) * ri.rate : amt * ri.rate; result = { type: "investment", revenue: amt, totalTax: tx, effectiveRate: amt > 0 ? tx / amt : 0, label: ri.label, tips: [{ icon: "📋", text: ri.label }, tx === 0 ? { icon: "✅", text: "MIỄN THUẾ" } : null].filter(Boolean), disclaimer: C.getDisclaimer() }; } }
+      else if (s.id === "investment") { var type = g("invest-type"); var amt = p("invest-amount-input"); var ri = R.OTHER_INCOME_TAX[type]; if (ri && amt > 0) { var tx = ri.threshold ? Math.max(0, amt - ri.threshold) * ri.rate : amt * ri.rate; var invTips = [{ icon: "📋", text: ri.label }]; if (tx === 0) { invTips.push({ icon: "✅", text: "MIỄN THUẾ" }); } if (type === "thua_ke_qua_tang") { invTips.push({ icon: "📋", text: "Khai thuế trực tiếp với CQT theo từng lần phát sinh." }); invTips.push({ icon: "⚠️", text: "Thuế TNCN 10% trên phần >20 triệu. BĐS thừa kế giữa thân nhân (vợ chồng, cha mẹ-con, anh chị em ruột) được MIỄN (cần giấy tờ chứng minh quan hệ)." }); } if (type === "trung_thuong") { invTips.push({ icon: "📋", text: "Nếu tổ chức trả đã khấu trừ 10% thì KHÔNG cần khai lại. Nếu chưa khấu trừ → khai trực tiếp với CQT." }); } result = { type: "investment", revenue: amt, totalTax: tx, effectiveRate: amt > 0 ? tx / amt : 0, label: ri.label, tips: invTips, disclaimer: C.getDisclaimer() }; } }
       if (result) results.push(result);
     });
 
     if (results.length > 0) { dom.resultContainer.style.display = ""; renderResults(results); goToStep(2); showConfetti(); }
   }
 
-  function calculateInvestment() {
-    var type = getVal("invest-type");
-    var amount = parseNumber(getVal("invest-amount-input"));
-    var rateInfo = R.OTHER_INCOME_TAX[type];
 
-    if (!rateInfo || amount <= 0) return null;
-
-    var tax = 0;
-    if (rateInfo.threshold) {
-      tax = Math.max(0, amount - rateInfo.threshold) * rateInfo.rate;
-    } else {
-      tax = amount * rateInfo.rate;
-    }
-
-    return {
-      type: "investment",
-      revenue: amount,
-      totalTax: tax,
-      effectiveRate: amount > 0 ? tax / amount : 0,
-      label: rateInfo.label,
-      tips: [
-        { icon: "📋", text: rateInfo.label },
-        tax === 0 ? { icon: "✅", text: "Thu nhập này được MIỄN thuế." } : null,
-      ].filter(Boolean),
-      disclaimer: C.getDisclaimer(),
-    };
-  }
 
   // ================================================================
   // RENDER RESULTS
