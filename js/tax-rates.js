@@ -186,7 +186,7 @@ window.TAX_RATES = (function () {
    * ================================================================ */
 
   var FOREIGN_CONTRACTOR = {
-    tndn: { rate: 0.01, label: "TNDN cá nhân nước ngoài: 1% trên DT gross (không trừ CP)" },
+    tndn: { rate: 0.01, label: "TNCN cá nhân nước ngoài: 1% trên DT gross (không trừ CP)" },
     gtgt: { rate: 0.05, label: "GTGT cá nhân nước ngoài: 5% trên DT gross" },
   };
 
@@ -340,7 +340,7 @@ window.TAX_RATES = (function () {
       where: "eTax hoặc Cục Thuế",
       steps: [
         "Xác định doanh thu gross tại Việt Nam",
-        "Tính TNDN (1%) + GTGT (5%) trên gross",
+        "Tính TNCN (1%) + GTGT (5%) trên gross",
         "Nộp tờ khai và nộp thuế",
       ],
     },

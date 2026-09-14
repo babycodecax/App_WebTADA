@@ -581,7 +581,7 @@ window.TAX_CALC = (function () {
       tndn = grossRevenue * fc.tndn.rate;
       var total2 = tndn + gtgt;
       tips = [
-        { icon: "📋", text: "Cá nhân nước ngoài cư trú + HĐ dịch vụ → 1% TNDN + 5% GTGT trên doanh thu gross, KHÔNG giảm trừ." },
+        { icon: "📋", text: "Cá nhân nước ngoài cư trú + HĐ dịch vụ → 1% TNCN + 5% GTGT trên doanh thu gross, KHÔNG giảm trừ." },
         { icon: "📅", text: "Nộp tờ khai theo quý trước 30 ngày cuối quý." },
       ];
       return {

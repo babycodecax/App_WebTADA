@@ -372,7 +372,7 @@
       '<div class="calc-form-group">' +
       '  <label class="calc-label">Trường hợp thuế</label>' +
       '  <select class="calc-select" id="foreign-type' + suffix + '">' +
-      '    <option value="service">Cá nhân nước ngoài cư trú + HĐ dịch vụ → 1% TNDN + 5% GTGT trên gross</option>' +
+      '    <option value="service">Cá nhân nước ngoài cư trú + HĐ dịch vụ → 1% TNCN + 5% GTGT trên gross</option>' +
       '    <option value="salary">Cá nhân nước ngoài cư trú + thu nhập dạng lương → lũy tiến 5 bậc + GTGC</option>' +
       '    <option value="non_resident">Cá nhân nước ngoài không cư trú → 20% + 5% trên gross</option>' +
       '  </select>' +
@@ -872,7 +872,7 @@
         html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
       } else {
         html += '<tr><td>Thu nhập gross</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
-        html += '<tr class="formula-row"><td>TNDN 1% + GTGT 5%</td><td>' + C.fmt(r.grossRevenue) + ' × 6% = ' + C.fmt(r.totalTax) + '</td></tr>';
+        html += '<tr class="formula-row"><td>TNCN 1% + GTGT 5%</td><td>' + C.fmt(r.grossRevenue) + ' × 6% = ' + C.fmt(r.totalTax) + '</td></tr>';
         html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
       }
 
