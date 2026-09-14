@@ -592,6 +592,7 @@
       var totalSalaryIncome = 0;
       var totalBHXH = 0;
       var totalDependent = 0;
+      var ncnnArrMonth = 0, ncnnArrYear = 0, ncnnDepMonth = 0, ncnnDepYear = 0;
       var salaryBreakdown = [];
       var foreignMonths = 12; // mặc định 12 tháng (người VN hoặc NCNN ở lại cả năm)
       var dependents = npt;
@@ -633,6 +634,7 @@
             var fDepM = parseInt(g("foreign-depart-month" + suffix)) || 12;
             var fDepY = parseInt(g("foreign-depart-year" + suffix)) || 2026;
             foreignMonths = Math.max(1, (fDepY - fArrY) * 12 + (fDepM - fArrM) + 1);
+            ncnnArrMonth = fArrM; ncnnArrYear = fArrY; ncnnDepMonth = fDepM; ncnnDepYear = fDepY;
             var fAnnualRev = fMonthlyRev * foreignMonths;
             totalSalaryIncome += fAnnualRev;
             salaryBreakdown.push({ label: "Cá nhân nước ngoài — lương (" + C.fmt(fMonthlyRev) + " × " + foreignMonths + " tháng)", amount: fAnnualRev, source: s.key });
@@ -649,9 +651,10 @@
         }
       });
 
-      // Tính GTGC + NPT 1 lần theo tháng (NCNN năm đầu < 12 tháng, người VN luôn 12)
-      var totalPersonal = personalDed.monthly * foreignMonths;
-      var totalDep = R.DEPENDENT_DEDUCTION.monthly * dependents * foreignMonths;
+      // Tính GTGC + NPT theo multi-year (mỗi năm max 12 tháng GTGC)
+      var gtgcResult = (ncnnArrYear > 0) ? R.calcNcnnGTGC(ncnnArrMonth, ncnnArrYear, ncnnDepMonth, ncnnDepYear) : { totalMonths: 12, totalGTGC: personalDed.yearly, breakdown: [{ year: 2026, months: 12, gtgc: personalDed.yearly }] };
+      var totalPersonal = gtgcResult.totalGTGC;
+      var totalDep = R.calcNcnnNPT(ncnnArrMonth, ncnnArrYear, ncnnDepMonth, ncnnDepYear, dependents);
       totalDependent = totalDep;
 
       // Thu nhập tính thuế
@@ -674,6 +677,7 @@
           breakdown: salaryBreakdown,
           taxBreakdown: salaryTax.breakdown,
           workingDays: foreignMonths,
+          gtgcBreakdown: gtgcResult.breakdown,
           forms: [R.FORMS_DATA.personal_salary],
           tips: [
             { icon: "📋", text: "Thuế TNCN từ tiền lương, tiền công: gộp tổng từ " + salarySources.length + " nguồn, GTGC + NPT tính 1 lần." },
@@ -819,18 +823,19 @@
         });
       }
       html += '<tr class="subtotal"><td>Tổng thu nhập</td><td>' + C.fmt(r.totalIncome) + '</td></tr>';
-      if (r.workingDays < 12) {
-        html += '<tr class="deduction"><td>− GTGC bản thân (năm đầu)</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + r.workingDays + ' tháng)</span></td></tr>';
+      // Hiển thị GTGC theo breakdown từng năm
+      if (r.gtgcBreakdown && r.gtgcBreakdown.length > 1) {
+        r.gtgcBreakdown.forEach(function (b) {
+          html += '<tr class="deduction"><td>− GTGC ' + b.year + ' (' + b.months + ' tháng)</td><td>' + C.fmt(b.gtgc) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + b.months + ')</span></td></tr>';
+        });
+        html += '<tr class="deduction" style="font-weight:700;"><td>− GTGC tổng</td><td>' + C.fmt(r.personalDeduction) + '</td></tr>';
       } else {
-        html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + '</td></tr>';
+        var monthsLabel = (r.gtgcBreakdown && r.gtgcBreakdown[0]) ? r.gtgcBreakdown[0].months : r.workingDays;
+        html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + monthsLabel + ' tháng)</span></td></tr>';
       }
       if (r.totalBHXH > 0) html += '<tr class="deduction"><td>− BHXH + BHTN + BHYT + CĐ</td><td>' + C.fmt(r.totalBHXH) + '</td></tr>';
       if (r.dependentDeduction > 0) {
-        if (r.workingDays < 12) {
-          html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr × ' + r.workingDays + ' tháng)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
-        } else {
-          html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr × 12 tháng)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
-        }
+        html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr × ' + r.workingDays + ' tháng)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
       }
       html += '<tr class="subtotal"><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
       if (r.taxBreakdown) {
