@@ -554,6 +554,7 @@
       var totalBHXH = 0;
       var totalDependent = 0;
       var salaryBreakdown = [];
+      var foreignWorkingDays = 0;
       var dependents = npt;
       var personalDed = R.getPersonalDeduction();
 
@@ -590,6 +591,7 @@
             // NCNN lương — gộp vào tổng
             var fRev = p("foreign-revenue-input" + suffix);
             totalSalaryIncome += fRev;
+            foreignWorkingDays = fDays || 0;
             salaryBreakdown.push({ label: "Cá nhân nước ngoài — lương", amount: fRev, source: s.key });
           } else {
             // HĐDV hoặc không cư trú — tính riêng
@@ -598,9 +600,10 @@
         }
       });
 
-      // Tính GTGC + NPT 1 lần
-      var totalPersonal = personalDed.yearly;
-      var totalDep = R.DEPENDENT_DEDUCTION.yearly * dependents;
+      // Tính GTGC + NPT 1 lần (prorate nếu NCNN năm đầu có working days)
+      var allocRate = (foreignWorkingDays > 0 && foreignWorkingDays < 365) ? foreignWorkingDays / 365 : 1;
+      var totalPersonal = allocRate < 1 ? Math.round(personalDed.yearly * allocRate) : personalDed.yearly;
+      var totalDep = allocRate < 1 ? Math.round(R.DEPENDENT_DEDUCTION.yearly * dependents * allocRate) : R.DEPENDENT_DEDUCTION.yearly * dependents;
       totalDependent = totalDep;
 
       // Thu nhập tính thuế
@@ -622,11 +625,15 @@
           effectiveRate: totalSalaryIncome > 0 ? salaryTax.totalTax / totalSalaryIncome : 0,
           breakdown: salaryBreakdown,
           taxBreakdown: salaryTax.breakdown,
+          workingDays: foreignWorkingDays,
           forms: [R.FORMS_DATA.personal_salary],
           tips: [
             { icon: "📋", text: "Thuế TNCN từ tiền lương, tiền công: gộp tổng từ " + salarySources.length + " nguồn, GTGC + NPT tính 1 lần." },
+          ].concat(foreignWorkingDays > 0 && foreignWorkingDays < 365 ? [
+            { icon: "⚠️", text: "Năm đầu cư trú: GTGC bản thân = 15,5tr × " + foreignWorkingDays + "/365 ngày = " + C.fmt(totalPersonal) + ". NPT cũng phân bổ tương ứng." },
+          ] : []).concat([
             { icon: "💡", text: "10% tạm khấu trừ tại nguồn. Cuối năm quyết toán, được hoàn/thiếu thuế." },
-          ],
+          ]),
           disclaimer: C.getDisclaimer(),
         });
       }
@@ -764,7 +771,11 @@
         });
       }
       html += '<tr class="subtotal"><td>Tổng thu nhập</td><td>' + C.fmt(r.totalIncome) + '</td></tr>';
-      html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + '</td></tr>';
+      if (r.workingDays > 0 && r.workingDays < 365) {
+        html += '<tr class="deduction"><td>− GTGC bản thân (năm đầu)</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + r.workingDays + '/365)</span></td></tr>';
+      } else {
+        html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + '</td></tr>';
+      }
       if (r.totalBHXH > 0) html += '<tr class="deduction"><td>− BHXH + BHTN + BHYT + CĐ</td><td>' + C.fmt(r.totalBHXH) + '</td></tr>';
       if (r.dependentDeduction > 0) html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
       html += '<tr class="subtotal"><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
