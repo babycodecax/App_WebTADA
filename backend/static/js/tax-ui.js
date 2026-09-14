@@ -370,6 +370,9 @@
     suffix = suffix || '';
     var monthOpts = '';
     for (var i = 1; i <= 12; i++) { monthOpts += '<option value="' + i + '">Tháng ' + i + '</option>'; }
+    var curYear = new Date().getFullYear();
+    var yearOpts = '';
+    for (var y = curYear - 2; y <= curYear + 2; y++) { yearOpts += '<option value="' + y + '"' + (y === curYear ? ' selected' : '') + '>' + y + '</option>'; }
     return '' +
       '<div class="calc-form-group">' +
       '  <label class="calc-label">Trường hợp thuế</label>' +
@@ -390,16 +393,22 @@
       '<div id="foreign-months-group' + suffix + '" style="display:none;">' +
       '<div class="calc-form-row">' +
       '  <div class="calc-form-group">' +
-      '    <label class="calc-label">Từ tháng</label>' +
-      '    <select class="calc-select" id="foreign-arrival-month' + suffix + '">' + monthOpts + '</select>' +
+      '    <label class="calc-label">Từ tháng/năm</label>' +
+      '    <div class="calc-form-row">' +
+      '      <select class="calc-select" id="foreign-arrival-month' + suffix + '" style="flex:1;">' + monthOpts + '</select>' +
+      '      <select class="calc-select" id="foreign-arrival-year' + suffix + '" style="flex:1;">' + yearOpts + '</select>' +
+      '    </div>' +
       '  </div>' +
       '  <div class="calc-form-group">' +
-      '    <label class="calc-label">Đến tháng</label>' +
-      '    <select class="calc-select" id="foreign-depart-month' + suffix + '">' + monthOpts + '</select>' +
+      '    <label class="calc-label">Đến tháng/năm</label>' +
+      '    <div class="calc-form-row">' +
+      '      <select class="calc-select" id="foreign-depart-month' + suffix + '" style="flex:1;">' + monthOpts + '</select>' +
+      '      <select class="calc-select" id="foreign-depart-year' + suffix + '" style="flex:1;">' + yearOpts + '</select>' +
+      '    </div>' +
       '  </div>' +
       '</div>' +
       '<div id="foreign-period-info' + suffix + '" style="background:#f0f9ff;border-left:3px solid #3b82f6;padding:8px 12px;border-radius:4px;font-size:13px;color:#1e40af;margin-top:8px;">' +
-      '  Kỳ tính thuế: 12 tháng (Tháng 1 → Tháng 12)' +
+      '  Kỳ tính thuế: 12 tháng (Tháng 1/2026 → Tháng 12/2026)' +
       '</div>' +
       '</div>' +
       // ── Tip ──
@@ -485,17 +494,29 @@
       });
     }
     function updatePeriodInfo(suffix) {
-      var arrivalEl = document.getElementById("foreign-arrival-month" + suffix);
-      var departEl = document.getElementById("foreign-depart-month" + suffix);
+      var aMonth = document.getElementById("foreign-arrival-month" + suffix);
+      var aYear = document.getElementById("foreign-arrival-year" + suffix);
+      var dMonth = document.getElementById("foreign-depart-month" + suffix);
+      var dYear = document.getElementById("foreign-depart-year" + suffix);
       var periodEl = document.getElementById("foreign-period-info" + suffix);
-      if (!arrivalEl || !departEl || !periodEl) return;
-      var arrival = parseInt(arrivalEl.value) || 1;
-      var depart = parseInt(departEl.value) || 12;
-      var months = Math.max(1, depart - arrival + 1);
-      periodEl.textContent = "Kỳ tính thuế: " + months + " tháng (Tháng " + arrival + " → Tháng " + depart + ")";
+      if (!aMonth || !aYear || !dMonth || !dYear || !periodEl) return;
+      var am = parseInt(aMonth.value) || 1;
+      var ay = parseInt(aYear.value) || 2026;
+      var dm = parseInt(dMonth.value) || 12;
+      var dy = parseInt(dYear.value) || 2026;
+      var totalMonths = (dy - ay) * 12 + (dm - am) + 1;
+      if (totalMonths < 1) totalMonths = 1;
+      periodEl.textContent = "Kỳ tính thuế: " + totalMonths + " tháng (Tháng " + am + "/" + ay + " → Tháng " + dm + "/" + dy + ")";
     }
     document.querySelectorAll("[id^='foreign-type']").forEach(function (sel) {
       sel.addEventListener("change", refreshForeignUI);
+    });
+    // Event cho month/year selects → cập nhật period info
+    document.querySelectorAll("[id^='foreign-arrival-month'],[id^='foreign-arrival-year'],[id^='foreign-depart-month'],[id^='foreign-depart-year']").forEach(function (el) {
+      el.addEventListener("change", function () {
+        var sfx = this.id.replace(/foreign-(arrival|depart)-(month|year)/, "");
+        updatePeriodInfo(sfx);
+      });
     });
     // Set đúng state ban đầu
     refreshForeignUI();
@@ -609,9 +630,11 @@
           if (ftype === "salary") {
             // NCNN lương — gộp vào tổng
             var fRev = p("foreign-revenue-input" + suffix);
-            var fArrival = parseInt(g("foreign-arrival-month" + suffix)) || 1;
-            var fDepart = parseInt(g("foreign-depart-month" + suffix)) || 12;
-            foreignMonths = Math.max(1, fDepart - fArrival + 1);
+            var fArrM = parseInt(g("foreign-arrival-month" + suffix)) || 1;
+            var fArrY = parseInt(g("foreign-arrival-year" + suffix)) || 2026;
+            var fDepM = parseInt(g("foreign-depart-month" + suffix)) || 12;
+            var fDepY = parseInt(g("foreign-depart-year" + suffix)) || 2026;
+            foreignMonths = Math.max(1, (fDepY - fArrY) * 12 + (fDepM - fArrM) + 1);
             totalSalaryIncome += fRev;
             salaryBreakdown.push({ label: "Cá nhân nước ngoài — lương (" + foreignMonths + " tháng)", amount: fRev, source: s.key });
           } else {
@@ -1103,7 +1126,9 @@
         parts.push("fg=" + parseNumber(getVal("foreign-revenue-input" + sx)));
         parts.push("fv=" + getVal("foreign-type" + sx));
         parts.push("fm=" + parseNumber(getVal("foreign-arrival-month" + sx)));
+        parts.push("fy=" + parseNumber(getVal("foreign-arrival-year" + sx)));
         parts.push("fx=" + parseNumber(getVal("foreign-depart-month" + sx)));
+        parts.push("fd=" + parseNumber(getVal("foreign-depart-year" + sx)));
       } else if (s.id === "investment") {
         parts.push("it=" + getVal("invest-type"));
         parts.push("ia=" + parseNumber(getVal("invest-amount-input")));
@@ -1178,7 +1203,9 @@
         setVal("foreign-revenue-input", params.fg);
         if (params.fv) setSelect("foreign-type", params.fv);
         if (params.fm) setSelect("foreign-arrival-month", params.fm);
+        if (params.fy) setSelect("foreign-arrival-year", params.fy);
         if (params.fx) setSelect("foreign-depart-month", params.fx);
+        if (params.fd) setSelect("foreign-depart-year", params.fd);
       }
       if (params.ia) {
         setVal("invest-amount-input", params.ia);
