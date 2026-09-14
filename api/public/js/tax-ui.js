@@ -127,7 +127,8 @@
     // ── Phần giảm trừ chung (nếu có nguồn tiền lương) ──
     if (hasSalaryType) {
       html += '<div class="calc-deduction-box">';
-      html += '<div><span style="font-size:12px;font-weight:700;color:#166534;">📋 GTGC bản thân</span><br><span style="font-size:14px;font-weight:700;color:var(--calc-primary);">' + C.fmt(R.getPersonalDeduction().yearly) + '/năm</span></div>';
+      var gtgcDisplay = R.splitYearGTGC(12, 1, 2026);
+      html += '<div><span style="font-size:12px;font-weight:700;color:#166534;">📋 GTGC bản thân</span><br><span style="font-size:14px;font-weight:700;color:var(--calc-primary);">' + C.fmt(gtgcDisplay) + '/năm</span></div>';
       html += '<div><span style="font-size:12px;font-weight:700;color:#166534;">👨‍👩‍👧‍👦 NPT</span><br><div style="display:flex;align-items:center;gap:6px;"><div class="calc-stepper"><button class="calc-stepper-btn" data-action="decrease">−</button><input type="number" id="npt-shared" class="calc-stepper-input" value="0" min="0" max="20" readonly><button class="calc-stepper-btn" data-action="increase">+</button></div><span class="calc-hint" id="npt-hint">0 × 6,2tr = 0đ</span></div></div>';
       html += '</div>';
     }
@@ -845,7 +846,13 @@
         });
       }
       html += '<tr class="subtotal"><td>Tổng thu nhập</td><td>' + C.fmt(r.totalIncome) + '</td></tr>';
-      html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + r.workingDays + ' tháng)</span></td></tr>';
+      // Hiển thị GTGC split-year nếu cần
+      if (r.workingDays >= 12) {
+        var gtgcFormula = (r.personalDeduction === 159_000_000) ? "11tr×6 + 15,5tr×6" : "15,5tr × " + r.workingDays;
+        html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(' + gtgcFormula + ')</span></td></tr>';
+      } else {
+        html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + r.workingDays + ' tháng)</span></td></tr>';
+      }
       if (r.totalBHXH > 0) html += '<tr class="deduction"><td>− BHXH + BHTN + BHYT + CĐ</td><td>' + C.fmt(r.totalBHXH) + '</td></tr>';
       if (r.dependentDeduction > 0) {
         html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr × ' + r.workingDays + ' tháng)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
