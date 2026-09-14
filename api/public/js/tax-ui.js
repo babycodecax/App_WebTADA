@@ -456,19 +456,15 @@
 
     // Foreign type: ẩn/hiện GTGC section + ô nhập ngày khi đổi subtype
     function refreshForeignUI() {
-      // Check TẤT CẢ foreign dropdowns
-      var deductionBox = document.querySelector(".calc-deduction-box");
-      if (deductionBox) {
-        var hasSalarySource = state.selectedSources.some(function (s) {
-          if (s.id === "salary") return true;
-          if (s.id === "foreign") {
-            var el = document.getElementById("foreign-type" + (s.key.includes("_") ? "_" + s.key.split("_").pop() : ""));
-            return el && el.value === "salary";
-          }
-          return false;
+      // Check trực tiếp TẤT CẢ dropdown foreign-type trên DOM (không cần key lookup)
+      var hasSalarySource = state.selectedSources.some(function (s) { return s.id === "salary"; });
+      if (!hasSalarySource) {
+        document.querySelectorAll("[id^='foreign-type']").forEach(function (fsel) {
+          if (fsel.value === "salary") hasSalarySource = true;
         });
-        deductionBox.style.display = hasSalarySource ? "" : "none";
       }
+      var deductionBox = document.querySelector(".calc-deduction-box");
+      if (deductionBox) deductionBox.style.display = hasSalarySource ? "" : "none";
       // Ẩn/hiện ô nhập số ngày
       document.querySelectorAll("[id^='foreign-type']").forEach(function (fsel) {
         var sfx = fsel.id.replace("foreign-type", "");
@@ -781,7 +777,7 @@
       if (r.totalBHXH > 0) html += '<tr class="deduction"><td>− BHXH + BHTN + BHYT + CĐ</td><td>' + C.fmt(r.totalBHXH) + '</td></tr>';
       if (r.dependentDeduction > 0) {
         if (r.workingDays > 0 && r.workingDays < 365) {
-          html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr × ' + r.workingDays + '/365)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
+          html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr × 12 × ' + r.workingDays + '/365)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
         } else {
           html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
         }
