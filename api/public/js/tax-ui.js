@@ -455,25 +455,29 @@
 
 
     // Foreign type: ẩn/hiện GTGC section + ô nhập ngày khi đổi subtype
-    document.querySelectorAll("[id^='foreign-type']").forEach(function (sel) {
-      sel.addEventListener("change", function () {
-        var isSalary = this.value === "salary";
-        // Ẩn/hiện ô nhập số ngày (chỉ có khi chọn lương)
-        var sfx = this.id.replace("foreign-type", "");
-        var daysGroup = document.getElementById("foreign-days-group" + sfx);
-        if (daysGroup) daysGroup.style.display = isSalary ? "" : "none";
-        // Ẩn/hiện GTGC section
-        var deductionBox = document.querySelector(".calc-deduction-box");
-        if (deductionBox) {
-          var hasSalarySource = state.selectedSources.some(function (s) {
-            if (s.id === "salary") return true;
-            if (s.id === "foreign") {
-              var selEl = document.getElementById("foreign-type" + (s.key.includes("_") ? "_" + s.key.split("_").pop() : ""));
-              return selEl && selEl.value === "salary";
-            }
-            return false;
-          });
-          deductionBox.style.display = hasSalarySource ? "" : "none";
+    // Dùng event delegation trên step2-forms cho reliable
+    dom.step2Forms.addEventListener("change", function (e) {
+      if (!e.target.id || !e.target.id.startsWith("foreign-type")) return;
+      // Ẩn/hiện ô nhập số ngày
+      var sfx = e.target.id.replace("foreign-type", "");
+      var daysGroup = document.getElementById("foreign-days-group" + sfx);
+      if (daysGroup) daysGroup.style.display = e.target.value === "salary" ? "" : "none";
+      // Ẩn/hiện GTGC section — kiểm tra TẤT CẢ foreign dropdowns
+      var deductionBox = document.querySelector(".calc-deduction-box");
+      if (deductionBox) {
+        var hasSalarySource = state.selectedSources.some(function (s) {
+          if (s.id === "salary") return true;
+          if (s.id === "foreign") {
+            var el = document.getElementById("foreign-type" + (s.key.includes("_") ? "_" + s.key.split("_").pop() : ""));
+            return el && el.value === "salary";
+          }
+          return false;
+        });
+        deductionBox.style.display = hasSalarySource ? "" : "none";
+      }
+    });
+    // Set đúng state ban đầu
+    updateForeignUI();
         }
       });
       // Trigger一次 để set state ban đầu (salary mặc định không chọn đầu tiên)
@@ -630,7 +634,7 @@
           tips: [
             { icon: "📋", text: "Thuế TNCN từ tiền lương, tiền công: gộp tổng từ " + salarySources.length + " nguồn, GTGC + NPT tính 1 lần." },
           ].concat(foreignWorkingDays > 0 && foreignWorkingDays < 365 ? [
-            { icon: "⚠️", text: "Năm đầu cư trú: GTGC bản thân = 15,5tr × " + foreignWorkingDays + "/365 ngày = " + C.fmt(totalPersonal) + ". NPT cũng phân bổ tương ứng." },
+            { icon: "⚠️", text: "Năm đầu cư trú: GTGC bản thân = 186tr × " + foreignWorkingDays + "/365 ngày = " + C.fmt(totalPersonal) + ". NPT cũng phân bổ tương ứng." },
           ] : []).concat([
             { icon: "💡", text: "10% tạm khấu trừ tại nguồn. Cuối năm quyết toán, được hoàn/thiếu thuế." },
           ]),
@@ -772,7 +776,7 @@
       }
       html += '<tr class="subtotal"><td>Tổng thu nhập</td><td>' + C.fmt(r.totalIncome) + '</td></tr>';
       if (r.workingDays > 0 && r.workingDays < 365) {
-        html += '<tr class="deduction"><td>− GTGC bản thân (năm đầu)</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + r.workingDays + '/365)</span></td></tr>';
+        html += '<tr class="deduction"><td>− GTGC bản thân (năm đầu)</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(186tr × ' + r.workingDays + '/365)</span></td></tr>';
       } else {
         html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + '</td></tr>';
       }
@@ -911,7 +915,7 @@
         if (isAlloc) {
           html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × ' + (r.workingDays || "?") + '/365 ngày</td></tr>';
           html += '<tr><td>Thu nhập phân bổ tại VN</td><td>' + C.fmt(r.allocatedRevenue) + '</td></tr>';
-          html += '<tr class="deduction"><td>− GTGC bản thân (năm đầu)</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + (r.workingDays || "?") + '/365)</span></td></tr>';
+          html += '<tr class="deduction"><td>− GTGC bản thân (năm đầu)</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(186tr × ' + (r.workingDays || "?") + '/365)</span></td></tr>';
         } else {
           html += '<tr class="formula-row"><td>Biểu lũy tiến 5 bậc + GTGC + NPT</td><td>' + C.fmt(r.annualRevenue) + ' − GTGC − NPT</td></tr>';
         }
