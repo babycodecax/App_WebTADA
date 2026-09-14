@@ -169,16 +169,7 @@
     bindFormEvents();
   }
 
-  function renderAddButtons(types) {
-    var html = '<div class="calc-add-buttons">';
-    types.forEach(function (t) {
-      var src = findSource(t);
-      if (!src) return;
-      html += '<button class="calc-add-btn" data-add-source="' + t + '">+ ' + src.icon + ' ' + src.label + '</button>';
-    });
-    html += '</div>';
-    return html;
-  }
+
 
   function renderSourceForm(sourceId, key) {
     var src = findSource(sourceId);
@@ -823,18 +814,6 @@
     bindResultTabs();
   }
 
-  function renderSourceSummary(r) {
-    var icon = getSourceIcon(r.type);
-    var label = getResultLabel(r);
-    var html = '<div class="calc-source-summary">';
-    html += '<span class="calc-source-summary-icon">' + icon + '</span>';
-    html += '<div class="calc-source-summary-info">';
-    html += '<div class="calc-source-summary-label">' + label + '</div>';
-    html += '<div class="calc-source-summary-tax">' + C.fmt(r.totalTax || 0) + '</div>';
-    html += '</div>';
-    html += '</div>';
-    return html;
-  }
 
   function renderDetailBreakdown(r) {
     var html = '<table class="calc-breakdown">';
