@@ -528,8 +528,9 @@
         var optService = fsel.querySelector('option[value="service"]');
         if (optSalary) optSalary.disabled = isShort;
         if (optService) optService.disabled = isShort;
-        // Nếu đang chọn salary/service mà chuyển sang ngắn → buộc non_resident
+        // Nếu đang chọn salary/service bị disable → hiện cảnh báo
         if (isShort && (fsel.value === "salary" || fsel.value === "service")) {
+          alert("Khoảng thời gian dưới 6 tháng (~183 ngày) không đủ điều kiện là cá nhân cư trú. Vui lòng chọn 'Cá nhân nước ngoài không cư trú'.");
           fsel.value = "non_resident";
           refreshForeignUI();
         }
