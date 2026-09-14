@@ -370,7 +370,6 @@
     suffix = suffix || '';
     var monthOpts = '';
     for (var i = 1; i <= 12; i++) { monthOpts += '<option value="' + i + '">Tháng ' + i + '</option>'; }
-    var year = new Date().getFullYear();
     return '' +
       '<div class="calc-form-group">' +
       '  <label class="calc-label">Trường hợp thuế</label>' +
@@ -398,7 +397,7 @@
       '    <label class="calc-label">Tháng rời Việt Nam</label>' +
       '    <div class="calc-toggle-row">' +
       '      <label class="calc-toggle"><input type="radio" name="foreign-depart' + suffix + '" value="stay" checked onchange="document.getElementById(\'foreign-depart-month' + suffix + '\').disabled=true"><span class="calc-toggle-slider"></span></label>' +
-      '      <span style="font-size:14px;">Ở lại hết năm ' + year + '</span>' +
+      '      <span style="font-size:14px;">Ở lại hết năm</span>' +
       '    </div>' +
       '    <div class="calc-toggle-row" style="margin-top:8px;">' +
       '      <label class="calc-toggle"><input type="radio" name="foreign-depart' + suffix + '" value="custom" onchange="document.getElementById(\'foreign-depart-month' + suffix + '\').disabled=false"><span class="calc-toggle-slider"></span></label>' +
@@ -407,7 +406,7 @@
       '  </div>' +
       '</div>' +
       '<div id="foreign-period-info' + suffix + '" style="background:#f0f9ff;border-left:3px solid #3b82f6;padding:8px 12px;border-radius:4px;font-size:13px;color:#1e40af;margin-top:8px;">' +
-      '  Kỳ tính thuế: 12 tháng (Tháng 1/' + year + ' → Tháng 12/' + year + ')' +
+      '  Kỳ tính thuế: 12 tháng (Tháng 1 → Tháng 12)' +
       '</div>' +
       '</div>' +
       // ── Tip ──
@@ -506,8 +505,7 @@
         departMonth = parseInt(departEl ? departEl.value : 12) || 12;
       }
       var months = isStaying ? (13 - arrival) : Math.max(1, departMonth - arrival + 1);
-      var year = new Date().getFullYear();
-      periodEl.textContent = "Kỳ tính thuế: " + months + " tháng (Tháng " + arrival + "/" + year + " → Tháng " + (isStaying ? 12 : departMonth) + "/" + year + ")";
+      periodEl.textContent = "Kỳ tính thuế: " + months + " tháng (Tháng " + arrival + " → Tháng " + (isStaying ? "12" : departMonth) + ")";
     }
     document.querySelectorAll("[id^='foreign-type']").forEach(function (sel) {
       sel.addEventListener("change", refreshForeignUI);
