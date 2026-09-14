@@ -374,9 +374,9 @@
       '<div class="calc-form-group">' +
       '  <label class="calc-label">Trường hợp thuế</label>' +
       '  <select class="calc-select" id="foreign-type' + suffix + '">' +
-      '    <option value="service">Cá nhân nước ngoài cư trú + HĐ dịch vụ → 1% TNCN + 5% GTGT trên gross</option>' +
-      '    <option value="salary">Cá nhân nước ngoài cư trú + thu nhập dạng lương → lũy tiến 5 bậc + GTGC</option>' +
-      '    <option value="non_resident">Cá nhân nước ngoài không cư trú → 20% + 5% trên gross</option>' +
+      '    <option value="salary">NCNN cư trú + lương → lũy tiến 5 bậc + GTGC/NPT</option>' +
+      '    <option value="service">NCNN cư trú + HĐ dịch vụ → 1% TNCN + 5% GTGT</option>' +
+      '    <option value="non_resident">NCNN không cư trú → 20% + 5% trên gross</option>' +
       '  </select>' +
       '</div>' +
       '<div class="calc-form-group">' +
@@ -386,23 +386,16 @@
       '    <span class="calc-input-suffix">VNĐ/năm</span>' +
       '  </div>' +
       '</div>' +
-      // ── Nhóm tháng (chỉ hiện khi salary) ──
+      // ── Nhóm thời gian (chỉ hiện khi salary) ──
       '<div id="foreign-months-group' + suffix + '" style="display:none;">' +
       '<div class="calc-form-row">' +
       '  <div class="calc-form-group">' +
-      '    <label class="calc-label">Tháng đến Việt Nam</label>' +
+      '    <label class="calc-label">Từ tháng</label>' +
       '    <select class="calc-select" id="foreign-arrival-month' + suffix + '">' + monthOpts + '</select>' +
       '  </div>' +
       '  <div class="calc-form-group">' +
-      '    <label class="calc-label">Tháng rời Việt Nam</label>' +
-      '    <div class="calc-toggle-row">' +
-      '      <label class="calc-toggle"><input type="radio" name="foreign-depart' + suffix + '" value="stay" checked onchange="document.getElementById(\'foreign-depart-month' + suffix + '\').disabled=true"><span class="calc-toggle-slider"></span></label>' +
-      '      <span style="font-size:14px;">Ở lại hết năm</span>' +
-      '    </div>' +
-      '    <div class="calc-toggle-row" style="margin-top:8px;">' +
-      '      <label class="calc-toggle"><input type="radio" name="foreign-depart' + suffix + '" value="custom" onchange="document.getElementById(\'foreign-depart-month' + suffix + '\').disabled=false"><span class="calc-toggle-slider"></span></label>' +
-      '      <select class="calc-select" id="foreign-depart-month' + suffix + '" disabled>' + monthOpts + '</select>' +
-      '    </div>' +
+      '    <label class="calc-label">Đến tháng</label>' +
+      '    <select class="calc-select" id="foreign-depart-month' + suffix + '">' + monthOpts + '</select>' +
       '  </div>' +
       '</div>' +
       '<div id="foreign-period-info' + suffix + '" style="background:#f0f9ff;border-left:3px solid #3b82f6;padding:8px 12px;border-radius:4px;font-size:13px;color:#1e40af;margin-top:8px;">' +
@@ -493,19 +486,13 @@
     }
     function updatePeriodInfo(suffix) {
       var arrivalEl = document.getElementById("foreign-arrival-month" + suffix);
+      var departEl = document.getElementById("foreign-depart-month" + suffix);
       var periodEl = document.getElementById("foreign-period-info" + suffix);
-      if (!arrivalEl || !periodEl) return;
+      if (!arrivalEl || !departEl || !periodEl) return;
       var arrival = parseInt(arrivalEl.value) || 1;
-      var departRadios = document.querySelectorAll("input[name='foreign-depart" + suffix + "']");
-      var isStaying = true;
-      var departMonth = 12;
-      departRadios.forEach(function (r) { if (r.checked && r.value === "stay") isStaying = true; if (r.checked && r.value === "custom") isStaying = false; });
-      if (!isStaying) {
-        var departEl = document.getElementById("foreign-depart-month" + suffix);
-        departMonth = parseInt(departEl ? departEl.value : 12) || 12;
-      }
-      var months = isStaying ? (13 - arrival) : Math.max(1, departMonth - arrival + 1);
-      periodEl.textContent = "Kỳ tính thuế: " + months + " tháng (Tháng " + arrival + " → Tháng " + (isStaying ? "12" : departMonth) + ")";
+      var depart = parseInt(departEl.value) || 12;
+      var months = Math.max(1, depart - arrival + 1);
+      periodEl.textContent = "Kỳ tính thuế: " + months + " tháng (Tháng " + arrival + " → Tháng " + depart + ")";
     }
     document.querySelectorAll("[id^='foreign-type']").forEach(function (sel) {
       sel.addEventListener("change", refreshForeignUI);
@@ -623,11 +610,8 @@
             // NCNN lương — gộp vào tổng
             var fRev = p("foreign-revenue-input" + suffix);
             var fArrival = parseInt(g("foreign-arrival-month" + suffix)) || 1;
-            var fDepartRadios = form.querySelectorAll("input[name='foreign-depart" + suffix + "']");
-            var fIsStaying = true;
-            fDepartRadios.forEach(function (r) { if (r.checked && r.value === "custom") fIsStaying = false; });
-            var fDepartMonth = fIsStaying ? null : (parseInt(g("foreign-depart-month" + suffix)) || 12);
-            foreignMonths = R.calcNcnnMonths(fArrival, fDepartMonth);
+            var fDepart = parseInt(g("foreign-depart-month" + suffix)) || 12;
+            foreignMonths = Math.max(1, fDepart - fArrival + 1);
             totalSalaryIncome += fRev;
             salaryBreakdown.push({ label: "Cá nhân nước ngoài — lương (" + foreignMonths + " tháng)", amount: fRev, source: s.key });
           } else {
@@ -1119,8 +1103,7 @@
         parts.push("fg=" + parseNumber(getVal("foreign-revenue-input" + sx)));
         parts.push("fv=" + getVal("foreign-type" + sx));
         parts.push("fm=" + parseNumber(getVal("foreign-arrival-month" + sx)));
-        var stayRadio = form.querySelector("input[name='foreign-depart']:checked");
-        parts.push("fx=" + (stayRadio && stayRadio.value === "stay" ? "s" : parseNumber(getVal("foreign-depart-month" + sx))));
+        parts.push("fx=" + parseNumber(getVal("foreign-depart-month" + sx)));
       } else if (s.id === "investment") {
         parts.push("it=" + getVal("invest-type"));
         parts.push("ia=" + parseNumber(getVal("invest-amount-input")));
@@ -1195,19 +1178,7 @@
         setVal("foreign-revenue-input", params.fg);
         if (params.fv) setSelect("foreign-type", params.fv);
         if (params.fm) setSelect("foreign-arrival-month", params.fm);
-        if (params.fx) {
-          if (params.fx === "s") {
-            var stayR = document.querySelector("input[name='foreign-depart'][value='stay']");
-            if (stayR) { stayR.checked = true; }
-            var dpEl = document.getElementById("foreign-depart-month");
-            if (dpEl) dpEl.disabled = true;
-          } else {
-            var custR = document.querySelector("input[name='foreign-depart'][value='custom']");
-            if (custR) { custR.checked = true; }
-            var dpEl2 = document.getElementById("foreign-depart-month");
-            if (dpEl2) { dpEl2.disabled = false; dpEl2.value = params.fx; }
-          }
-        }
+        if (params.fx) setSelect("foreign-depart-month", params.fx);
       }
       if (params.ia) {
         setVal("invest-amount-input", params.ia);
