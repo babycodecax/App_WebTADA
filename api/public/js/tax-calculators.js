@@ -646,78 +646,6 @@ window.TAX_CALC = (function () {
   }
 
   // ──────────────────────────────────────────────
-  // CALCULATOR 7: Freelancer / GTA
-  // ──────────────────────────────────────────────
-
-  function calculateFreelancerTax(input) {
-    var revenue = num(input.revenue);
-    var costs = num(input.costs);
-    var applyPersonalDed = input.applyPersonalDed !== false;
-    var mode = input.mode || "free"; // free = cá nhân tự do (HĐDV), business = có đăng ký KD (HĐKD)
-
-    if (mode === "business") {
-      // HĐKD — cá nhân kinh doanh / HKD có đăng ký → thu nhập kinh doanh
-      // Tính theo tỷ lệ % trên DT hoặc thu nhập KD, KHÔNG giảm trừ
-      var taxRateInfo = R.HKD_TNCN_RATES.khac; // mặc định 1%
-      var tncn = revenue * taxRateInfo.rate;
-      return {
-        type: "freelancer",
-        subType: "business",
-        revenue: revenue,
-        costs: costs,
-        taxableIncome: revenue,
-        totalTax: tncn,
-        effectiveRate: revenue > 0 ? tncn / revenue : 0,
-        breakdown: [{ label: "Thuế TNCN theo tỷ lệ KD (" + taxRateInfo.label + ")", income: revenue, rate: taxRateInfo.rate, tax: tncn,
-          formula: fmt(revenue) + " × " + fmtPct(taxRateInfo.rate) }],
-        forms: [R.FORMS_DATA.personal_salary],
-        tips: [
-          { icon: "📋", text: "HĐKD (có đăng ký kinh doanh) → thu nhập kinh doanh, KHÔNG giảm trừ gia cảnh." },
-          { icon: "💡", text: "Đăng ký hộ kinh doanh để được hưởng chính sách ưu đãi (miễn thuế nếu DT ≤ 1 tỷ)." },
-          { icon: "📁", text: "Giữ sổ sách, chứng từ theo TT 152/2025." },
-        ],
-        disclaimer: getDisclaimer(),
-      };
-    }
-
-    // HĐDV — cá nhân tự do (chưa đăng ký KD) → tiền lương, tiền công
-    // 10% tạm khấu trừ tại nguồn, cuối năm quyết toán theo lũy tiến 5 bậc + GTGC + NPT
-    var personalDed = R.getPersonalDeduction();
-    var totalPersonal = applyPersonalDed ? personalDed.yearly : 0;
-    var taxableIncome = Math.max(0, revenue - costs - totalPersonal);
-
-    var result = progressiveTNCN(taxableIncome);
-    var effectiveRate = revenue > 0 ? result.totalTax / revenue : 0;
-
-    var tips = [
-      { icon: "📋", text: "HĐDV cá nhân tự do → tiền lương, tiền công → quyết toán theo lũy tiến 5 bậc." },
-      { icon: "💡", text: "10% tạm khấu trừ tại nguồn (≥5tr/lần). Cuối năm quyết toán, được hoàn/thiếu thuế." },
-      { icon: "📁", text: "Giữ hợp đồng, hóa đơn đầu vào để chứng minh chi phí hợp lý." },
-    ];
-
-    if (taxableIncome > 0 && result.breakdown.length > 0) {
-      var lastBracket = result.breakdown[result.breakdown.length - 1];
-      if (lastBracket.rate >= 0.20) {
-        tips.push({ icon: "⚠️", text: "Thuế suất cao (" + fmtPct(lastBracket.rate) + ")! Xem xét đăng ký HKD để tiết kiệm." });
-      }
-    }
-
-    return {
-      type: "freelancer",
-      subType: "free",
-      revenue: revenue,
-      costs: costs,
-      taxableIncome: taxableIncome,
-      totalTax: result.totalTax,
-      effectiveRate: effectiveRate,
-      breakdown: result.breakdown,
-      forms: [R.FORMS_DATA.personal_salary],
-      tips: tips,
-      disclaimer: getDisclaimer(),
-    };
-  }
-
-  // ──────────────────────────────────────────────
   // HELPER: Disclaimer chung
   // ──────────────────────────────────────────────
 
@@ -736,7 +664,6 @@ window.TAX_CALC = (function () {
     calculateGTGT: calculateGTGT,
     calculateForeignContractor: calculateForeignContractor,
     calculateRentalTax: calculateRentalTax,
-    calculateFreelancerTax: calculateFreelancerTax,
     progressiveTNCN: progressiveTNCN,
     fmt: fmt,
     fmtPct: fmtPct,
