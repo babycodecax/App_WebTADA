@@ -27,7 +27,7 @@ window.TAX_FORMS = (function () {
       description: "Lương HĐLĐ, thù lao HĐDV, tiền công — quyết toán lũy tiến",
       badge: "Lũy tiến 5 bậc + GTGC + NPT" },
     { id: "hkd", icon: "🏪", label: "Kinh doanh, hộ kinh doanh",
-      description: "Hộ kinh doanh cá thể, CNKD, SHKD, freelancer HĐKD",
+      description: "Hộ kinh doanh cá thể, CNKD, SHKD",
       badge: "4 nhóm, 2 cách tính" },
     { id: "rental", icon: "🏠", label: "Cho thuê nhà, đất, tài sản",
       description: "Cho thuê BĐS, cho thuê mặt bằng",
@@ -137,12 +137,6 @@ window.TAX_FORMS = (function () {
       { step: 2, text: "Kê khai thuế GTGT + TNCN theo quý (nếu >1 tỷ)", icon: "📊" },
       { step: 3, text: "Nộp tờ khai 01/TNCN trước 30 ngày cuối quý", icon: "📅" },
       { step: 4, text: "Nộp thuế qua eTax Mobile hoặc ngân hàng", icon: "🏦" },
-    ],
-    freelancer: [
-      { step: 1, text: "Đăng ký mã số thuế cá nhân", icon: "🔢" },
-      { step: 2, text: "Lập hợp đồng dịch vụ với khách hàng", icon: "📝" },
-      { step: 3, text: "Giữ hợp đồng + hóa đơn đầu vào", icon: "📁" },
-      { step: 4, text: "Nộp quyết toán TNCN trước 31/07 hàng năm", icon: "📅" },
     ],
     corporate: [
       { step: 1, text: "Đăng ký doanh nghiệp + mã số thuế DN", icon: "📝" },
