@@ -40,7 +40,7 @@ window.TAX_FORMS = (function () {
       badge: "TNDN 15-20%" },
     { id: "foreign", icon: "🌏", label: "Cá nhân nước ngoài",
       description: "Cá nhân cư trú và không cư trú tại Việt Nam",
-      badge: "1% TNDN + 5% GTGT" },
+      badge: "Lũy tiến / 1% / 20%" },
   ];
 
   // ──────────────────────────────────────────────
