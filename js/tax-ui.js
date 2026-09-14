@@ -1190,7 +1190,7 @@
       if (r.exempt) return "Miễn thuế (DT ≤ 1 tỷ)";
       var parts = [];
       if (r.group) parts.push(r.group.label || "");
-      if (r.gtgtRate) parts.push(r.gtgtRate.label || "");
+      if (r.gtgtRate) parts.push((r.gtgtRate.label || "").replace(/\s*\([^)]*\)\s*$/, ""));
       return parts.filter(Boolean).join(", ");
     }
     if (r.type === "investment" && r.label) return r.label;
