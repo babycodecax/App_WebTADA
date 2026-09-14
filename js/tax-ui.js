@@ -671,13 +671,13 @@
             var fDepY2 = parseInt(g("foreign-depart-year" + suffix)) || 2026;
             var fMonths2 = Math.max(1, (fDepY2 - fArrY2) * 12 + (fDepM2 - fArrM2) + 1);
             var fAnnualRev2 = p("foreign-revenue-input" + suffix) * fMonths2;
-            results.push(C.calculateForeignContractor({ grossRevenue: fAnnualRev2, contractorType: ftype, dependents: npt, arrivalMonth: fArrM2, ncnnMonths: fMonths2 }));
+            results.push(C.calculateForeignContractor({ grossRevenue: fAnnualRev2, contractorType: ftype, dependents: npt, arrivalMonth: fArrM2, arrivalYear: fArrY2, ncnnMonths: fMonths2 }));
           }
         }
       });
 
-      // Tính GTGC + NPT: 15,5tr × tháng, 6,2tr × N × tháng
-      var totalPersonal = (ncnnArrYear > 0) ? R.calcNcnnGTGC(foreignMonths) : R.splitYearGTGC(12, 1, 2026);
+      // Tính GTGC split-year (năm 2026 có 2 kỳ: 11tr trước 01/07, 15,5tr sau)
+      var totalPersonal = (ncnnArrYear > 0) ? R.splitYearGTGC(foreignMonths, ncnnArrMonth, ncnnArrYear) : R.splitYearGTGC(12, 1, 2026);
       var totalDep = (ncnnArrYear > 0) ? R.calcNcnnNPT(foreignMonths, dependents) : R.DEPENDENT_DEDUCTION.monthly * dependents * 12;
       totalDependent = totalDep;
 
@@ -987,10 +987,13 @@
       var isAlloc = r.allocatedRevenue && r.allocatedRevenue < r.grossRevenue;
       if (r.subType === "salary") {
         html += '<tr><td>Thu nhập gross/năm</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
-        if (r.ncnnMonths && r.ncnnMonths < 12) {
+        // Hiển thị GTGC split-year
+        if (r.personalDeduction === 159_000_000) {
+          html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(11tr×6 + 15,5tr×6)</span></td></tr>';
+        } else if (r.ncnnMonths && r.ncnnMonths < 12) {
           html += '<tr class="deduction"><td>− GTGC bản thân (năm đầu)</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + r.ncnnMonths + ' tháng)</span></td></tr>';
         } else {
-          html += '<tr class="formula-row"><td>Biểu lũy tiến 5 bậc + GTGC + NPT</td><td>' + C.fmt(r.annualRevenue) + ' − GTGC − NPT</td></tr>';
+          html += '<tr class="deduction"><td>− GTGC bản thân</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × 12 tháng)</span></td></tr>';
         }
         html += '<tr><td>TNCN/năm</td><td>' + C.fmt(r.tndn) + '</td></tr>';
         html += '<tr><td>GTGT 5%/năm</td><td>' + C.fmt(r.gtgt) + '</td></tr>';

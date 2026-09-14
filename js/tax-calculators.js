@@ -518,6 +518,8 @@ window.TAX_CALC = (function () {
     var contractorType = input.contractorType || "service"; // salary | service | non_resident
     var dependents = num(input.dependents);
     var ncnnMonths = num(input.ncnnMonths) || 12;
+    var arrivalMonth = num(input.arrivalMonth) || 1;
+    var arrivalYear = num(input.arrivalYear) || 2026;
     var fc = R.FOREIGN_CONTRACTOR;
     var tips = [];
     var tndn = 0;
@@ -527,7 +529,7 @@ window.TAX_CALC = (function () {
     if (contractorType === "salary") {
       // Trường hợp A: Cá nhân nước ngoài cư trú + HĐLĐ → lũy tiến 5 bậc + GTGC + NPT theo tháng
       var personalDed = R.getPersonalDeduction();
-      var totalPersonal = personalDed.monthly * ncnnMonths;
+      var totalPersonal = R.splitYearGTGC(ncnnMonths, arrivalMonth, arrivalYear);
       var totalDependent = R.DEPENDENT_DEDUCTION.monthly * dependents * ncnnMonths;
       var taxableIncome = Math.max(0, grossRevenue - totalPersonal - totalDependent);
       var result = progressiveTNCN(taxableIncome);
@@ -536,7 +538,7 @@ window.TAX_CALC = (function () {
         { icon: "✅", text: "Cá nhân nước ngoài cư trú + HĐLĐ → được GTGC + NPT, tính theo biểu lũy tiến 5 bậc." },
       ];
       if (ncnnMonths < 12) {
-        tips.push({ icon: "📊", text: "Năm đầu: GTGC = 15,5tr × " + ncnnMonths + " tháng = " + fmt(totalPersonal) + ". NPT = 6,2tr × N người × " + ncnnMonths + " tháng." });
+        tips.push({ icon: "📊", text: "Năm đầu: GTGC = " + fmt(totalPersonal) + " (split-year từ tháng " + arrivalMonth + "/" + arrivalYear + "). NPT = 6,2tr × N người × " + ncnnMonths + " tháng." });
       }
       tips.push(
         { icon: "⚠️", text: "Năm đầu cư trú: GTGC tính từ tháng đến VN đến tháng rời VN. Cần kê khai quyết toán khi kết thúc HĐ." },
