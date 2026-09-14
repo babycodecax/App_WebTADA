@@ -478,11 +478,6 @@
     });
     // Set đúng state ban đầu
     updateForeignUI();
-        }
-      });
-      // Trigger一次 để set state ban đầu (salary mặc định không chọn đầu tiên)
-      sel.dispatchEvent(new Event("change"));
-    });
 
     // Generic stepper handler — any stepper
     document.querySelectorAll(".calc-stepper-btn").forEach(function (btn) {
