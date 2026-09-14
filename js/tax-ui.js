@@ -454,6 +454,25 @@
     }
 
 
+    // Foreign type: ẩn/hiện GTGC section khi đổi subtype
+    document.querySelectorAll("[id^='foreign-type']").forEach(function (sel) {
+      sel.addEventListener("change", function () {
+        var deductionBox = document.querySelector(".calc-deduction-box");
+        if (deductionBox) {
+          // Ẩn GTGC nếu KHÔNG có nguồn lương nào (salary) khác đang chọn
+          var hasSalarySource = state.selectedSources.some(function (s) {
+            if (s.id === "salary") return true;
+            if (s.id === "foreign") {
+              var selEl = document.getElementById("foreign-type" + (s.key.includes("_") ? "_" + s.key.split("_").pop() : ""));
+              return selEl && selEl.value === "salary";
+            }
+            return false;
+          });
+          deductionBox.style.display = hasSalarySource ? "" : "none";
+        }
+      });
+    });
+
     // Generic stepper handler — any stepper
     document.querySelectorAll(".calc-stepper-btn").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -871,7 +890,10 @@
       var isAlloc = r.allocatedRevenue && r.allocatedRevenue < r.grossRevenue;
       if (r.subType === "salary") {
         html += '<tr><td>Thu nhập gross/năm</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
-        if (isAlloc) html += '<tr><td>Thu nhập phân bổ tại VN</td><td>' + C.fmt(r.allocatedRevenue) + '</td></tr>';
+        if (isAlloc) {
+          html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × ' + (r.workingDays || "?") + '/365 ngày</td></tr>';
+          html += '<tr><td>Thu nhập phân bổ tại VN</td><td>' + C.fmt(r.allocatedRevenue) + '</td></tr>';
+        }
         html += '<tr class="formula-row"><td>Biểu lũy tiến 5 bậc + GTGC + NPT</td><td>' + C.fmt(r.allocatedRevenue || r.annualRevenue) + ' − GTGC − NPT</td></tr>';
         html += '<tr><td>TNCN/năm</td><td>' + C.fmt(r.tndn) + '</td></tr>';
         html += '<tr><td>GTGT 5%/năm</td><td>' + C.fmt(r.gtgt) + '</td></tr>';
@@ -879,12 +901,18 @@
         html += '<tr><td style="font-size:12px;color:var(--calc-muted);">TNCN/tháng</td><td style="font-size:12px;color:var(--calc-muted);">' + C.fmt(r.monthlyTax) + '</td></tr>';
       } else if (r.subType === "non_resident") {
         html += '<tr><td>Thu nhập gross</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
-        if (isAlloc) html += '<tr><td>Thu nhập phân bổ tại VN</td><td>' + C.fmt(r.allocatedRevenue) + '</td></tr>';
+        if (isAlloc) {
+          html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × ' + (r.workingDays || "?") + '/365 ngày</td></tr>';
+          html += '<tr><td>Thu nhập phân bổ tại VN</td><td>' + C.fmt(r.allocatedRevenue) + '</td></tr>';
+        }
         html += '<tr class="formula-row"><td>TNCN 20% + GTGT 5%</td><td>' + C.fmt(r.allocatedRevenue || r.grossRevenue) + ' × 25% = ' + C.fmt(r.totalTax) + '</td></tr>';
         html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
       } else {
         html += '<tr><td>Thu nhập gross</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
-        if (isAlloc) html += '<tr><td>Thu nhập phân bổ tại VN</td><td>' + C.fmt(r.allocatedRevenue) + '</td></tr>';
+        if (isAlloc) {
+          html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × ' + (r.workingDays || "?") + '/365 ngày</td></tr>';
+          html += '<tr><td>Thu nhập phân bổ tại VN</td><td>' + C.fmt(r.allocatedRevenue) + '</td></tr>';
+        }
         html += '<tr class="formula-row"><td>TNCN 1% + GTGT 5%</td><td>' + C.fmt(r.allocatedRevenue || r.grossRevenue) + ' × 6% = ' + C.fmt(r.totalTax) + '</td></tr>';
         html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
       }
