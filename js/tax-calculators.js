@@ -534,6 +534,7 @@ window.TAX_CALC = (function () {
       gtgt = grossRevenue * fc.gtgt.rate;
       tips = [
         { icon: "✅", text: "Cá nhân nước ngoài cư trú + HĐLĐ → được giảm trừ bản thân + NPT, tính theo biểu lũy tiến 5 bậc." },
+        { icon: "⚠️", text: "Năm đầu cư trú: GTGC bản thân chỉ tính từ tháng đến VN đến tháng rời VN (không phải 12 tháng). Cần kê khai lại khi quyết toán." },
         { icon: "📅", text: "Nộp tờ khai quyết toán TNCN trước 31/07." },
       ];
       return {
