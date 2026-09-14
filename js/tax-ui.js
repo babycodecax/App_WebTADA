@@ -384,13 +384,13 @@
       '    <span class="calc-input-suffix">VNĐ/năm</span>' +
       '  </div>' +
       '</div>' +
-      '<div class="calc-form-group">' +
-      '  <label class="calc-label">Số ngày làm việc tại Việt Nam (nếu phân bổ thu nhập)</label>' +
+      '<div class="calc-form-group" id="foreign-days-group' + suffix + '" style="display:none;">' +
+      '  <label class="calc-label">Thời gian làm việc tại Việt Nam (năm đầu cư trú)</label>' +
       '  <div class="calc-input-group">' +
-      '    <input type="text" class="calc-input" id="foreign-days-input' + suffix + '" placeholder="Để trống nếu không phân bổ" inputmode="numeric">' +
+      '    <input type="text" class="calc-input" id="foreign-days-input' + suffix + '" placeholder="Để trống nếu trọn năm" inputmode="numeric">' +
       '    <span class="calc-input-suffix">ngày</span>' +
       '  </div>' +
-      '  <span class="calc-hint">Chỉ cần nhập khi làm việc đồng thời VN + nước ngoài, không tách riêng được thu nhập. Để trống = lấy full năm.</span>' +
+      '  <span class="calc-hint">GTGC bản thân tính từ tháng đến VN đến tháng rời VN. Để trống = 12 tháng (186tr/năm).</span>' +
       '</div>' +
       '<div class="calc-source-tip" style="background:#fef9f0;border-left:3px solid var(--calc-accent);padding:8px 12px;margin-top:8px;border-radius:4px;font-size:13px;">' +
       '💡 Cá nhân nước ngoài cư trú + lương → được GTGC + NPT. Cá nhân nước ngoài cư trú + HĐDV hoặc Cá nhân nước ngoài không cư trú → KHÔNG giảm trừ.</div>';
@@ -454,12 +454,17 @@
     }
 
 
-    // Foreign type: ẩn/hiện GTGC section khi đổi subtype
+    // Foreign type: ẩn/hiện GTGC section + ô nhập ngày khi đổi subtype
     document.querySelectorAll("[id^='foreign-type']").forEach(function (sel) {
       sel.addEventListener("change", function () {
+        var isSalary = this.value === "salary";
+        // Ẩn/hiện ô nhập số ngày (chỉ có khi chọn lương)
+        var sfx = this.id.replace("foreign-type", "");
+        var daysGroup = document.getElementById("foreign-days-group" + sfx);
+        if (daysGroup) daysGroup.style.display = isSalary ? "" : "none";
+        // Ẩn/hiện GTGC section
         var deductionBox = document.querySelector(".calc-deduction-box");
         if (deductionBox) {
-          // Ẩn GTGC nếu KHÔNG có nguồn lương nào (salary) khác đang chọn
           var hasSalarySource = state.selectedSources.some(function (s) {
             if (s.id === "salary") return true;
             if (s.id === "foreign") {
@@ -471,6 +476,8 @@
           deductionBox.style.display = hasSalarySource ? "" : "none";
         }
       });
+      // Trigger一次 để set state ban đầu (salary mặc định không chọn đầu tiên)
+      sel.dispatchEvent(new Event("change"));
     });
 
     // Generic stepper handler — any stepper
@@ -893,8 +900,10 @@
         if (isAlloc) {
           html += '<tr class="formula-row"><td colspan="2">' + C.fmt(r.grossRevenue) + ' × ' + (r.workingDays || "?") + '/365 ngày</td></tr>';
           html += '<tr><td>Thu nhập phân bổ tại VN</td><td>' + C.fmt(r.allocatedRevenue) + '</td></tr>';
+          html += '<tr class="deduction"><td>− GTGC bản thân (năm đầu)</td><td>' + C.fmt(r.personalDeduction) + ' <span style="font-size:11px;color:var(--calc-muted);">(15,5tr × ' + (r.workingDays || "?") + '/365)</span></td></tr>';
+        } else {
+          html += '<tr class="formula-row"><td>Biểu lũy tiến 5 bậc + GTGC + NPT</td><td>' + C.fmt(r.annualRevenue) + ' − GTGC − NPT</td></tr>';
         }
-        html += '<tr class="formula-row"><td>Biểu lũy tiến 5 bậc + GTGC + NPT</td><td>' + C.fmt(r.allocatedRevenue || r.annualRevenue) + ' − GTGC − NPT</td></tr>';
         html += '<tr><td>TNCN/năm</td><td>' + C.fmt(r.tndn) + '</td></tr>';
         html += '<tr><td>GTGT 5%/năm</td><td>' + C.fmt(r.gtgt) + '</td></tr>';
         html += '<tr class="subtotal"><td>TỔNG THUẾ/năm</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
