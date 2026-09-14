@@ -517,30 +517,40 @@ window.TAX_CALC = (function () {
     var grossRevenue = num(input.grossRevenue);
     var contractorType = input.contractorType || "service"; // salary | service | non_resident
     var dependents = num(input.dependents);
+    var workingDays = num(input.workingDays);
     var fc = R.FOREIGN_CONTRACTOR;
     var tips = [];
     var tndn = 0;
-    var gtgt = grossRevenue * fc.gtgt.rate;
+
+    // Phân bổ thu nhập theo số ngày làm việc tại VN (nếu có)
+    var allocRate = (workingDays > 0 && workingDays < 365) ? workingDays / 365 : 1;
+    var allocatedRevenue = Math.round(grossRevenue * allocRate);
+    var gtgt = allocatedRevenue * fc.gtgt.rate;
 
     if (contractorType === "salary") {
       // Trường hợp A: Thu nhập dạng lương + Cá nhân nước ngoài cư trú → lũy tiến 5 bậc
       // grossRevenue đã là thu nhập NĂM (UI ghi VNĐ/năm)
       var personalDed = R.getPersonalDeduction();
-      var totalPersonal = personalDed.yearly;
-      var totalDependent = R.DEPENDENT_DEDUCTION.yearly * dependents;
-      var taxableIncome = Math.max(0, grossRevenue - totalPersonal - totalDependent);
+      var totalPersonal = allocRate < 1 ? Math.round(personalDed.yearly * allocRate) : personalDed.yearly;
+      var totalDependent = allocRate < 1 ? Math.round(R.DEPENDENT_DEDUCTION.yearly * dependents * allocRate) : R.DEPENDENT_DEDUCTION.yearly * dependents;
+      var taxableIncome = Math.max(0, allocatedRevenue - totalPersonal - totalDependent);
       var result = progressiveTNCN(taxableIncome);
       tndn = result.totalTax;
-      gtgt = grossRevenue * fc.gtgt.rate;
       tips = [
         { icon: "✅", text: "Cá nhân nước ngoài cư trú + HĐLĐ → được giảm trừ bản thân + NPT, tính theo biểu lũy tiến 5 bậc." },
-        { icon: "⚠️", text: "Năm đầu cư trú: GTGC bản thân chỉ tính từ tháng đến VN đến tháng rời VN (không phải 12 tháng). Cần kê khai lại khi quyết toán." },
-        { icon: "📅", text: "Nộp tờ khai quyết toán TNCN trước 31/07." },
       ];
+      if (allocRate < 1) {
+        tips.push({ icon: "📊", text: "Phân bổ thu nhập: " + workingDays + "/365 ngày → " + fmt(allocatedRevenue) + " (thu nhập VN). GTGC cũng được phân bổ tương ứng." });
+      }
+      tips.push(
+        { icon: "⚠️", text: "Năm đầu cư trú: GTGC bản thân chỉ tính từ tháng đến VN đến tháng rời VN (không phải 12 tháng). Cần kê khai lại khi quyết toán." },
+        { icon: "📅", text: "Nộp tờ khai quyết toán TNCN trước 31/07." }
+      );
       return {
         type: "foreign_contractor",
         subType: "salary",
         grossRevenue: grossRevenue,
+        allocatedRevenue: allocatedRevenue,
         annualRevenue: grossRevenue,
         taxableIncome: taxableIncome,
         tndn: tndn,
@@ -556,16 +566,20 @@ window.TAX_CALC = (function () {
 
     } else if (contractorType === "non_resident") {
       // Trường hợp C: Cá nhân nước ngoài không cư trú → 20% + 5%
-      tndn = grossRevenue * 0.20;
+      tndn = allocatedRevenue * 0.20;
       var total = tndn + gtgt;
       tips = [
         { icon: "⚠️", text: "Cá nhân nước ngoài không cư trú → thuế suất cố định 20% trên tổng thu nhập, KHÔNG giảm trừ." },
-        { icon: "📅", text: "Nộp tờ khai theo quý trước 30 ngày cuối quý." },
       ];
+      if (allocRate < 1) {
+        tips.push({ icon: "📊", text: "Phân bổ thu nhập: " + workingDays + "/365 ngày → " + fmt(allocatedRevenue) + " (thu nhập VN)." });
+      }
+      tips.push({ icon: "📅", text: "Nộp tờ khai theo quý trước 30 ngày cuối quý." });
       return {
         type: "foreign_contractor",
         subType: "non_resident",
         grossRevenue: grossRevenue,
+        allocatedRevenue: allocatedRevenue,
         tndn: tndn,
         tndnRate: 0.20,
         gtgt: gtgt,
@@ -579,16 +593,20 @@ window.TAX_CALC = (function () {
 
     } else {
       // Trường hợp B: HĐ dịch vụ + Cá nhân nước ngoài cư trú → 1% + 5%
-      tndn = grossRevenue * fc.tndn.rate;
+      tndn = allocatedRevenue * fc.tndn.rate;
       var total2 = tndn + gtgt;
       tips = [
         { icon: "📋", text: "Cá nhân nước ngoài cư trú + HĐ dịch vụ → 1% TNCN + 5% GTGT trên doanh thu gross, KHÔNG giảm trừ." },
-        { icon: "📅", text: "Nộp tờ khai theo quý trước 30 ngày cuối quý." },
       ];
+      if (allocRate < 1) {
+        tips.push({ icon: "📊", text: "Phân bổ thu nhập: " + workingDays + "/365 ngày → " + fmt(allocatedRevenue) + " (thu nhập VN)." });
+      }
+      tips.push({ icon: "📅", text: "Nộp tờ khai theo quý trước 30 ngày cuối quý." });
       return {
         type: "foreign_contractor",
         subType: "service",
         grossRevenue: grossRevenue,
+        allocatedRevenue: allocatedRevenue,
         tndn: tndn,
         tndnRate: fc.tndn.rate,
         gtgt: gtgt,

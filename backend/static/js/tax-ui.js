@@ -384,6 +384,14 @@
       '    <span class="calc-input-suffix">VNĐ/năm</span>' +
       '  </div>' +
       '</div>' +
+      '<div class="calc-form-group">' +
+      '  <label class="calc-label">Số ngày làm việc tại Việt Nam (nếu phân bổ thu nhập)</label>' +
+      '  <div class="calc-input-group">' +
+      '    <input type="text" class="calc-input" id="foreign-days-input' + suffix + '" placeholder="Để trống nếu không phân bổ" inputmode="numeric">' +
+      '    <span class="calc-input-suffix">ngày</span>' +
+      '  </div>' +
+      '  <span class="calc-hint">Chỉ cần nhập khi làm việc đồng thời VN + nước ngoài, không tách riêng được thu nhập. Để trống = lấy full năm.</span>' +
+      '</div>' +
       '<div class="calc-source-tip" style="background:#fef9f0;border-left:3px solid var(--calc-accent);padding:8px 12px;margin-top:8px;border-radius:4px;font-size:13px;">' +
       '💡 Cá nhân nước ngoài cư trú + lương → được GTGC + NPT. Cá nhân nước ngoài cư trú + HĐDV hoặc Cá nhân nước ngoài không cư trú → KHÔNG giảm trừ.</div>';
   }
@@ -551,6 +559,7 @@
           if (union > 0) salaryBreakdown.push({ label: "Phí công đoàn", amount: union, source: s.key });
         } else if (s.id === "foreign") {
           var ftype = g("foreign-type" + suffix);
+          var fDays = p("foreign-days-input" + suffix);
           if (ftype === "salary") {
             // NCNN lương — gộp vào tổng
             var fRev = p("foreign-revenue-input" + suffix);
@@ -558,7 +567,7 @@
             salaryBreakdown.push({ label: "Cá nhân nước ngoài — lương", amount: fRev, source: s.key });
           } else {
             // HĐDV hoặc không cư trú — tính riêng
-            results.push(C.calculateForeignContractor({ grossRevenue: p("foreign-revenue-input" + suffix), contractorType: ftype, dependents: npt }));
+            results.push(C.calculateForeignContractor({ grossRevenue: p("foreign-revenue-input" + suffix), contractorType: ftype, dependents: npt, workingDays: fDays || 0 }));
           }
         }
       });
@@ -859,20 +868,24 @@
       }
 
     } else if (r.type === "foreign_contractor") {
+      var isAlloc = r.allocatedRevenue && r.allocatedRevenue < r.grossRevenue;
       if (r.subType === "salary") {
         html += '<tr><td>Thu nhập gross/năm</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
-        html += '<tr class="formula-row"><td>Biểu lũy tiến 5 bậc + GTGC + NPT</td><td>' + C.fmt(r.annualRevenue) + ' − GTGC − NPT</td></tr>';
+        if (isAlloc) html += '<tr><td>Thu nhập phân bổ tại VN</td><td>' + C.fmt(r.allocatedRevenue) + '</td></tr>';
+        html += '<tr class="formula-row"><td>Biểu lũy tiến 5 bậc + GTGC + NPT</td><td>' + C.fmt(r.allocatedRevenue || r.annualRevenue) + ' − GTGC − NPT</td></tr>';
         html += '<tr><td>TNCN/năm</td><td>' + C.fmt(r.tndn) + '</td></tr>';
-        html += '<tr><td>GTGT 5%/năm</td><td>' + C.fmt(r.grossRevenue * 0.05) + '</td></tr>';
+        html += '<tr><td>GTGT 5%/năm</td><td>' + C.fmt(r.gtgt) + '</td></tr>';
         html += '<tr class="subtotal"><td>TỔNG THUẾ/năm</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
         html += '<tr><td style="font-size:12px;color:var(--calc-muted);">TNCN/tháng</td><td style="font-size:12px;color:var(--calc-muted);">' + C.fmt(r.monthlyTax) + '</td></tr>';
       } else if (r.subType === "non_resident") {
         html += '<tr><td>Thu nhập gross</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
-        html += '<tr class="formula-row"><td>TNCN 20% + GTGT 5%</td><td>' + C.fmt(r.grossRevenue) + ' × 25% = ' + C.fmt(r.totalTax) + '</td></tr>';
+        if (isAlloc) html += '<tr><td>Thu nhập phân bổ tại VN</td><td>' + C.fmt(r.allocatedRevenue) + '</td></tr>';
+        html += '<tr class="formula-row"><td>TNCN 20% + GTGT 5%</td><td>' + C.fmt(r.allocatedRevenue || r.grossRevenue) + ' × 25% = ' + C.fmt(r.totalTax) + '</td></tr>';
         html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
       } else {
         html += '<tr><td>Thu nhập gross</td><td>' + C.fmt(r.grossRevenue) + '</td></tr>';
-        html += '<tr class="formula-row"><td>TNCN 1% + GTGT 5%</td><td>' + C.fmt(r.grossRevenue) + ' × 6% = ' + C.fmt(r.totalTax) + '</td></tr>';
+        if (isAlloc) html += '<tr><td>Thu nhập phân bổ tại VN</td><td>' + C.fmt(r.allocatedRevenue) + '</td></tr>';
+        html += '<tr class="formula-row"><td>TNCN 1% + GTGT 5%</td><td>' + C.fmt(r.allocatedRevenue || r.grossRevenue) + ' × 6% = ' + C.fmt(r.totalTax) + '</td></tr>';
         html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
       }
 
@@ -1016,6 +1029,7 @@
       } else if (s.id === "foreign") {
         parts.push("fg=" + parseNumber(getVal("foreign-revenue-input" + sx)));
         parts.push("fv=" + getVal("foreign-type" + sx));
+        parts.push("fd=" + parseNumber(getVal("foreign-days-input" + sx)));
       } else if (s.id === "investment") {
         parts.push("it=" + getVal("invest-type"));
         parts.push("ia=" + parseNumber(getVal("invest-amount-input")));
@@ -1089,6 +1103,7 @@
       if (params.fg) {
         setVal("foreign-revenue-input", params.fg);
         if (params.fv) setSelect("foreign-type", params.fv);
+        if (params.fd) setVal("foreign-days-input", params.fd);
       }
       if (params.ia) {
         setVal("invest-amount-input", params.ia);
