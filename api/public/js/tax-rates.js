@@ -343,7 +343,7 @@ window.TAX_RATES = (function () {
       ],
     },
     rental: {
-      formCode: "01/TNCN",
+      formCode: "01/BĐS",
       formName: "Tờ khai thuế TNCN từ cho thuê BĐS",
       deadline: "30 ngày cuối quý",
       where: "eTax Mobile hoặc Cục Thuế",
