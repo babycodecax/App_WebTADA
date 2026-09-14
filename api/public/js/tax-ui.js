@@ -476,8 +476,26 @@
         deductionBox.style.display = hasSalarySource ? "" : "none";
       }
     });
-    // Set đúng state ban đầu
-    updateForeignUI();
+    // Set đúng state ban đầu: ẩn GTGC nếu tất cả foreign đều là service/non_resident
+    (function () {
+      var deductionBox = document.querySelector(".calc-deduction-box");
+      if (!deductionBox) return;
+      var hasSalarySource = state.selectedSources.some(function (s) {
+        if (s.id === "salary") return true;
+        if (s.id === "foreign") {
+          var el = document.getElementById("foreign-type" + (s.key.includes("_") ? "_" + s.key.split("_").pop() : ""));
+          return el && el.value === "salary";
+        }
+        return false;
+      });
+      deductionBox.style.display = hasSalarySource ? "" : "none";
+      // Cũng ẩn days field cho foreign non-salary
+      document.querySelectorAll("[id^='foreign-type']").forEach(function (fsel) {
+        var sfx = fsel.id.replace("foreign-type", "");
+        var dg = document.getElementById("foreign-days-group" + sfx);
+        if (dg) dg.style.display = fsel.value === "salary" ? "" : "none";
+      });
+    })();
 
     // Generic stepper handler — any stepper
     document.querySelectorAll(".calc-stepper-btn").forEach(function (btn) {
