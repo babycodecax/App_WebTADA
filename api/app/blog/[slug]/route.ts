@@ -63,6 +63,15 @@ const OLD_SLUG_REDIRECTS: Record<string, string> = {
     'tong-hop-cac-truong-hop-bi-tam-hoan-xuat-canh-do-no-thue-tu-2026',
   'xu-ly-sai-lech-doanh-toi-uu-nghia-vu-phat-kiem-tra-thue-nam-2025':
     'xu-ly-sai-lech-doanh-thu-va-toi-uu-nghia-vu-phat-khi-kiem-tra-thue-nam-2025',
+  // Bo sung 2026-09-17 tu GSC Pages (4 URL 404): old slug -> new slug da verify 200 + trung chu de.
+  'huong-dan-nop-noi-quy-lao-dong-doanh-nghiep-moi-nhat-nam-2026':
+    'huong-dan-nop-noi-quy-lao-dong-cho-doanh-nghiep-moi-nhat-nam-2026',
+  'ke-khai-von-dieu-le-5-ty-thuc-gop-2-ty-cach-xu-ly-an-toan-dung-luat-nam-2026':
+    'ke-khai-von-dieu-le-5-ty-nhung-thuc-gop-2-ty-cach-xu-ly-an-toan-va-dung-luat-nam-2026',
+  'cch-g-lnh-tm-hon-xut-cnh-do-n-thu-doanh-nghip-nm-2026':
+    'cach-go-lenh-tam-hoan-xuat-canh-do-no-thue-doanh-nghiep-nam-2026',
+  'huong-dan-ho-so-hop-thuc-hoa-chi-phi-tien-luong-tra-luong-nguoi-than-quyet-toan-thue':
+    'huong-dan-ho-so-hop-thuc-hoa-chi-phi-tien-luong-khi-tra-luong-cho-nguoi-than-khi-quyet-toan-thue',
 };
 
 /** Trích xuất description từ content markdown (fallback khi không có summary) */
