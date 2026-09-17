@@ -182,10 +182,12 @@
         document.title = post.title + ' — TADA';
         updateDetailSeo(post);
 
-        // Bài viết liên quan
+        // Bài viết liên quan — server đã SSR sẵn (#ssr-related) thì giữ nguyên,
+        // tránh vẽ trùng và tránh ghi đè nội dung server (chuẩn GSC 17/09)
         fetch(API + '/api/blog?limit=999')
           .then(function (r) { return r.json(); })
           .then(function (allPosts) {
+            if (document.getElementById('ssr-related')) return;
             var related = findRelated(post.slug, post.title, allPosts);
             var articleEl = container.querySelector('.blog-detail');
             if (articleEl && related.length > 0) {

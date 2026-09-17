@@ -25,6 +25,45 @@ function escJson(s: string): string {
   return s.replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
 }
 
+/** Stopwords khi chấm điểm bài liên quan (mirror blog.js findRelated) */
+const RELATED_STOPWORDS = new Set([
+  'của', 'trong', 'với', 'cho', 'năm', 'các', 'có', 'theo', 'tại', 'từ',
+  'để', 'khi', 'nào', 'bao', 'nhiêu', 'làm', 'sao', 'thế', 'này', 'như',
+  'về', 'còn', 'đã', 'sẽ', 'đang', 'bị', 'không', 'những', 'một', 'ngày',
+  'tháng', 'đó', 'thì',
+]);
+
+type RelatedPost = { slug: string; title: string; summary: string | null };
+
+/**
+ * Chọn tối đa 4 bài liên quan theo keyword overlap title+summary.
+ * Không có điểm nào khớp → fallback bài mới nhất (vẫn đảm bảo internal links).
+ */
+function pickRelated(
+  all: RelatedPost[],
+  currentSlug: string,
+  currentTitle: string,
+  maxCount = 4
+): RelatedPost[] {
+  const keywords = (currentTitle || '')
+    .toLowerCase()
+    .split(/[\s,.\-:;!?()]+/)
+    .filter((w) => w.length >= 5 && !RELATED_STOPWORDS.has(w));
+  const scored: { post: RelatedPost; score: number }[] = [];
+  for (const p of all) {
+    if (!p.slug || p.slug === currentSlug) continue;
+    const text = `${p.title || ''} ${p.summary || ''}`.toLowerCase();
+    let score = 0;
+    for (const kw of keywords) {
+      if (text.includes(kw)) score++;
+    }
+    if (score > 0) scored.push({ post: p, score });
+  }
+  scored.sort((a, b) => b.score - a.score);
+  if (scored.length > 0) return scored.slice(0, maxCount).map((s) => s.post);
+  return all.filter((p) => p.slug && p.slug !== currentSlug).slice(0, maxCount);
+}
+
 /**
  * Redirect map: old slug (thiếu nguyên âm do bug slugify cũ) → new slug (đúng).
  * Được tạo từ dữ liệu Google Search Console (20 trang chưa indexed).
@@ -121,7 +160,7 @@ export async function GET(
         const desc = esc(
           post.summary || extractDescription(post.content || '')
         );
-        const canonical = `${SITE}/blog/${slug}`;
+        const canonical = `${SITE}/blog/${esc(slug)}`;
         const ogImage = `${SITE}/static/img/og-image.svg`;
         const author = esc(post.author_email || 'Dịch Vụ Thuế Kế Toán TADA');
         const pubDate = post.published_at || '';
@@ -133,8 +172,12 @@ export async function GET(
           `<title>${title} — TADA</title>`
         );
 
-        // 3b) Thay thế default canonical/og:url/og:type từ template
-        //     (tránh 2 bộ meta trùng nhau → Google confusion)
+        // 3b) Thay thế tags gốc trong template TẠI CHỖ (không inject thêm bộ
+        //     thứ 2 → tránh duplicate description/canonical/og → Google confusion)
+        html = html.replace(
+          /<meta name="description" content="[^"]*">/i,
+          `<meta name="description" content="${desc}">`
+        );
         html = html.replace(
           /<link rel="canonical" href="[^"]*">/i,
           `<link rel="canonical" href="${canonical}">`
@@ -147,23 +190,37 @@ export async function GET(
           /<meta property="og:type" content="[^"]*">/i,
           `<meta property="og:type" content="article">`
         );
+        html = html.replace(
+          /<meta property="og:title" content="[^"]*">/i,
+          `<meta property="og:title" content="${title} — TADA">`
+        );
+        html = html.replace(
+          /<meta property="og:description" content="[^"]*">/i,
+          `<meta property="og:description" content="${desc}">`
+        );
+        html = html.replace(
+          /<meta property="og:image" content="[^"]*">/i,
+          `<meta property="og:image" content="${ogImage}">`
+        );
+        html = html.replace(
+          /<meta name="twitter:title" content="[^"]*">/i,
+          `<meta name="twitter:title" content="${title} — TADA">`
+        );
+        html = html.replace(
+          /<meta name="twitter:description" content="[^"]*">/i,
+          `<meta name="twitter:description" content="${desc}">`
+        );
+        html = html.replace(
+          /<meta name="twitter:image" content="[^"]*">/i,
+          `<meta name="twitter:image" content="${ogImage}">`
+        );
 
-        // 4) Inject meta SEO tags ngay sau <title>
+        // 4) Chỉ inject tags template CHƯA có (article time + og dims)
         const seoMeta = [
-          `<meta name="description" content="${desc}">`,
-          `<link rel="canonical" href="${canonical}">`,
-          `<meta property="og:title" content="${title} — TADA">`,
-          `<meta property="og:description" content="${desc}">`,
-          `<meta property="og:url" content="${canonical}">`,
-          `<meta property="og:type" content="article">`,
-          `<meta property="og:image" content="${ogImage}">`,
           `<meta property="og:image:width" content="1200">`,
           `<meta property="og:image:height" content="630">`,
-          pubDate ? `<meta property="article:published_time" content="${pubDate}">` : '',
-          modDate ? `<meta property="article:modified_time" content="${modDate}">` : '',
-          `<meta name="twitter:title" content="${title} — TADA">`,
-          `<meta name="twitter:description" content="${desc}">`,
-          `<meta name="twitter:image" content="${ogImage}">`,
+          pubDate ? `<meta property="article:published_time" content="${esc(pubDate)}">` : '',
+          modDate ? `<meta property="article:modified_time" content="${esc(modDate)}">` : '',
         ].filter(Boolean).join('\n  ');
 
         html = html.replace(
@@ -205,6 +262,40 @@ export async function GET(
           /<\/head>/i,
           `  <script type="application/ld+json">${jsonLd}</script>\n  <script type="application/ld+json">${jsonLdBreadcrumb}</script>\n</head>`
         );
+
+        // 6) SSR khối "Bài viết liên quan" TRƯỚC </main> (ngoài #blog-grid nên
+        //    blog.js renderDetail không ghi đè; client thấy #ssr-related thì
+        //    bỏ qua related của nó → không trùng lặp, bot luôn thấy links)
+        try {
+          const { data: allPosts } = await client
+            .from('blog_posts')
+            .select('slug, title, summary')
+            .eq('status', 'published')
+            .order('published_at', { ascending: false })
+            .limit(30);
+          const related = pickRelated(
+            (allPosts || []) as RelatedPost[],
+            slug,
+            post.title || ''
+          );
+          if (related.length > 0) {
+            const cards = related
+              .map(
+                (p) =>
+                  `<a href="/blog/${esc(p.slug)}" class="blog-related-card">` +
+                  `<h3>${esc(p.title || '')}</h3>` +
+                  (p.summary ? `<p>${esc(p.summary.slice(0, 100))}</p>` : '') +
+                  `</a>`
+              )
+              .join('');
+            const relatedNav =
+              `<nav class="blog-related" id="ssr-related" aria-label="Bài viết liên quan">` +
+              `<h2>Bài viết liên quan</h2><div class="blog-related-grid">${cards}</div></nav>`;
+            html = html.replace('</main>', `${relatedNav}\n</main>`);
+          }
+        } catch {
+          // Related lỗi → trang vẫn trả bình thường (client render bù bằng JS)
+        }
       } else {
         // Slug không tìm thấy trong DB → thử redirect 301 về slug mới
         // (xử lý old slug URLs đã bị thay đổi khi fix-blog-slugs)
