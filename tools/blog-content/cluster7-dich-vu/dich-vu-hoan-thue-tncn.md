@@ -21,6 +21,14 @@ Cá nhân được hoàn khi đã đăng ký mã số thuế, tổng số thuế
 
 Bước 1 là kiểm tra nhanh đủ điều kiện hoàn không dựa trên các chứng từ khấu trừ bạn đang có. Bước 2 là liên hệ các nơi chi trả để lấy đủ chứng từ còn thiếu và tổng hợp thu nhập cả năm. Bước 3 là lập tờ khai quyết toán kèm đề nghị hoàn rồi nộp online. Bước 4 là theo dõi xử lý của cơ quan thuế, bổ sung giải trình nếu được yêu cầu đến khi nhận tiền hoàn.
 
+## Checklist chứng từ cần gom đủ trước khi nộp
+
+Chuẩn bị đủ 4 nhóm sau thì hồ sơ đi một lần là xong: chứng từ khấu trừ thuế của từng nơi chi trả trong năm, hợp đồng lao động hoặc quyết định nghỉ việc của nơi đã nghỉ, giấy tờ chứng minh người phụ thuộc nếu có đăng ký giảm trừ, và thông tin tài khoản ngân hàng chính chủ để nhận tiền hoàn. Thiếu bất kỳ nhóm nào, cơ quan thuế cũng yêu cầu bổ sung và thời gian chờ tính lại từ đầu.
+
+## 3 lỗi khiến hồ sơ hoàn thuế bị trả về nhiều nhất
+
+Lỗi thứ nhất là tổng thu nhập kê khai lệch với dữ liệu nơi chi trả đã báo, thường do quên một khoản thu nhập vãng lai. Lỗi thứ hai là mã số thuế chưa chuẩn hóa thông tin cá nhân sau khi đổi căn cước. Lỗi thứ ba là nộp nhầm cơ quan thuế quản lý, ví dụ nộp nơi cư trú trong khi phải nộp nơi chi trả thu nhập lớn nhất. TADA đối chiếu cả 3 điểm này trước khi nộp nên hồ sơ đi thường suôn sẻ.
+
 ## Câu hỏi thường gặp
 
 **Câu 1: Mất chứng từ khấu trừ của công ty cũ thì sao?**

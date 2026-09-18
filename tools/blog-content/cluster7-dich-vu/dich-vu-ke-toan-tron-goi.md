@@ -21,6 +21,14 @@ Phạm vi gồm ghi sổ kế toán chi tiết theo từng hóa đơn đầu và
 
 Bước 1 là tiếp nhận hồ sơ và rà soát sổ sách hiện tại để phát hiện chứng từ thiếu hoặc sai sót cần bổ sung. Bước 2 là ký hợp đồng với phạm vi và phí cố định theo tháng, báo giá dựa trên lượng hóa đơn thực tế nên không phát sinh chi phí ẩn. Bước 3 là vận hành hàng tháng: thu thập hóa đơn, ghi sổ, kê khai và gửi báo cáo cho chủ doanh nghiệp đối chiếu. Bước 4 là chốt năm: lập báo cáo tài chính, quyết toán thuế và bàn giao đầy đủ sổ sách chứng từ.
 
+## Cách chọn gói theo lượng hóa đơn của bạn
+
+Công ty mới thành lập ít phát sinh chỉ cần gói cơ bản gồm kê khai và báo cáo năm. Công ty thương mại vài chục hóa đơn mỗi tháng cần thêm đối chiếu công nợ và kho. Công ty sản xuất xây dựng có nhân công, máy móc và công trình dở dang thì cần gói đầy đủ kèm kiểm soát giá thành. Mô tả đúng khối lượng khi hỏi báo giá, bạn sẽ không bao giờ phải trả tiền cho việc mình không có.
+
+## 5 câu hỏi nên đặt ra trước khi ký hợp đồng kế toán
+
+Thứ nhất, phí cố định gồm những việc gì và việc gì tính thêm. Thứ hai, ai chịu tiền phạt nếu nộp trễ do lỗi bên dịch vụ. Thứ ba, báo cáo gửi chủ doanh nghiệp định kỳ theo tuần hay theo tháng. Thứ tư, khi kết thúc hợp đồng thì bàn giao sổ sách dưới dạng nào và trong bao lâu. Thứ năm, bên dịch vụ có tiếp đoàn thanh tra cùng bạn không hay chỉ gửi số liệu. Trả lời rõ 5 câu này thì hợp tác lâu dài không phát sinh mâu thuẫn.
+
 ## Câu hỏi thường gặp
 
 **Câu 1: Công ty chưa phát sinh doanh thu có cần thuê kế toán không?**

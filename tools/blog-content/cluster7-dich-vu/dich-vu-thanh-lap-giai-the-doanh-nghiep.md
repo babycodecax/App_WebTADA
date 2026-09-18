@@ -25,6 +25,14 @@ Gói giải thể gồm rà soát nợ thuế và tờ khai còn thiếu, khôi 
 
 Bước 1 là tiếp nhận thông tin và kiểm tra tình trạng pháp lý thuế hiện tại của doanh nghiệp. Bước 2 là báo phí trọn gói một lần, không thu thêm khi phát sinh thủ tục trong phạm vi đã chốt. Bước 3 là TADA soạn và nộp toàn bộ hồ sơ, khách hàng chỉ ký tên khi cần. Bước 4 là bàn giao kết quả: giấy phép mới cho gói thành lập, thông báo đã giải thể cho gói giải thể.
 
+## Khi nào nên giải thể thay vì bỏ mặc công ty
+
+Bỏ mặc công ty không hoạt động tưởng là xong nhưng mã số thuế vẫn treo nợ tờ khai và tiền phạt, càng để lâu số tiền càng lớn và người đại diện còn bị liên đới. Nên giải thể dứt điểm khi công ty đã hết mục đích kinh doanh, khi muốn mở công ty mới sạch sẽ, hoặc khi công ty đang ở trạng thái 06 khó quay lại hoạt động. Chi phí giải thể một lần luôn rẻ hơn tiền phạt tích lũy nhiều năm bỏ mặc.
+
+## Checklist giấy tờ cần chuẩn bị
+
+Với gói thành lập, chuẩn bị căn cước của các thành viên góp vốn, tên công ty dự kiến kèm 2 tên dự phòng, địa chỉ trụ sở và tỷ lệ góp vốn từng người. Với gói giải thể, cần giấy phép hiện tại, toàn bộ tờ khai và báo cáo đã nộp các năm, cùng danh sách nợ thuế và bảo hiểm còn tồn. Chuẩn bị đủ từ đầu thì hồ sơ đi nhanh gấp đôi so với bổ sung nhiều lần.
+
 ## Câu hỏi thường gặp
 
 **Câu 1: Công ty bị trạng thái 06 có giải thể được không?**
