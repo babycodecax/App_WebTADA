@@ -51,6 +51,8 @@ Thumbs.db
 # === Tools ===
 tools/DataTest/
 tools/memory/
+tools/.gsc-profile/
+tools/gsc-reports/
 
 # === Claude Code ===
 .claude/settings.local.json
