@@ -78,16 +78,16 @@ Với các thay đổi từ Luật 09/2026, hộ kinh doanh và doanh nghiệp n
 
 ## Câu hỏi thường gặp
 
-**Luật 09/2026 có hiệu lực từ ngày nào?**
+**Câu 1: Luật 09/2026 có hiệu lực từ ngày nào?**
 Luật có hiệu lực chung từ ngày 24/4/2026. Riêng quy định sửa đổi Luật TNCN, GTGT, TNDN (các điều 1, 2, 3) có hiệu lực hồi tố từ 01/01/2026. Quy định về thuế TTĐB xe điện có hiệu lực từ 24/04/2026.
 
-**Ngưỡng miễn thuế HKD theo Luật 09/2026 là bao nhiêu?**
+**Câu 2: Ngưỡng miễn thuế HKD theo Luật 09/2026 là bao nhiêu?**
 Luật 09/2026 giao Chính phủ quy định ngưỡng miễn thuế. Hiện nay, theo Nghị định 141/2026/NĐ-CP, hộ kinh doanh có doanh thu năm không quá 1 tỷ đồng được miễn thuế TNCN và GTGT.
 
-**Doanh nghiệp nhỏ được miễn thuế TNDN theo Luật 09/2026 không?**
+**Câu 3: Doanh nghiệp nhỏ được miễn thuế TNDN theo Luật 09/2026 không?**
 Luật bổ sung khoản 14a Điều 4 Luật TNDN, cho phép miễn thuế TNDN cho doanh nghiệp có doanh thu từ mức Chính phủ quy định trở xuống. Hiện chờ nghị định hướng dẫn cụ thể. Trong lúc đó, DN có doanh thu ≤3 tỷ áp dụng thuế suất 15%.
 
-**Xe điện có thuế TTĐB thấp hơn xe xăng không?**
+**Câu 4: Xe điện có thuế TTĐB thấp hơn xe xăng không?**
 Có. Từ 01/01/2026, xe điện ≤9 chỗ chịu thuế TTĐB 3% (so với 10%-50% xe xăng). Mức này tăng dần lên 11% từ năm 2031.
 
 ---
@@ -97,7 +97,7 @@ Có. Từ 01/01/2026, xe điện ≤9 chỗ chịu thuế TTĐB 3% (so với 10%
 
 ---
 
-## Related Articles
+## Xem thêm
 
 - [Cách tính thuế TNCN HKD 2026 - 4 nhóm doanh thu](/blog/cach-tinh-thue-tncn-hkd-2026-4-nhom-doanh-thu)
 - [1 tỷ đồng miễn thuế - Điều kiện và quy định mới 2026](/blog/500-trieu-dong-mien-thue-dieu-kien-va-quy-dinh-moi-2026)
