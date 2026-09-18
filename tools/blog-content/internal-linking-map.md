@@ -132,15 +132,38 @@
 
 ---
 
+---
+
+## Cluster 6: Luật 09/2026 sửa đổi 4 Luật thuế
+
+### 1. Luật 09/2026 sửa đổi 4 Luật thuế: Điểm mới cần biết
+- Link về: `/` (trang chủ)
+- Link đến: [Cách tính thuế TNCN HKD](../cluster1-thue-hkd/3-cach-tinh-thue-tncn-hkd-2026-4-nhom-doanh-thu.md)
+- Link đến: [1 tỷ miễn thuế](../cluster1-thue-hkd/4-500-trieu-dong-mien-thue-dieu-kien-va-quy-dinh-moi-2026.md)
+- Link đến: [Giảm 30% thuế TNCN](../cluster3-thue-tncn/giam-30-thue-tncn-2026-ai-duoc-huong.md)
+- Link đến: [Quyết toán thuế TNCN](../cluster3-thue-tncn/quyet-toan-thue-tncn-2026-huong-dan-chi-tiet.md)
+
+### 2. Tỷ giá ngoại tệ trên hóa đơn điện tử 2026
+- Link về: `/` (trang chủ)
+- Link đến: [Luật 09/2026](luat-09-2026-sua-doi-4-luat-thue-diem-moi-can-biet.md)
+- Link đến: [16 lưu ý HĐĐT](../cluster2-hoa-don-dien-tu/16-luu-y-hoa-don-dien-tu-2026-cho-ke-toan-vien.md)
+- Link đến: [TT 91/2026 về HĐĐT](../cluster2-hoa-don-dien-tu/thong-tu-91-2026-ve-hoa-don-dien-tu-diem-moi-can-biet.md)
+
+---
+
 ## Cross-Cluster Links (quan trọng)
 
 | Từ | Đến | Anchor |
 |----|-----|--------|
 | Cluster 1 | Cluster 3 | "cách tính thuế TNCN chi tiết" |
 | Cluster 1 | Cluster 2 | "hóa đơn điện tử cho HKD" |
+| Cluster 1 | Cluster 6 | "Luật 09/2026 sửa đổi 4 Luật thuế" |
 | Cluster 2 | Cluster 1 | "thuế hộ kinh doanh 2026" |
 | Cluster 2 | Cluster 4 | "chatbot hỗ trợ kê khai" |
 | Cluster 3 | Cluster 1 | "kê khai thuế HKD" |
 | Cluster 3 | Cluster 2 | "đăng ký hóa đơn điện tử" |
+| Cluster 3 | Cluster 6 | "Luật 09/2026 miễn thuế TNCN" |
 | Cluster 4 | Cluster 1 | "hướng dẫn kê khai thuế" |
 | Cluster 4 | Cluster 2 | "hóa đơn điện tử" |
+| Cluster 6 | Cluster 1 | "thuế HKD 2026" |
+| Cluster 6 | Cluster 3 | "thuế TNCN mới nhất" |
