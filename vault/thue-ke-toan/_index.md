@@ -5,7 +5,7 @@ tags:
   - tax
   - tax/index
 status: active
-updated: 2026-09-09
+updated: 2026-09-16
 ---
 
 # 🧠 Bộ não Thuế & Kế toán
@@ -35,6 +35,7 @@ updated: 2026-09-09
 | Kinh tế tư nhân | [[nq-198-2025-kinh-te-tu-nhan\|NQ 198/2025 phát triển KTTN]] | Bỏ lệ phí môn bài 2026; miễn/giảm TNDN DNNVV; hỗ trợ đất, tín dụng, KH&CN |
 | Hợp đồng lao động điện tử | [[nd-337-2025-hop-dong-lao-dong-dien-tu\|NĐ 337/2025 HĐLĐ điện tử]] | eContract, Nền tảng Bộ Nội vụ; vận hành từ 01/07/2026 |
 | Tài sản mã hóa | [[tt-32-2026-tai-san-ma-hoa\|TT 32/2026 thuế tài sản mã hóa]] | GTGT/TNDN/TNCN với crypto |
+| Tỷ giá ngoại tệ trên HĐ | [[cong-van-6810-ct-qlnt-2026-ty-gia-hoa-don\|CV 6810/CT-QLNT hướng dẫn tỷ giá ngoại tệ trên HĐ điện tử]] | Ghi ngoại tệ + tỷ giá VND trên HĐ; tỷ giá thực tế theo PL kế toán |
 | Hộ kinh doanh | [[tt-50-2026-ho-kinh-doanh\|TT 50/2026 QLT hộ KD/CNKD]] | Hồ sơ, thủ tục, mẫu biểu HKD |
 | GTGT (hướng dẫn) | [[tt-69-2025-gtgt\|TT 69/2025 chi tiết GTGT + NĐ 181/2025]] · [[nd-359-2025-gtgt\|NĐ 359/2025 sửa đổi NĐ 181/2025]] | 0%, đối tượng không chịu thuế, tỷ lệ %, nhà thầu nước ngoài; nông sản sơ chế |
 | TNCN (hướng dẫn) | [[tt-87-2026-tncn\|TT 87/2026 chi tiết TNCN + NĐ 253/2026]] | NPT ≤3tr/tháng, chứng khoán phái sinh 0,1%/lần |
