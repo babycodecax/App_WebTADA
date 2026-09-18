@@ -149,7 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
     { slug: 'dich-vu-kiem-toan-lap-bctc-fix-loi-thue', keys: ['kiem', 'toan'] },
     { slug: 'dich-vu-hoan-thue-tncn', keys: ['hoan', 'thue'] },
     { slug: 'dich-vu-giai-quyet-bhxh-that-nghiep', keys: ['that', 'nghiep'] },
-    { slug: 'dich-vu-thay-doi-thong-tin-ca-nhan', keys: ['thay', 'doi', 'thong', 'tin'] }
+    { slug: 'dich-vu-thay-doi-thong-tin-ca-nhan', keys: ['thay', 'doi', 'thong', 'tin'] },
+    { slug: 'dich-vu-tu-van-thue-ke-toan-tong-hop', keys: ['tu', 'van', 'thue'] },
+    { slug: 'dich-vu-phan-mem-ke-toan-hoa-don', keys: ['phan', 'mem'] }
   ];
 
   function normName(s) {
