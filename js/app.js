@@ -174,9 +174,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!content) return;
     content.innerHTML = '';
 
-    // Tách từng dòng → bỏ dòng trống + dòng mô tả (kết thúc bằng dấu chấm)
-    var lines = (text || '').split(/\r?\n/).map(function (l) { return l.trim(); })
-      .filter(function (l) { return l && !/\.\s*$/.test(l); });
+    // Tách từng dòng (admin nhập mỗi dòng 1 dịch vụ) → bỏ dòng trống
+    // Dong dau co the la ten dich vu tong hop (khong can ket thuc dac biet)
+    var lines = (text || '').split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
     if (!lines.length) return;
 
     var wrapper = document.createElement('div');
