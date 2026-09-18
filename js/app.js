@@ -148,9 +148,17 @@ document.addEventListener('DOMContentLoaded', () => {
     var wrapper = document.createElement('div');
     wrapper.className = 'services-grid';
 
-    lines.forEach(function (line) {
+    lines.forEach(function (line, idx) {
       var card = document.createElement('div');
       card.className = 'services-card';
+      card.style.setProperty('--i', idx);
+
+      // So thu tu editorial 01, 02, ... (trang tri, an voi screen reader)
+      var numEl = document.createElement('span');
+      numEl.className = 'services-num';
+      numEl.setAttribute('aria-hidden', 'true');
+      numEl.textContent = ('0' + (idx + 1)).slice(-2);
+      card.appendChild(numEl);
 
       // Tách emoji đầu dòng (🏠/🌟/…) khỏi tên dịch vụ — hiển thị icon riêng
       var icon = '';
@@ -170,10 +178,28 @@ document.addEventListener('DOMContentLoaded', () => {
       nameEl.textContent = name || line;
       card.appendChild(nameEl);
 
+      var arrowEl = document.createElement('span');
+      arrowEl.className = 'services-arrow';
+      arrowEl.setAttribute('aria-hidden', 'true');
+      arrowEl.textContent = '→';
+      card.appendChild(arrowEl);
+
       wrapper.appendChild(card);
     });
 
     content.appendChild(wrapper);
+
+    // Reveal lan luot khi cuon toi (stagger qua --i trong CSS)
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { wrapper.classList.add('inview'); io.disconnect(); }
+        });
+      }, { threshold: 0.12 });
+      io.observe(wrapper);
+    } else {
+      wrapper.classList.add('inview');
+    }
   }
 
   function loadServices() {
