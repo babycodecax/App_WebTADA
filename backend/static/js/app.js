@@ -219,6 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }, { threshold: 0.12 });
       io.observe(wrapper);
+      // Luoi an toan: hien sau 4s neu IO khong kich hoat
+      setTimeout(function () { wrapper.classList.add('inview'); }, 4000);
     } else {
       wrapper.classList.add('inview');
     }
