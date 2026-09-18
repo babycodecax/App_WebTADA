@@ -137,19 +137,20 @@ document.addEventListener('DOMContentLoaded', () => {
     '🌟 Thay đổi thông tin cá nhân (CCCD, địa chỉ, SĐT)';
 
   function renderServicesContent(text) {
-  // Map ten dich vu (chuan hoa) -> slug bai mo ta chi tiet.
-  // Admin doi ten dong nao khong khop map -> card hien thuong, khong link.
-  var SERVICE_LINKS = {
-    'ke toan dich vu tron goi': 'dich-vu-ke-toan-tron-goi',
-    'thanh lap & giai the doanh nghiep': 'dich-vu-thanh-lap-giai-the-doanh-nghiep',
-    'ke khai thue tncn / gtgt': 'dich-vu-ke-khai-thue-tncn-gtgt',
-    'dang ky hkd & hoa don dien tu': 'dich-vu-dang-ky-hkd-hoa-don-dien-tu',
-    'kiem toan & lap bctc, fix loi thue': 'dich-vu-kiem-toan-lap-bctc-fix-loi-thue',
-    'ke khai bao hiem xa hoi': 'dich-vu-ke-khai-bao-hiem-xa-hoi',
-    'hoan thue tncn': 'dich-vu-hoan-thue-tncn',
-    'giai quyet bhxh that nghiep': 'dich-vu-giai-quyet-bhxh-that-nghiep',
-    'thay doi thong tin ca nhan (cccd, dia chi, sdt)': 'dich-vu-thay-doi-thong-tin-ca-nhan'
-  };
+  // Map slug bai mo ta -> bo tu khoa nhan dien (ten da chuan hoa khong dau).
+  // Card khop rule nao truoc thi link bai do; khong khop -> card thuong.
+  // Chiu duoc admin doi cau chu, mien la giu tu khoa chinh.
+  var SERVICE_LINKS = [
+    { slug: 'dich-vu-ke-toan-tron-goi', keys: ['tron', 'goi'] },
+    { slug: 'dich-vu-thanh-lap-giai-the-doanh-nghiep', keys: ['thanh', 'lap'] },
+    { slug: 'dich-vu-ke-khai-thue-tncn-gtgt', keys: ['ke', 'khai', 'thue'] },
+    { slug: 'dich-vu-ke-khai-bao-hiem-xa-hoi', keys: ['khai', 'bao', 'hiem'] },
+    { slug: 'dich-vu-dang-ky-hkd-hoa-don-dien-tu', keys: ['dang', 'ky'] },
+    { slug: 'dich-vu-kiem-toan-lap-bctc-fix-loi-thue', keys: ['kiem', 'toan'] },
+    { slug: 'dich-vu-hoan-thue-tncn', keys: ['hoan', 'thue'] },
+    { slug: 'dich-vu-giai-quyet-bhxh-that-nghiep', keys: ['that', 'nghiep'] },
+    { slug: 'dich-vu-thay-doi-thong-tin-ca-nhan', keys: ['thay', 'doi', 'thong', 'tin'] }
+  ];
 
   function normName(s) {
     return (s || '').toLowerCase()
@@ -157,12 +158,25 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/đ/g, 'd').replace(/Đ/g, 'D')
       .replace(/\s+/g, ' ').trim();
   }
+
+  function findServiceSlug(norm) {
+    for (var i = 0; i < SERVICE_LINKS.length; i++) {
+      var r = SERVICE_LINKS[i];
+      var ok = true;
+      for (var j = 0; j < r.keys.length; j++) {
+        if (!new RegExp('\\b' + r.keys[j] + '\\b').test(norm)) { ok = false; break; }
+      }
+      if (ok) return r.slug;
+    }
+    return '';
+  }
     var content = document.getElementById('services-content');
     if (!content) return;
     content.innerHTML = '';
 
-    // Tách từng dòng (admin nhập mỗi dòng 1 dịch vụ) → bỏ dòng trống
-    var lines = (text || '').split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+    // Tách từng dòng → bỏ dòng trống + dòng mô tả (kết thúc bằng dấu chấm)
+    var lines = (text || '').split(/\r?\n/).map(function (l) { return l.trim(); })
+      .filter(function (l) { return l && !/\.\s*$/.test(l); });
     if (!lines.length) return;
 
     var wrapper = document.createElement('div');
@@ -174,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
       var name = line;
       var m = line.match(/^([\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}]\s*)(.+)$/u);
       if (m) { icon = m[1].trim(); name = m[2].trim(); }
-      var slug = SERVICE_LINKS[normName(name)] || '';
+      var slug = findServiceSlug(normName(name));
 
       var card = document.createElement(slug ? 'a' : 'div');
       card.className = 'services-card';
