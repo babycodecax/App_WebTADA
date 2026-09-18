@@ -53,6 +53,7 @@ tools/DataTest/
 tools/memory/
 tools/.gsc-profile/
 tools/gsc-reports/
+tools/.gsc-oauth/
 
 # === Claude Code ===
 .claude/settings.local.json
