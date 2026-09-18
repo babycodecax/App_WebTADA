@@ -26,7 +26,7 @@ from typing import Any, Dict, Optional
 logger = logging.getLogger("audit_runner")
 
 # Đường dẫn tuyệt đối tới AIketoanthue project
-AIKETOANTHUE_DIR = Path(r"D:\CodeApp\Projects\App_AIketoanthue")
+AIKETOANTHUE_DIR = Path(r"D:\Projects\App_AIketoanthue")
 SCRIPTS_DIR = AIKETOANTHUE_DIR / "scripts"
 VENV_PYTHON = AIKETOANTHUE_DIR / "venv" / "Scripts" / "python.exe"
 LEGAL_KB_PATH = AIKETOANTHUE_DIR / ".legal_kb" / "legal.db"

@@ -104,7 +104,7 @@ def main():
         search_input = find_input(driver)
         if not search_input:
             P("ERROR: Cannot find search input!")
-            driver.save_screenshot("D:/CodeApp/Projects/App_WebTADA/tools/gsc-error.png")
+            driver.save_screenshot("D:/Projects/App_WebTADA/tools/gsc-error.png")
             return
         P("Found input!")
 
@@ -138,7 +138,7 @@ def main():
 
                 # Take screenshot for debugging
                 if i <= 3:
-                    driver.save_screenshot(f"D:/CodeApp/Projects/App_WebTADA/tools/gsc-url{i}.png")
+                    driver.save_screenshot(f"D:/Projects/App_WebTADA/tools/gsc-url{i}.png")
 
                 # Look for "Yêu cầu lập chỉ mục" button
                 found = False

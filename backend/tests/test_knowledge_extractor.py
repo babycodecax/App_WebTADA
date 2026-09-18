@@ -523,7 +523,7 @@ def test_compliance_context_for_dedup_absolute_path() -> None:
 
     records = [
         {
-            "source_file": r"D:\CodeApp\Projects\App_WebTADA\vault\thue-ke-toan\nd-141-2026-ho-kinh-doanh-tndn.md",
+            "source_file": r"D:\Projects\App_WebTADA\vault\thue-ke-toan\nd-141-2026-ho-kinh-doanh-tndn.md",
             "topic": "Thuế TNDN",
             "regulation": "doanh thu ≤ 01 tỷ được miễn thuế TNDN",
             "numeric_values": [],

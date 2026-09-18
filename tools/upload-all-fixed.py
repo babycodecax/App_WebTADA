@@ -6,7 +6,7 @@ import io
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-env_path = 'D:/CodeApp/Projects/App_WebTADA/backend/.env'
+env_path = 'D:/Projects/App_WebTADA/backend/.env'
 env = {}
 with open(env_path, encoding='utf-8') as f:
     for line in f:
@@ -15,7 +15,7 @@ with open(env_path, encoding='utf-8') as f:
             k, v = line.split('=', 1)
             env[k.strip()] = v.strip()
 
-outdir = 'D:/CodeApp/Projects/App_WebTADA/tools/blog-content/old-posts'
+outdir = 'D:/Projects/App_WebTADA/tools/blog-content/old-posts'
 ok = 0
 fail = 0
 for fname in sorted(os.listdir(outdir)):

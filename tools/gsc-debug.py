@@ -41,7 +41,7 @@ try:
         except:
             pass
 
-    driver.save_screenshot("D:/CodeApp/Projects/App_WebTADA/tools/gsc-debug.png")
+    driver.save_screenshot("D:/Projects/App_WebTADA/tools/gsc-debug.png")
     P("\nScreenshot saved")
 
 finally:

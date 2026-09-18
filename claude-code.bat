@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-cd /d "D:\CodeApp\Projects\App_WebTADA"
+cd /d "D:\Projects\App_WebTADA"
 
 set "CLAUDE_EXE=C:\Users\ADMIN\AppData\Local\Microsoft\WinGet\Packages\Anthropic.ClaudeCode_Microsoft.Winget.Source_8wekyb3d8bbwe\claude.exe"
 

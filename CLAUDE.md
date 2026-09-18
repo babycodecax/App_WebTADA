@@ -34,17 +34,17 @@ App_WebTADA/
 
 ## Bộ nhớ dự án (Obsidian)
 
-- Vault: `D:/CodeApp/Projects/ai-second-brain/vault/claude-memory/App_WebTADA/`
-- Tri thức dùng chung: `D:/CodeApp/Projects/ai-second-brain/vault/claude-memory/_shared/`
+- Vault: `D:/Projects/ai-second-brain/vault/claude-memory/App_WebTADA/`
+- Tri thức dùng chung: `D:/Projects/ai-second-brain/vault/claude-memory/_shared/`
 - **Quy tắc:** Trước khi code, đọc toàn bộ memory của dự án này trong vault + `_shared/` để nắm quyết định, bài học, pattern đã có.
 
 ## 📚 Kiến thức vault dự án
 
 > [!important] BẮT BUỘC nạp vault khi mỗi phiên mới
 > Khi bắt đầu phiên mới (hoặc `/resume-session`), PHẢI đọc:
-> 1. **Vault App_WebTADA:** `D:/CodeApp/Projects/ai-second-brain/vault/claude-memory/App_WebTADA/` (README, decision-log, lessons, progress)
-> 2. **Vault shared:** `D:/CodeApp/Projects/ai-second-brain/vault/claude-memory/_shared/` (lessons, patterns)
-> 3. **Vault knowledge:** `D:/CodeApp/Projects/App_WebTADA/vault/thue-ke-toan/_index.md` + `_cheatsheet-thue-2026.md`
+> 1. **Vault App_WebTADA:** `D:/Projects/ai-second-brain/vault/claude-memory/App_WebTADA/` (README, decision-log, lessons, progress)
+> 2. **Vault shared:** `D:/Projects/ai-second-brain/vault/claude-memory/_shared/` (lessons, patterns)
+> 3. **Vault knowledge:** `D:/Projects/App_WebTADA/vault/thue-ke-toan/_index.md` + `_cheatsheet-thue-2026.md`
 >
 > | Thành phần | Khi nào nạp |
 > |---|---|

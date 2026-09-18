@@ -1,12 +1,12 @@
 import json, os, urllib.request
 env = {}
-with open('D:/CodeApp/Projects/App_WebTADA/backend/.env', encoding='utf-8') as f:
+with open('D:/Projects/App_WebTADA/backend/.env', encoding='utf-8') as f:
     for line in f:
         line = line.strip()
         if line and not line.startswith('#') and '=' in line:
             k, v = line.split('=', 1)
             env[k.strip()] = v.strip()
-outdir = 'D:/CodeApp/Projects/App_WebTADA/tools/blog-content/old-posts'
+outdir = 'D:/Projects/App_WebTADA/tools/blog-content/old-posts'
 ok = fail = 0
 for fname in os.listdir(outdir):
     if not fname.endswith('.md') or fname.endswith('.py'): continue

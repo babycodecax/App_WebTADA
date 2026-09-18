@@ -9,7 +9,7 @@ Fix SEO elements in old blog posts:
 import os
 import re
 
-OUTDIR = 'D:/CodeApp/Projects/App_WebTADA/tools/blog-content/old-posts'
+OUTDIR = 'D:/Projects/App_WebTADA/tools/blog-content/old-posts'
 
 # Internal links that need /blog/ prefix (already have ketoanthuetada.com/ but missing /blog/)
 LINK_PATTERNS = [
