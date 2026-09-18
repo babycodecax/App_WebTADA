@@ -151,6 +151,52 @@
 
 ---
 
+## Cluster 7: Dịch vụ TADA (11 bài mô tả, 2026-09-18)
+
+### 1. Kế toán dịch vụ trọn gói
+- Link về: `/` (trang chủ)
+- Link đến: [Quyết toán thuế TNCN](../cluster3-thue-tncn/quyet-toan-thue-tncn-2026-huong-dan-chi-tiet.md)
+
+### 2. Thành lập & giải thể doanh nghiệp
+- Link về: `/` (trang chủ)
+- Link đến: [Giải thể DN trạng thái 06](../cluster5-tu-van-thue/giai-the-dn-trang-thai-06-khong-doanh-thu.md)
+
+### 3. Kê khai thuế TNCN GTGT
+- Link về: `/` (trang chủ)
+- Link đến: [Quyết toán thuế TNCN](../cluster3-thue-tncn/quyet-toan-thue-tncn-2026-huong-dan-chi-tiet.md)
+
+### 4. Đăng ký HKD & hóa đơn điện tử
+- Link về: `/` (trang chủ)
+- Link đến: [HKD dưới 1 tỷ khai thuế](../old-posts/ho-kinh-doanh-duoi-1-ty-khai-thue-2026-the-nao-cho-chuan.md)
+
+### 5. Kiểm toán, lập BCTC, fix lỗi thuế
+- Link về: `/` (trang chủ)
+- Link đến: [Quyết toán thuế TNCN](../cluster3-thue-tncn/quyet-toan-thue-tncn-2026-huong-dan-chi-tiet.md)
+
+### 6. Kê khai BHXH
+- Link về: `/` (trang chủ)
+
+### 7. Hoàn thuế TNCN
+- Link về: `/` (trang chủ)
+- Link đến: [Quyết toán thuế TNCN](../cluster3-thue-tncn/quyet-toan-thue-tncn-2026-huong-dan-chi-tiet.md)
+
+### 8. BHXH thất nghiệp
+- Link về: `/` (trang chủ)
+
+### 9. Thay đổi thông tin cá nhân
+- Link về: `/` (trang chủ)
+- Link đến: [Đứng tên hộ công ty nợ thuế](../cluster5-tu-van-thue/dung-ten-ho-cong-ty-no-thue-co-bi-truy-to-khong.md)
+
+### 10. Tư vấn thuế kế toán tổng hợp
+- Link về: `/` (trang chủ)
+- Link đến: [Kế toán trọn gói](dich-vu-ke-toan-tron-goi.md)
+
+### 11. Phần mềm kế toán & HĐĐT
+- Link về: `/` (trang chủ)
+- Link đến: [Đăng ký HKD & HĐĐT](dich-vu-dang-ky-hkd-hoa-don-dien-tu.md)
+
+---
+
 ## Cross-Cluster Links (quan trọng)
 
 | Từ | Đến | Anchor |
@@ -167,3 +213,7 @@
 | Cluster 4 | Cluster 2 | "hóa đơn điện tử" |
 | Cluster 6 | Cluster 1 | "thuế HKD 2026" |
 | Cluster 6 | Cluster 3 | "thuế TNCN mới nhất" |
+| Cluster 7 | Cluster 3 | "quyết toán thuế TNCN" |
+| Cluster 7 | Cluster 5 | "giải thể DN trạng thái 06" |
+| Cluster 7 | Cluster 2 | "hóa đơn điện tử cho HKD" |
+| Cluster 5 | Cluster 7 | "dịch vụ giải thể doanh nghiệp" |
