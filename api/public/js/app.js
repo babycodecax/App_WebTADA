@@ -137,6 +137,26 @@ document.addEventListener('DOMContentLoaded', () => {
     '🌟 Thay đổi thông tin cá nhân (CCCD, địa chỉ, SĐT)';
 
   function renderServicesContent(text) {
+  // Map ten dich vu (chuan hoa) -> slug bai mo ta chi tiet.
+  // Admin doi ten dong nao khong khop map -> card hien thuong, khong link.
+  var SERVICE_LINKS = {
+    'ke toan dich vu tron goi': 'dich-vu-ke-toan-tron-goi',
+    'thanh lap & giai the doanh nghiep': 'dich-vu-thanh-lap-giai-the-doanh-nghiep',
+    'ke khai thue tncn / gtgt': 'dich-vu-ke-khai-thue-tncn-gtgt',
+    'dang ky hkd & hoa don dien tu': 'dich-vu-dang-ky-hkd-hoa-don-dien-tu',
+    'kiem toan & lap bctc, fix loi thue': 'dich-vu-kiem-toan-lap-bctc-fix-loi-thue',
+    'ke khai bao hiem xa hoi': 'dich-vu-ke-khai-bao-hiem-xa-hoi',
+    'hoan thue tncn': 'dich-vu-hoan-thue-tncn',
+    'giai quyet bhxh that nghiep': 'dich-vu-giai-quyet-bhxh-that-nghiep',
+    'thay doi thong tin ca nhan (cccd, dia chi, sdt)': 'dich-vu-thay-doi-thong-tin-ca-nhan'
+  };
+
+  function normName(s) {
+    return (s || '').toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+      .replace(/\s+/g, ' ').trim();
+  }
     var content = document.getElementById('services-content');
     if (!content) return;
     content.innerHTML = '';
@@ -149,8 +169,16 @@ document.addEventListener('DOMContentLoaded', () => {
     wrapper.className = 'services-grid';
 
     lines.forEach(function (line, idx) {
-      var card = document.createElement('div');
+      // Tach emoji truoc de lay ten chuan -> tra map link bai mo ta
+      var icon = '';
+      var name = line;
+      var m = line.match(/^([\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}]\s*)(.+)$/u);
+      if (m) { icon = m[1].trim(); name = m[2].trim(); }
+      var slug = SERVICE_LINKS[normName(name)] || '';
+
+      var card = document.createElement(slug ? 'a' : 'div');
       card.className = 'services-card';
+      if (slug) card.href = '/blog/' + slug;
       card.style.setProperty('--i', idx);
 
       // So thu tu editorial 01, 02, ... (trang tri, an voi screen reader)
@@ -159,12 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
       numEl.setAttribute('aria-hidden', 'true');
       numEl.textContent = ('0' + (idx + 1)).slice(-2);
       card.appendChild(numEl);
-
-      // Tách emoji đầu dòng (🏠/🌟/…) khỏi tên dịch vụ — hiển thị icon riêng
-      var icon = '';
-      var name = line;
-      var m = line.match(/^([\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}]\s*)(.+)$/u);
-      if (m) { icon = m[1].trim(); name = m[2].trim(); }
 
       if (icon) {
         var iconEl = document.createElement('span');
