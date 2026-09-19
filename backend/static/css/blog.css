@@ -288,22 +288,6 @@
   flex: 1;
   min-width: 0;
 }
-.blog-mini-arrow {
-  margin-left: auto;
-  flex-shrink: 0;
-  font-size: 22px;
-  color: var(--accent-gold-dark);
-  opacity: 0;
-  transform: translateX(-8px);
-  transition: opacity .35s ease, transform .35s ease;
-}
-.blog-mini-card:hover .blog-mini-arrow {
-  opacity: 1;
-  transform: none;
-}
-@media (hover:none) {
-  .blog-mini-arrow { opacity: .55; transform: none; }
-}
 /* Reveal lan luot dong bo muc Dich vu */
 .blog-mini-grid .blog-mini-card { opacity: 0; transform: translateY(14px); }
 .blog-mini-grid.inview .blog-mini-card {
@@ -557,7 +541,6 @@
   .blog-mini-card { padding: 14px 4px; gap: 12px; }
   .blog-mini-num { font-size: 22px; min-width: 36px; }
   .blog-mini-grid .blog-mini-card h3 { font-size: 17px; }
-  .blog-mini-arrow { font-size: 18px; }
   .blog-detail h1 { font-size: 24px; }
   .blog-related-grid { grid-template-columns: 1fr; }
 

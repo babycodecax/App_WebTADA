@@ -301,6 +301,7 @@
     html += '💡 <strong>Cam kết chưa khấu trừ:</strong> Nếu tổng thu nhập chịu thuế cả năm (sau GTGC) chưa đến mức phải nộp thuế, bạn được làm bản cam kết để chưa bị giữ 10%.';
     html += '</div>';
     html += '</div>';
+    html += '</div>'; // Dong .calc-form-group mo o dau ham (thieu la form sau bi long vao trong)
 
     return html;
   }
