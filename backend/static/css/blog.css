@@ -23,31 +23,59 @@
 .blog-grid {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0;
   padding-bottom: 80px;
+  max-width: 820px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .blog-card {
-  background: #fff;
-  border: 1px solid var(--border-light);
-  border-radius: var(--border-radius-md);
-  padding: 16px 20px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(128,0,32,.14);
+  border-radius: 0;
+  padding: 20px 8px;
   transition: var(--transition-smooth);
   display: flex;
   align-items: center;
   gap: 16px;
   text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+.blog-grid .blog-card:first-child {
+  border-top: 1px solid rgba(128,0,32,.14);
+}
+.blog-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,rgba(128,0,32,.06),transparent 70%);
+  opacity: 0;
+  transition: opacity .35s ease;
+  pointer-events: none;
+}
+.blog-card:hover::before {
+  opacity: 1;
 }
 .blog-card:hover {
-  border-color: var(--accent-gold);
-  box-shadow: 0 4px 12px rgba(128,0,32,0.06);
+  border-bottom-color: var(--accent-gold);
+  box-shadow: none;
 }
 .blog-card-title {
-  font-size: 15px;
-  color: var(--primary-burgundy);
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-burgundy-dark);
   line-height: 1.4;
   flex: 1;
   min-width: 0;
+  overflow-wrap: break-word;
+  transition: transform .35s ease;
+}
+.blog-card:hover .blog-card-title {
+  transform: translateX(5px);
 }
 .blog-card-summary {
   display: none;
@@ -138,6 +166,55 @@
   font-size: 14px;
 }
 
+/* Responsive tables — tránh tràn mobile */
+.blog-detail .content table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #d1d5db;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.blog-detail .content table thead {
+  background: var(--bg-light-alt, #f8f8f8);
+}
+.blog-detail .content table th,
+.blog-detail .content table td {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  text-align: left;
+  vertical-align: top;
+}
+.blog-detail .content table th {
+  font-weight: 700;
+  color: var(--primary-burgundy, #800020);
+  white-space: nowrap;
+}
+.blog-detail .content table td {
+  color: var(--text-dark, #1a1a1a);
+}
+
+/* Mobile: bảng cuộn ngang, không tràn */
+@media (max-width: 768px) {
+  .blog-detail .content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: 13px;
+  }
+  .blog-detail .content table thead,
+  .blog-detail .content table tbody,
+  .blog-detail .content table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+  .blog-detail .content table th,
+  .blog-detail .content table td {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+}
+
 /* Loading / Empty / Error states */
 .blog-loading, .blog-empty, .blog-error {
   text-align: center;
@@ -155,27 +232,94 @@
 .blog-mini-grid {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  /* Đồng nhất với services-grid + library-mini-grid: giới hạn bề rộng
-     card ở ~760px, căn giữa — 3 section cùng kích thước card */
-  max-width: 760px;
+  gap: 0;
+  /* Đồng nhất với services-grid: giới hạn bề rộng card ở 820px, căn giữa */
+  max-width: 820px;
   margin: 0 auto;
   width: 100%;
 }
 .blog-mini-card {
-  background: #fff;
-  border: 1px solid var(--border-light);
-  border-radius: var(--border-radius-md);
-  padding: 14px 18px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(128,0,32,.14);
+  border-radius: 0;
+  padding: 20px 8px;
   transition: var(--transition-smooth);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 18px;
   text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+.blog-mini-grid .blog-mini-card:first-child {
+  border-top: 1px solid rgba(128,0,32,.14);
+}
+.blog-mini-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,rgba(128,0,32,.06),transparent 70%);
+  opacity: 0;
+  transition: opacity .35s ease;
+  pointer-events: none;
+}
+.blog-mini-card:hover::before {
+  opacity: 1;
 }
 .blog-mini-card:hover {
-  border-color: var(--accent-gold);
-  box-shadow: 0 4px 12px rgba(128,0,32,0.05);
+  border-bottom-color: var(--accent-gold);
+  box-shadow: none;
+}
+.blog-mini-num {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent-gold);
+  min-width: 52px;
+  flex-shrink: 0;
+  transition: color .35s ease;
+}
+.blog-mini-card:hover .blog-mini-num {
+  color: var(--primary-burgundy);
+}
+.blog-mini-text {
+  flex: 1;
+  min-width: 0;
+}
+.blog-mini-arrow {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 22px;
+  color: var(--accent-gold-dark);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity .35s ease, transform .35s ease;
+}
+.blog-mini-card:hover .blog-mini-arrow {
+  opacity: 1;
+  transform: none;
+}
+@media (hover:none) {
+  .blog-mini-arrow { opacity: .55; transform: none; }
+}
+/* Reveal lan luot dong bo muc Dich vu */
+.blog-mini-grid .blog-mini-card { opacity: 0; transform: translateY(14px); }
+.blog-mini-grid.inview .blog-mini-card {
+  opacity: 1; transform: none;
+  transition: opacity .5s ease, transform .5s cubic-bezier(.16,1,.3,1);
+  transition-delay: calc(var(--i,0)*70ms);
+}
+@media (prefers-reduced-motion:reduce) {
+  .blog-mini-grid .blog-mini-card { opacity: 1; transform: none; transition: none; }
+  .library-mini-grid .library-mini-card { opacity: 1; transform: none; transition: none; }
+}
+.library-mini-grid .library-mini-card { opacity: 0; transform: translateY(14px); }
+.library-mini-grid.inview .library-mini-card {
+  opacity: 1; transform: none;
+  transition: opacity .5s ease, transform .5s cubic-bezier(.16,1,.3,1);
+  transition-delay: calc(var(--i,0)*70ms);
 }
 /* ==========================================================================
    TITLE ĐỒNG BỘ 3 SECTION — Bài viết / Dịch vụ / Thư viện
@@ -193,6 +337,17 @@
 .blog-mini-card h3 {
   flex: 1;
   min-width: 0;
+}
+/* Editorial: tieu de serif dong bo muc Dich vu (ghi de rule dong bo 3 section phia tren) */
+.blog-mini-grid .blog-mini-card h3 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  color: var(--primary-burgundy-dark);
+  transition: transform .35s ease;
+  overflow-wrap: break-word;
+}
+.blog-mini-card:hover h3 {
+  transform: translateX(5px);
 }
 .library-mini-title {
   margin: 0 0 4px;
@@ -398,6 +553,11 @@
   .blog-header h1 { font-size: 28px; }
   .blog-grid { grid-template-columns: 1fr; }
   .blog-mini-grid { grid-template-columns: 1fr; }
+  /* Editorial mobile: dong bo muc Dich vu */
+  .blog-mini-card { padding: 14px 4px; gap: 12px; }
+  .blog-mini-num { font-size: 22px; min-width: 36px; }
+  .blog-mini-grid .blog-mini-card h3 { font-size: 17px; }
+  .blog-mini-arrow { font-size: 18px; }
   .blog-detail h1 { font-size: 24px; }
   .blog-related-grid { grid-template-columns: 1fr; }
 
@@ -409,8 +569,9 @@
   .blog-detail .content {
     font-size: 17px;
     line-height: 1.9;
-    /* Giữ text-align: justify (căn lề đều 2 bên) — đã có padding 2 bên nên
-       không bị dính sát màn hình, bố cục đẹp hơn */
+    word-break: break-word;
+    overflow-wrap: break-word;
+    /* justify OK trên mobile khi đã có padding 2 bên */
     text-align: justify;
   }
   .blog-detail .content h2 { font-size: 21px; margin: 28px 0 10px; }

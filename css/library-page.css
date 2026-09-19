@@ -130,18 +130,36 @@
 .library-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 16px 18px;
-  background: var(--bg-light);
-  border: 1px solid var(--border-light);
-  border-radius: var(--border-radius-md);
-  margin-bottom: 10px;
+  gap: 16px;
+  padding: 20px 8px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(128,0,32,.14);
+  border-radius: 0;
+  margin-bottom: 0;
   transition: var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+.library-page-list .library-row:first-child {
+  border-top: 1px solid rgba(128,0,32,.14);
+}
+.library-row::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,rgba(128,0,32,.06),transparent 70%);
+  opacity: 0;
+  transition: opacity .35s ease;
+  pointer-events: none;
+}
+.library-row:hover::before {
+  opacity: 1;
 }
 .library-row:hover {
-  border-color: rgba(128, 0, 32, 0.25);
-  box-shadow: 0 8px 22px rgba(128, 0, 32, 0.08);
-  transform: translateY(-1px);
+  border-bottom-color: var(--accent-gold);
+  box-shadow: none;
+  transform: none;
 }
 .library-row:focus-within {
   border-color: var(--primary-burgundy);
@@ -170,10 +188,11 @@
   min-width: 0; /* cho phép text truncate trong flex */
 }
 .library-row-title {
-  font-size: 15.5px;
+  font-family: var(--font-serif);
+  font-size: 19px;
   font-weight: 700;
   line-height: 1.45;
-  color: var(--text-dark);
+  color: var(--primary-burgundy-dark);
   margin: 0 0 4px;
   display: -webkit-box;
   -webkit-line-clamp: 2;

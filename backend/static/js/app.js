@@ -185,11 +185,11 @@ document.addEventListener('DOMContentLoaded', () => {
     wrapper.className = 'services-grid';
 
     lines.forEach(function (line, idx) {
-      // Tach emoji truoc de lay ten chuan -> tra map link bai mo ta
-      var icon = '';
+      // Tach emoji dau dong (neu co) de lay ten chuan -> tra map link bai mo ta.
+      // Khong render icon: huong editorial chi giu so thu tu + ten (quyet dinh 2026-09-19).
       var name = line;
       var m = line.match(/^([\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}]\s*)(.+)$/u);
-      if (m) { icon = m[1].trim(); name = m[2].trim(); }
+      if (m) { name = m[2].trim(); }
       var slug = findServiceSlug(normName(name));
 
       var card = document.createElement(slug ? 'a' : 'div');
@@ -203,13 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
       numEl.setAttribute('aria-hidden', 'true');
       numEl.textContent = ('0' + (idx + 1)).slice(-2);
       card.appendChild(numEl);
-
-      if (icon) {
-        var iconEl = document.createElement('span');
-        iconEl.className = 'services-card-icon';
-        iconEl.textContent = icon;
-        card.appendChild(iconEl);
-      }
 
       var nameEl = document.createElement('span');
       nameEl.className = 'services-card-name';
@@ -244,6 +237,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function loadServices() {
     var API = window.LOCAL_API ? window.LOCAL_API : '';  // '' = same-origin proxy
+    // Skeleton cho doi API — thuan hien thi, renderServicesContent se xoa khi co du lieu
+    var holder = document.getElementById('services-content');
+    if (holder && !holder.firstElementChild) {
+      var sk = document.createElement('div');
+      sk.className = 'services-skeleton';
+      sk.setAttribute('aria-hidden', 'true');
+      for (var k = 0; k < 6; k++) {
+        var row = document.createElement('div');
+        row.className = 'services-skeleton-row';
+        sk.appendChild(row);
+      }
+      holder.appendChild(sk);
+    }
     // ?_t=timestamp chống cache CDN/trình duyệt tuyệt đối — admin lưu nội dung
     // mới → F5/mở tab mới là thấy NGAY (không bao giờ lấy response cũ).
     fetch(API + '/api/services?_t=' + Date.now(), { cache: 'no-store' })

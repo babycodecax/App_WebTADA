@@ -896,7 +896,7 @@
 
     // Hero card
     html += '<div class="calc-result-hero">';
-    html += '<div class="calc-result-emoji">🎉</div>';
+    html += '<div class="calc-result-emoji" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>';
     html += '<div class="calc-result-label">' + (isMulti ? 'TỔNG THUẾ PHẢI NỘP' : 'Thuế phải nộp') + '</div>';
     html += '<div class="calc-result-total">' + C.fmt(totalTax) + ' / năm</div>';
     html += '<div class="calc-result-label">' + C.fmt(Math.round(totalTax / 12)) + ' / tháng</div>';

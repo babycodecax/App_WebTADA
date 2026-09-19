@@ -76,8 +76,8 @@
   }
   </script>
   <!-- Main CSS -->
-  <link rel="stylesheet" href="static/css/main.css?v=20260913">
-  <link rel="stylesheet" href="static/css/blog.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="static/css/main.css?v=20260919">
+  <link rel="stylesheet" href="static/css/blog.css?v=20260919" media="print" onload="this.media='all'">
 </head>
 <body>
 
@@ -296,6 +296,7 @@
       </div><!-- end chatbox-col -->
 
     </div>
+    <a class="hero-scroll" href="#blog" aria-label="Cuộn xuống xem bài viết"><span aria-hidden="true"></span></a>
   </section>
 
   <!-- ==========================================
@@ -414,7 +415,7 @@
           <ul class="footer-links">
             <li><a href="#hero" class="footer-link">Trang chủ</a></li>
             <li><a href="#services" class="footer-link">Bảng dịch vụ</a></li>
-            <li><a href="/library" class="footer-link">Thư viện biểu mẫu &amp; luật</a></li>
+            <li><a href="/thu-vien" class="footer-link">Thư viện biểu mẫu &amp; luật</a></li>
             <li><a href="/blog" class="footer-link">Bài viết</a></li>
           </ul>
         </div>
@@ -459,7 +460,7 @@
     window.OB_CONFIG = { apiUrl: '' };
   </script>
   <script src="static/js/chatbox.js" defer></script>
-  <script src="static/js/app.js" defer></script>
+  <script src="static/js/app.js?v=20260919" defer></script>
   <script src="static/js/audit.js" defer></script>
   <script>
     /* ====================================
@@ -669,6 +670,19 @@
       function fmt(iso) { if (!iso) return ''; return new Date(iso).toLocaleDateString('vi-VN', {year:'numeric',month:'long',day:'numeric'}); }
       var grid = document.getElementById('blog-mini-grid');
       if (!grid) return;
+      // Skeleton cho doi API — render xoa khi co du lieu
+      (function () {
+        grid.innerHTML = '';
+        var sk = document.createElement('div');
+        sk.className = 'services-skeleton';
+        sk.setAttribute('aria-hidden', 'true');
+        for (var k = 0; k < 5; k++) {
+          var row = document.createElement('div');
+          row.className = 'services-skeleton-row';
+          sk.appendChild(row);
+        }
+        grid.appendChild(sk);
+      })();
       fetch('/api/blog?limit=5')
         .then(function (r) { return r.json(); })
         .then(function (posts) {
@@ -677,17 +691,32 @@
             return;
           }
           grid.innerHTML = '';
-          posts.forEach(function (p) {
+          posts.forEach(function (p, idx) {
             var card = document.createElement('a');
             card.className = 'blog-mini-card';
             card.href = '/blog/' + encodeURIComponent(p.slug);
-            // Thu gọn đồng nhất với card Dịch vụ/Thư viện: title đậm + ngày,
-            // bỏ summary dài → card 1 dòng, đủ thông tin, tối ưu mobile
+            card.style.setProperty('--i', idx);
+            // Dang editorial dong bo muc Dich vu: so serif + tieu de + mui ten,
+            // ngay lam dong phu nho. Link/slug/du lieu giu nguyen.
             card.innerHTML =
-              '<h3>' + esc(p.title) + '</h3>' +
-              '<div class="date">' + fmt(p.published_at) + '</div>';
+              '<span class="blog-mini-num" aria-hidden="true">' + ('0' + (idx + 1)).slice(-2) + '</span>' +
+              '<span class="blog-mini-text"><h3>' + esc(p.title) + '</h3>' +
+              '<div class="date">' + fmt(p.published_at) + '</div></span>' +
+              '<span class="blog-mini-arrow" aria-hidden="true">→</span>';
             grid.appendChild(card);
           });
+          // Reveal lan luot nhu muc Dich vu
+          if ('IntersectionObserver' in window) {
+            var bio = new IntersectionObserver(function (es) {
+              es.forEach(function (e) {
+                if (e.isIntersecting) { grid.classList.add('inview'); bio.disconnect(); }
+              });
+            }, { threshold: 0.12 });
+            bio.observe(grid);
+            setTimeout(function () { grid.classList.add('inview'); }, 4000);
+          } else {
+            grid.classList.add('inview');
+          }
         })
         .catch(function () { grid.innerHTML = ''; });
     })();
@@ -708,6 +737,19 @@
       var grid = document.getElementById('library-mini-grid');
       var tabsWrap = document.getElementById('library-mini-tabs');
       if (!grid) return;
+      // Skeleton cho doi API — render() xoa khi co du lieu
+      (function () {
+        grid.innerHTML = '';
+        var sk = document.createElement('div');
+        sk.className = 'services-skeleton';
+        sk.setAttribute('aria-hidden', 'true');
+        for (var k = 0; k < 5; k++) {
+          var row = document.createElement('div');
+          row.className = 'services-skeleton-row';
+          sk.appendChild(row);
+        }
+        grid.appendChild(sk);
+      })();
 
       var allLegal = [];
       var allForms = [];
@@ -723,9 +765,10 @@
         // Chỉ hiện 5 mục đầu. Card CHỈ HIỂN THỊ (không link) — xem chi tiết phải qua
         // nút "Xem toàn văn" (link sang /thu-vien) hoặc nút "Xem tất cả". Nút ⬇
         // tải file hoạt động trực tiếp không rời trang.
-        items.slice(0, 5).forEach(function (item) {
+        items.slice(0, 5).forEach(function (item, idx) {
           var card = document.createElement('div');
           card.className = 'library-mini-card';
+          card.style.setProperty('--i', idx);
           if (currentTab === 'legal') {
             var badge = docTypeLabel(item.doc_type);
             var eff = item.effective_date || item.created_at || '';
@@ -763,6 +806,20 @@
           }
           grid.appendChild(card);
         });
+        // Reveal lan luot nhu muc Dich vu (doi tab render lai thi tu chay lai)
+        if (grid.classList.contains('inview')) return;
+        if ('IntersectionObserver' in window) {
+          if (window.__libIO) window.__libIO.disconnect();
+          window.__libIO = new IntersectionObserver(function (es) {
+            es.forEach(function (e) {
+              if (e.isIntersecting) { grid.classList.add('inview'); window.__libIO.disconnect(); }
+            });
+          }, { threshold: 0.12 });
+          window.__libIO.observe(grid);
+          setTimeout(function () { grid.classList.add('inview'); }, 4000);
+        } else {
+          grid.classList.add('inview');
+        }
       }
 
       function setTab(tab) {
