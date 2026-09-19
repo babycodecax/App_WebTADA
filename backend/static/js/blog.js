@@ -94,6 +94,8 @@
   }
 
   function renderList(grid) {
+    // SSR: route /blog da render san cards (data-ssr) → giu nguyen, khong fetch lai
+    if (grid.dataset && grid.dataset.ssr === '1' && grid.querySelector('.blog-card')) return;
     grid.innerHTML = '<div class="blog-loading">Đang tải bài viết...</div>';
 
     fetch(API + '/api/blog?limit=999')

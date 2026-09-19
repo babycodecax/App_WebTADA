@@ -24,9 +24,7 @@
   <meta name="twitter:description" content="Kiến thức thuế, kế toán, BHXH và thủ tục doanh nghiệp từ TADA.">
   <meta name="twitter:image" content="https://ketoanthuetada.com/static/img/logo.jpg">
   <!-- Fonts: preconnect + link song song (thay @import render-blocking) -->
-  <link rel="preload" href="static/fonts/be-vietnam-pro-400-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="static/fonts/be-vietnam-pro-700-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="static/css/fonts.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="static/css/fonts.css">
   <link rel="stylesheet" href="static/css/styles.css">
   <link rel="stylesheet" href="/api/blog-css" media="print" onload="this.media='all'">
   <!-- Table responsive + border fix for mobile -->
@@ -38,6 +36,8 @@
     .blog-detail .content table td{color:#1a1a1a}
     @media(max-width:768px){.blog-detail .content table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;font-size:13px}.blog-detail .content table th,.blog-detail .content table td{padding:8px 10px;font-size:13px}.blog-detail .content{word-break:break-word;overflow-wrap:break-word}}
   </style>
+  <!-- JSON-LD BreadcrumbList + ItemList (ItemList inject them khi SSR / render list) -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Trang chủ","item":"https://ketoanthuetada.com/"},{"@type":"ListItem","position":2,"name":"Blog"}]}</script>
   <!-- JSON-LD ItemList: sẽ inject động khi render list blog -->
 </head>
 <body>

@@ -142,8 +142,22 @@
 
     // Cache existing values before re-render
     var cachedValues = {};
+    var cachedRadios = {};
     dom.step2Forms.querySelectorAll(".calc-input, .calc-select, .calc-stepper-input").forEach(function (el) {
       if (el.id) cachedValues[el.id] = el.type === "checkbox" ? el.checked : el.value;
+    });
+    // Cache radio button states (salary contract type)
+    dom.step2Forms.querySelectorAll("input[type='radio']:checked").forEach(function (el) {
+      if (el.name) { cachedRadios[el.name] = el.value; }
+    });
+    // Cache visibility state of salary sections
+    var cachedPermVisible = {};
+    var cachedTempVisible = {};
+    document.querySelectorAll("[id^='salary-permanent-fields'],[id^='salary-temporary-fields']").forEach(function (el) {
+      if (el.id) {
+        if (el.id.includes("permanent")) cachedPermVisible[el.id] = el.style.display;
+        else cachedTempVisible[el.id] = el.style.display;
+      }
     });
     // Preserve NPT specifically (number input)
     var nptEl = document.getElementById("npt-shared");
@@ -165,6 +179,25 @@
       var hint = document.getElementById("npt-hint");
       if (hint) hint.textContent = nptVal + " người × 6,2tr = " + C.fmt(parseInt(nptVal, 10) * 6_200_000) + "/năm";
     }
+
+    // Restore radio button states + toggle field visibility
+    Object.keys(cachedRadios).forEach(function (name) {
+      var radio = dom.step2Forms.querySelector("input[name='" + name + "'][value='" + cachedRadios[name] + "']");
+      if (radio) {
+        radio.checked = true;
+        radio.dispatchEvent(new Event("change"));
+      }
+    });
+
+    // Restore section visibility (permanent/temporary fields)
+    Object.keys(cachedPermVisible).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = cachedPermVisible[id];
+    });
+    Object.keys(cachedTempVisible).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = cachedTempVisible[id];
+    });
 
     bindFormEvents();
   }
@@ -196,27 +229,81 @@
 
   function renderSalaryForm(suffix) {
     suffix = suffix || '';
-    return '' +
-      '<div class="calc-form-row">' +
-      '  <div class="calc-form-group">' +
-      '    <label class="calc-label">Lương gross hàng tháng</label>' +
-      '    <div class="calc-input-group">' +
-      '      <input type="text" class="calc-input" id="salary-input' + suffix + '" placeholder="Ví dụ: 20.000.000" inputmode="numeric">' +
-      '      <span class="calc-input-suffix">VNĐ</span>' +
-      '    </div>' +
-      '  </div>' +
-      '  <div class="calc-form-group">' +
-      '    <label class="calc-label">Đóng BHXH?</label>' +
-      '    <div class="calc-toggle-row">' +
-      '      <label class="calc-toggle"><input type="checkbox" id="bhxh-toggle' + suffix + '" checked><span class="calc-toggle-slider"></span></label>' +
-      '      <div><span class="calc-toggle-label">Có đóng BHXH</span><div class="calc-toggle-hint">8% BHXH + 1% BHTN + 1.5% BHYT = 10.5%</div></div>' +
-      '    </div>' +
-      '    <div class="calc-toggle-row" style="margin-top:8px;">' +
-      '      <label class="calc-toggle"><input type="checkbox" id="union-toggle' + suffix + '" checked><span class="calc-toggle-slider"></span></label>' +
-      '      <div><span class="calc-toggle-label">Phí công đoàn (1%)</span><div class="calc-toggle-hint">Tùy doanh nghiệp — thường có nếu có tổ chức CĐ</div></div>' +
-      '    </div>' +
-      '  </div>' +
-      '</div>';
+    // Contract type selector
+    var html = '<div class="calc-form-group">';
+    html += '<label class="calc-label">Loại hợp đồng</label>';
+    html += '<div style="display:flex;gap:8px;flex-wrap:wrap;">';
+    F.CONTRACT_TYPES.forEach(function (ct) {
+      html += '<label class="calc-radio-card' + (ct.id === "permanent" ? " selected" : "") + '" style="flex:1;min-width:200px;padding:10px 14px;border:2px solid var(--calc-border);border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:13px;transition:all 0.15s;">';
+      html += '<input type="radio" name="salary-contract-type' + suffix + '" value="' + ct.id + '" ' + (ct.id === "permanent" ? "checked" : "") + ' style="display:none;">';
+      html += '<span>' + ct.icon + '</span>';
+      html += '<div><strong>' + ct.label + '</strong><br><span style="font-size:11px;color:var(--calc-muted);">' + ct.description + '</span></div>';
+      html += '</label>';
+    });
+    html += '</div>';
+
+    // Fields for permanent (HĐLĐ ≥ 3 tháng)
+    html += '<div id="salary-permanent-fields' + suffix + '">';
+    html += '<div class="calc-form-row">';
+    html += '  <div class="calc-form-group">';
+    html += '    <label class="calc-label">Lương gross hàng tháng</label>';
+    html += '    <div class="calc-input-group">';
+    html += '      <input type="text" class="calc-input" id="salary-input' + suffix + '" placeholder="Ví dụ: 20.000.000" inputmode="numeric">';
+    html += '      <span class="calc-input-suffix">VNĐ</span>';
+    html += '    </div>';
+    html += '  </div>';
+    html += '  <div class="calc-form-group">';
+    html += '    <label class="calc-label">Đóng BHXH?</label>';
+    html += '    <div class="calc-toggle-row">';
+    html += '      <label class="calc-toggle"><input type="checkbox" id="bhxh-toggle' + suffix + '" checked><span class="calc-toggle-slider"></span></label>';
+    html += '      <div><span class="calc-toggle-label">Có đóng BHXH</span><div class="calc-toggle-hint">8% BHXH + 1% BHTN + 1.5% BHYT = 10.5%</div></div>';
+    html += '    </div>';
+    html += '    <div class="calc-toggle-row" style="margin-top:8px;">';
+    html += '      <label class="calc-toggle"><input type="checkbox" id="union-toggle' + suffix + '" checked><span class="calc-toggle-slider"></span></label>';
+    html += '      <div><span class="calc-toggle-label">Phí công đoàn (1%)</span><div class="calc-toggle-hint">Tùy doanh nghiệp — thường có nếu có tổ chức CĐ</div></div>';
+    html += '    </div>';
+    html += '  </div>';
+    html += '</div>';
+    // Thuế TNCN đã khấu trừ trên lương (NSDLĐ giữ hàng tháng)
+    html += '<div class="calc-form-row">';
+    html += '  <div class="calc-form-group">';
+    html += '    <label class="calc-label">Thuế TNCN đã khấu trừ mỗi tháng</label>';
+    html += '    <div class="calc-input-group">';
+    html += '      <input type="text" class="calc-input" id="salary-perm-withheld' + suffix + '" placeholder="Ví dụ: 500.000" inputmode="numeric">';
+    html += '      <span class="calc-input-suffix">VNĐ/tháng</span>';
+    html += '    </div>';
+    html += '    <span class="calc-hint">Xem trên phiếu lương hoặc tờ khai quyết toán thuế. Nếu chưa khấu trừ → nhập 0.</span>';
+    html += '  </div>';
+    html += '</div>';
+    html += '</div>';
+
+    // Fields for temporary (HĐ < 3 tháng / vãng lai)
+    html += '<div id="salary-temporary-fields' + suffix + '" style="display:none;">';
+    html += '<div class="calc-form-row">';
+    html += '  <div class="calc-form-group">';
+    html += '    <label class="calc-label">Thu nhập nhận được (gross)</label>';
+    html += '    <div class="calc-input-group">';
+    html += '      <input type="text" class="calc-input" id="salary-temp-input' + suffix + '" placeholder="Ví dụ: 30.000.000" inputmode="numeric">';
+    html += '      <span class="calc-input-suffix">VNĐ</span>';
+    html += '    </div>';
+    html += '    <span class="calc-hint">Tổng tiền thù lao / thù lao nhận được trong năm từ các nơi chi trả vãng lai</span>';
+    html += '  </div>';
+    html += '  <div class="calc-form-group">';
+    html += '    <label class="calc-label">Thuế TNCN đã tạm khấu trừ tại nguồn (10%)</label>';
+    html += '    <div class="calc-input-group">';
+    html += '      <input type="text" class="calc-input" id="salary-withheld-input' + suffix + '" placeholder="Tự tính hoặc nhập tay" inputmode="numeric">';
+    html += '      <span class="calc-input-suffix">VNĐ</span>';
+    html += '    </div>';
+    html += '    <span class="calc-hint">Bên chi trả đã giữ 10% khi chi tiền. Nếu chưa khấu trừ → nhập 0.</span>';
+    html += '  </div>';
+    html += '</div>';
+    html += '<div style="background:#fef9f0;border-left:3px solid var(--calc-accent);padding:8px 12px;border-radius:4px;font-size:13px;margin-top:8px;">';
+    html += '💡 <strong>Cam kết chưa khấu trừ:</strong> Nếu tổng thu nhập chịu thuế cả năm (sau GTGC) chưa đến mức phải nộp thuế, bạn được làm bản cam kết để chưa bị giữ 10%.';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>'; // Dong .calc-form-group mo o dau ham (thieu la form sau bi long vao trong)
+
+    return html;
   }
 
   function renderHKDForm() {
@@ -543,7 +630,8 @@
         if (!inp) return;
         var val = parseInt(inp.value, 10) || 0;
         var action = this.getAttribute("data-action");
-        if (action === "increase" && val < 20) inp.value = val + 1;
+        var maxVal = inp.max ? parseInt(inp.max, 10) : 20;
+        if (action === "increase" && val < maxVal) inp.value = val + 1;
         if (action === "decrease" && val > 0) inp.value = val - 1;
         // Update NPT hint — dùng giá trị MỚI sau khi thay đổi
         var hint = document.getElementById("npt-hint");
@@ -552,6 +640,29 @@
           hint.textContent = newVal + " người × 6,2tr = " + C.fmt(newVal * 6_200_000) + "/năm";
         }
       });
+    });
+
+    // Salary contract type radio toggle
+    document.querySelectorAll("[name^='salary-contract-type']").forEach(function (radio) {
+      radio.addEventListener("change", function () {
+        var suffix = radio.name.replace("salary-contract-type", "");
+        var isTemp = radio.value === "temporary";
+        var permEl = document.getElementById("salary-permanent-fields" + suffix);
+        var tempEl = document.getElementById("salary-temporary-fields" + suffix);
+        if (permEl) permEl.style.display = isTemp ? "none" : "";
+        if (tempEl) tempEl.style.display = isTemp ? "" : "none";
+        // Update radio card styles
+        radio.closest("div").querySelectorAll(".calc-radio-card").forEach(function (card) {
+          card.style.borderColor = card.querySelector("input").checked ? "var(--calc-primary)" : "var(--calc-border)";
+          card.style.background = card.querySelector("input").checked ? "var(--calc-bg-alt, #f8f5f0)" : "";
+        });
+      });
+      // Apply initial style
+      var card = radio.closest(".calc-radio-card");
+      if (card && radio.checked) {
+        card.style.borderColor = "var(--calc-primary)";
+        card.style.background = "var(--calc-bg-alt, #f8f5f0)";
+      }
     });
 
     // Corporate sector selectors (all suffixed instances)
@@ -614,9 +725,14 @@
       var dependents = npt;
       var personalDed = R.getPersonalDeduction();
 
+      // Track temporary income separately for withholding reconciliation
+      var totalTempIncome = 0;
+      var totalTempWithheld = 0;
+      var totalPermWithheld = 0;
+
       salarySources.forEach(function (s) {
         var form = document.querySelector('.calc-source-form[data-key="' + s.key + '"]');
-        if (!form) return;
+        if (!form) { console.log("[CALC] form not found for key:", s.key); return; }
         var g = function (id) { var el = form.querySelector("#" + id); return el ? el.value : ""; };
         var p = function (id) { return parseNumber(g(id)); };
         var c = function (id) { var el = form.querySelector("#" + id); return el ? el.checked : false; };
@@ -626,20 +742,42 @@
         var suffix = typeCount > 1 ? '_' + s.key.split('_').pop() : '';
 
         if (s.id === "salary") {
-          var monthlySalary = p("salary-input" + suffix);
-          var annualSalary = monthlySalary * 12;
-          var si = R.SOCIAL_INSURANCE.employee;
-          var cappedSalary = Math.min(monthlySalary, si.bhxh.cap);
-          var bhxh = 0;
-          if (c("bhxh-toggle" + suffix)) {
-            bhxh = cappedSalary * si.bhxh.rate * 12 + cappedSalary * si.bhtn.rate * 12 + cappedSalary * si.bhyt.rate * 12;
+          // Check contract type — use :checked selector (radios share name, no unique id)
+          var radioEl = form.querySelector("[name='salary-contract-type" + suffix + "']:checked");
+          var contractType = radioEl ? radioEl.value : "permanent";
+
+          if (contractType === "temporary") {
+            // HĐ < 3 tháng / thù lao / vãng lai
+            var tempIncome = p("salary-temp-input" + suffix);
+            var tempWithheld = p("salary-withheld-input" + suffix);
+            if (tempIncome > 0) {
+              totalTempIncome += tempIncome;
+              totalTempWithheld += tempWithheld;
+              salaryBreakdown.push({ label: "Thu nhập vãng lai (tổng năm)", amount: tempIncome, source: s.key });
+              if (tempWithheld > 0) salaryBreakdown.push({ label: "  ↳ Đã tạm khấu trừ 10%", amount: tempWithheld, source: s.key });
+              else salaryBreakdown.push({ label: "  ↳ Chưa tạm khấu trừ", amount: 0, source: s.key });
+            }
+          } else {
+            // HĐLĐ ≥ 3 tháng — logic cũ
+            var monthlySalary = p("salary-input" + suffix);
+            var annualSalary = monthlySalary * 12;
+            var si = R.SOCIAL_INSURANCE.employee;
+            var cappedSalary = Math.min(monthlySalary, si.bhxh.cap);
+            var bhxh = 0;
+            if (c("bhxh-toggle" + suffix)) {
+              bhxh = cappedSalary * si.bhxh.rate * 12 + cappedSalary * si.bhtn.rate * 12 + cappedSalary * si.bhyt.rate * 12;
+            }
+            var union = c("union-toggle" + suffix) ? cappedSalary * si.union.rate * 12 : 0;
+            var permWithheldMonthly = p("salary-perm-withheld" + suffix);
+            var permWithheldAnnual = permWithheldMonthly * 12;
+            totalSalaryIncome += annualSalary;
+            totalBHXH += bhxh + union;
+            totalPermWithheld += permWithheldAnnual;
+            salaryBreakdown.push({ label: "Lương HĐLĐ", amount: annualSalary, formula: C.fmt(monthlySalary) + " × 12 tháng", source: s.key });
+            if (bhxh > 0) salaryBreakdown.push({ label: "BHXH+BHTN+BHYT", amount: bhxh, source: s.key });
+            if (union > 0) salaryBreakdown.push({ label: "Phí công đoàn", amount: union, source: s.key });
+            if (permWithheldMonthly > 0) salaryBreakdown.push({ label: "↳ NSDLĐ đã khấu trừ TNCN", amount: permWithheldAnnual, formula: C.fmt(permWithheldMonthly) + " × 12 tháng", source: s.key });
           }
-          var union = c("union-toggle" + suffix) ? cappedSalary * si.union.rate * 12 : 0;
-          totalSalaryIncome += annualSalary;
-          totalBHXH += bhxh + union;
-          salaryBreakdown.push({ label: "Lương", amount: annualSalary, formula: C.fmt(monthlySalary) + " × 12 tháng", source: s.key });
-          if (bhxh > 0) salaryBreakdown.push({ label: "BHXH+BHTN+BHYT", amount: bhxh, source: s.key });
-          if (union > 0) salaryBreakdown.push({ label: "Phí công đoàn", amount: union, source: s.key });
         } else if (s.id === "foreign") {
           var ftype = g("foreign-type" + suffix);
           if (ftype === "salary") {
@@ -672,34 +810,54 @@
       var totalDep = (ncnnArrYear > 0) ? R.calcNcnnNPT(foreignMonths, dependents) : R.DEPENDENT_DEDUCTION.monthly * dependents * 12;
       totalDependent = totalDep;
 
-      // Thu nhập tính thuế
-      var taxableSalary = Math.max(0, totalSalaryIncome - totalPersonal - totalBHXH - totalDependent);
-      var salaryTax = C.progressiveTNCN(taxableSalary);
+      // Thu nhập tính thuế — GỘP tổng (Điều 46, 50, 51 NĐ 253/2026)
+      // Tất cả thu nhập tiền lương + vãng lai → lũy tiến trên TỔNG sau giảm trừ
+      var totalAllIncome = totalSalaryIncome + totalTempIncome;
+      var taxableIncome = Math.max(0, totalAllIncome - totalPersonal - totalBHXH - totalDependent);
+      var salaryTax = C.progressiveTNCN(taxableIncome);
+
+      // Quyết toán: so sánh thuế thực vs đã tạm khấu trừ tại nguồn
+      // Chỉ trừ phần người dùng XÁC NHẬN đã khấu trừ (NSDLĐ + 10% vãng lai)
+      var totalWithheld = totalPermWithheld + totalTempWithheld;
+      var actualTax = salaryTax.totalTax;
+      var refundAmount = Math.max(0, totalWithheld - actualTax);
+      var supplementAmount = Math.max(0, actualTax - totalWithheld);
+      var hasTemporary = totalTempIncome > 0;
 
       // Chỉ push khi có thật thu nhập tiền lương
-      if (totalSalaryIncome > 0) {
+      if (totalAllIncome > 0) {
         results.unshift({
           type: "salary_group",
           label: "Thu nhập từ tiền lương, tiền công",
-          totalIncome: totalSalaryIncome,
+          totalIncome: totalAllIncome,
+          totalPermIncome: totalSalaryIncome,
+          totalTempIncome: totalTempIncome,
           totalBHXH: totalBHXH,
           personalDeduction: totalPersonal,
           dependentDeduction: totalDependent,
           dependentCount: dependents,
-          taxableIncome: taxableSalary,
-          totalTax: salaryTax.totalTax,
-          effectiveRate: totalSalaryIncome > 0 ? salaryTax.totalTax / totalSalaryIncome : 0,
+          taxableIncome: taxableIncome,
+          totalTax: actualTax,
+          effectiveRate: totalAllIncome > 0 ? actualTax / totalAllIncome : 0,
           breakdown: salaryBreakdown,
           taxBreakdown: salaryTax.breakdown,
           workingDays: foreignMonths,
           ncnnArrMonth: ncnnArrMonth,
           ncnnArrYear: ncnnArrYear,
+          hasTemporary: hasTemporary,
+          totalTempWithheld: totalTempWithheld,
+          permWithheld: totalPermWithheld,
+          totalWithheld: totalWithheld,
+          refundAmount: refundAmount,
+          supplementAmount: supplementAmount,
           forms: [R.FORMS_DATA.personal_salary],
           tips: [
             { icon: "📋", text: "Thuế TNCN từ tiền lương, tiền công: gộp tổng từ " + salarySources.length + " nguồn, GTGC + NPT tính 1 lần." },
           ].concat(foreignMonths < 12 ? [
-            { icon: "⚠️", text: "Năm đầu cư trú: GTGC bản thân = 15,5tr × " + foreignMonths + " tháng = " + C.fmt(totalPersonal) + ". NPT = 6,2tr × N người × " + foreignMonths + " tháng." },
-          ] : []).concat([
+            { icon: "⚠️", text: "Năm đầu cư trú: GTGC bản thân = " + C.fmt(totalPersonal) + " (split-year). NPT = 6,2tr × N người × " + foreignMonths + " tháng." },
+          ] : []).concat(hasTemporary ? [
+            { icon: "💰", text: "Thu nhập vãng lai: " + C.fmt(totalTempIncome) + " đã tạm khấu trừ " + C.fmt(totalWithheld) + " (10%). Cuối năm quyết toán — " + (refundAmount > 0 ? "được hoàn " + C.fmt(refundAmount) : supplementAmount > 0 ? "nộp thêm " + C.fmt(supplementAmount) : "đúng bằng") + "." },
+          ] : [
             { icon: "💡", text: "10% tạm khấu trừ tại nguồn. Cuối năm quyết toán, được hoàn/thiếu thuế." },
           ]),
           disclaimer: C.getDisclaimer(),
@@ -739,7 +897,7 @@
 
     // Hero card
     html += '<div class="calc-result-hero">';
-    html += '<div class="calc-result-emoji">🎉</div>';
+    html += '<div class="calc-result-emoji" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>';
     html += '<div class="calc-result-label">' + (isMulti ? 'TỔNG THUẾ PHẢI NỘP' : 'Thuế phải nộp') + '</div>';
     html += '<div class="calc-result-total">' + C.fmt(totalTax) + ' / năm</div>';
     html += '<div class="calc-result-label">' + C.fmt(Math.round(totalTax / 12)) + ' / tháng</div>';
@@ -747,6 +905,24 @@
     // Multi-source warning
     if (isMulti) {
       html += '<div class="calc-live-badge group" style="margin-top:12px;">⚠️ Bạn có ' + results.length + ' nguồn thu — BẮT BUỘC quyết toán trước 31/07</div>';
+    }
+
+    // Show refund/supplement for salary_group
+    var salaryResult = results.find(function (r) { return r.type === "salary_group"; });
+    if (salaryResult && salaryResult.hasTemporary) {
+      if (salaryResult.refundAmount > 0) {
+        html += '<div style="margin-top:12px;padding:10px 16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;display:flex;align-items:center;gap:10px;">';
+        html += '<span style="font-size:24px;">💰</span>';
+        html += '<div><div style="font-size:13px;color:#166534;">HOÀN THUẾ (quyết toán)</div>';
+        html += '<div style="font-size:18px;font-weight:700;color:#15803d;">' + C.fmt(salaryResult.refundAmount) + '</div></div>';
+        html += '</div>';
+      } else if (salaryResult.supplementAmount > 0) {
+        html += '<div style="margin-top:12px;padding:10px 16px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;display:flex;align-items:center;gap:10px;">';
+        html += '<span style="font-size:24px;">⚠️</span>';
+        html += '<div><div style="font-size:13px;color:#991b1b;">CẦN NỘP BỔ SUNG (quyết toán)</div>';
+        html += '<div style="font-size:18px;font-weight:700;color:#dc2626;">' + C.fmt(salaryResult.supplementAmount) + '</div></div>';
+        html += '</div>';
+      }
     }
     html += '</div>';
 
@@ -827,7 +1003,7 @@
         });
       }
       html += '<tr class="subtotal"><td>Tổng thu nhập</td><td>' + C.fmt(r.totalIncome) + '</td></tr>';
-      // Hiển thị GTGC — tính split-year từ tháng/năm đến thực tế
+      // Hiển thị GTGC/BHXH/NPT — luôn trừ trên tổng thu nhập
       var gtgcM11 = 0, gtgcM155 = 0;
       var splitDate = new Date(2026, 6, 1);
       var curM = r.ncnnArrMonth || 1, curY = r.ncnnArrYear || 2026;
@@ -844,13 +1020,37 @@
       if (r.dependentDeduction > 0) {
         html += '<tr class="deduction"><td>− NPT (' + r.dependentCount + ' người × 6,2tr × ' + r.workingDays + ' tháng)</td><td>' + C.fmt(r.dependentDeduction) + '</td></tr>';
       }
-      html += '<tr class="subtotal"><td>Thu nhập tính thuế</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
+      html += '<tr class="subtotal"><td>Thu nhập tính thuế (lũy tiến)</td><td>' + C.fmt(r.taxableIncome) + '</td></tr>';
       if (r.taxBreakdown) {
         r.taxBreakdown.forEach(function (b) {
           html += '<tr class="formula-row"><td>' + b.label + '</td><td>' + b.formula + '</td></tr>';
         });
       }
       html += '<tr class="subtotal"><td>TỔNG THUẾ</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
+
+      // Quyết toán tạm khấu trừ (nếu có thu nhập vãng lai ĐÃ khấu trừ)
+      if (r.hasTemporary && r.totalTempWithheld > 0) {
+        html += '<tr style="border-top:2px solid var(--calc-primary);"><td colspan="2" style="padding-top:12px;font-weight:700;color:var(--calc-primary);">📊 Quyết toán thuế TNCN</td></tr>';
+        html += '<tr><td>Thuế TNCN phải nộp (lũy tiến trên tổng thu nhập)</td><td>' + C.fmt(r.totalTax) + '</td></tr>';
+        html += '<tr><td>Thuế TNCN NSDLĐ đã khấu trừ (bạn nhập, ×12 tháng)</td><td>−' + C.fmt(r.permWithheld) + '</td></tr>';
+        html += '<tr><td>Tạm khấu trừ 10% vãng lai (bạn nhập)</td><td>−' + C.fmt(r.totalTempWithheld) + '</td></tr>';
+        if (r.refundAmount > 0) {
+          html += '<tr class="subtotal" style="color:var(--calc-success);"><td>💰 HOÀN THUẾ</td><td>' + C.fmt(r.refundAmount) + '</td></tr>';
+          html += '<tr><td colspan="2" style="font-size:12px;color:var(--calc-muted);">Bạn nộp thừa ' + C.fmt(r.refundAmount) + ' → được hoàn lại khi quyết toán trước 31/07.</td></tr>';
+        } else if (r.supplementAmount > 0) {
+          html += '<tr class="subtotal" style="color:#dc2626;"><td>⚠️ NỘP BỔ SUNG</td><td>' + C.fmt(r.supplementAmount) + '</td></tr>';
+          html += '<tr><td colspan="2" style="font-size:12px;color:var(--calc-muted);">Thuế đã khấu trừ chưa đủ — bạn cần nộp thêm ' + C.fmt(r.supplementAmount) + ' khi quyết toán.</td></tr>';
+        } else {
+          html += '<tr class="subtotal" style="color:var(--calc-success);"><td>✅ ĐÚNG SỐ</td><td>Không phát sinh thêm</td></tr>';
+        }
+        // Miễn quyết toán ngoại lệ
+        if (r.totalPermIncome > 0 && r.totalTempIncome > 0) {
+          var avgTempPerMonth = r.totalTempIncome / 12;
+          if (avgTempPerMonth <= 10_000_000 && r.totalWithheld >= r.totalTax * 0.95) {
+            html += '<tr><td colspan="2" style="font-size:12px;color:var(--calc-muted);background:#f0fdf4;padding:8px;border-radius:4px;margin-top:8px;">💡 Ngoại lệ: Bạn có HĐLĐ ≥ 3 tháng + vãng lai TB ≤ 10 triệu/tháng + đã khấu trừ đủ 10% → <strong>được phép không quyết toán</strong> phần vãng lai nếu không muốn hoàn thuế.</td></tr>';
+          }
+        }
+      }
 
     } else if (r.type === "salary") {
       var inp = r.input || {};
