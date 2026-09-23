@@ -30,31 +30,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Dropdown "Kênh nền tảng" — hover chỉ hoạt động desktop,
-  // mobile/touch cần click để mở menu (toggle class .active)
-  var dropdown = document.querySelector('.nav-dropdown');
-  var dropdownTrigger = document.querySelector('.dropdown-trigger');
-  if (dropdown && dropdownTrigger) {
+  // Dropdown menu (Kenh nen tang, Cong cu...) — hover chi hoat dong desktop,
+  // mobile/touch can click de mo menu (toggle class .active)
+  var dropdowns = document.querySelectorAll('.nav-dropdown');
+  dropdowns.forEach(function (dropdown) {
+    var dropdownTrigger = dropdown.querySelector('.dropdown-trigger');
+    if (!dropdownTrigger) return;
     dropdownTrigger.addEventListener('click', function (e) {
       e.preventDefault();
-      // stopImmediatePropagation: chặn cả listener .nav-link còn lại
-      // (đóng menu) — không được để trigger tự đóng navMenu.
+      // stopImmediatePropagation: chan ca listener .nav-link con lai
+      // (dong menu) — khong duoc de trigger tu dong navMenu.
       e.stopImmediatePropagation();
-      dropdown.classList.toggle('active');
+      var wasActive = dropdown.classList.contains('active');
+      dropdowns.forEach(function (d) { d.classList.remove('active'); });
+      if (!wasActive) dropdown.classList.add('active');
     });
 
-    // Đóng dropdown khi click ra ngoài
-    document.addEventListener('click', function (e) {
-      if (!e.target.closest('.nav-dropdown')) {
-        dropdown.classList.remove('active');
-      }
-    });
-
-    // Đóng dropdown sau khi click 1 mục bên trong
+    // Dong dropdown sau khi click 1 muc ben trong
     dropdown.querySelectorAll('.dropdown-item').forEach(function (item) {
       item.addEventListener('click', function () {
         dropdown.classList.remove('active');
       });
+    });
+  });
+
+  // Dong moi dropdown khi click ra ngoai
+  if (dropdowns.length) {
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        dropdowns.forEach(function (d) { d.classList.remove('active'); });
+      }
     });
   }
 
