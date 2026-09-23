@@ -25,3 +25,24 @@
 @media (max-width:640px){.services-skeleton-row{height:66px}}
 .services-cta{margin-top:34px;text-align:center}
 @media (max-width:640px){.services-card{padding:14px 4px;gap:12px}.services-num{font-size:22px;min-width:36px}.services-grid .services-card-name{font-size:17px}.services-arrow{font-size:18px}}
+
+/* Hero giua trang khi an chatbox (2026-09-23) */
+.hero-single{max-width:880px;margin:0 auto}
+.hero-single .hero-content-center{max-width:100%;align-items:center;text-align:center}
+.hero-single .hero-desc{margin-left:auto;margin-right:auto}
+.hero-single .hero-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.hero-single .hero-features{display:flex;justify-content:center;flex-wrap:wrap}
+.hero-single .quick-tools-center{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:18px}
+.hero-single .audit-section{max-width:640px;margin:16px auto 0;text-align:left}
+
+/* 3 nut hero ngang hang cung kich thuoc (2026-09-23) */
+.hero-single .hero-actions-3{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.hero-single .hero-actions-3 .btn{flex:1 1 0;min-width:200px;max-width:300px;display:inline-flex;align-items:center;justify-content:center;text-align:center}
+.hero-single label.btn{cursor:pointer}
+@media (max-width:640px){.hero-single .hero-actions-3{flex-direction:column;align-items:stretch}.hero-single .hero-actions-3 .btn{max-width:100%}}
+
+/* Tieu de hero tren dien thoai (2026-09-23) */
+@media (max-width:640px){.hero-title{font-size:36px}.hero-title span{font-size:23px}.hero-desc{font-size:16px}}
+
+/* Icon Zalo trong nut hero (2026-09-23) */
+.btn-icon-img{display:inline-block;vertical-align:-4px;margin-right:8px;border-radius:4px}
