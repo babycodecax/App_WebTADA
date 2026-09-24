@@ -10,6 +10,23 @@ document.addEventListener('DOMContentLoaded', () => {
     header.classList.toggle('scrolled', window.scrollY > 50);
   });
 
+  // 1b. Neo menu tru header dinh (2026-09-24): cuon chu dong tru 90px
+  // de tieu de nho khong bi che. Ap dung moi link # trong trang.
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var id = a.getAttribute('href');
+      if (!id || id.length < 2) return;
+      var target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      var headerEl = document.getElementById('header');
+      var offset = headerEl ? Math.round(headerEl.getBoundingClientRect().height) : 90;
+      var y = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: y < 0 ? 0 : y, behavior: 'auto' });
+      if (history.replaceState) history.replaceState(null, '', id);
+    });
+  });
+
   // Mobile Menu Toggle
   var navToggle = document.getElementById('nav-toggle');
   var navMenu = document.getElementById('nav-menu');
@@ -271,4 +288,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   loadServices();
+
+  // 9. Hero stats: dem that tu API (2026-09-24)
+  (function loadHeroStats() {
+    var posts = document.getElementById('stat-posts');
+    if (!posts) return;
+    var API = window.LOCAL_API ? window.LOCAL_API : '';
+    function set(id, n) {
+      var el = document.getElementById(id);
+      if (el && typeof n === 'number') el.textContent = String(n);
+    }
+    fetch(API + '/api/blog?limit=999', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (d) { set('stat-posts', Array.isArray(d) ? d.length : (d.posts || []).length); })
+      .catch(function () {});
+    fetch(API + '/api/library?_t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!d) return;
+        var legal = d.legal_docs || d.legal_documents || [];
+        set('stat-legal', legal.length);
+        set('stat-forms', (d.forms || []).length);
+      })
+      .catch(function () {});
+  })();
 });

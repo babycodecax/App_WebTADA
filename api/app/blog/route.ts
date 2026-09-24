@@ -41,8 +41,8 @@ function fmtDate(iso: string): string {
 /**
  * GET /blog — trang danh sách bài viết với SSR.
  *
- * Query Supabase lấy bài published → render sẵn cards vào #blog-grid
- * (đúng class .blog-card mà blog.js dùng) + JSON-LD ItemList.
+ * Query Supabase lấy bài published → render sẵn rows đánh số vào #blog-grid
+ * (đúng class .blog-mini-card mà blog.js dùng) + JSON-LD ItemList.
  * Googlebot thấy toàn bộ links ngay trong HTML. Client blog.js thấy
  * data-ssr="1" thì bỏ qua fetch để không nhấp nháy render lại.
  */
@@ -64,12 +64,14 @@ export async function GET() {
         const cards = posts
           .filter((p) => p.slug)
           .map(
-            (p) =>
-              `<a class="blog-card" href="/blog/${encodeURIComponent(p.slug)}">` +
-              `<h2 class="blog-card-title">${esc(p.title || '')}</h2>` +
-              `<p class="blog-card-summary">${esc(p.summary || '')}</p>` +
-              `<div class="blog-card-meta"><span>${esc(fmtDate(p.published_at))}</span></div>` +
-              `<span class="blog-card-link">Đọc tiếp →</span>` +
+            (p, i) =>
+              `<a class="blog-mini-card" href="/blog/${encodeURIComponent(p.slug)}">` +
+              `<span class="blog-mini-num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>` +
+              `<span class="blog-mini-text">` +
+              `<span class="blog-mini-title">${esc(p.title || '')}</span>` +
+              `<span class="blog-mini-date">${esc(fmtDate(p.published_at))}</span>` +
+              `</span>` +
+              `<span class="services-arrow" aria-hidden="true">→</span>` +
               `</a>`
           )
           .join('');

@@ -94,8 +94,11 @@
   }
 
   function renderList(grid) {
-    // SSR: route /blog da render san cards (data-ssr) → giu nguyen, khong fetch lai
-    if (grid.dataset && grid.dataset.ssr === '1' && grid.querySelector('.blog-card')) return;
+    // SSR: route /blog da render san rows (data-ssr) → giu nguyen, khong fetch lai (van bat reveal)
+    if (grid.dataset && grid.dataset.ssr === '1' && grid.querySelector('.blog-mini-card')) {
+      observeMiniReveal(grid);
+      return;
+    }
     grid.innerHTML = '<div class="blog-loading">Đang tải bài viết...</div>';
 
     fetch(API + '/api/blog?limit=999')
@@ -109,19 +112,35 @@
           return;
         }
         grid.innerHTML = '';
-        posts.forEach(function (p) {
+        var isMini = grid.id === 'blog-mini-grid';
+        var list = isMini ? posts.slice(0, 5) : posts;
+        list.forEach(function (p, idx) {
           var card = document.createElement('a');
-          card.className = 'blog-card';
           card.href = postUrl(p.slug);
-          card.innerHTML =
-            '<h2 class="blog-card-title">' + escHtml(p.title) + '</h2>' +
-            '<p class="blog-card-summary">' + escHtml(p.summary || '') + '</p>' +
-            '<div class="blog-card-meta">' +
-              '<span>' + formatDate(p.published_at) + '</span>' +
-            '</div>' +
-            '<span class="blog-card-link">Đọc tiếp →</span>';
+          if (isMini) {
+            card.className = 'blog-mini-card';
+            card.style.setProperty('--i', idx);
+            card.innerHTML =
+              '<span class="blog-mini-num" aria-hidden="true">' + ('0' + (idx + 1)).slice(-2) + '</span>' +
+              '<span class="blog-mini-text">' +
+                '<span class="blog-mini-title">' + escHtml(p.title) + '</span>' +
+                '<span class="blog-mini-date">' + formatDate(p.published_at) + '</span>' +
+              '</span>' +
+              '<span class="services-arrow" aria-hidden="true">→</span>';
+          } else {
+            card.className = 'blog-mini-card';
+            card.style.setProperty('--i', Math.min(idx, 20));
+            card.innerHTML =
+              '<span class="blog-mini-num" aria-hidden="true">' + ('0' + (idx + 1)).slice(-2) + '</span>' +
+              '<span class="blog-mini-text">' +
+                '<span class="blog-mini-title">' + escHtml(p.title) + '</span>' +
+                '<span class="blog-mini-date">' + formatDate(p.published_at) + '</span>' +
+              '</span>' +
+              '<span class="services-arrow" aria-hidden="true">→</span>';
+          }
           grid.appendChild(card);
         });
+        observeMiniReveal(grid);
 
         // JSON-LD ItemList để Google hiểu cấu trúc danh sách bài
         injectItemListSchema(posts);
@@ -129,6 +148,21 @@
       .catch(function (err) {
         grid.innerHTML = '<div class="blog-error">Không thể tải bài viết: ' + escHtml(err.message) + '</div>';
       });
+  }
+
+  /** Reveal lan luot cho blog-mini-grid (giong services-grid). */
+  function observeMiniReveal(grid) {
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { grid.classList.add('inview'); io.disconnect(); }
+        });
+      }, { threshold: 0.12 });
+      io.observe(grid);
+      setTimeout(function () { grid.classList.add('inview'); }, 4000);
+    } else {
+      grid.classList.add('inview');
+    }
   }
 
   /** Inject JSON-LD ItemList — Google đọc cấu trúc danh sách bài viết. */

@@ -42,6 +42,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // ===== Render danh sách dọc =====
   // Văn bản luật: id+file_html → click mở modal; fallback file_path → chunks.
+  function numHtml(idx) {
+    return '<span class="library-row-num" aria-hidden="true">' + ('0' + (idx + 1)).slice(-2) + '</span>';
+  }
   function legalRow(item, idx) {
     var badge = docTypeLabel(item.doc_type);
     var eff = item.effective_date || item.created_at || '';
@@ -59,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
       '<article class="library-row" data-kind="legal" data-id="' + escHtml(clickable) + '" ' +
         'data-has-html="' + (item.id ? '1' : '0') + '" tabindex="0" role="button" ' +
         'aria-label="Xem toàn văn: ' + escHtml(title) + '">' +
-        '<span class="library-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg></span>' +
+        numHtml(idx) +
         '<div class="library-row-main">' +
           '<h3 class="library-row-title">' + escHtml(title) + '</h3>' +
           '<div class="library-row-meta">' + meta + '</div>' +
@@ -82,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
       : '<span class="library-row-btn" style="opacity:.6;cursor:default">Chưa có file</span>';
     return (
       '<article class="library-row" data-kind="form">' +
-        '<span class="library-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>' +
+        numHtml(idx) +
         '<div class="library-row-main">' +
           '<h3 class="library-row-title">' + escHtml(item.name) + '</h3>' +
           (item.description ? '<p style="margin:0 0 4px;font-size:13px;color:var(--text-muted-dark)">' + escHtml(item.description) + '</p>' : '') +
