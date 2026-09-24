@@ -298,9 +298,9 @@ document.addEventListener('DOMContentLoaded', () => {
       var el = document.getElementById(id);
       if (el && typeof n === 'number') el.textContent = String(n);
     }
-    fetch(API + '/api/blog?limit=999', { cache: 'no-store' })
+    fetch(API + '/api/blog?count=1', { cache: 'no-store' })
       .then(function (r) { return r.json(); })
-      .then(function (d) { set('stat-posts', Array.isArray(d) ? d.length : (d.posts || []).length); })
+      .then(function (d) { set('stat-posts', d && typeof d.total === 'number' ? d.total : undefined); })
       .catch(function () {});
     fetch(API + '/api/library?_t=' + Date.now(), { cache: 'no-store' })
       .then(function (r) { return r.json(); })

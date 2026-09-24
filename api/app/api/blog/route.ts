@@ -34,6 +34,21 @@ export async function GET(req: NextRequest) {
   const status = searchParams.get('status') || 'published';
 
   const client = getSupabase();
+
+  // ?count=1 → tong so bai published (cho dai so lieu hero, nhe, khong gioi han 50)
+  if (searchParams.get('count') === '1') {
+    const st = searchParams.get('status') || 'published';
+    let q = client.from('blog_posts').select('id', { count: 'exact', head: true });
+    if (st === 'published') q = q.eq('status', 'published');
+    const { count, error: cErr } = await q;
+    if (cErr) {
+      return new Response(JSON.stringify({ error: cErr.message }), { status: 500 });
+    }
+    return new Response(JSON.stringify({ total: count ?? 0 }), {
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' },
+    });
+  }
+
   let query = client.from('blog_posts').select('*');
 
   if (slug) {
