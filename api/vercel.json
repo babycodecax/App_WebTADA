@@ -8,6 +8,7 @@
     { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/terms", "destination": "/terms.html" },
     { "source": "/tinh-thue", "destination": "/tinh-thue.html" },
+    { "source": "/audit", "destination": "/audit.html" },
     { "source": "/api/:path*", "destination": "/api/:path*" }
   ],
   "cleanUrls": true
