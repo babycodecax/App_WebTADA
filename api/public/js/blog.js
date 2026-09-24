@@ -203,7 +203,9 @@
         return r.json();
       })
       .then(function (post) {
-        var contentHtml = renderMarkdown(post.content || '');
+        // Noi dung markdown thuong mo dau bang '# tieu de' trung voi H1 tren -> cat bo
+        var md = (post.content || '').replace(/^\s*#[^\n]*\n/, '');
+        var contentHtml = renderMarkdown(md);
         if (parentContainer) parentContainer.classList.add('blog-detail-wrap');
         container.innerHTML =
           '<article class="blog-detail">' +
