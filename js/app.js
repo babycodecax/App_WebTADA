@@ -289,10 +289,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadServices();
 
-  // 9. Hero stats: dem that tu API (2026-09-24)
+  // 9. Hero stats: dem that tu API, doi trinh duyet ranh (2026-09-24)
   (function loadHeroStats() {
     var posts = document.getElementById('stat-posts');
     if (!posts) return;
+    var run = function () {
     var API = window.LOCAL_API ? window.LOCAL_API : '';
     function set(id, n) {
       var el = document.getElementById(id);
@@ -311,5 +312,11 @@ document.addEventListener('DOMContentLoaded', () => {
         set('stat-forms', (d.forms || []).length);
       })
       .catch(function () {});
+    };
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(run, { timeout: 3000 });
+    } else {
+      setTimeout(run, 1500);
+    }
   })();
 });

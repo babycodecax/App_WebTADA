@@ -62,7 +62,8 @@
 #blog,#services,#library{scroll-margin-top:90px}
 
 /* Hero anh nen + dai so lieu (2026-09-24) */
-.hero{background:linear-gradient(rgba(253,251,250,0.70),rgba(246,241,237,0.75)),url('../img/hero-bg.jpg') center/cover no-repeat}
+.hero{background:linear-gradient(rgba(253,251,250,0.70),rgba(246,241,237,0.75)),image-set(url('../img/hero-bg.webp') type('image/webp'),url('../img/hero-bg.jpg') type('image/jpeg')) center/cover no-repeat}
+@media (max-width:640px){.hero{background:linear-gradient(rgba(253,251,250,0.70),rgba(246,241,237,0.75)),image-set(url('../img/hero-bg-mobile.webp') type('image/webp'),url('../img/hero-bg.jpg') type('image/jpeg')) center/cover no-repeat}}
 .hero-stats{display:flex;justify-content:center;gap:36px;margin-top:28px;flex-wrap:wrap}
 .hero-stat{display:flex;flex-direction:column;align-items:center;min-width:90px}
 .hero-stat strong{font-family:var(--font-serif);font-size:30px;font-weight:700;line-height:1;color:var(--primary-burgundy)}
