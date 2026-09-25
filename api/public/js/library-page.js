@@ -315,21 +315,7 @@ document.addEventListener('DOMContentLoaded', function () {
     header.classList.toggle('scrolled', window.scrollY > 50);
   });
 
-  // Mobile menu toggle
-  var navToggle = document.getElementById('nav-toggle');
-  var navMenu = document.getElementById('nav-menu');
-  if (navToggle && navMenu) {
-    navToggle.addEventListener('click', function () {
-      navToggle.classList.toggle('active');
-      navMenu.classList.toggle('active');
-    });
-    document.querySelectorAll('.nav-link:not(.dropdown-trigger)').forEach(function (link) {
-      link.addEventListener('click', function () {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-      });
-    });
-  }
+  // Mobile menu toggle: dung chung app.js (khong bind rieng de tranh double-toggle)
 
   // Tìm kiếm thư viện (lọc client-side cả 2 tab)
   searchBox = document.getElementById('library-search');

@@ -1610,3 +1610,8 @@ h1, h2, h3, h4, h5, h6 {
 .user-avatar img{width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-gold,#d4af37);object-fit:cover}
 .user-dropdown{display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12);padding:12px 16px;min-width:200px;flex-direction:column;gap:6px;z-index:200}
 .user-avatar.active .user-dropdown{display:flex}
+/* Dropdown full-width mobile - dong bo main.css (2026-09-24) */
+@media (max-width:768px){
+.nav-dropdown{width:100%}
+.nav-dropdown .dropdown-menu{position:static;transform:none;box-shadow:none;border:0;border-top:1px solid var(--border-light,#eee);border-radius:0;min-width:0;width:100%}
+}

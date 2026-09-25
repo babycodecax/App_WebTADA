@@ -102,7 +102,7 @@
        ========================================== -->
   <header class="header" id="header">
     <div class="container header-container">
-      <a href="#" class="logo-link">
+      <a href="/" class="logo-link">
         <img src="static/img/logo-192.jpg" alt="Logo Dịch Vụ Thuế Kế Toán TADA" class="logo-img" width="50" height="50">
         <div class="logo-text">
           <span class="logo-brand-main">DỊCH VỤ THUẾ KẾ TOÁN</span>
@@ -203,11 +203,18 @@
        ========================================== -->
   <section class="calc-section" id="audit-tool">
     <div class="container" style="max-width:760px">
-      <label class="btn btn-primary" id="audit-upload-label" style="cursor:pointer">
+      <div class="audit-steps">
+        <span class="audit-step"><b>1</b> Đăng nhập Google</span>
+        <span class="audit-step"><b>2</b> Tải file BCTC</span>
+        <span class="audit-step"><b>3</b> Nhận kết quả + xuất PDF/Word</span>
+      </div>
+      <label class="audit-dropzone" id="audit-upload-label">
         <input type="file" id="audit-file-input" accept=".xlsx,.xls,.docx" multiple hidden>
-        <span>📤 Tải file BCTC (.xlsx, .docx)</span>
+        <span class="audit-dropzone-icon">📤</span>
+        <span class="audit-dropzone-title">Bấm để chọn file BCTC</span>
+        <span class="audit-dropzone-hint">Excel (.xlsx, .xls) · Word (.docx) · Tối đa 10MB</span>
       </label>
-      <p style="font-size:13px;color:var(--text-muted-dark);margin-top:10px">Đăng nhập tài khoản Google để sử dụng. Hỗ trợ Excel và Word.</p>
+      <p style="font-size:13px;color:var(--text-muted-dark);margin-top:10px">🔒 File chỉ dùng để rà soát, không lưu trữ. Miễn phí toàn bộ.</p>
       <div class="audit-section" id="audit-section" style="display:none;margin-top:16px">
         <div class="audit-row">
           <button class="audit-btn audit-btn-outline" id="audit-export-btn" style="display:none">
@@ -270,11 +277,5 @@
   <script src="static/js/auth.js?v=20260925" defer></script>
   <script src="static/js/audit.js" defer></script>
 
-  <!-- Nav toggle -->
-  <script>
-  document.getElementById('nav-toggle').addEventListener('click', function() {
-    document.getElementById('nav-menu').classList.toggle('active');
-  });
-  </script>
 </body>
 </html>

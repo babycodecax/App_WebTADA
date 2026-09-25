@@ -27,25 +27,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Mobile Menu Toggle
-  var navToggle = document.getElementById('nav-toggle');
-  var navMenu = document.getElementById('nav-menu');
+  // Mobile Menu Toggle (uy thac document de chac chan moi trang,
+  // ke ca khi script chay truoc DOM hoan tat)
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('#nav-toggle') : null;
+    if (!btn) return;
+    var menu = document.getElementById('nav-menu');
+    if (!menu) return;
+    btn.classList.toggle('active');
+    menu.classList.toggle('active');
+  });
 
-  if (navToggle && navMenu) {
-    navToggle.addEventListener('click', function () {
-      navToggle.classList.toggle('active');
-      navMenu.classList.toggle('active');
-    });
-
-    // Lưu ý: .dropdown-trigger cũng có class .nav-link — loại trừ nó khỏi
-    // listener đóng menu, nếu không click trigger sẽ tự đóng navMenu ngay.
+  // Dong menu khi bam link thuong (tru dropdown-trigger)
+  (function () {
+    var nt = document.getElementById('nav-toggle');
+    var nm = document.getElementById('nav-menu');
+    if (!nt || !nm) return;
     document.querySelectorAll('.nav-link:not(.dropdown-trigger)').forEach(function (link) {
       link.addEventListener('click', function () {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
+        nt.classList.remove('active');
+        nm.classList.remove('active');
       });
     });
-  }
+  })();
 
   // Dropdown menu (Kenh nen tang, Cong cu...) — hover chi hoat dong desktop,
   // mobile/touch can click de mo menu (toggle class .active)
