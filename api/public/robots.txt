@@ -2,7 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /api/
-Crawl-delay: 10
 
 # ── AI Training bots — BLOCK (no traffic value, heavy crawl) ──
 User-agent: GPTBot
@@ -36,7 +35,6 @@ Disallow: /
 # ── Search engines — KEEP (bring real traffic) ──
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 5
 
 User-agent: Bingbot
 Allow: /

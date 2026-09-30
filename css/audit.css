@@ -121,3 +121,13 @@
   .chatbox-col { width: 100%; }
 }
 }
+
+/* Trang audit: steps + dropzone (2026-09-24) */
+.audit-steps{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
+.audit-step{font-size:13px;color:var(--text-muted-dark);background:rgba(128,0,32,.05);border:1px solid var(--border-light);border-radius:999px;padding:6px 14px}
+.audit-step b{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--primary-burgundy);color:#fff;font-size:12px;margin-right:6px}
+.audit-dropzone{display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed rgba(128,0,32,.35);border-radius:16px;padding:36px 20px;cursor:pointer;background:#fff;transition:var(--transition-fast);text-align:center}
+.audit-dropzone:hover{border-color:var(--primary-burgundy);background:rgba(128,0,32,.03)}
+.audit-dropzone-icon{font-size:36px}
+.audit-dropzone-title{font-size:17px;font-weight:700;color:var(--primary-burgundy)}
+.audit-dropzone-hint{font-size:13px;color:var(--text-muted-dark)}
