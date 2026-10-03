@@ -236,7 +236,7 @@ window.TAX_CALC = (function () {
         tips: [
           { icon: "✅", text: "Doanh thu dưới 1 tỷ → bạn được MIỄN thuế TNCN và GTGT (NĐ 141/2026)." },
           { icon: "⚠️", text: "Tuy nhiên vẫn PHẢI: (1) Đăng ký hộ kinh doanh (TT 18/2026), (2) Thông báo doanh thu (TT 50/2026), (3) Lập sổ S1a-HKD." },
-          { icon: "📅", text: "Thông báo doanh thu trong 30 ngày kể từ phát sinh. Nếu không → phạt 2-4 triệu." },
+          { icon: "📅", text: "Thông báo doanh thu năm chậm nhất 31/01 năm sau. Nếu không → phạt 2-4 triệu." },
         ],
         disclaimer: getDisclaimer(),
       };
@@ -248,11 +248,20 @@ window.TAX_CALC = (function () {
     var tncnA = tncnRevenueExcess * tncnRateInfo.rate;
     var totalA = gtgtA + tncnA;
 
-    // Cách 2: Tính theo biểu lũy tiến HKD (thu nhập thực tế)
-    // Dùng HKD_PROGRESSIVE_RATES (15/17/20%) — KHÔNG phải TNCN 5 bậc
+    // Cách 2: thuế suất chọn theo DOANH THU (NĐ 68/2026 Đ5):
+    // DT 1-3 tỷ → 15%, 3-50 tỷ → 17%, >50 tỷ → 20%, nhân thu nhập thực tế
     var taxableRevenue = Math.max(0, revenue - costs);
     var gtgtB = gtgtA;  // GTGT vẫn tính trên doanh thu
-    var tncnB = progressiveTNCN(taxableRevenue, R.HKD_PROGRESSIVE_RATES);
+    var rateB = revenue <= 3_000_000_000 ? 0.15 : revenue <= 50_000_000_000 ? 0.17 : 0.20;
+    var tncnB = {
+      totalTax: taxableRevenue * rateB,
+      breakdown: [{
+        label: "Thu nhập " + fmt(taxableRevenue),
+        rate: rateB,
+        tax: taxableRevenue * rateB,
+        formula: fmt(taxableRevenue) + " × " + (rateB * 100).toFixed(0) + "% (theo doanh thu " + fmt(revenue) + ")",
+      }],
+    };
     var totalB = gtgtB + tncnB.totalTax;
 
     // So sánh và gợi ý
@@ -262,9 +271,9 @@ window.TAX_CALC = (function () {
                       saving < 0 ? "đắt hơn " + fmt(Math.abs(saving)) :
                       "bằng nhau";
 
-    // Deadline theo nhóm
+    // Deadline theo nhóm (NĐ 68/2026 Đ10: ≤50 tỷ khai quý, >50 tỷ khai tháng)
     var filingInfo = group.filingType;
-    var deadlineNote = group.id <= 2 ? "30 ngày cuối quý" : "30 ngày đầu tháng sau";
+    var deadlineNote = group.id <= 3 ? "ngày cuối cùng của tháng đầu quý sau" : "ngày 20 tháng sau";
 
     var tips = [
       {
@@ -285,10 +294,10 @@ window.TAX_CALC = (function () {
       });
     }
 
-    if (group.id >= 3) {
+    if (group.id === 4) {
       tips.push({
         icon: "⏰",
-        text: "Nhóm 3-4 phải kê khai THEO THÁNG — chuẩn bị tờ khai hàng tháng trước ngày 30.",
+        text: "Nhóm 4 phải kê khai THEO THÁNG — chuẩn bị tờ khai hàng tháng trước ngày 20.",
       });
     }
 

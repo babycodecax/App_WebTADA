@@ -75,8 +75,8 @@ window.TAX_RATES = (function () {
       exempt: false, filingType: "Kê khai theo quý",
       description: "Doanh thu 1-3 tỷ → Kê khai theo quý" },
     { id: 3, maxRevenue: 50_000_000_000, label: "Nhóm 3",
-      exempt: false, filingType: "Kê khai theo tháng",
-      description: "Doanh thu 3-50 tỷ → Kê khai theo tháng" },
+      exempt: false, filingType: "Kê khai theo quý",
+      description: "Doanh thu 3-50 tỷ → Kê khai theo quý (NĐ 68/2026 Đ10: ≤50 tỷ khai quý)" },
     { id: 4, maxRevenue: Infinity, label: "Nhóm 4",
       exempt: false, filingType: "Kê khai tháng + hạch toán đầy đủ",
       description: "Doanh thu từ 50 tỷ → Kê khai theo tháng, hạch toán đầy đủ" },
@@ -145,10 +145,12 @@ window.TAX_RATES = (function () {
     { value: "social_housing",  label: "Đầu tư xây dựng nhà ở xã hội",                     rate: 0.10, incentive: "Thuế suất ưu đãi 10%" },
     { value: "agri_processing", label: "Chế biến nông — thủy sản",                         rate: 0.15, incentive: "Thuế suất ưu đãi 15%" },
     { value: "oil_gas",         label: "Tìm kiếm, thăm dò, khai thác dầu khí",             rate: 0.25, incentive: "Thuế suất đặc biệt 25-50%" },
-    { value: "rare_resource",   label: "Khai thác tài nguyên quý hiếm",                    rate: 0.40, incentive: "Thuế suất đặc biệt 40-50%" },
+    { value: "rare_resource",   label: "Khai thác tài nguyên quý hiếm",                    rate: 0.50, incentive: "Thuế suất 50% (40% nếu ≥70% diện tích ở vùng đặc biệt khó khăn)" },
     { value: "pct_distribution",label: "Phân phối, cung cấp HĐ (không kê khai)",           pctOnRevenue: 0.003, note: "0.3% trên DT gross" },
     { value: "pct_transport",   label: "SX, vận tải, DV gắn với HĐ (không kê khai)",      pctOnRevenue: 0.012, note: "1.2% trên DT gross" },
-    { value: "pct_service",     label: "Dịch vụ, cho thuê tài sản (không kê khai)",        pctOnRevenue: null, customPct: true, minPct: 0.015, note: "User tự nhập tỷ lệ % trên DT (thường 1.5-4%)" },
+    { value: "pct_service",     label: "Dịch vụ (tự nhập tỷ lệ)",                             pctOnRevenue: null, customPct: true, minPct: 0.015, note: "User tự nhập tỷ lệ % trên DT" },
+    { value: "pct_service_std", label: "Dịch vụ 1.5% (không kê khai)",                      pctOnRevenue: 0.015, note: "1.5% trên DT gross (DN ≤3 tỷ không xác định được chi phí, NĐ 320 Đ11)" },
+    { value: "pct_lease",       label: "Cho thuê tài sản 4% (không kê khai)",                pctOnRevenue: 0.04, note: "4% trên DT gross (DN ≤3 tỷ không xác định được chi phí, NĐ 320 Đ11)" },
   ];
 
   /* ================================================================

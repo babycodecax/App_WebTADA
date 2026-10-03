@@ -19,6 +19,19 @@ window.TAX_FORMS = (function () {
   ];
 
   // ──────────────────────────────────────────────
+  // CONTRACT TYPES (cho nhóm tiền lương)
+  // ──────────────────────────────────────────────
+
+  var CONTRACT_TYPES = [
+    { id: "permanent", icon: "📋", label: "HĐLĐ ≥ 3 tháng",
+      description: "Hợp đồng lao động chính thức ≥ 3 tháng — lũy tiến, được GTGC + NPT + BHXH",
+      badge: "Lũy tiến 5 bậc" },
+    { id: "temporary", icon: "⚡", label: "HĐ < 3 tháng / thù lao / vãng lai",
+      description: "Hợp đồng ngắn hạn, thù lao, giảng dạy, tư vấn — tạm khấu trừ 10%, quyết toán cuối năm",
+      badge: "Tạm khấu trừ 10%" },
+  ];
+
+  // ──────────────────────────────────────────────
   // INCOME SOURCE TYPES (cho multi-select wizard)
   // ──────────────────────────────────────────────
 
@@ -150,6 +163,7 @@ window.TAX_FORMS = (function () {
 
   return {
     BUSINESS_TYPES: BUSINESS_TYPES,
+    CONTRACT_TYPES: CONTRACT_TYPES,
     INCOME_SOURCES: INCOME_SOURCES,
     DEADLINES_2026: DEADLINES_2026,
     COMMON_TIPS: COMMON_TIPS,
