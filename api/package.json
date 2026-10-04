@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/prebuild-inject.mjs && next build",
     "start": "next start",
     "ingest": "node scripts/ingest-all.js",
     "ingest:legal-docs": "node --import tsx scripts/ingest-legal-docs.ts",

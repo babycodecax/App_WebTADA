@@ -422,6 +422,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 .dropdown-trigger {
   cursor: pointer;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  padding: 8px 0;
 }
 .dropdown-menu {
   display: none;
@@ -467,6 +472,11 @@ h1, h2, h3, h4, h5, h6 {
   height: 16px;
   object-fit: contain;
   flex-shrink: 0;
+}
+/* Logo Zalo ve den trang dong bo 3 kenh con lai */
+.dropdown-icon-img[src*="zalo"],
+.social-icon-img[src*="zalo"] {
+  filter: grayscale(1) brightness(0);
 }
 .social-icon-img {
   width: 18px;
@@ -1515,6 +1525,18 @@ h1, h2, h3, h4, h5, h6 {
   }
   .header-container .logo-link { flex-shrink: 0; }
   .logo-text { display: none; } /* Ẩn chữ logo trên mobile, giữ icon để tiết kiệm chỗ */
+
+  /* Mobile: bam tieu de nhom de mo sổ (nut that, khong nhay trang) */
+  .nav-dropdown .dropdown-trigger {
+    background: none;
+    border: none;
+    font: inherit;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
   /* Fix tràn ngang mobile: hero-content + chatbox phải vừa viewport */
   .hero .container {
