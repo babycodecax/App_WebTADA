@@ -64,12 +64,22 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopImmediatePropagation();
       var wasActive = dropdown.classList.contains('active');
       dropdowns.forEach(function (d) { d.classList.remove('active'); });
-      if (!wasActive) dropdown.classList.add('active');
+      if (!wasActive) {
+        dropdown.classList.add('active');
+        // Chot chong cham nham mobile: bo qua click vao muc con trong 400ms dau
+        dropdown.dataset.openedAt = String(Date.now());
+      }
     });
 
-    // Dong dropdown sau khi click 1 muc ben trong
+    // Dong dropdown sau khi click 1 muc ben trong (bo qua cham nham <400ms)
     dropdown.querySelectorAll('.dropdown-item').forEach(function (item) {
-      item.addEventListener('click', function () {
+      item.addEventListener('click', function (e) {
+        var openedAt = parseInt(dropdown.dataset.openedAt || '0', 10);
+        if (Date.now() - openedAt < 400) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          return;
+        }
         dropdown.classList.remove('active');
       });
     });
