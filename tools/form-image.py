@@ -64,14 +64,22 @@ def parse_boxes(s):
     return boxes
 
 
+def find_font(size):
+    for p in ['C:/Windows/Fonts/arial.ttf',
+              '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+              '/System/Library/Fonts/Helvetica.ttc']:
+        try:
+            return ImageFont.truetype(p, size)
+        except Exception:
+            continue
+    return ImageFont.load_default()
+
+
 def annotate(src_path, boxes, caption, out_name):
     src = Image.open(src_path).convert('RGB')
     W, H = src.size
-    try:
-        font = ImageFont.truetype('C:/Windows/Fonts/arial.ttf', max(13, W // 45))
-        small = ImageFont.truetype('C:/Windows/Fonts/arial.ttf', max(11, W // 56))
-    except Exception:
-        font = small = ImageFont.load_default()
+    font = find_font(max(13, W // 45))
+    small = find_font(max(11, W // 56))
     cap_h = font.size + 18
     canvas = Image.new('RGB', (W, H + cap_h), 'white')
     canvas.paste(src, (0, 0))
@@ -86,8 +94,9 @@ def annotate(src_path, boxes, caption, out_name):
         d.text((bx - 4, by - r + 1), str(i), fill='white', font=small)
     if caption:
         size = max(13, W // 45)
+        font = find_font(size)
         while size > 10:
-            font = ImageFont.truetype('C:/Windows/Fonts/arial.ttf', size)
+            font = find_font(size)
             brand = 'ketoanthuetada.com'
             bw = d.textlength(brand, font=font)
             if d.textlength(caption, font=font) + bw + 40 <= W:
@@ -129,10 +138,11 @@ def main():
         raise SystemExit('can --pdf hoac --img')
 
     annotate(src_img, parse_boxes(a.boxes), a.caption, a.out)
+    import html as htmlmod
     print()
     print('<figure class="blog-figure">')
-    print(f'<img src="/static/img/blog/{a.out}.png" alt="{a.alt}" loading="lazy" />')
-    print(f'<figcaption>{a.caption}</figcaption>')
+    print(f'<img src="/static/img/blog/{a.out}.png" alt="{htmlmod.escape(a.alt, quote=True)}" loading="lazy" />')
+    print(f'<figcaption>{htmlmod.escape(a.caption)}</figcaption>')
     print('</figure>')
 
 

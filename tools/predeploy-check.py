@@ -22,14 +22,24 @@ def sh(*args):
     return subprocess.run(args, cwd=ROOT, capture_output=True, text=True)
 
 
+def git_fail(proc):
+    print('PREDEPLOY FAIL:')
+    print(f'lenh git loi (rc={proc.returncode}): {proc.stderr.strip()[:200]}')
+    return 1
+
+
 def main():
     fails = []
 
     st = sh('git', 'stash', 'list')
+    if st.returncode != 0:
+        return git_fail(st)
     if st.stdout.strip():
         fails.append(f'ton stash: {st.stdout.strip().splitlines()[0]}')
 
     ws = sh('git', 'status', '--porcelain')
+    if ws.returncode != 0:
+        return git_fail(ws)
     dirty = [l for l in ws.stdout.splitlines() if l.strip()]
     if dirty:
         fails.append(f'worktree ban ({len(dirty)} file) — commit truoc khi deploy:')
@@ -46,6 +56,8 @@ def main():
             p = os.path.join(dirpath, f)
             html = open(p, encoding='utf-8', errors='replace').read()
             for u in set(re.findall(r'(?:src|href)="((?:/|static/|assets/)[^"]+)"', html)):
+                if u.startswith('//'):
+                    continue
                 u = u.split('?')[0]
                 if not re.search(r'\.(js|css|png|jpg|jpeg|webp|svg|woff2|ico)$', u):
                     continue

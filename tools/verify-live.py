@@ -8,15 +8,16 @@ Kiem tra:
   2. moi file tinh (js/css/anh/font) duoc cac trang goi toi deu 200
   3. index.html khong con goi ban cu (zalo.png, app.js doi cu)
 """
+import os
 import re
 import sys
 import urllib.request
 
 SITE = 'https://ketoanthuetada.com'
-ROOT = 'D:/Projects/App_WebTADA'
-# Trang so sanh ref voi file local (phat hien regression ve ban cu)
-COMPARE = {'/': 'index.html', '/tinh-thue': 'api/public/tinh-thue.html',
-           '/audit': 'audit.html'}
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Trang so sanh ref voi file DEPLOY that (api/public) — phat hien regression
+COMPARE = {'/': 'api/public/index.html', '/tinh-thue': 'api/public/tinh-thue.html',
+           '/audit': 'api/public/audit.html'}
 PAGES = ['/', '/tinh-thue', '/blog', '/audit', '/thu-vien',
          '/blog/khai-thue-quy-3-etax-mobile-sai-nhom',
          '/blog/thong-tu-91-2026-ve-hoa-don-dien-tu-diem-moi-can-biet']
