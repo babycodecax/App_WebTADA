@@ -567,9 +567,9 @@ window.TAX_CALC = (function () {
         dependentCount: dependents,
         tndn: tndn,
         monthlyTax: Math.round(tndn / 12),
-        gtgt: Math.round(gtgt / 12),
-        totalTax: tndn + gtgt,
-        effectiveRate: grossRevenue > 0 ? (tndn + gtgt) / grossRevenue : 0,
+        gtgt: 0, // Luong HDLD khong chiu GTGT (chi dich vu/nha thau moi co)
+        totalTax: tndn,
+        effectiveRate: grossRevenue > 0 ? tndn / grossRevenue : 0,
         breakdown: result.breakdown,
         forms: [R.FORMS_DATA.foreign_contractor],
         tips: tips,

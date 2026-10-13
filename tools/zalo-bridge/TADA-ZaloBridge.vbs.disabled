@@ -1,0 +1,1 @@
+CreateObject("Wscript.Shell").Run "powershell.exe -WindowStyle Hidden -ExecutionPolicy Bypass -File ""D:\Projects\App_WebTADA\tools\zalo-bridge\start-hidden.ps1""", 0, False

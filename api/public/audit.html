@@ -7,7 +7,8 @@
   <meta name="description" content="Rà soát báo cáo tài chính miễn phí: tải file Excel/Word, phát hiện sai sót, xuất PDF/Word.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://ketoanthuetada.com/audit">
-  <link rel="icon" type="image/jpeg" href="static/img/logo.jpg">
+  <link rel="icon" type="image/png" href="static/img/favicon.png">
+<link rel="apple-touch-icon" href="static/img/apple-touch-icon.png">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -61,26 +62,34 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Thuế TNCN 2026 tính như thế nào?",
+        "name": "Công cụ rà soát BCTC làm được gì?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Thuế TNCN 2026 áp dụng biểu lũy tiến 5 bậc: 5% (đến 120 triệu), 10% (120-360 triệu), 20% (360-720 triệu), 30% (720-1200 triệu), 35% (trên 1200 triệu). Giảm trừ bản thân 15,5 triệu/tháng từ 01/07/2026, người phụ thuộc 6,2 triệu/tháng."
+          "text": "Tải file Excel (.xlsx, .xls) hoặc Word (.docx) chứa báo cáo tài chính lên, công cụ tự kiểm tra các sai sót số liệu thường gặp rồi trả kết quả kèm nút xuất PDF và Word."
         }
       },
       {
         "@type": "Question",
-        "name": "Hộ kinh doanh dưới 1 tỷ đồng có phải nộp thuế không?",
+        "name": "File tải lên rà soát BCTC có bị lưu lại không?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Không. Theo NĐ 141/2026, hộ kinh doanh có doanh thu dưới 1 tỷ đồng/năm được miễn nộp thuế TNCN và GTGT. Tuy nhiên vẫn phải: (1) Đăng ký hộ kinh doanh, (2) Thông báo doanh thu theo TT 50/2026, (3) Lập sổ S1a-HKD."
+          "text": "Không. File chỉ dùng để rà soát ngay lúc đó, không lưu trữ. Mỗi file tối đa 10MB."
         }
       },
       {
         "@type": "Question",
-        "name": "Có nên đóng BHXH tự nguyện để giảm thuế TNCN?",
+        "name": "Dùng công cụ rà soát BCTC có mất phí không?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Đóng BHXH tự nguyện giúp giảm thu nhập tính thuế TNCN. Tổng tỷ lệ đóng BHXH NLĐ là 10.5% (8% BHXH + 1% BHTN + 1.5% BHYT) trên lương, được trừ trước khi tính TNCN."
+          "text": "Miễn phí toàn bộ. Chỉ cần đăng nhập Google một lần là dùng được ngay, không giới hạn số lần rà soát."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Rà soát BCTC xong nên đọc thêm gì?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Đọc kho bài viết của TADA để hiểu các lỗi BCTC hay gặp và cách sửa, hoặc tra thư viện văn bản khi cần đối chiếu quy định mới nhất."
         }
       }
     ]
@@ -91,9 +100,9 @@
   <link rel="preload" href="static/fonts/be-vietnam-pro-400-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="static/fonts/be-vietnam-pro-700-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="static/css/fonts.css" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="static/css/styles.css">
+  <link rel="stylesheet" href="static/css/styles.css?v=20261004">
   <link rel="stylesheet" href="static/css/tinh-thue.css">
-  <link rel="stylesheet" href="static/css/audit.css">
+  <link rel="stylesheet" href="static/css/audit.css?v=20261004b">
 </head>
 <body>
 
@@ -119,10 +128,10 @@
           <button type="button" class="nav-link dropdown-trigger">Công cụ ▾</button>
           <div class="dropdown-menu">
             <a href="/audit" class="dropdown-item active">
-              <span>Kiểm toán báo cáo tài chính</span>
+              <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="fill:none" aria-hidden="true"><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" /><path d="M9 14l2 2l4 -4" /></svg><span>Kiểm toán báo cáo tài chính</span>
             </a>
             <a href="/tinh-thue" class="dropdown-item active">
-              <span>Tính thuế</span>
+              <svg class="dropdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="fill:none" aria-hidden="true"><path d="M4 3m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M8 7m0 1a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1z" /><path d="M8 14l0 .01" /><path d="M12 14l0 .01" /><path d="M16 14l0 .01" /><path d="M8 17l0 .01" /><path d="M12 17l0 .01" /><path d="M16 17l0 .01" /></svg><span>Tính thuế</span>
             </a>
           </div>
         </div>
@@ -134,7 +143,7 @@
               Facebook
             </a>
             <a href="https://zalo.me/g/izers2awkn1hyqojzdfv" target="_blank" class="dropdown-item">
-              <img src="static/img/zalo.png" alt="Zalo" class="dropdown-icon-img" width="16" height="16">
+              <svg class="dropdown-icon" viewBox="0 7 24 10" style="width:22px;height:9px" aria-hidden="true"><path fill="currentColor" d="M12.49 10.2722v-.4496h1.3467v6.3218h-.7704a.576.576 0 01-.5763-.5729l-.0006.0005a3.273 3.273 0 01-1.9372.6321c-1.8138 0-3.2844-1.4697-3.2844-3.2823 0-1.8125 1.4706-3.2822 3.2844-3.2822a3.273 3.273 0 011.9372.6321l.0006.0005zM6.9188 7.7896v.205c0 .3823-.051.6944-.2995 1.0605l-.03.0343c-.0542.0615-.1815.206-.2421.2843L2.024 14.8h4.8948v.7682a.5764.5764 0 01-.5767.5761H0v-.3622c0-.4436.1102-.6414.2495-.8476L4.8582 9.23H.1922V7.7896h6.7266zm8.5513 8.3548a.4805.4805 0 01-.4803-.4798v-7.875h1.4416v8.3548H15.47zM20.6934 9.6C22.52 9.6 24 11.0807 24 12.9044c0 1.8252-1.4801 3.306-3.3066 3.306-1.8264 0-3.3066-1.4808-3.3066-3.306 0-1.8237 1.4802-3.3044 3.3066-3.3044zm-10.1412 5.253c1.0675 0 1.9324-.8645 1.9324-1.9312 0-1.065-.865-1.9295-1.9324-1.9295s-1.9324.8644-1.9324 1.9295c0 1.0667.865 1.9312 1.9324 1.9312zm10.1412-.0033c1.0737 0 1.945-.8707 1.945-1.9453 0-1.073-.8713-1.9436-1.945-1.9436-1.0753 0-1.945.8706-1.945 1.9436 0 1.0746.8697 1.9453 1.945 1.9453z"/></svg>
               Zalo Group
             </a>
             <a href="https://youtube.com/@dvthue-ketoan?si=mOWkMM8NzgrDLocv" target="_blank" class="dropdown-item">
@@ -194,6 +203,7 @@
       <div class="calc-hero-content">
         <h1 class="calc-hero-title">Rà soát <span class="text-accent">BCTC</span></h1>
         <p class="calc-hero-desc">Tải file Excel/Word · Phát hiện sai sót · Xuất PDF/Word miễn phí</p>
+        <p class="audit-intro">Công cụ rà soát báo cáo tài chính miễn phí của TADA: chỉ cần đăng nhập Google, tải file Excel hoặc Word của doanh nghiệp lên, hệ thống tự kiểm tra các sai sót thường gặp trong bảng cân đối, kết quả kinh doanh và lưu chuyển tiền tệ, rồi xuất kết quả gọn ra PDF hoặc Word. File của bác chỉ dùng để rà soát, không lưu trữ.</p>
       </div>
     </div>
   </section>
@@ -251,6 +261,31 @@
   </section>
 
   <!-- ==========================================
+       FAQ CHUAN SEO
+       ========================================== -->
+  <section class="calc-section" id="audit-faq">
+    <div class="container audit-faq">
+      <h2 class="section-title">❓ Câu hỏi thường gặp</h2>
+      <details>
+        <summary>Công cụ rà soát BCTC làm được gì?</summary>
+        <p class="audit-faq-a">Bác tải file Excel (.xlsx, .xls) hoặc Word (.docx) chứa báo cáo tài chính lên, công cụ tự kiểm tra các sai sót số liệu thường gặp rồi trả kết quả kèm nút xuất PDF và Word. Xem thêm cách tính các sắc thuế tại <a href="/tinh-thue">công cụ tính thuế</a>.</p>
+      </details>
+      <details>
+        <summary>File của em có bị lưu lại không?</summary>
+        <p class="audit-faq-a">Không. File chỉ dùng để rà soát ngay lúc đó, không lưu trữ. Mỗi file tối đa 10MB, bác tải được nhiều file một lúc.</p>
+      </details>
+      <details>
+        <summary>Dùng công cụ có mất phí không?</summary>
+        <p class="audit-faq-a">Miễn phí toàn bộ. Bác chỉ cần <a href="/audit">đăng nhập Google</a> một lần là dùng được ngay, không giới hạn số lần rà soát.</p>
+      </details>
+      <details>
+        <summary>Rà soát xong, bác đọc thêm gì?</summary>
+        <p class="audit-faq-a">Ghé <a href="/blog">kho bài viết</a> để hiểu các lỗi BCTC hay gặp và cách sửa, hoặc tra <a href="/thu-vien">thư viện văn bản</a> khi cần đối chiếu quy định mới nhất.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ==========================================
        FOOTER
        ========================================== -->
   <footer class="footer">
@@ -273,7 +308,7 @@
   <!-- ==========================================
        SCRIPTS
        ========================================== -->
-  <script src="static/js/app.js?v=20260925" defer></script>
+  <script src="static/js/app.js?v=20261004" defer></script>
   <script src="static/js/auth.js?v=20260925" defer></script>
   <script src="static/js/audit.js" defer></script>
 

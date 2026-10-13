@@ -289,6 +289,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-link {
   opacity: 0.92;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -472,11 +475,7 @@ h1, h2, h3, h4, h5, h6 {
   object-fit: contain;
   flex-shrink: 0;
 }
-/* Logo Zalo ve den trang dong bo 3 kenh con lai */
-.dropdown-icon-img[src*="zalo"],
-.social-icon-img[src*="zalo"] {
-  filter: grayscale(1) brightness(0);
-}
+/* Logo Zalo giu mau xanh thuong hieu (hien ro ca nen sang va nen toi) */
 .social-icon-img {
   width: 18px;
   height: 18px;
@@ -1529,7 +1528,6 @@ h1, h2, h3, h4, h5, h6 {
   .nav-dropdown .dropdown-trigger {
     background: none;
     border: none;
-    font: inherit;
     width: 100%;
     text-align: left;
     display: flex;

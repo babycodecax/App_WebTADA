@@ -311,21 +311,52 @@ document.addEventListener('DOMContentLoaded', () => {
     var API = window.LOCAL_API ? window.LOCAL_API : '';
     function set(id, n) {
       var el = document.getElementById(id);
-      if (el && typeof n === 'number') el.textContent = String(n);
+      if (!el || typeof n !== 'number') return;
+      el.classList.remove('stat-loading');
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        el.textContent = String(n);
+        return;
+      }
+      var dur = 1200, t0 = null;
+      function tick(ts) {
+        if (t0 === null) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        var e = 1 - Math.pow(1 - p, 3);
+        el.textContent = String(Math.round(n * e));
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
     }
-    fetch(API + '/api/blog?count=1', { cache: 'no-store' })
-      .then(function (r) { return r.json(); })
-      .then(function (d) { set('stat-posts', d && typeof d.total === 'number' ? d.total : undefined); })
-      .catch(function () {});
-    fetch(API + '/api/library?_t=' + Date.now(), { cache: 'no-store' })
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        if (!d) return;
+    function get(url) {
+      var timeout = new Promise(function (res) {
+        setTimeout(function () { res(null); }, 5000);
+      });
+      var req = fetch(url, { cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .catch(function () { return null; });
+      return Promise.race([req, timeout]);
+    }
+    function clearLoading(id) {
+      var el = document.getElementById(id);
+      if (el) el.classList.remove('stat-loading');
+    }
+    // Doi ca 2 API ve roi chay 3 so CUNG LUC (2026-10-04)
+    Promise.all([
+      get(API + '/api/blog?count=1'),
+      get(API + '/api/library?_t=' + Date.now())
+    ]).then(function (res) {
+      var b = res[0], d = res[1];
+      if (b && typeof b.total === 'number') set('stat-posts', b.total);
+      else clearLoading('stat-posts');
+      if (d) {
         var legal = d.legal_docs || d.legal_documents || [];
         set('stat-legal', legal.length);
         set('stat-forms', (d.forms || []).length);
-      })
-      .catch(function () {});
+      } else {
+        clearLoading('stat-legal');
+        clearLoading('stat-forms');
+      }
+    });
     };
     if ('requestIdleCallback' in window) {
       window.requestIdleCallback(run, { timeout: 3000 });

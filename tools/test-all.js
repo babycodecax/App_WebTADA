@@ -110,6 +110,7 @@ f = C.calculateForeignContractor({ grossRevenue: 200000000, contractorType: "sal
 check("NCNN luong 200M 2NPT tax>0", f.totalTax > 0 ? 1 : 0, 1);
 f = C.calculateForeignContractor({ grossRevenue: 100000000, contractorType: "salary", dependents: 1 });
 check("NCNN luong 100M 1NPT tax small", f.totalTax < 10000000 ? 1 : 0, 1);
+check("NCNN luong khong chiu GTGT", f.gtgt, 0);
 
 console.log("\n=== TO HOP ===");
 // Luong + TNDN

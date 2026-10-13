@@ -120,10 +120,13 @@
 @media (max-width: 991px) {
   .chatbox-col { width: 100%; }
 }
-}
 
 /* Trang audit: steps + dropzone (2026-09-24) */
-.audit-steps{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
+/* Mobile-first: mac dinh xep doc; desktop moi xep ngang (2026-10-04) */
+.audit-steps{display:flex;flex-direction:column;align-items:stretch;gap:8px;margin-bottom:16px}
+@media (min-width:641px){
+  .audit-steps{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:20px}
+}
 .audit-step{font-size:13px;color:var(--text-muted-dark);background:rgba(128,0,32,.05);border:1px solid var(--border-light);border-radius:999px;padding:6px 14px}
 .audit-step b{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--primary-burgundy);color:#fff;font-size:12px;margin-right:6px}
 .audit-dropzone{display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed rgba(128,0,32,.35);border-radius:16px;padding:36px 20px;cursor:pointer;background:#fff;transition:var(--transition-fast);text-align:center}
@@ -131,3 +134,23 @@
 .audit-dropzone-icon{font-size:36px}
 .audit-dropzone-title{font-size:17px;font-weight:700;color:var(--primary-burgundy)}
 .audit-dropzone-hint{font-size:13px;color:var(--text-muted-dark)}
+
+/* Mobile: chu buoc to de doc, dropzone gon (2026-10-04) */
+@media (max-width:640px){
+  .audit-step{font-size:14px;padding:10px 16px;border-radius:12px}
+  .audit-dropzone{padding:28px 16px;gap:10px}
+  .audit-dropzone-icon{font-size:32px}
+  .audit-dropzone-title{font-size:16px}
+}
+
+/* SEO: doan gioi thieu + FAQ dung details/summary (2026-10-04) */
+.audit-intro{max-width:760px;margin:14px auto 0;font-size:15px;line-height:1.75;color:var(--text-muted-dark)}
+.audit-faq{max-width:760px}
+.audit-faq .section-title{font-size:24px;margin-bottom:20px;text-align:center}
+.audit-faq details{background:#fff;border:1px solid var(--border-light);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.audit-faq summary{padding:14px 18px;font-weight:700;font-size:15px;cursor:pointer;list-style:none;color:var(--text-dark)}
+.audit-faq summary::-webkit-details-marker{display:none}
+.audit-faq summary::after{content:'+';float:right;color:#800020;font-weight:800}
+.audit-faq details[open] summary::after{content:'\2013'}
+.audit-faq-a{padding:0 18px 16px;font-size:14px;color:var(--text-muted-dark);line-height:1.7;margin:0}
+.audit-faq-a a{color:#800020;font-weight:600}

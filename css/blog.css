@@ -625,3 +625,40 @@
     padding-right: 12px !important;
   }
 }
+
+/* Ảnh biểu mẫu trong thân bài (demo 12/10/2026: mẫu 01/CNKD) */
+.blog-detail .content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.blog-detail .content figure {
+  margin: 20px 0;
+  text-align: center;
+}
+.blog-detail .content figcaption {
+  font-size: 13px;
+  color: #666;
+  margin-top: 8px;
+}
+/* Khung nền + bấm phóng to cho ảnh biểu mẫu (12/10/2026, tối ưu mobile) */
+.blog-detail .content figure.blog-figure {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 12px;
+}
+.blog-detail .content figure.blog-figure img {
+  cursor: zoom-in;
+}
+@media (max-width: 600px) {
+  .blog-detail .content figure.blog-figure {
+    padding: 8px;
+    margin-left: -4px;
+    margin-right: -4px;
+  }
+  .blog-detail .content figure.blog-figure figcaption {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
