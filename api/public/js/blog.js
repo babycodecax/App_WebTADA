@@ -55,69 +55,112 @@
   }
 
   /** Tìm bài viết liên quan: matching keyword từ title */
+  function relTokens(s) {
+    var stop = ['của', 'trong', 'với', 'cho', 'năm', 'các', 'có', 'theo', 'tại', 'từ', 'để', 'khi', 'nào', 'bao', 'nhiêu', 'làm', 'sao', 'thế', 'này', 'như', 'về', 'còn', 'đã', 'sẽ', 'đang', 'bị', 'không', 'những', 'một', 'ngày', 'tháng', 'đó', 'thì', 'là', 'và', 'người', 'được', 'càng', 'cũng', 'rất', 'hơn', 'hết', 'hay'];
+    return (s || '').toLowerCase().split(/[\s,.\-:;!?()]+/).filter(function (w) {
+      return w.length >= 3 && stop.indexOf(w) === -1;
+    });
+  }
+
+  function relTfIdf(docs) {
+    var df = {};
+    docs.forEach(function (d) {
+      var seen = {};
+      d.terms.forEach(function (t) {
+        if (!seen[t]) { seen[t] = 1; df[t] = (df[t] || 0) + 1; }
+      });
+    });
+    var N = Math.max(docs.length, 1);
+    var out = {};
+    docs.forEach(function (d) {
+      var tf = {};
+      d.terms.forEach(function (t) { tf[t] = (tf[t] || 0) + 1; });
+      var v = {};
+      for (var t in tf) {
+        v[t] = (1 + Math.log(tf[t])) * Math.log(1 + N / (1 + (df[t] || 0)));
+      }
+      out[d.slug] = v;
+    });
+    return out;
+  }
+
+  function relCos(a, b) {
+    var dot = 0, na = 0, nb = 0, t;
+    for (t in a) {
+      na += a[t] * a[t];
+      if (b[t]) dot += a[t] * b[t];
+    }
+    for (t in b) nb += b[t] * b[t];
+    return (na && nb) ? dot / (Math.sqrt(na) * Math.sqrt(nb)) : 0;
+  }
+
   function findRelated(currentSlug, currentTitle, allPosts, maxCount) {
     if (maxCount === undefined) maxCount = 3;
     var isService = (currentSlug || '').indexOf('dich-vu-') === 0;
     var now = Date.now();
-    // Extract meaningful keywords (≥ 3 ký tự) từ title hiện tại
-    var words = (currentTitle || '').toLowerCase().split(/[\s,.\-:;!?()]+/).filter(function (w) {
-      return w.length >= 3 && !['của', 'trong', 'với', 'cho', 'năm', 'các', 'có', 'theo', 'tại', 'từ', 'để', 'khi', 'nào', 'bao', 'nhiêu', 'làm', 'sao', 'thế', 'này', 'như', 'về', 'còn', 'đã', 'sẽ', 'đang', 'bị', 'không', 'những', 'một', 'ngày', 'tháng', 'đó', 'thì', 'là', 'và', 'người', 'được', 'càng', 'cũng', 'rất', 'hơn', 'hết', 'hay'].includes(w);
-    });
-    // Cụm 2 từ giữ nghĩa tiếng Việt (hóa đơn, bảo hiểm, khai thuế...) — điểm 3
-    var keywords = words.map(function (w) { return { t: w, w: 1 }; });
-    for (var i = 0; i < words.length - 1; i++) {
-      keywords.push({ t: words[i] + ' ' + words[i + 1], w: 3 });
-    }
-    // Tần suất từ trong ứng viên: từ hiếm ăn điểm cao, từ chung ăn điểm thấp
-    var texts = {};
-    var NN = 0;
-    allPosts.forEach(function (p) {
-      if (!p.slug || p.slug === currentSlug) return;
-      texts[p.slug] = ((p.title || '') + ' ' + (p.summary || '')).toLowerCase();
-      NN++;
-    });
-    if (NN < 1) NN = 1;
-    keywords.forEach(function (kw) {
-      var df = 0;
-      for (var k in texts) { if (texts[k].indexOf(kw.t) !== -1) df++; }
-      kw.w = kw.w * (1 + (NN - df) / NN);
-    });
-
-    // Score each post by keyword matches in title + summary
-    var scored = [];
-    allPosts.forEach(function (p) {
-      if (!p.slug || p.slug === currentSlug) return;
-      var text = texts[p.slug] || '';
-      var score = 0;
-      keywords.forEach(function (kw) {
-        if (text.includes(kw.t)) score += kw.w;
+    var cands = allPosts
+      .filter(function (p) { return p.slug && p.slug !== currentSlug; })
+      .sort(function (a, b) { return +new Date(b.published_at || 0) - +new Date(a.published_at || 0); })
+      .slice(0, 30);
+    if (!cands.length) return [];
+    var slugStop = ['cua', 'voi', 'cho', 'cac', 'theo', 'tai', 'den', 'khi', 'nao', 'lam', 'sao', 'nay', 've', 'con', 'dang', 'khong', 'nhung', 'mot', 'nam', 'thang'];
+    var termOf = function (p) {
+      var arr = relTokens(p.title).concat(relTokens(p.title), relTokens(p.title),
+        relTokens(p.summary), relTokens(p.summary),
+        relTokens((p.content || '').slice(0, 4000)).slice(0, 600));
+      (p.slug || '').split('-').forEach(function (s) {
+        if (s.length >= 3 && slugStop.indexOf(s) === -1) arr.push(s);
       });
-      // Trang dịch vụ ưu tiên dịch vụ khác (phễu chốt khách)
-      if (isService && (p.slug || '').indexOf('dich-vu-') === 0) score += 100;
-      // Bài mới (<60 ngày +1) nhích lên khi đồng điểm
+      return arr;
+    };
+    var curPost = { slug: currentSlug, title: currentTitle, summary: '', content: '' };
+    allPosts.forEach(function (p) {
+      if (p.slug === currentSlug) curPost = p;
+    });
+    var docs = [{ slug: currentSlug, terms: termOf(curPost).concat(relTokens(currentTitle)) }]
+      .concat(cands.map(function (p) { return { slug: p.slug, terms: termOf(p) }; }));
+    var vecs = relTfIdf(docs);
+    var curVec = vecs[currentSlug] || {};
+    var scored = cands.map(function (p) {
+      var s = relCos(curVec, vecs[p.slug] || {});
+      if (isService && (p.slug || '').indexOf('dich-vu-') === 0) s += 0.5;
       if (p.published_at) {
         var age = (now - new Date(p.published_at).getTime()) / 86400000;
-        if (age >= 0 && age <= 60) score += 1;
+        if (age >= 0 && age <= 60) s += 0.02;
       }
-      if (score > 0) scored.push({ post: p, score: score });
+      return { slug: p.slug, s: s };
     });
-
-    scored.sort(function (a, b) {
-      if (b.score !== a.score) return b.score - a.score;
-      return +new Date(b.post.published_at || 0) - +new Date(a.post.published_at || 0);
+    var pool = scored.sort(function (a, b) { return b.s - a.s; }).slice(0, 12);
+    var picked = [];
+    while (picked.length < maxCount && pool.length) {
+      var best = -1, bestVal = -Infinity;
+      for (var i = 0; i < pool.length; i++) {
+        var div = 0;
+        picked.forEach(function (q) {
+          var d = relCos(vecs[pool[i].slug] || {}, vecs[q] || {});
+          if (d > div) div = d;
+        });
+        var mmr = 0.7 * pool[i].s - 0.3 * div;
+        if (mmr > bestVal) { bestVal = mmr; best = i; }
+      }
+      picked.push(pool[best].slug);
+      pool.splice(best, 1);
+    }
+    var posts = [];
+    picked.forEach(function (s) {
+      for (var j = 0; j < cands.length; j++) {
+        if (cands[j].slug === s) { posts.push(cands[j]); break; }
+      }
     });
-    var picked = scored.slice(0, maxCount).map(function (s) { return s.post; });
-    // Trang dịch vụ: bốc thêm dịch vụ khác nếu thiếu
-    if (isService && picked.length < maxCount) {
-      allPosts.forEach(function (pp) {
-        if (picked.length >= maxCount) return;
-        if (!pp.slug || pp.slug === currentSlug) return;
-        var dup = picked.some(function (x) { return x.slug === pp.slug; });
-        if (pp.slug.indexOf('dich-vu-') === 0 && !dup) picked.push(pp);
+    if (isService && posts.length < maxCount) {
+      cands.forEach(function (pp) {
+        if (posts.length >= maxCount) return;
+        var dup = posts.some(function (x) { return x.slug === pp.slug; });
+        if (pp.slug.indexOf('dich-vu-') === 0 && !dup) posts.push(pp);
       });
     }
-    if (picked.length > 0) return picked;
-    return allPosts.filter(function (p) { return p.slug && p.slug !== currentSlug; }).slice(0, maxCount);
+    if (posts.length) return posts;
+    return cands.slice(0, maxCount);
   }
 
   /** Render danh sách bài viết liên quan */

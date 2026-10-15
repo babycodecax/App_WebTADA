@@ -44,7 +44,19 @@ const RELATED_STOPWORDS = new Set([
   'hơn', 'hết', 'hay',
 ]);
 
-type RelatedPost = { slug: string; title: string; summary: string | null; published_at?: string | null };
+/** Stopwords khong dau cho doan slug (parity client blog.js) */
+const SLUG_STOPWORDS = new Set([
+  'cua', 'voi', 'cho', 'cac', 'theo', 'tai', 'den', 'khi', 'nao', 'lam',
+  'sao', 'nay', 've', 'con', 'dang', 'khong', 'nhung', 'mot', 'nam', 'thang',
+]);
+
+type RelatedPost = {
+  slug: string;
+  title: string;
+  summary: string | null;
+  content?: string | null;
+  published_at?: string | null;
+};
 
 /** Ngày gọn cho thẻ liên quan: 15/10/2026 */
 function relDate(iso: string | null | undefined): string {
@@ -54,77 +66,145 @@ function relDate(iso: string | null | undefined): string {
   return `${dd.getDate()}/${dd.getMonth() + 1}/${dd.getFullYear()}`;
 }
 
+/** Tách từ tiếng Việt: giữ từ ≥3 ký tự, bỏ stopwords */
+function relTokens(s: string | null | undefined): string[] {
+  return (s || '')
+    .toLowerCase()
+    .split(/[\s,.\-:;!?()]+/)
+    .filter((w) => w.length >= 3 && !RELATED_STOPWORDS.has(w));
+}
+
 /**
- * Chọn tối đa 3 bài liên quan theo keyword overlap title+summary.
- * Không có điểm nào khớp → fallback bài mới nhất (vẫn đảm bảo internal links).
+ * Chọn tối đa 3 bài liên quan bằng TF-IDF cosine + MMR.
+ * - Vector: tiêu đề ×3 + tóm tắt ×2 + nội dung ×1 + đoạn slug (giữ chủ đề).
+ * - TF-IDF: từ hiếm ăn điểm cao → các trang gợi ý đỡ giống nhau.
+ * - MMR (λ=0.7): trừ điểm tương đồng với bài đã chọn → 3 bài đa dạng.
+ * - Trang dịch vụ: cộng điểm dịch vụ khác (phễu chốt khách).
+ * Mirror logic trong api/public/js/blog.js (client fallback).
  */
+const REL_LAMBDA = 0.7;
+
+function relTfIdf(
+  docs: { slug: string; terms: string[] }[]
+): Map<string, Map<string, number>> {
+  const df = new Map<string, number>();
+  for (const d of docs) {
+    for (const t of new Set(d.terms)) {
+      df.set(t, (df.get(t) || 0) + 1);
+    }
+  }
+  const N = Math.max(docs.length, 1);
+  const out = new Map<string, Map<string, number>>();
+  for (const d of docs) {
+    const tf = new Map<string, number>();
+    for (const t of d.terms) tf.set(t, (tf.get(t) || 0) + 1);
+    const v = new Map<string, number>();
+    for (const [t, c] of tf) {
+      v.set(t, (1 + Math.log(c)) * Math.log(1 + N / (1 + (df.get(t) || 0))));
+    }
+    out.set(d.slug, v);
+  }
+  return out;
+}
+
+function relCos(
+  a: Map<string, number>,
+  b: Map<string, number>
+): number {
+  let dot = 0;
+  let na = 0;
+  let nb = 0;
+  for (const [t, va] of a) {
+    na += va * va;
+    const vb = b.get(t);
+    if (vb) dot += va * vb;
+  }
+  for (const vb of b.values()) nb += vb * vb;
+  return na && nb ? dot / (Math.sqrt(na) * Math.sqrt(nb)) : 0;
+}
+
 function pickRelated(
   all: RelatedPost[],
   currentSlug: string,
   currentTitle: string,
-  maxCount = 3
+  maxCount = 3,
+  curExtra: { summary?: string | null; content?: string | null } | null = null
 ): RelatedPost[] {
-  const words = (currentTitle || '')
-    .toLowerCase()
-    .split(/[\s,.\-:;!?()]+/)
-    .filter((w) => w.length >= 3 && !RELATED_STOPWORDS.has(w));
-  // Cụm 2 từ giữ nghĩa tiếng Việt (hóa đơn, bảo hiểm, khai thuế...)
-  const keywords: { t: string; w: number }[] = words.map((w) => ({ t: w, w: 1 }));
-  for (let i = 0; i < words.length - 1; i++) {
-    keywords.push({ t: words[i] + ' ' + words[i + 1], w: 3 });
-  }
   const isService = currentSlug.startsWith('dich-vu-');
   const now = Date.now();
-  // Tần suất từ trong ứng viên: từ hiếm (phân biệt) ăn điểm cao, từ chung
-  // (thuế, kinh doanh, 2026) ăn điểm thấp → các bài gợi ý đỡ giống nhau
-  const texts = new Map<string, string>();
-  for (const p of all) {
-    if (!p.slug || p.slug === currentSlug) continue;
-    texts.set(p.slug, `${p.title || ''} ${p.summary || ''}`.toLowerCase());
-  }
-  const N = Math.max(texts.size, 1);
-  for (const kw of keywords) {
-    let df = 0;
-    for (const t of texts.values()) {
-      if (t.includes(kw.t)) df++;
-    }
-    kw.w = kw.w * (1 + (N - df) / N);
-  }
-  const scored: { post: RelatedPost; score: number }[] = [];
-  for (const p of all) {
-    if (!p.slug || p.slug === currentSlug) continue;
-    const text = texts.get(p.slug) || '';
-    let score = 0;
-    for (const kw of keywords) {
-      if (text.includes(kw.t)) score += kw.w;
-    }
-    // Trang dịch vụ ưu tiên dịch vụ khác (phễu chốt khách, không gợi tin tức)
-    if (isService && p.slug.startsWith('dich-vu-')) score += 100;
-    // Bài mới (<60 ngày +1) nhích lên khi đồng điểm (yếu hơn độ trùng chủ đề)
+  const cands = all.filter((p) => p.slug && p.slug !== currentSlug);
+  if (cands.length === 0) return [];
+  const termOf = (p: RelatedPost): string[] => [
+    ...relTokens(p.title),
+    ...relTokens(p.title),
+    ...relTokens(p.title),
+    ...relTokens(p.summary),
+    ...relTokens(p.summary),
+    ...relTokens((p.content || '').slice(0, 4000)).slice(0, 600),
+    ...(p.slug || '')
+      .split('-')
+      .filter(
+        (s) =>
+          s.length >= 3 &&
+          !RELATED_STOPWORDS.has(s) &&
+          !SLUG_STOPWORDS.has(s)
+      ),
+  ];
+  const docs = [
+    { slug: currentSlug, terms: [...termOf({ slug: currentSlug, title: currentTitle, summary: (curExtra && curExtra.summary) || null, content: (curExtra && curExtra.content) || null }), ...relTokens(currentTitle)] },
+    ...cands.map((p) => ({ slug: p.slug, terms: termOf(p) })),
+  ];
+  const vecs = relTfIdf(docs);
+  const curVec = vecs.get(currentSlug) || new Map<string, number>();
+  const scored: { slug: string; s: number }[] = cands.map((p) => {
+    let s = relCos(curVec, vecs.get(p.slug) || new Map<string, number>());
+    if (isService && p.slug.startsWith('dich-vu-')) s += 0.5;
     if (p.published_at) {
       const age = (now - new Date(p.published_at).getTime()) / 86400000;
-      if (age >= 0 && age <= 60) score += 1;
+      if (age >= 0 && age <= 60) s += 0.02;
     }
-    if (score > 0) scored.push({ post: p, score });
+    return { slug: p.slug, s };
+  });
+  // MMR trên pool 12 điểm cao nhất
+  const pool = scored.sort((a, b) => b.s - a.s).slice(0, 12);
+  const picked: string[] = [];
+  while (picked.length < maxCount && pool.length > 0) {
+    let best = -1;
+    let bestVal = -Infinity;
+    for (let i = 0; i < pool.length; i++) {
+      const div = picked.length
+        ? Math.max(
+            ...picked.map((q) =>
+              relCos(
+                vecs.get(pool[i].slug) || new Map<string, number>(),
+                vecs.get(q) || new Map<string, number>()
+              )
+            )
+          )
+        : 0;
+      const mmr = REL_LAMBDA * pool[i].s - (1 - REL_LAMBDA) * div;
+      if (mmr > bestVal) {
+        bestVal = mmr;
+        best = i;
+      }
+    }
+    picked.push(pool[best].slug);
+    pool.splice(best, 1);
   }
-  scored.sort(
-    (a, b) =>
-      b.score - a.score ||
-      +new Date(b.post.published_at || 0) - +new Date(a.post.published_at || 0)
-  );
-  const picked = scored.slice(0, maxCount).map((s) => s.post);
+  let posts = picked
+    .map((s) => cands.find((p) => p.slug === s))
+    .filter((p): p is RelatedPost => !!p);
   // Trang dịch vụ: bốc thêm dịch vụ khác nếu thiếu (mirror client blog.js)
-  if (isService && picked.length < maxCount) {
-    for (const p of all) {
-      if (picked.length >= maxCount) break;
-      if (!p.slug || p.slug === currentSlug) continue;
-      if (p.slug.startsWith('dich-vu-') && !picked.some((x) => x.slug === p.slug)) {
-        picked.push(p);
+  if (isService && posts.length < maxCount) {
+    for (const p of cands) {
+      if (posts.length >= maxCount) break;
+      if (p.slug.startsWith('dich-vu-') && !posts.some((x) => x.slug === p.slug)) {
+        posts.push(p);
       }
     }
   }
-  if (picked.length > 0) return picked;
-  return all.filter((p) => p.slug && p.slug !== currentSlug).slice(0, maxCount);
+  if (posts.length > 0) return posts;
+  return cands.slice(0, maxCount);
 }
 
 /**
@@ -332,14 +412,16 @@ export async function GET(
         try {
           const { data: allPosts } = await client
             .from('blog_posts')
-            .select('slug, title, summary, published_at')
+            .select('slug, title, summary, content, published_at')
             .eq('status', 'published')
             .order('published_at', { ascending: false })
             .limit(30);
           const related = pickRelated(
             (allPosts || []) as RelatedPost[],
             slug,
-            post.title || ''
+            post.title || '',
+            3,
+            { summary: post.summary, content: post.content }
           );
           if (related.length > 0) {
             const cards = related
