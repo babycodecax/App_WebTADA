@@ -122,9 +122,6 @@
         '</a>';
     });
     html += '</div></div>';
-    if (slug && slug.indexOf('dich-vu-') === 0) {
-      html += '<a href="https://zalo.me/0986424286" target="_blank" rel="noopener" class="btn btn-primary blog-related-cta">Nhận báo giá qua Zalo</a>';
-    }
     container.insertAdjacentHTML('beforeend', html);
   }
 

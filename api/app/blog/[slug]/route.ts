@@ -332,13 +332,9 @@ export async function GET(
                   `</a>`
               )
               .join('');
-            // Trang dịch vụ: thêm nút Zalo chốt khách dưới lưới related
-            const cta = slug.startsWith('dich-vu-')
-              ? `<a href="https://zalo.me/0986424286" target="_blank" rel="noopener" class="btn btn-primary blog-related-cta">Nhận báo giá qua Zalo</a>`
-              : '';
             const relatedNav =
               `<nav class="blog-related" id="ssr-related" aria-label="Bài viết liên quan">` +
-              `<h2>Bài viết liên quan</h2><div class="blog-related-grid">${cards}</div>${cta}</nav>`;
+              `<h2>Bài viết liên quan</h2><div class="blog-related-grid">${cards}</div></nav>`;
             html = html.replace('</main>', `${relatedNav}\n</main>`);
           }
         } catch {
