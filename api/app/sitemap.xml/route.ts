@@ -26,6 +26,8 @@ export async function GET(_req: NextRequest) {
     `  <url><loc>${SITE}/tinh-thue</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
     `  <url><loc>${SITE}/privacy</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>`,
     `  <url><loc>${SITE}/terms</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>`,
+    `  <url><loc>${SITE}/dich-vu-vinh</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>`,
+    `  <url><loc>${SITE}/gioi-thieu</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`,
   ];
 
   try {

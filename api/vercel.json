@@ -9,6 +9,8 @@
     { "source": "/terms", "destination": "/terms.html" },
     { "source": "/tinh-thue", "destination": "/tinh-thue.html" },
     { "source": "/audit", "destination": "/audit.html" },
+    { "source": "/dich-vu-vinh", "destination": "/dich-vu-vinh.html" },
+    { "source": "/gioi-thieu", "destination": "/gioi-thieu.html" },
     { "source": "/api/:path*", "destination": "/api/:path*" }
   ],
   "cleanUrls": true
