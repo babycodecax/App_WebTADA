@@ -68,23 +68,36 @@
     for (var i = 0; i < words.length - 1; i++) {
       keywords.push({ t: words[i] + ' ' + words[i + 1], w: 3 });
     }
+    // Tần suất từ trong ứng viên: từ hiếm ăn điểm cao, từ chung ăn điểm thấp
+    var texts = {};
+    var NN = 0;
+    allPosts.forEach(function (p) {
+      if (!p.slug || p.slug === currentSlug) return;
+      texts[p.slug] = ((p.title || '') + ' ' + (p.summary || '')).toLowerCase();
+      NN++;
+    });
+    if (NN < 1) NN = 1;
+    keywords.forEach(function (kw) {
+      var df = 0;
+      for (var k in texts) { if (texts[k].indexOf(kw.t) !== -1) df++; }
+      kw.w = kw.w * (1 + (NN - df) / NN);
+    });
 
     // Score each post by keyword matches in title + summary
     var scored = [];
     allPosts.forEach(function (p) {
       if (!p.slug || p.slug === currentSlug) return;
-      var text = ((p.title || '') + ' ' + (p.summary || '')).toLowerCase();
+      var text = texts[p.slug] || '';
       var score = 0;
       keywords.forEach(function (kw) {
         if (text.includes(kw.t)) score += kw.w;
       });
       // Trang dịch vụ ưu tiên dịch vụ khác (phễu chốt khách)
       if (isService && (p.slug || '').indexOf('dich-vu-') === 0) score += 100;
-      // Bài mới (<90 ngày +2, <180 ngày +1) lên trước bài cũ cùng điểm
+      // Bài mới (<60 ngày +1) nhích lên khi đồng điểm
       if (p.published_at) {
         var age = (now - new Date(p.published_at).getTime()) / 86400000;
-        if (age >= 0 && age <= 90) score += 2;
-        else if (age > 90 && age <= 180) score += 1;
+        if (age >= 0 && age <= 60) score += 1;
       }
       if (score > 0) scored.push({ post: p, score: score });
     });

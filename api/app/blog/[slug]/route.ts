@@ -75,21 +75,35 @@ function pickRelated(
   }
   const isService = currentSlug.startsWith('dich-vu-');
   const now = Date.now();
+  // Tần suất từ trong ứng viên: từ hiếm (phân biệt) ăn điểm cao, từ chung
+  // (thuế, kinh doanh, 2026) ăn điểm thấp → các bài gợi ý đỡ giống nhau
+  const texts = new Map<string, string>();
+  for (const p of all) {
+    if (!p.slug || p.slug === currentSlug) continue;
+    texts.set(p.slug, `${p.title || ''} ${p.summary || ''}`.toLowerCase());
+  }
+  const N = Math.max(texts.size, 1);
+  for (const kw of keywords) {
+    let df = 0;
+    for (const t of texts.values()) {
+      if (t.includes(kw.t)) df++;
+    }
+    kw.w = kw.w * (1 + (N - df) / N);
+  }
   const scored: { post: RelatedPost; score: number }[] = [];
   for (const p of all) {
     if (!p.slug || p.slug === currentSlug) continue;
-    const text = `${p.title || ''} ${p.summary || ''}`.toLowerCase();
+    const text = texts.get(p.slug) || '';
     let score = 0;
     for (const kw of keywords) {
       if (text.includes(kw.t)) score += kw.w;
     }
     // Trang dịch vụ ưu tiên dịch vụ khác (phễu chốt khách, không gợi tin tức)
     if (isService && p.slug.startsWith('dich-vu-')) score += 100;
-    // Bài mới (<90 ngày +2, <180 ngày +1) lên trước bài cũ cùng điểm
+    // Bài mới (<60 ngày +1) nhích lên khi đồng điểm (yếu hơn độ trùng chủ đề)
     if (p.published_at) {
       const age = (now - new Date(p.published_at).getTime()) / 86400000;
-      if (age >= 0 && age <= 90) score += 2;
-      else if (age > 90 && age <= 180) score += 1;
+      if (age >= 0 && age <= 60) score += 1;
     }
     if (score > 0) scored.push({ post: p, score });
   }
