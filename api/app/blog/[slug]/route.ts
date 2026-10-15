@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readFile } from 'fs/promises';
 import path from 'path';
+import { marked } from 'marked';
 import { getSupabase } from '@/lib/supabase';
 
 export const runtime = 'nodejs';
@@ -23,6 +24,15 @@ function esc(s: string): string {
 /** Escape JSON string cho safe insertion vào <script> tag — tránh </script> injection */
 function escJson(s: string): string {
   return s.replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
+}
+
+/** Sanitize tối thiểu HTML từ marked trước khi SSR (content từ DB, không tin blind) */
+function sanitizeSsrHtml(h: string): string {
+  return h
+    .replace(/<script[\s\S]*?<\/script\s*>/gi, '')
+    .replace(/<iframe[\s\S]*?<\/iframe\s*>/gi, '')
+    .replace(/\son\w+\s*=\s*(['"]).*?\1/gi, '')
+    .replace(/javascript\s*:/gi, '');
 }
 
 /** Stopwords khi chấm điểm bài liên quan (mirror blog.js findRelated) */
@@ -295,6 +305,38 @@ export async function GET(
           }
         } catch {
           // Related lỗi → trang vẫn trả bình thường (client render bù bằng JS)
+        }
+        // 7) SSR toàn bộ nội dung bài viết vào #blog-grid (thay placeholder
+        //    "Đang tải...") để bot KHÔNG chạy JS (OAI-SearchBot, PerplexityBot,
+        //    CCBot) vẫn đọc được full text → điều kiện cần để AI dẫn nguồn.
+        //    Client blog.js renderDetail ghi đè grid bằng JS nên người dùng
+        //    không thấy trùng. Giữ cấu trúc giống client (article+h1+meta).
+        try {
+          const md = (post.content || '').replace(/^\s*#[^\n]*\n/, '');
+          const raw = String(
+            await marked.parse(md, { breaks: true, gfm: true })
+          );
+          const bodyHtml = sanitizeSsrHtml(raw);
+          const fmtDate = (iso: string) => {
+            if (!iso) return '';
+            const dd = new Date(iso);
+            if (isNaN(+dd)) return '';
+            return `ngày ${dd.getDate()}/${dd.getMonth() + 1}/${dd.getFullYear()}`;
+          };
+          const article =
+            `<article class="blog-detail" id="ssr-article">` +
+            `<a href="/blog" class="blog-detail-back">← Quay lại danh sách</a>` +
+            `<h1>${title}</h1>` +
+            `<div class="meta">Đăng ${esc(fmtDate(pubDate))} bởi ${author}</div>` +
+            `<div class="content">${bodyHtml}</div></article>`;
+          const next = html.replace(
+            /<div class="blog-loading">[\s\S]*?<\/div>/,
+            article
+          );
+          if (next !== html) html = next;
+          else console.error('[SSR-blog] placeholder mismatch:', slug);
+        } catch {
+          // Markdown lỗi → giữ placeholder, client render bù bằng JS
         }
       } else {
         // Slug không tìm thấy trong DB → thử redirect 301 về slug mới
