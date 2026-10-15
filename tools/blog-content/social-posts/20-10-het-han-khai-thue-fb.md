@@ -6,7 +6,7 @@ Nhiều bác mắc bẫy nộp tờ khai rồi quên nộp tiền, tưởng th�
 
 Lịch 5 ngày của em thế này. Hai hôm nay chốt doanh thu tháng 9, đối chiếu hóa đơn bán ra với sổ bán hàng, thiếu tờ nào xuất bù ngay. Ngày 17 chốt hóa đơn mua vào và bảng lương tháng 9. Ngày 18 lập tờ khai nháp nhưng chưa nộp vội, để qua đêm sáng 19 soát lại rồi nộp chính thức. Ngày 20 nộp tiền và giữ biên lai. Làm đúng nhịp này thì không bao giờ trễ.
 
-Em tính sẵn để các bác thấy xót. Công ty nợ 100 triệu tiền thuế mà nộp muộn 10 ngày thì lãi 300 nghìn cộng phạt tờ khai 2 triệu, tổng 2,3 triệu cho 10 ngày chần chừ. Hộ cá nhân thì phạt tờ khai 1 triệu, tổng 1,3 triệu. Số tiền này đủ trả tiền mạng cả năm cho quán, nên đừng nghĩ trễ vài ngày không sao.
+Em tính sẵn để các bác thấy xót. Nợ 100 triệu tiền thuế mà nộp muộn 10 ngày thì lãi 300 nghìn cộng phạt chậm tờ khai từ 1 tới 2 triệu, tổng từ 1,3 tới 2,3 triệu cho 10 ngày chần chừ. Số tiền này đủ trả tiền mạng cả năm cho quán, nên đừng nghĩ trễ vài ngày không sao.
 
 Tháng 9 này cần soi kỹ hơn mọi tháng vì nhiều hộ mới vượt mốc 1 tỷ, chuyển sang kê khai lần đầu sau khi bỏ thuế khoán. Lôi tờ khai tháng 8 ra đặt cạnh, dòng nào tăng đột biến thì kiểm tra hóa đơn tương ứng có đủ không. Hóa đơn bán ra tháng 9 chưa xuất thì xuất ngay tuần này, để sang tháng 10 mới xuất là sai thời điểm, bị phạt riêng một khoản nữa.
 

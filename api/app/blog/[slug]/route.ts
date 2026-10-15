@@ -43,7 +43,15 @@ const RELATED_STOPWORDS = new Set([
   'tháng', 'đó', 'thì',
 ]);
 
-type RelatedPost = { slug: string; title: string; summary: string | null };
+type RelatedPost = { slug: string; title: string; summary: string | null; published_at?: string | null };
+
+/** Ngày gọn cho thẻ liên quan: 15/10/2026 */
+function relDate(iso: string | null | undefined): string {
+  if (!iso) return '';
+  const dd = new Date(iso);
+  if (isNaN(+dd)) return '';
+  return `${dd.getDate()}/${dd.getMonth() + 1}/${dd.getFullYear()}`;
+}
 
 /**
  * Chọn tối đa 4 bài liên quan theo keyword overlap title+summary.
@@ -59,6 +67,8 @@ function pickRelated(
     .toLowerCase()
     .split(/[\s,.\-:;!?()]+/)
     .filter((w) => w.length >= 5 && !RELATED_STOPWORDS.has(w));
+  const isService = currentSlug.startsWith('dich-vu-');
+  const now = Date.now();
   const scored: { post: RelatedPost; score: number }[] = [];
   for (const p of all) {
     if (!p.slug || p.slug === currentSlug) continue;
@@ -67,10 +77,33 @@ function pickRelated(
     for (const kw of keywords) {
       if (text.includes(kw)) score++;
     }
+    // Trang dịch vụ ưu tiên dịch vụ khác (phễu chốt khách, không gợi tin tức)
+    if (isService && p.slug.startsWith('dich-vu-')) score += 100;
+    // Bài mới (<90 ngày +2, <180 ngày +1) lên trước bài cũ cùng điểm
+    if (p.published_at) {
+      const age = (now - new Date(p.published_at).getTime()) / 86400000;
+      if (age >= 0 && age <= 90) score += 2;
+      else if (age > 90 && age <= 180) score += 1;
+    }
     if (score > 0) scored.push({ post: p, score });
   }
-  scored.sort((a, b) => b.score - a.score);
-  if (scored.length > 0) return scored.slice(0, maxCount).map((s) => s.post);
+  scored.sort(
+    (a, b) =>
+      b.score - a.score ||
+      +new Date(b.post.published_at || 0) - +new Date(a.post.published_at || 0)
+  );
+  const picked = scored.slice(0, maxCount).map((s) => s.post);
+  // Trang dịch vụ: bốc thêm dịch vụ khác nếu thiếu (mirror client blog.js)
+  if (isService && picked.length < maxCount) {
+    for (const p of all) {
+      if (picked.length >= maxCount) break;
+      if (!p.slug || p.slug === currentSlug) continue;
+      if (p.slug.startsWith('dich-vu-') && !picked.some((x) => x.slug === p.slug)) {
+        picked.push(p);
+      }
+    }
+  }
+  if (picked.length > 0) return picked;
   return all.filter((p) => p.slug && p.slug !== currentSlug).slice(0, maxCount);
 }
 
@@ -279,7 +312,7 @@ export async function GET(
         try {
           const { data: allPosts } = await client
             .from('blog_posts')
-            .select('slug, title, summary')
+            .select('slug, title, summary, published_at')
             .eq('status', 'published')
             .order('published_at', { ascending: false })
             .limit(30);
@@ -294,13 +327,18 @@ export async function GET(
                 (p) =>
                   `<a href="/blog/${esc(p.slug)}" class="blog-related-card">` +
                   `<h3>${esc(p.title || '')}</h3>` +
+                  (p.published_at ? `<span class="blog-related-date">Đăng ${esc(relDate(p.published_at))}</span>` : '') +
                   (p.summary ? `<p>${esc(p.summary.slice(0, 100))}</p>` : '') +
                   `</a>`
               )
               .join('');
+            // Trang dịch vụ: thêm nút Zalo chốt khách dưới lưới related
+            const cta = slug.startsWith('dich-vu-')
+              ? `<a href="https://zalo.me/0986424286" target="_blank" rel="noopener" class="btn btn-primary blog-related-cta">Nhận báo giá qua Zalo</a>`
+              : '';
             const relatedNav =
               `<nav class="blog-related" id="ssr-related" aria-label="Bài viết liên quan">` +
-              `<h2>Bài viết liên quan</h2><div class="blog-related-grid">${cards}</div></nav>`;
+              `<h2>Bài viết liên quan</h2><div class="blog-related-grid">${cards}</div>${cta}</nav>`;
             html = html.replace('</main>', `${relatedNav}\n</main>`);
           }
         } catch {

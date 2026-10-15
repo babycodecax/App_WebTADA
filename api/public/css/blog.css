@@ -585,6 +585,16 @@
   margin: 0;
   line-height: 1.3;
 }
+.blog-related-date {
+  display: block;
+  font-size: 11px;
+  color: #9ca3af;
+  margin: 2px 0 4px;
+}
+.blog-related-cta {
+  display: inline-block;
+  margin-top: 14px;
+}
 
 @media (max-width: 768px) {
   .blog-header h1 { font-size: 28px; }

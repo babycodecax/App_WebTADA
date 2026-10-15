@@ -19,7 +19,7 @@ Không phải quán nào cũng khai tháng. Diện khai tháng là công ty có 
 
 ## Trễ 1 ngày mất bao nhiêu tiền?
 
-Cái này nhiều bác nhầm nên em ghi rõ thành 2 khoản riêng. Khoản một là phạt chậm nộp tờ khai: tổ chức 2 triệu một lần, cá nhân 1 triệu một lần theo bảng phạt trong kho kiến thức của em. Khoản hai là tiền chậm nộp tính trên số thuế chưa nộp: 0,03% mỗi ngày từ ngày hết hạn tới ngày nộp thực tế. Ví dụ nợ 100 triệu mà trễ 10 ngày là mất thêm 300 nghìn tiền lãi, chưa kể tiền phạt tờ khai. Hai khoản này cộng dồn chứ không thay thế nhau, nên trễ càng lâu càng đau.
+Cái này nhiều bác nhầm nên em ghi rõ thành 2 khoản riêng. Khoản một là phạt chậm nộp tờ khai: 1 tới 2 triệu một lần theo Nghị định 310 có hiệu lực từ đầu năm nay, không còn chia tổ chức hay cá nhân như trước. Khoản hai là tiền chậm nộp tính trên số thuế chưa nộp: 0,03% mỗi ngày từ ngày hết hạn tới ngày nộp thực tế. Ví dụ nợ 100 triệu mà trễ 10 ngày là mất thêm 300 nghìn tiền lãi, chưa kể tiền phạt tờ khai. Hai khoản này cộng dồn chứ không thay thế nhau, nên trễ càng lâu càng đau.
 
 ## Checklist 5 ngày cuối: mỗi ngày làm một việc
 
@@ -31,11 +31,11 @@ Bẫy đầu là nộp tờ khai rồi quên nộp tiền, tưởng nộp tờ k
 
 ## Công ty và hộ kinh doanh khác nhau chỗ nào trong hạn này?
 
-Công ty khai tháng thì tờ khai GTGT và TNCN khấu trừ đều về hạn 20/10, kế toán phải chốt cả 2 bộ số liệu cùng lúc. Hộ kinh doanh khai tháng ít hơn nhưng ai dính thì nghĩa vụ cũng y hệt: tờ khai và tiền thuế cùng một hạn. Điểm khác duy nhất nằm ở mức phạt tờ khai, tổ chức 2 triệu còn cá nhân 1 triệu. Còn lãi chậm nộp 0,03% thì áp như nhau, không phân biệt to nhỏ. Nên quán nhỏ đừng nghĩ mình nhỏ thì được du di, hệ thống tính lãi tự động chứ không có ai ngồi xét hoàn cảnh.
+Công ty khai tháng thì tờ khai GTGT và TNCN khấu trừ đều về hạn 20/10, kế toán phải chốt cả 2 bộ số liệu cùng lúc. Hộ kinh doanh khai tháng ít hơn nhưng ai dính thì nghĩa vụ cũng y hệt: tờ khai và tiền thuế cùng một hạn. Điểm khác nằm ở quy mô số thuế phải nộp chứ khung phạt tờ khai giờ áp chung 1 tới 2 triệu một lần cho mọi đối tượng. Còn lãi chậm nộp 0,03% thì áp như nhau, không phân biệt to nhỏ. Nên quán nhỏ đừng nghĩ mình nhỏ thì được du di, hệ thống tính lãi tự động chứ không có ai ngồi xét hoàn cảnh.
 
 ## Ví dụ cụ thể: trễ 10 ngày mất bao nhiêu tiền?
 
-Em tính sẵn cho một công ty nợ 100 triệu tiền thuế kỳ tháng 9 mà nộp vào 30/10 thay vì 20/10. Tiền lãi chậm nộp là 100 triệu nhân 0,03% nhân 10 ngày, bằng 300 nghìn. Tiền phạt chậm tờ khai là 2 triệu vì là tổ chức. Tổng cộng mất 2,3 triệu cho 10 ngày chần chừ. Nếu là hộ kinh doanh cá nhân thì phạt tờ khai 1 triệu, tổng 1,3 triệu. Con số này đủ để nhiều quán trả tiền mạng cả năm, nên đừng bao giờ nghĩ trễ vài ngày không sao.
+Em tính sẵn cho một công ty nợ 100 triệu tiền thuế kỳ tháng 9 mà nộp vào 30/10 thay vì 20/10. Tiền lãi chậm nộp là 100 triệu nhân 0,03% nhân 10 ngày, bằng 300 nghìn. Tiền phạt chậm tờ khai từ 1 tới 2 triệu. Tổng cộng mất từ 1,3 tới 2,3 triệu cho 10 ngày chần chừ. Con số này đủ để nhiều quán trả tiền mạng cả năm, nên đừng bao giờ nghĩ trễ vài ngày không sao.
 
 ## Tháng 9 có gì cần đối chiếu kỹ hơn tháng 8?
 
@@ -61,4 +61,4 @@ Tờ khai thì không bị phạt, nhưng tiền thuế bị tính lãi 0,03% m�
 
 ---
 
-> **Căn cứ pháp lý:** [Luật Quản lý thuế 38/2019/QH14](https://www.google.com/search?q=to%C3%A0n+v%C3%AAn+Lu%E1%BA%ADt+Qu%E1%BA%A3n+l%C3%BD+thu%E1%BA%BF+38%2F2019%2FQH14); [Nghị định 126/2020/NĐ-CP](https://www.google.com/search?q=to%C3%A0n+v%C3%AAn+Ngh%E1%BB%8B+%C4%91%E1%BB%8Bnh+126%2F2020%2FN%C4%90-CP).
+> **Căn cứ pháp lý:** [Luật Quản lý thuế 108/2025/QH15](https://www.google.com/search?q=to%C3%A0n+v%C3%AAn+Lu%E1%BA%ADt+Qu%E1%BA%A3n+l%C3%BD+thu%E1%BA%BF+108%2F2025%2FQH15); [Nghị định 252/2026/NĐ-CP](https://www.google.com/search?q=to%C3%A0n+v%C3%AAn+Ngh%E1%BB%8B+%C4%91%E1%BB%8Bnh+252%2F2026%2FN%C4%90-CP).

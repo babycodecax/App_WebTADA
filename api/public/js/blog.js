@@ -57,6 +57,8 @@
   /** Tìm bài viết liên quan: matching keyword từ title */
   function findRelated(currentSlug, currentTitle, allPosts, maxCount) {
     if (maxCount === undefined) maxCount = 4;
+    var isService = (currentSlug || '').indexOf('dich-vu-') === 0;
+    var now = Date.now();
     // Extract meaningful keywords (≥ 5 ký tự) từ title hiện tại
     var keywords = (currentTitle || '').toLowerCase().split(/[\s,.\-:;!?()]+/).filter(function (w) {
       return w.length >= 5 && !['của', 'trong', 'với', 'cho', 'năm', 'các', 'có', 'theo', 'tại', 'từ', 'để', 'khi', 'nào', 'bao', 'nhiêu', 'làm', 'sao', 'thế', 'này', 'như', 'về', 'còn', 'đã', 'sẽ', 'đang', 'bị', 'không', 'những', 'một', 'ngày', 'tháng', 'đó', 'thì'].includes(w);
@@ -65,31 +67,64 @@
     // Score each post by keyword matches in title + summary
     var scored = [];
     allPosts.forEach(function (p) {
-      if (p.slug === currentSlug) return;
+      if (!p.slug || p.slug === currentSlug) return;
       var text = ((p.title || '') + ' ' + (p.summary || '')).toLowerCase();
       var score = 0;
       keywords.forEach(function (kw) {
         if (text.includes(kw)) score++;
       });
+      // Trang dịch vụ ưu tiên dịch vụ khác (phễu chốt khách)
+      if (isService && (p.slug || '').indexOf('dich-vu-') === 0) score += 100;
+      // Bài mới (<90 ngày +2, <180 ngày +1) lên trước bài cũ cùng điểm
+      if (p.published_at) {
+        var age = (now - new Date(p.published_at).getTime()) / 86400000;
+        if (age >= 0 && age <= 90) score += 2;
+        else if (age > 90 && age <= 180) score += 1;
+      }
       if (score > 0) scored.push({ post: p, score: score });
     });
 
-    scored.sort(function (a, b) { return b.score - a.score; });
-    return scored.slice(0, maxCount).map(function (s) { return s.post; });
+    scored.sort(function (a, b) {
+      if (b.score !== a.score) return b.score - a.score;
+      return +new Date(b.post.published_at || 0) - +new Date(a.post.published_at || 0);
+    });
+    var picked = scored.slice(0, maxCount).map(function (s) { return s.post; });
+    // Trang dịch vụ: bốc thêm dịch vụ khác nếu thiếu
+    if (isService && picked.length < maxCount) {
+      allPosts.forEach(function (pp) {
+        if (picked.length >= maxCount) return;
+        if (!pp.slug || pp.slug === currentSlug) return;
+        var dup = picked.some(function (x) { return x.slug === pp.slug; });
+        if (pp.slug.indexOf('dich-vu-') === 0 && !dup) picked.push(pp);
+      });
+    }
+    if (picked.length > 0) return picked;
+    return allPosts.filter(function (p) { return p.slug && p.slug !== currentSlug; }).slice(0, maxCount);
   }
 
   /** Render danh sách bài viết liên quan */
-  function renderRelatedPosts(related, container) {
+  function relDate(iso) {
+    if (!iso) return '';
+    var d = new Date(iso);
+    if (isNaN(+d)) return '';
+    return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+  }
+
+  function renderRelatedPosts(related, container, slug) {
     if (!related || related.length === 0) return;
     var html = '<div class="blog-related"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="vertical-align:-3px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Bài viết liên quan</h3><div class="blog-related-grid">';
     related.forEach(function (p) {
       html +=
         '<a href="' + postUrl(p.slug) + '" class="blog-related-card">' +
           '<h4>' + escHtml(p.title) + '</h4>' +
+          (p.published_at ? '<span class="blog-related-date">Đăng ' + escHtml(relDate(p.published_at)) + '</span>' : '') +
           (p.summary ? '<p>' + escHtml(p.summary.slice(0, 100)) + '</p>' : '') +
         '</a>';
     });
     html += '</div></div>';
+    if (slug && slug.indexOf('dich-vu-') === 0) {
+      html += '<a href="https://zalo.me/0986424286" target="_blank" rel="noopener" class="btn btn-primary blog-related-cta">Nhận báo giá qua Zalo</a>';
+    }
     container.insertAdjacentHTML('beforeend', html);
   }
 
@@ -229,7 +264,7 @@
             var related = findRelated(post.slug, post.title, allPosts);
             var articleEl = container.querySelector('.blog-detail');
             if (articleEl && related.length > 0) {
-              renderRelatedPosts(related, container);
+              renderRelatedPosts(related, container, post.slug);
             }
           })
           .catch(function () { /* silent */ });
