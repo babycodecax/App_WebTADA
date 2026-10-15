@@ -40,7 +40,8 @@ const RELATED_STOPWORDS = new Set([
   'của', 'trong', 'với', 'cho', 'năm', 'các', 'có', 'theo', 'tại', 'từ',
   'để', 'khi', 'nào', 'bao', 'nhiêu', 'làm', 'sao', 'thế', 'này', 'như',
   'về', 'còn', 'đã', 'sẽ', 'đang', 'bị', 'không', 'những', 'một', 'ngày',
-  'tháng', 'đó', 'thì',
+  'tháng', 'đó', 'thì', 'là', 'và', 'người', 'được', 'càng', 'cũng', 'rất',
+  'hơn', 'hết', 'hay',
 ]);
 
 type RelatedPost = { slug: string; title: string; summary: string | null; published_at?: string | null };
@@ -54,19 +55,24 @@ function relDate(iso: string | null | undefined): string {
 }
 
 /**
- * Chọn tối đa 4 bài liên quan theo keyword overlap title+summary.
+ * Chọn tối đa 3 bài liên quan theo keyword overlap title+summary.
  * Không có điểm nào khớp → fallback bài mới nhất (vẫn đảm bảo internal links).
  */
 function pickRelated(
   all: RelatedPost[],
   currentSlug: string,
   currentTitle: string,
-  maxCount = 4
+  maxCount = 3
 ): RelatedPost[] {
-  const keywords = (currentTitle || '')
+  const words = (currentTitle || '')
     .toLowerCase()
     .split(/[\s,.\-:;!?()]+/)
-    .filter((w) => w.length >= 5 && !RELATED_STOPWORDS.has(w));
+    .filter((w) => w.length >= 3 && !RELATED_STOPWORDS.has(w));
+  // Cụm 2 từ giữ nghĩa tiếng Việt (hóa đơn, bảo hiểm, khai thuế...)
+  const keywords: { t: string; w: number }[] = words.map((w) => ({ t: w, w: 1 }));
+  for (let i = 0; i < words.length - 1; i++) {
+    keywords.push({ t: words[i] + ' ' + words[i + 1], w: 3 });
+  }
   const isService = currentSlug.startsWith('dich-vu-');
   const now = Date.now();
   const scored: { post: RelatedPost; score: number }[] = [];
@@ -75,7 +81,7 @@ function pickRelated(
     const text = `${p.title || ''} ${p.summary || ''}`.toLowerCase();
     let score = 0;
     for (const kw of keywords) {
-      if (text.includes(kw)) score++;
+      if (text.includes(kw.t)) score += kw.w;
     }
     // Trang dịch vụ ưu tiên dịch vụ khác (phễu chốt khách, không gợi tin tức)
     if (isService && p.slug.startsWith('dich-vu-')) score += 100;

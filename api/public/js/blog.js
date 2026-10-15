@@ -56,13 +56,18 @@
 
   /** Tìm bài viết liên quan: matching keyword từ title */
   function findRelated(currentSlug, currentTitle, allPosts, maxCount) {
-    if (maxCount === undefined) maxCount = 4;
+    if (maxCount === undefined) maxCount = 3;
     var isService = (currentSlug || '').indexOf('dich-vu-') === 0;
     var now = Date.now();
-    // Extract meaningful keywords (≥ 5 ký tự) từ title hiện tại
-    var keywords = (currentTitle || '').toLowerCase().split(/[\s,.\-:;!?()]+/).filter(function (w) {
-      return w.length >= 5 && !['của', 'trong', 'với', 'cho', 'năm', 'các', 'có', 'theo', 'tại', 'từ', 'để', 'khi', 'nào', 'bao', 'nhiêu', 'làm', 'sao', 'thế', 'này', 'như', 'về', 'còn', 'đã', 'sẽ', 'đang', 'bị', 'không', 'những', 'một', 'ngày', 'tháng', 'đó', 'thì'].includes(w);
+    // Extract meaningful keywords (≥ 3 ký tự) từ title hiện tại
+    var words = (currentTitle || '').toLowerCase().split(/[\s,.\-:;!?()]+/).filter(function (w) {
+      return w.length >= 3 && !['của', 'trong', 'với', 'cho', 'năm', 'các', 'có', 'theo', 'tại', 'từ', 'để', 'khi', 'nào', 'bao', 'nhiêu', 'làm', 'sao', 'thế', 'này', 'như', 'về', 'còn', 'đã', 'sẽ', 'đang', 'bị', 'không', 'những', 'một', 'ngày', 'tháng', 'đó', 'thì', 'là', 'và', 'người', 'được', 'càng', 'cũng', 'rất', 'hơn', 'hết', 'hay'].includes(w);
     });
+    // Cụm 2 từ giữ nghĩa tiếng Việt (hóa đơn, bảo hiểm, khai thuế...) — điểm 3
+    var keywords = words.map(function (w) { return { t: w, w: 1 }; });
+    for (var i = 0; i < words.length - 1; i++) {
+      keywords.push({ t: words[i] + ' ' + words[i + 1], w: 3 });
+    }
 
     // Score each post by keyword matches in title + summary
     var scored = [];
@@ -71,7 +76,7 @@
       var text = ((p.title || '') + ' ' + (p.summary || '')).toLowerCase();
       var score = 0;
       keywords.forEach(function (kw) {
-        if (text.includes(kw)) score++;
+        if (text.includes(kw.t)) score += kw.w;
       });
       // Trang dịch vụ ưu tiên dịch vụ khác (phễu chốt khách)
       if (isService && (p.slug || '').indexOf('dich-vu-') === 0) score += 100;
