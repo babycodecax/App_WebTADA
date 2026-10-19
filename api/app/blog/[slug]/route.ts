@@ -419,9 +419,9 @@ export async function GET(
           // Chống trùng: loai bai da duoc link chinhsua trong content (section
           // "Xem thêm" biên tập) — related chỉ bốc bù những bài KHÁC
           const linkedSlugs = new Set<string>(
-            ((post.content || '')
-              .match(/\/blog\/([a-z0-9-]+)/g) || [])
-              .map((m) => m.replace('/blog/', ''))
+            ((post.content || '').match(/\/blog\/([a-z0-9-]+)/g) || []).map(
+              (m: string) => m.replace('/blog/', '')
+            )
           );
           const related = pickRelated(
             (allPosts || []).filter(
