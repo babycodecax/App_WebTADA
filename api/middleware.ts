@@ -7,10 +7,14 @@ import { NextRequest, NextResponse } from 'next/server';
  */
 export function middleware(req: NextRequest) {
   const host = req.headers.get('host') || '';
+  const url = new URL(req.url);
   if (host.startsWith('www.')) {
-    const url = new URL(req.url);
     url.hostname = 'ketoanthuetada.com';
     return NextResponse.redirect(url.toString(), 308);
+  }
+  // /library là URL phi-canonical của /thu-vien — 301 để sitemap/ng búsqued link cũ về 1 địa chỉ
+  if (url.pathname === '/library') {
+    return NextResponse.redirect(new URL('/thu-vien', url.origin).toString(), 301);
   }
   return NextResponse.next();
 }
