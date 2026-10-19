@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
   }
 
   if (status !== 'all') query = query.eq('status', status);
-  query = query.order('published_at', { ascending: false }).limit(Math.min(limit, 50));
+  query = query.order('published_at', { ascending: false }).limit(Math.min(limit, 1000));
 
   const { data, error } = await query;
   if (error) {

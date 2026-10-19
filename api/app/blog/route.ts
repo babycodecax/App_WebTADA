@@ -58,7 +58,7 @@ export async function GET() {
         .select('slug, title, summary, published_at')
         .eq('status', 'published')
         .order('published_at', { ascending: false })
-        .limit(100);
+        .limit(1000);
 
       if (posts && posts.length > 0) {
         const cards = posts
@@ -91,7 +91,7 @@ export async function GET() {
           name: 'Bài viết & Hướng dẫn Thuế Kế Toán — TADA',
           itemListElement: posts
             .filter((p) => p.slug)
-            .slice(0, 100)
+            .slice(0, 1000)
             .map((p, i) => ({
               '@type': 'ListItem',
               position: i + 1,

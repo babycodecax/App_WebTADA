@@ -261,7 +261,7 @@
   /** Inject JSON-LD ItemList — Google đọc cấu trúc danh sách bài viết. */
   function injectItemListSchema(posts) {
     try {
-      var items = (posts || []).slice(0, 100).map(function (p, i) {
+      var items = (posts || []).slice(0, 1000).map(function (p, i) {
         return {
           '@type': 'ListItem',
           position: i + 1,

@@ -31,6 +31,7 @@ App_WebTADA/
 2. **Backend = `/backend/`** — chỉ chạy python từ thư mục này.
 3. **Không dùng vector DB/embedding** — chỉ BM25 + OpenRouter.
 4. **Chỉ gọi LLM qua OpenRouter** — https://openrouter.ai/api/v1/chat/completions.
+5. **CONTENT XIN DUYỆT TRƯỚC** — chọn chủ đề bài blog mới / viết bài / publish lên production đều phải xin user duyệt từng bài, kể cả khi nhận lệnh "tự động làm tất cả các việc còn lại". Chỉ tự động hoá các bước SAU khi content đã duyệt: INSERT, backfill knowledge, deploy, verify live, IndexNow, soạn FB draft.
 
 ## Bộ nhớ dự án (Obsidian)
 

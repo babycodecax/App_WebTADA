@@ -22,7 +22,7 @@ Từ 01/01/2026, hộ kinh doanh và cá nhân kinh doanh không áp dụng phư
 
 ## Mức miễn thuế cho hộ nhỏ là tin đáng chú ý nhất
 
-Hộ kinh doanh có doanh thu năm không vượt 01 tỷ đồng được miễn cả thuế GTGT và thuế TNCN. Nghị định 141/2026 nâng mốc từ 500 triệu lên 01 tỷ đồng. Nghĩa là từ 2026, phần lớn hộ nhỏ nằm trong vùng miễn thuế cả hai loại.
+Hộ kinh doanh có doanh thu năm không vượt 01 tỷ đồng được miễn cả thuế GTGT và thuế TNCN. Luật số 09/2026/QH16 bãi bỏ mốc 500 triệu cố định và giao Chính phủ quy định mức mới; Nghị định 141/2026 chính thức nâng mốc lên 01 tỷ đồng. Nghĩa là từ 2026, phần lớn hộ nhỏ nằm trong vùng miễn thuế cả hai loại.
 
 Ví dụ trực tiếp:
 
@@ -58,7 +58,7 @@ Không nộp môn bài là lợi ích thật cho hộ nhỏ. Nhưng hộ vẫn c
 
 ---
 
-> **Căn cứ pháp lý:** [Nghị quyết 198/2025/QH15](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Ngh%E1%BB%8B%20quy%E1%BA%BFt%20198/2025/QH15); [Nghị định 68/2026/NĐ-CP](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Ngh%E1%BB%8B%20%C4%91%E1%BB%8Bnh%2068/2026/N%C4%90-CP); [Nghị định 141/2026/NĐ-CP](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Ngh%E1%BB%8B%20%C4%91%E1%BB%8Bnh%20141/2026/N%C4%90-CP); [Luật Thuế GTGT 48/2024/QH15](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Lu%E1%BA%ADt%20Thu%E1%BA%BF%20GTGT%2048/2024/QH15); [Luật Thuế TNCN 109/2025/QH15](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Lu%E1%BA%ADt%20Thu%E1%BA%BF%20TNCN%20109/2025/QH15).
+> **Căn cứ pháp lý:** [Nghị quyết 198/2025/QH15](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Ngh%E1%BB%8B%20quy%E1%BA%BFt%20198/2025/QH15); [Nghị định 68/2026/NĐ-CP](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Ngh%E1%BB%8B%20%C4%91%E1%BB%8Bnh%2068/2026/N%C4%90-CP); [Nghị định 141/2026/NĐ-CP](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Ngh%E1%BB%8B%20%C4%91%E1%BB%8Bnh%20141/2026/N%C4%90-CP); [Luật Thuế GTGT 48/2024/QH15 (sửa đổi 90/2025, 149/2025)](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Ngh%E1%BB%8B%20%C4%91%E1%BB%8Bnh%20168/2025%20h%C6%B0%E1%BB%9Bng%20d%E1%BA%ABn%20Lu%E1%BA%ADt%20Thu%E1%BA%BF%20GTGT%2048/2024/QH15) [Luật 09/2026/QH16](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Lu%E1%BA%ADt%2009/2026/QH16); [Luật Thuế TNCN 109/2025/QH15](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Lu%E1%BA%ADt%20Thu%E1%BA%BF%20TNCN%20109/2025/QH15).
 
 ---
 *Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA.*
