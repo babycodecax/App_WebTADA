@@ -54,14 +54,11 @@ Cơ quan thuế tiếp nhận thông qua nền tảng số. Dù vậy vẫn cầ
 4. Doanh thu tiến sát ngưỡng 01 tỷ: chuẩn bị sẵn hồ sơ đăng ký hoá đơn điện tử có mã hoặc máy tính tiền, chậm nhất 30 ngày kể từ khi vượt.
 5. Ghi chép doanh thu từng đơn hàng, từng ngày bán kỹ — kê khai thực tế cần con số chuẩn xác, không thể làm xấp xỉ như số khoán trước đây.
 
-Bỏ môn bài là một lợi ích thật cho hộ nhỏ. Nhưng nếu bỏ qua việc kê khai và thông báo doanh thu, phần dư này sẽ dồn lại đến cuối năm thành hịa báo cáo — vì vậy phần thuế thu được mới đúng thời hạn. Nắm part mách ba việc cốt lõi trên là xong những gì hộ cần chuẩn bị sang 2026.
+Không nộp môn bài là lợi ích thật cho hộ nhỏ. Nhưng hộ vẫn cần kê khai doanh thu thực tế và thông báo đúng hạn 31/01 mỗi năm để giữ số liệu khớp với hệ thống thuế. Làm đủ các việc trong checklist trên là phần chuẩn bị quan trọng nhất cho hộ kinh doanh từ năm 2026.
 
-## Căn cứ pháp lý
+---
 
-- Nghị quyết 198/2025/QH15 ngày 17/05/2025 — Điều 10: chấm dứt lệ phí môn bài từ 01/01/2026; không áp dụng phương pháp khoán đối với hộ kinh doanh, cá nhân kinh doanh.
-- Nghị định 68/2026/NĐ-CP ngày 05/03/2026 — Về thuế GTGT, TNCN và thủ tục khai/thu/nộp với hộ kinh doanh, cá nhân kinh doanh: chuyển tiếp (Điều 18), thông báo doanh thu thực tế, phân bổ doanh thu trả trước nhiều năm.
-- Nghị định 141/2026/NĐ-CP — nâng mức doanh thu miễn thuế GTGT/TNCN của hộ kinh doanh từ 500 triệu lên 01 tỷ đồng/năm.
-- Luật Thuế GTGT 48/2024 (sửa đổi bởi Luật 149/2025), Luật Thuế TNCN 109/2025 — cơ sở tỷ lệ % tính thuế theo ngành nghề.
-- Thông tư 69/2025, Thông tư 50/2026 — hướng dẫn áp dụng.
+> **Căn cứ pháp lý:** [Nghị quyết 198/2025/QH15](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Ngh%E1%BB%8B%20quy%E1%BA%BFt%20198/2025/QH15); [Nghị định 68/2026/NĐ-CP](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Ngh%E1%BB%8B%20%C4%91%E1%BB%8Bnh%2068/2026/N%C4%90-CP); [Nghị định 141/2026/NĐ-CP](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Ngh%E1%BB%8B%20%C4%91%E1%BB%8Bnh%20141/2026/N%C4%90-CP); [Luật Thuế GTGT 48/2024/QH15](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Lu%E1%BA%ADt%20Thu%E1%BA%BF%20GTGT%2048/2024/QH15); [Luật Thuế TNCN 109/2025/QH15](https://www.google.com/search?q=to%C3%A0n%20v%C4%83n%20Lu%E1%BA%ADt%20Thu%E1%BA%BF%20TNCN%20109/2025/QH15).
 
-Tác giả: TADA – Tư vấn thuế, kế toán online miễn phí cho cá nhân và doanh nghiệp.
+---
+*Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA.*
