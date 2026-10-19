@@ -200,7 +200,9 @@
     if (!listEl) return;
     listEl.innerHTML = '<div class="blog-loading">Đang tải...</div>';
 
-    fetch(API + '/api/blog?limit=50')
+    var tk = (session && session.access_token) ? session.access_token : '';
+    var opts = tk ? { headers: { Authorization: 'Bearer ' + tk } } : {};
+    fetch(API + '/api/blog?limit=50' + (tk ? '&status=all' : ''), opts)
       .then(function (r) { return r.json(); })
       .then(function (posts) {
         if (!posts || !posts.length) {

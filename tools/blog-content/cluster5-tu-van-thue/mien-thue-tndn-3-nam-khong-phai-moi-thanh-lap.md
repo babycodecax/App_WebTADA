@@ -33,13 +33,9 @@ Em gặp không ít chủ doanh nghiệp nhỏ đến tháng 12 mới biết mì
 
 ## Miễn thuế 3 năm khác gì miễn thuế khởi nghiệp?
 
-## Miễn thuế 3 năm khác gì miễn thuế khởi nghiệp?
-
 Đây là chỗ nhiều người trộn lẫn. Miễn thuế khởi nghiệp đổi mới sáng tạo là 2 năm miễn + 4 năm giảm 50%, áp dụng cho thu nhập từ khởi nghiệp sáng tạo, không phải mọi doanh nghiệp mới. Miễn thuế 3 năm cho DNNVV là chính sách riêng, áp dụng cho doanh nghiệp nhỏ và vừa mới thành lập đủ điều kiện. Hai chính sách khác nhau về điều kiện, thời gian và nhóm đối tượng. Bác nào đang chuẩn bị hồ sơ miễn thuế thì phải xác định rõ mình thuộc chính sách nào, không nộp nhầm là bị từ chối cả hai.
 
 Ngoài hai chính sách trên, Nghị quyết 198 còn có ưu đãi cho thu nhập chuyển nhượng cổ phần hoặc phần vốn góp vào doanh nghiệp khởi nghiệp đổi mới sáng tạo, và miễn thuế TNCN cho chuyên gia khoa học tại doanh nghiệp đổi mới sáng tạo 2 năm + giảm 50% 4 năm. Nhiều bác nghe tới miễn thuế là nhầm ngay với các ưu đãi này, nên em ghi rõ ra để khỏi nộp nhầm hồ sơ. Nếu công ty bác không thuộc diện khởi nghiệp sáng tạo được công nhận thì chỉ còn chính sách miễn 3 năm cho DNNVV, và nếu ngành nghề bị loại thì không còn gì cả.
-
-## Checklist trước khi xác định mình được miễn
 
 ## Checklist trước khi xác định mình được miễn
 

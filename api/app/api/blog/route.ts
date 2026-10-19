@@ -30,16 +30,20 @@ export const maxDuration = 60;
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const slug = searchParams.get('slug');
-  const limit = parseInt(searchParams.get('limit') || '10', 10);
-  const status = searchParams.get('status') || 'published';
+  const limitRaw = parseInt(searchParams.get('limit') || '10', 10);
+  const limit = Number.isFinite(limitRaw) && limitRaw > 0 ? limitRaw : 10;
+
+  // Chống lộ bài nháp: chỉ admin Google mới được hỏi trạng thái khác published
+  const admin = await isAdminGoogle(req);
+  const rawStatus = searchParams.get('status') || 'published';
+  const status = admin && (rawStatus === 'draft' || rawStatus === 'all') ? rawStatus : 'published';
 
   const client = getSupabase();
 
-  // ?count=1 → tong so bai published (cho dai so lieu hero, nhe, khong gioi han 50)
+  // ?count=1 → tong so bai (cho dai so lieu hero, nhe, khong gioi han 50)
   if (searchParams.get('count') === '1') {
-    const st = searchParams.get('status') || 'published';
     let q = client.from('blog_posts').select('id', { count: 'exact', head: true });
-    if (st === 'published') q = q.eq('status', 'published');
+    if (status !== 'all') q = q.eq('status', status);
     const { count, error: cErr } = await q;
     if (cErr) {
       return new Response(JSON.stringify({ error: cErr.message }), { status: 500 });
@@ -53,7 +57,7 @@ export async function GET(req: NextRequest) {
 
   if (slug) {
     const { data, error } = await query.eq('slug', slug).limit(1).single();
-    if (error || !data) {
+    if (error || !data || (data.status !== 'published' && !admin)) {
       return new Response(JSON.stringify({ error: 'Bài viết không tồn tại' }), { status: 404 });
     }
     return new Response(JSON.stringify(data), {
@@ -61,7 +65,7 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  if (status === 'published') query = query.eq('status', 'published');
+  if (status !== 'all') query = query.eq('status', status);
   query = query.order('published_at', { ascending: false }).limit(Math.min(limit, 50));
 
   const { data, error } = await query;
