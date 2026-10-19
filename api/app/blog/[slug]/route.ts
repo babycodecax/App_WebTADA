@@ -448,6 +448,9 @@ export async function GET(
         //    Client blog.js renderDetail ghi đè grid bằng JS nên người dùng
         //    không thấy trùng. Giữ cấu trúc giống client (article+h1+meta).
         try {
+          // Demo shell heading "Bài viết & Hướng dẫn" xuống h2 — bài viết title
+          // là h1 duy nhất của trang con (chuẩn SEO, tránh 2 h1)
+          html = html.replace(/<h1([^>]*)>([\s\S]*?)<\/h1>/, '<h2$1>$2</h2>');
           const md = (post.content || '').replace(/^\s*#[^\n]*\n/, '');
           const raw = String(
             await marked.parse(md, { breaks: true, gfm: true })

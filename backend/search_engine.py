@@ -374,16 +374,21 @@ class SearchEngine:
         self._bm25: BM25Okapi | None = None
 
     def rebuild(self) -> int:
-        """Nạp lại chunks từ Supabase và lập index BM25."""
-        self._chunks = get_all_chunks()
-        self._tokenized = []
-        for c in self._chunks:
+        """Nạp lại chunks từ Supabase và lắp index BM25 (atomic swap — search
+        đang chạy không bao giờ đọc hội chứng state lẫn lộn chunks mới
+        + tokenized rỗng)."""
+        chunks = get_all_chunks()
+        tokenized: list[list[str]] = []
+        for c in chunks:
             # Index cả title + heading + text để BM25 match được metadata
             text = f"{c.get('title', '')} {c.get('heading', '')} {c.get('text', '')}"
-            self._tokenized.append(_tokenize(text))
-        self._bm25 = BM25Okapi(self._tokenized) if self._tokenized else None
-        logger.info("BM25 rebuild xong: %d chunks", len(self._chunks))
-        return len(self._chunks)
+            tokenized.append(_tokenize(text))
+        bm25 = BM25Okapi(tokenized) if tokenized else None
+        self._chunks = chunks
+        self._tokenized = tokenized
+        self._bm25 = bm25
+        logger.info("BM25 rebuild xong: %d chunks", len(chunks))
+        return len(chunks)
 
     def search(self, query: str, top_k: int = TOP_K) -> list[dict[str, Any]]:
         """Trả về top-k chunk (BM25 + topic-boost), kèm provenance.

@@ -8,7 +8,8 @@
   text-align: center;
   padding: 60px 0 40px;
 }
-.blog-header h1 {
+.blog-header h1,
+.blog-header h2 {
   font-size: 38px;
   color: var(--primary-burgundy);
   margin-bottom: 12px;
@@ -602,7 +603,8 @@
 }
 
 @media (max-width: 768px) {
-  .blog-header h1 { font-size: 28px; }
+  .blog-header h1,
+.blog-header h2 { font-size: 28px; }
   .blog-grid { grid-template-columns: 1fr; }
   .blog-mini-grid { grid-template-columns: 1fr; }
   /* Editorial mobile: dong bo muc Dich vu */

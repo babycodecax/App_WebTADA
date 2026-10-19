@@ -88,9 +88,24 @@ def startup_rebuild():
     except Exception as exc:
         logger.warning("Rebuild compliance index thất bại (sẽ lazy-load): %s", exc)
 app.middleware("http")(rate_limit_middleware)
+# CORS: danh sách origin explicit (wildcard + credentials = combo insecure).
+# Đổi qua env BACKEND_CORS_ORIGINS="https://a.com,https://b.com" khi cần thêm.
+_cors_env = os.getenv("BACKEND_CORS_ORIGINS", "").strip()
+_cors_origins = (
+    [o.strip() for o in _cors_env.split(",") if o.strip()]
+    or [
+        "https://ketoanthuetada.com",
+        "https://www.ketoanthuetada.com",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
+        "http://localhost:3000",
+    ]
+)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
