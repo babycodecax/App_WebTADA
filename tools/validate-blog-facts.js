@@ -31,8 +31,8 @@ const OLD_LAWS = [
   { re: /Thông tư 78\/2021|TT\.?\s*78\/2021/g, name: 'TT 78/2021', new: 'TT 91/2026', sev: 'MEDIUM' },
 ];
 
-// ── CJK regex ──
-const CJK_REGEX = /[一-鿿㐀-䶿豈-﫿]/g;
+// ── CJK regex (CNS/Hán-Trung + Kana + Hangul chính thức, loại emoji/ký hiệu) ──
+const CJK_REGEX = /[\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFF\u3040-\u30FF\u31F0-\u31FF\uAC00-\uD7AF\u3130-\u318F]/g;
 
 // ── Collect files ──
 function collectFiles(dir) {
@@ -128,7 +128,7 @@ function main() {
         for (const m of matches) {
           const idx = content.indexOf(m);
           const ctx = content.substring(Math.max(0, idx - 50), Math.min(content.length, idx + m.length + 50));
-          if (!/thay thế|thay the|sửa đổi|thay cho/i.test(ctx)) {
+          if (!/thay thế|thay the|sửa đổi|sửa bởi|thay cho/i.test(ctx)) {
             realCount++;
           }
         }

@@ -65,4 +65,4 @@ Trễ 1-5 ngày có tình tiết giảm nhẹ thì cảnh cáo. Trễ 1-30 ngày
 
 ---
 *Bài viết được thực hiện bởi Đội ngũ Chuyên gia Thuế TADA.*
-*Cập nhật: 10/2026 | Nguồn: NĐ 68/2026, NĐ 252/2026, NĐ 310/2025, NĐ 125/2020, Thư Viện Pháp Luật 30/9/2026, ACAC 30/9/2026*
+*Cập nhật: 10/2026 | Nguồn: NĐ 68/2026, NĐ 252/2026, NĐ 310/2025 (sửa đổi NĐ 125/2020), Thư Viện Pháp Luật 30/9/2026, ACAC 30/9/2026*
