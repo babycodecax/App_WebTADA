@@ -9,6 +9,17 @@ const nextConfig = {
   // clean-URL đó bị 404. Chúng đã có route server riêng:
   //   - /blog/:slug  → app/blog/[slug]/route.ts (trả blog.html)
   //   - /thu-vien    → app/thu-vien/route.ts (trả library.html)
+  async redirects() {
+    return [
+      // www → non-www: 1 hostname duy nhất, không chia crawl budget/canonical
+      {
+        source: '/:path*',
+        destination: 'https://ketoanthuetada.com/:path*',
+        permanent: true,
+        has: [{ type: 'host', value: 'www.ketoanthuetada.com' }],
+      },
+    ];
+  },
   async rewrites() {
     return [
       // Ảnh/font trong HTML dùng 'static/img/...' → map vào public/img/...

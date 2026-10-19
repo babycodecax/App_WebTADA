@@ -69,7 +69,8 @@ def upload(slug, filepath):
         if isinstance(result, list) and len(result) > 0:
             print(f"OK: {slug} ({len(body)} chars, updated {len(result)} row(s))")
         else:
-            print(f"WARNING: {slug} - 0 rows updated (slug may not exist in Supabase)")
+            print(f"ERROR: {slug} - 0 rows updated (slug may not exist in Supabase)")
+            sys.exit(1)
     except urllib.error.HTTPError as e:
         body_text = e.read().decode("utf-8", errors="replace")
         print(f"ERROR: {slug} - HTTP {e.code}: {body_text}")

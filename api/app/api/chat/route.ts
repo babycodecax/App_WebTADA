@@ -402,11 +402,41 @@ function _sliceForMoc(content: string, maxLen: number): string {
 
 // ─── Main chat handler ───
 
+// Rate limit đơn giản trong bộ nhớ (30 req/15 phút/IP) — mỗi instance Vercel riêng,
+// đủ chặn spam đơn lẻ; muốn chặt hơn cần Upstash/KV.
+const _RATE_WINDOW_MS = 15 * 60 * 1000;
+const _RATE_MAX = 30;
+const _rateStore = new Map<string, number[]>();
+
+function rateAllow(ip: string): boolean {
+  const now = Date.now();
+  if (_rateStore.size > 5000) {
+    for (const [k, stamps] of _rateStore) {
+      if (!stamps.length || stamps[stamps.length - 1] < now - _RATE_WINDOW_MS) _rateStore.delete(k);
+    }
+  }
+  const stamps = (_rateStore.get(ip) || []).filter((t) => t > now - _RATE_WINDOW_MS);
+  if (stamps.length >= _RATE_MAX) return false;
+  stamps.push(now);
+  _rateStore.set(ip, stamps);
+  return true;
+}
+
 /** Câu trả lời trung thực khi KHÔNG tìm thấy kiến thức (không gọi LLM). */
 const NO_KNOWLEDGE_ANSWER =
   'Tôi chưa có đủ thông tin để trả lời câu hỏi này. Bạn có thể hỏi rõ hơn về lĩnh vực thuế, kế toán, BHXH hoặc thủ tục doanh nghiệp (VD: "thuế suất TNCN 2026 là bao nhiêu?") để tôi tra cứu được chính xác hơn.';
 
 export async function POST(req: NextRequest) {
+  // Rate limit server-side (per-instance): mỗi IP tối đa 30 câu hỏi/15 phút để
+  // không bị đốt LLM_API_KEY bằng request thẳng (quota client là localStorage, bypass được)
+  const ipHeader = req.headers.get('x-forwarded-for') || '';
+  const ip = ipHeader.split(',')[0].trim() || 'unknown';
+  if (!rateAllow(ip)) {
+    return new Response(JSON.stringify({ error: 'Quá nhiều câu hỏi. Mời bạn thử lại sau 15 phút.' }), {
+      status: 429,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
   try {
     const body = await req.json();
     if (!body.question || typeof body.question !== 'string') {

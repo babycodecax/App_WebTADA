@@ -40,14 +40,29 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       return new Response(JSON.stringify({ error: 'Tài khoản của bạn không có quyền sử dụng chức năng này' }), { status: 403 });
     }
 
+    // Đọc bản ghi hiện tại: giữ published_at cũ (cache X-Vercel + thứ tự sitemap
+    // liên quan ngày publish), check slug trùng với bài KHÁC trước khi update
+    const { data: cur, error: curErr } = await client.from('blog_posts')
+      .select('slug, status, published_at').eq('id', params.id).limit(1).maybeSingle();
+    if (curErr || !cur) {
+      return new Response(JSON.stringify({ error: 'Bài viết không tồn tại' }), { status: 404 });
+    }
+    const newSlug = body.slug || cur.slug;
+    if (newSlug !== cur.slug) {
+      const { data: dup } = await client.from('blog_posts').select('id').eq('slug', newSlug).neq('id', params.id).limit(1);
+      if (dup && dup.length) {
+        return new Response(JSON.stringify({ error: `Slug '${newSlug}' đã tồn tại` }), { status: 409 });
+      }
+    }
+    const status = body.status || cur.status || 'published';
     const { data, error } = await client.from('blog_posts')
       .update({
         title: body.title,
-        slug: body.slug,
+        slug: newSlug,
         summary: body.summary || '',
         content: body.content,
-        status: body.status || 'published',
-        published_at: body.status === 'published' ? new Date().toISOString() : null,
+        status,
+        published_at: status === 'published' ? (cur.published_at || new Date().toISOString()) : null,
       })
       .eq('id', params.id)
       .select()

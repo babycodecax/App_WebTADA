@@ -113,13 +113,14 @@ export async function POST(req: NextRequest) {
       return new Response(JSON.stringify({ error: `Slug '${slug}' đã tồn tại` }), { status: 409 });
     }
 
+    const status = body.status || 'published';
     const row = {
       title: body.title,
       slug,
       summary: body.summary || '',
       content: body.content,
-      status: body.status || 'published',
-      published_at: body.status === 'published' ? new Date().toISOString() : null,
+      status,
+      published_at: status === 'published' ? new Date().toISOString() : null,
       author_email: email,
     };
 

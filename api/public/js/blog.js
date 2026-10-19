@@ -460,12 +460,20 @@
   }
 
   function renderMarkdown(md) {
+    var html;
     if (typeof marked !== 'undefined') {
       marked.setOptions({ breaks: true, gfm: true });
-      return marked.parse(md || '');
+      html = marked.parse(md || '');
+    } else {
+      // fallback: simple line breaks
+      html = (md || '').replace(/\n/g, '<br>');
     }
-    // fallback: simple line breaks
-    return (md || '').replace(/\n/g, '<br>');
+    // Chống stored XSS từ content DB: luôn lọc qua DOMPurify trước khi innerHTML
+    if (typeof DOMPurify !== 'undefined') {
+      return DOMPurify.sanitize(html, { FORBID_TAGS: ['style', 'form', 'input', 'iframe'], FORBID_ATTR: ['onerror', 'onclick', 'onload'] });
+    }
+    // DOMPurify mất tải → chiến lược an toàn: render thuần văn bản, không HTML
+    return escHtml(md || '').replace(/\n/g, '<br>');
   }
 
   function escHtml(s) {
