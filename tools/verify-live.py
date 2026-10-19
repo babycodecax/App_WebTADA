@@ -64,8 +64,11 @@ def main():
         want = set(re.findall(r'(?:src|href)="((?:/|static/|assets/)[^"]+)"', wt))
         live = {u.split('?')[0] for u in live}
         want = {u.split('?')[0] for u in want}
-        if live != want:
-            fails.append(f'{url} lech ban: live thua {sorted(live - want)[:3]} thieu {sorted(want - live)[:3]}')
+        # live có THÊM là chấp nhận được (prebuild-inject dúc bài mới vào index lúc build);
+        # chỉ FAIL khi local thiếu link mà live không có (regression bản cũ)
+        missing = sorted(want - live)
+        if missing:
+            fails.append(f'{url} lech ban: live thieu {missing[:3]}')
     if fails:
         print('VERIFY LIVE FAIL:')
         print('\n'.join(fails))
