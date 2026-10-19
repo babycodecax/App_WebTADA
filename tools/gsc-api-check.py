@@ -22,7 +22,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
 from google.oauth2.credentials import Credentials
-from google.auth.exceptions import RefreshError
+from google.auth.exceptions import RefreshError, TransportError
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
@@ -43,24 +43,30 @@ def get_service():
         try:
             creds = Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
         except (ValueError, KeyError):
-            os.remove(TOKEN_FILE)
+            try:
+                os.remove(TOKEN_FILE)
+            except OSError:
+                pass
             creds = None
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
+    if creds is None or not creds.valid:
+        if creds is not None and creds.expired and creds.refresh_token:
             try:
                 creds.refresh(Request())
-            except RefreshError:
-                os.remove(TOKEN_FILE)
+            except (RefreshError, TransportError):
                 creds = None
-        else:
+        if creds is None or not creds.valid:
             if not os.path.exists(CLIENT_SECRET):
                 print("Thieu file: " + CLIENT_SECRET)
                 return None
             flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET, SCOPES)
             creds = flow.run_local_server(port=0)
-        with open(TOKEN_FILE, "w", encoding="utf-8") as f:
-            f.write(creds.to_json())
-        print("Da luu token: " + TOKEN_FILE)
+        try:
+            with open(TOKEN_FILE, "w", encoding="utf-8") as f:
+                f.write(creds.to_json())
+            print("Da luu token: " + TOKEN_FILE)
+        except OSError as e:
+            print("Khong ghi duoc token file (%s); token chi ton tai trong session nay." % e)
+            return build("searchconsole", "v1", credentials=creds)
     return build("searchconsole", "v1", credentials=creds)
 
 
@@ -69,7 +75,7 @@ def main():
         os.makedirs(REPORT_DIR)
     svc = get_service()
     if svc is None:
-        return
+        sys.exit(1)
 
     sites = svc.sites().list().execute().get("siteEntry", [])
     print("Sites: %d" % len(sites))
@@ -90,7 +96,7 @@ def main():
     print("Sitemaps: %d" % len(sm))
 
     end = datetime.date.today() - datetime.timedelta(days=2)
-    start = end - datetime.timedelta(days=7)
+    start = end - datetime.timedelta(days=6)
     q = {
         "startDate": start.isoformat(),
         "endDate": end.isoformat(),
