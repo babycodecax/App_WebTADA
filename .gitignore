@@ -54,6 +54,13 @@ tools/memory/
 tools/.gsc-profile/
 tools/gsc-reports/
 tools/.gsc-oauth/
+tools/.gsc-chrome-profile/
+tools/gsc-index-reports/
+tools/indexnow-reports/
+tools/.bing-api-key.txt
+tools/index-state.json
+tools/.index-runner.lock
+tools/gsc-*.png
 
 # === Claude Code ===
 .claude/settings.local.json
