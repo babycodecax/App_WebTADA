@@ -194,6 +194,16 @@
   color: var(--text-dark, #1a1a1a);
 }
 
+/* Link trong noi dung bai: noi bat mau burgundy + gach chan, hover doi sang vang */
+.blog-detail .content a {
+  color: var(--primary-burgundy, #800020);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.blog-detail .content a:hover {
+  color: var(--accent-gold-dark, #aa8620);
+}
+
 /* Mobile: bảng cuộn ngang, không tràn */
 @media (max-width: 768px) {
   .blog-detail .content table {
@@ -544,7 +554,7 @@
   }
 }
 
-/* B�i vi?t li�n quan */
+/* Bai viet lien quan */
 .blog-related {
   margin: 48px auto 0;
   padding: 32px 16px 64px;
