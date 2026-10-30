@@ -86,8 +86,14 @@
 /* Dọc marker "TADA đồng hành" — trên xuống rồi chip nổi nhấp nhô */
 .viz-markline{stroke:rgba(212,175,55,.75);stroke-width:1.6;stroke-dasharray:2.5 5.5;stroke-linecap:round;opacity:0;transform-origin:241.1px 30px;transform:scaleY(0);animation:vizMarkY .8s cubic-bezier(.16,1,.3,1) .62s forwards}
 @keyframes vizMarkY{0%{opacity:0;transform:scaleY(0)}60%{opacity:1}100%{opacity:1;transform:scaleY(1)}}
-.viz-chip{opacity:0;transform-box:fill-box;transform-origin:center;transform:translateY(-8px);animation:vizChipIn .6s cubic-bezier(.16,1,.3,1) .95s forwards,vizBob 3.4s ease-in-out 2.1s infinite}
+.viz-chip{opacity:0}
 @keyframes vizChipIn{to{opacity:1;transform:translateY(0)}}
+/* .keep — cum tu nhien (vd "ca nhan, ho kinh doanh, doanh nghiep") khong bi cat giua dong */
+.keep{white-space:nowrap}
+/* Cau desc hero: 3 dong can bang desktop (br an khi duoi 1024 de mobile tu chay) */
+@media (max-width:1024px){.hero-desc br{display:none}}
+/* Man rat hep (<=340px): cum keep mo nowrap de khong bi cat mep phai */
+@media (max-width:640px){.keep{white-space:normal}}
 @keyframes vizBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 .viz-chip rect{fill:url(#vizChipG)}
 .viz-chip text{font-family:var(--font-sans);font-size:11px;font-weight:800;fill:#3b0718}
@@ -112,7 +118,7 @@
 /* Tooltip giá trị tự xoay vòng T1→T8 khi đứng yên (mỗi điểm 1 slot trong chu kỳ 8s) */
 .viz-tip rect{fill:rgba(30,5,13,.94);stroke:rgba(212,175,55,.5);stroke-width:1}
 .viz-tip text{font-family:var(--font-sans);font-size:10.5px;font-weight:700;fill:#f6e3ba}
-.viz-tip{opacity:0;transform-box:fill-box;transform-origin:center;transform:translateY(6px);animation:vizTip 8s linear infinite;animation-delay:var(--slot,0s)}
+.viz-tip{opacity:0}
 @keyframes vizTip{0%,46%{opacity:0;transform:translateY(6px)}49%,57%{opacity:1;transform:translateY(0)}60%,100%{opacity:0;transform:translateY(-4px)}}
 .viz-travel{will-change:transform}
 /* Idle: đốm sáng chạy dọc đường doanh thu (SMIL animateMotion 7s), chip bob + pulse + tooltip đã loop sẵn */
@@ -341,9 +347,11 @@ body .library-mini-section{background:var(--bg-light-alt)}
 .library-mini-section .bg-rand{opacity:1;transform:none;clip-path:inset(0);transition:none}
 .hero-viz .viz-card{animation:none}
 .viz-line{animation:none;stroke-dashoffset:0}
-.viz-area,.viz-pt,.viz-badge,.viz-chip,.viz-markline,.viz-bar{animation:none;opacity:1;transform:none}
-.viz-tip{animation:none;opacity:0}
+.viz-area,.viz-pt,.viz-badge,.viz-markline,.viz-bar{animation:none;opacity:1;transform:none}
+.viz-tip{animation:none;opacity:1}
 .viz-travel{display:none}
+.viz-month{opacity:1}
+.viz-chip{display:none}
 .viz-pulse{animation:none;opacity:0}
 .ribbon{animation:none;opacity:.95;translate:0 0;scale:1}
 .fdot{animation:none;opacity:.5;translate:0 0}
