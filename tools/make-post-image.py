@@ -218,10 +218,10 @@ def load_env_key(path, name):
     return ""
 
 
-def photo_mode(bg_path, hook, credit="", clean=False):
+def photo_mode(bg_path, hook):
     """Ghep cau hook len anh nen Pexel theo chuan cu:
     - lam mo anh nen 70% (overlay den 70% opacity toan bo anh)
-    - viet hook noise bat, tram giua, co vien den
+    - viet hook to trang, trang giua, co vien den
     - them logo goc phai duoi
     - KHONG co footer text, KHONG co credit nguon anh, KHONG co header vang
     """
@@ -274,14 +274,12 @@ def main():
     ap.add_argument("mode", choices=["hook", "stats", "checklist", "photo", "auto"])
     ap.add_argument("text", nargs="?", default="")
     ap.add_argument("--bg", default="")
-    ap.add_argument("--credit", default="")
     ap.add_argument("--query", default="")
     ap.add_argument("--sub", default="")
     ap.add_argument("--title", default="")
     ap.add_argument("--items", default="")
     ap.add_argument("--out", default="")
-    ap.add_argument("--no-logo", action="store_true", help="bo qua logo page")
-    ap.add_argument("--clean", action="store_true", help="photo/auto: bo header/footer, chi giu logo + hook")
+    ap.add_argument("--no-logo", action="store_true", help="hook/stats/checklist: bo qua logo page")
     a = ap.parse_args()
 
     if a.mode == "hook":
@@ -292,7 +290,7 @@ def main():
         if not a.bg or not os.path.isfile(a.bg):
             print("ERROR: photo mode can file --bg hop le")
             sys.exit(1)
-        img = photo_mode(a.bg, a.text, a.credit, a.clean)
+        img = photo_mode(a.bg, a.text)
     elif a.mode == "auto":
         key = os.environ.get("PEXELS_API_KEY", "") or load_env_key(
             os.path.join("backend", ".env"), "PEXELS_API_KEY")
@@ -304,7 +302,7 @@ def main():
         if not bg:
             print("ERROR: Pexels khong tra anh cho tu khoa:", query)
             sys.exit(1)
-        img = photo_mode(bg, a.text, "Ảnh: " + photographer + " / Pexels", a.clean)
+        img = photo_mode(bg, a.text)
         try:
             os.remove(bg)
         except OSError:
@@ -318,7 +316,7 @@ def main():
     if not name.endswith((".jpg", ".png")):
         name += ".jpg"
     path = os.path.join(outdir, name)
-    if a.mode not in ("photo", "auto") and not a.no_logo and not a.clean:
+    if a.mode not in ("photo", "auto") and not a.no_logo:
         img = paste_logo(img)
     img.save(path, quality=90)
     print("SAVED:", path)

@@ -36,7 +36,7 @@ Kiểm tra tự động trước khi publish: `python tools/check-post-format.py
 1. Scan ký tự lạ (script; 0 FFFD/CJK/garbage) + `check-post-format.py` PASS.
 2. INSERT blog_posts: published_at = ISO UTC timestamptz (KHÔNG date-only), status "published".
 3. Verify: REST GET row + fetch live `?nocache=`: H1, bảng, Xem thêm H2 5 link, blockquote, byline.
-4. Song song FB: post 500–700 từ (không markdown, ≤2 "→", hashtags 3–5, câu chốt "?" không trùng 2 bài trước) + ảnh `make-post-image.py auto <hook> --query "..." --clean` (check ảnh bằng Read; sai mùa thì đổi query) + first comment mẫu sau `---COMMENT---`.
+4. Song song FB: post 500–700 từ (không markdown, ≤2 "→", hashtags 3–5, câu chốt "?" không trùng 2 bài trước) + ảnh `make-post-image.py auto <hook> --query "..."` (check ảnh bằng Read; sai mùa thì đổi query) + first comment mẫu sau `---COMMENT---`.
 5. IndexNow file JSON (KHÔNG inline curl) + `bing-submit.py --url /blog/<slug>`; GSC để runner mở máy.
 6. Append progress.md. Chỉ 1 bước của user: đăng FB thủ công.
 

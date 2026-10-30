@@ -168,7 +168,7 @@ def main():
             out("DA TON TAI published (id=%s, published_at=%s) -> khong ghi DB; "
                 "dung --overwrite de ghi de (backup tu dong)" % (existing.get("id"), existing.get("published_at")))
         else:
-            if (existing.get("status") or "").lower() == "published" and status == "draft":
+            if (existing.get("status") or "").lower() == "published" and status == "draft" and not args.force:
                 return fail("ghi de bai published bang draft (ha status) — neu chac chan dung --force")
             action = "patch"
             backup_row(existing, slug)
@@ -183,7 +183,7 @@ def main():
     elif action == "patch":
         row = patch_row(env, "blog_posts", existing["id"], payload)
         out("PATCH OK: id=%s (giu published_at=%s)" % (row["id"], row.get("published_at")))
-        audit("patch", slug=slug, id=row["id"], overwrite=args.overwrite)
+        audit("patch", slug=slug, id=row["id"], overwrite=args.overwrite, force=args.force)
     else:
         row = existing
 
