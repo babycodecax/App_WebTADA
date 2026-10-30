@@ -194,11 +194,9 @@
   color: var(--text-dark, #1a1a1a);
 }
 
-/* Link trong noi dung bai: noi bat mau burgundy + gach chan, hover doi sang vang */
+/* Link trong noi dung bai: mau burgundy mac dinh, hover chuyen vang, khong gach chan */
 .blog-detail .content a {
   color: var(--primary-burgundy, #800020);
-  text-decoration: underline;
-  text-underline-offset: 2px;
 }
 .blog-detail .content a:hover {
   color: var(--accent-gold-dark, #aa8620);
