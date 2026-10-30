@@ -32,6 +32,11 @@ Kiểm tra tự động trước khi publish: `python tools/check-post-format.py
 ## 3. Link nội bộ
 - ≥ 2 trong thân bài + `## Xem thêm`= 5 mục trong DB (verified bằng REST trước khi patch). Slug tuyệt đối `https://ketoanthuetada.com/blog/<slug>`.
 
+## 3b. Ảnh biểu mẫu (bắt buộc khi bài nói về biểu mẫu/tờ khai)
+- Bài nhắc mẫu tờ khai (01/TKN-CNKD, 01/CNKD, 02/QTT...) → chèn ảnh biểu mẫu vào thân bài bằng `<figure class="blog-figure">` với `src="/static/img/blog/<ten>.png"` + `figcaption` (nội dung khoanh + nguồn văn bản).
+- Ảnh có sẵn trong `img/blog/` dùng ngay; chưa có thì tạo bằng `tools/form-image.py` (`--pdf` tìm trang theo cụm từ, render 2x, khoanh đỏ theo tọa độ; fallback `--img`) — và FB dùng luôn ảnh biểu mẫu đó (không Pexels).
+- Sau publish: live verify ảnh HTTP 200 + `blog-figure` xuất hiện trong HTML (dùng `?cb=` nếu CDN cache 60s).
+
 ## 4. Publish (tự động sau khi user duyệt content)
 1. Scan ký tự lạ (script; 0 FFFD/CJK/garbage) + `check-post-format.py` PASS.
 2. INSERT blog_posts: published_at = ISO UTC timestamptz (KHÔNG date-only), status "published".
