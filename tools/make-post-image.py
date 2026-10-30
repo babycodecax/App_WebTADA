@@ -219,9 +219,12 @@ def load_env_key(path, name):
 
 
 def photo_mode(bg_path, hook, credit="", clean=False):
-    """Ghep cau hook len anh nen co san (anh kho mien phi Pexels/Unsplash/Pixabay).
-    Tu dong them lop mo de chu doc duoc, header va footer thuong hieu.
-    clean=True: bo dai header/footer, chi giu logo goc phai tren + hook + dong web nho."""
+    """Ghep cau hook len anh nen Pexel theo chuan cu:
+    - lam mo anh nen 70% (overlay den 70% opacity toan bo anh)
+    - viet hook noise bat, tram giua, co vien den
+    - them logo goc phai duoi
+    - KHONG co footer text, KHONG co credit nguon anh, KHONG co header vang
+    """
     try:
         bg = Image.open(bg_path).convert("RGB")
     except OSError:
@@ -232,54 +235,37 @@ def photo_mode(bg_path, hook, credit="", clean=False):
     x = (bg.width - W) // 2
     y = (bg.height - H) // 2
     img = bg.crop((x, y, x + W, y + H))
-    hook_lines = wrap(ImageDraw.Draw(img), hook, font(78), W - 120) if clean else []
-    shade = Image.new("L", (W, H), 0)
-    sd = ImageDraw.Draw(shade)
-    if clean:
-        sd.rectangle([0, 0, W, H], fill=130)
-    else:
-        sd.rectangle([0, 0, W, 300], fill=110)
-        shade_top = H - 620
-        sd.rectangle([0, shade_top, W, H], fill=170)
+
+    # lam mo anh nen 70%: overlay den 70% opacity toan bo anh
+    shade = Image.new("L", (W, H), 179)
     black = Image.new("RGB", (W, H), (0, 0, 0))
     img = Image.composite(black, img, shade).convert("RGB")
     d = ImageDraw.Draw(img)
-    if clean:
-        yy = (H - len(hook_lines) * 100) // 2
-        for line in hook_lines:
-            tw = d.textlength(line, font=font(78))
-            d.text(((W - tw) // 2, yy), line, font=font(78), fill=WHITE,
-                   stroke_width=3, stroke_fill=(0, 0, 0))
-            yy += 100
-        d.text((60, H - 100), "ketoanthuetada.com", font=font(30, bold=False), fill=WHITE)
-        try:
-            logo = Image.open(LOGO_PATH).convert("RGB")
-            logo.thumbnail((120, 120))
-            logo = logo.convert("RGBA")
-            px = logo.load()
-            for x in range(logo.width):
-                for y in range(logo.height):
-                    r, g, b, _ = px[x, y]
-                    if r > 240 and g > 240 and b > 240:
-                        px[x, y] = (255, 255, 255, 0)
-                    else:
-                        px[x, y] = (r, g, b, 200)
-            img.paste(logo, (W - logo.width - 40, H - logo.height - 40), logo)
-        except OSError:
-            pass
-        return img
-    d.rectangle([0, 0, W, 200], fill=GOLD)
-    d.text((60, 55), "TADA", font=font(80), fill=NAVY)
-    d.text((60, 130), "DỊCH VỤ THUẾ - KẾ TOÁN", font=font(30, bold=False), fill=NAVY)
-    yy = H - 560
-    for line in wrap(d, hook, font(64), W - 120):
-        d.text((60, yy), line, font=font(64), fill=WHITE,
-               stroke_width=2, stroke_fill=(0, 0, 0))
-        yy += 84
-    if credit:
-        d.text((60, H - 150), credit, font=font(28, bold=False), fill=WHITE)
-    d.rectangle([0, H - 90, W, H], fill=GOLD)
-    d.text((60, H - 70), "ketoanthuetada.com", font=font(34), fill=NAVY)
+
+    # viet hook noise bat, tram giua, co vien den
+    hook_lines = wrap(d, hook.upper(), font(78), W - 120)
+    yy = (H - len(hook_lines) * 100) // 2
+    for line in hook_lines:
+        tw = d.textlength(line, font=font(78))
+        d.text(((W - tw) // 2, yy), line, font=font(78), fill=WHITE,
+               stroke_width=3, stroke_fill=(0, 0, 0))
+        yy += 100
+
+    # them logo goc phai duoi
+    try:
+        logo = Image.open(LOGO_PATH).convert("RGB")
+        logo.thumbnail((120, 120))
+        logo = logo.convert("RGBA")
+        px = logo.load()
+        for lx in range(logo.width):
+            for ly in range(logo.height):
+                r, g, b, _ = px[lx, ly]
+                if r > 240 and g > 240 and b > 240:
+                    px[lx, ly] = (255, 255, 255, 0)
+        img.paste(logo, (W - logo.width - 40, H - logo.height - 40), logo)
+    except OSError:
+        pass
+
     return img
 
 
@@ -332,7 +318,7 @@ def main():
     if not name.endswith((".jpg", ".png")):
         name += ".jpg"
     path = os.path.join(outdir, name)
-    if not a.no_logo and not a.clean:
+    if a.mode not in ("photo", "auto") and not a.no_logo and not a.clean:
         img = paste_logo(img)
     img.save(path, quality=90)
     print("SAVED:", path)

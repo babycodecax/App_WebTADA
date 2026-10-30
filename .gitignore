@@ -58,6 +58,7 @@ tools/.gsc-chrome-profile/
 tools/gsc-index-reports/
 tools/indexnow-reports/
 tools/.bing-api-key.txt
+tools/.indexnow-key.txt
 tools/index-state.json
 tools/.index-runner.lock
 tools/gsc-*.png
@@ -93,3 +94,10 @@ backend/pip_out.txt
 
 # Local testing junctions (not needed on production — Next.js rewrite handles /static/ paths)
 api/public/static/
+
+# === Blog publish tooling artifacts ===
+*.md.bak-*
+*.md.tmp-*
+tools/.publish-backup/
+tools/publish-log.jsonl
+tools/publish-watcher-state.json
