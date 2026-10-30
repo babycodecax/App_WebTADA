@@ -101,3 +101,4 @@ api/public/static/
 tools/.publish-backup/
 tools/publish-log.jsonl
 tools/publish-watcher-state.json
+tools/blog-content/social-images/.bgpick/

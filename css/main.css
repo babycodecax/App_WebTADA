@@ -58,12 +58,91 @@
 /* Giam khoang trang hero + tach mem 2 session (2026-09-24) */
 .hero:has(.hero-single){padding-bottom:56px}
 
+/* ============ HERO SPLIT — trái mô tả / phải biểu đồ động (2026-11-03) ============ */
+/* SVG thuần tự dựng (line + area + điểm chấm nhảy tuần tự + marker TADA), đúng hệ burgundy/gold */
+.hero-split{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+.hero-copy,.hero-viz{width:100%}
+.hero-viz{max-width:460px;margin-top:10px}
+/* Thẻ kính tối — nổi trên nền mosaic kem, chữ trắng đọc rõ */
+.viz-card{position:relative;background:linear-gradient(160deg,rgba(61,7,24,.86),rgba(24,3,10,.84));border:1px solid rgba(212,175,55,.36);border-radius:22px;padding:20px 20px 14px;box-shadow:0 24px 60px -18px rgba(31,4,14,.55),inset 0 1px 0 rgba(255,255,255,.06);backdrop-filter:blur(16px) saturate(1.25);-webkit-backdrop-filter:blur(16px) saturate(1.25);overflow:hidden;animation:vizIn .9s cubic-bezier(.16,1,.3,1) .25s both}
+@keyframes vizIn{from{opacity:0;transform:translateY(26px) scale(.97)}to{opacity:1;transform:none}}
+.viz-card::before{content:'';position:absolute;top:-70px;right:-60px;width:210px;height:210px;background:radial-gradient(closest-side,rgba(212,175,55,.24),transparent 70%);pointer-events:none}
+/* viền光 gradient mảnh ngoài thẻ */
+.viz-card::after{content:'';position:absolute;inset:0;border-radius:22px;padding:1px;background:linear-gradient(120deg,rgba(240,217,168,.55),transparent 30%,transparent 68%,rgba(212,175,55,.3));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.viz-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.viz-kicker{display:block;font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-gold-light);opacity:.9}
+.viz-title{display:block;font-size:15px;font-weight:700;color:#fdf8ef;margin-top:3px;line-height:1.35}
+.viz-badge{display:inline-flex;align-items:center;gap:5px;flex-shrink:0;background:linear-gradient(135deg,#e9c76a,#c9a22b);color:#3b0718;font-weight:800;font-size:13.5px;padding:8px 12px;border-radius:999px;box-shadow:0 8px 20px -6px rgba(212,175,55,.55);opacity:0;transform:scale(.6);animation:vizPop .55s cubic-bezier(.16,1,.3,1) forwards;animation-delay:var(--pd,1.3s)}
+.viz-badge svg{width:15px;height:15px}
+/* Biểu đồ: lưới + trục */
+.viz-chart{display:block;width:100%;height:auto}
+.viz-grid line{stroke:rgba(255,251,244,.1);stroke-width:1;stroke-dasharray:4 6;stroke-linecap:round}
+.viz-axis text{font-family:var(--font-sans);font-size:10.5px;font-weight:600;fill:rgba(253,248,239,.62)}
+/* Đường doanh thu — vẽ dần bằng dashoffset, pathLength=1000 trong HTML */
+.viz-line{stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1000;stroke-dashoffset:1000;animation:vizDraw 1.5s cubic-bezier(.5,0,.2,1) .5s forwards;filter:drop-shadow(0 6px 10px rgba(212,175,55,.35))}
+@keyframes vizDraw{to{stroke-dashoffset:0}}
+.viz-area{opacity:0;animation:vizFade .9s ease 1.05s forwards}
+@keyframes vizFade{to{opacity:1}}
+/* Dọc marker "TADA đồng hành" — trên xuống rồi chip nổi nhấp nhô */
+.viz-markline{stroke:rgba(212,175,55,.75);stroke-width:1.6;stroke-dasharray:2.5 5.5;stroke-linecap:round;opacity:0;transform-origin:241.1px 30px;transform:scaleY(0);animation:vizMarkY .8s cubic-bezier(.16,1,.3,1) .62s forwards}
+@keyframes vizMarkY{0%{opacity:0;transform:scaleY(0)}60%{opacity:1}100%{opacity:1;transform:scaleY(1)}}
+.viz-chip{opacity:0;transform-box:fill-box;transform-origin:center;transform:translateY(-8px);animation:vizChipIn .6s cubic-bezier(.16,1,.3,1) .95s forwards,vizBob 3.4s ease-in-out 2.1s infinite}
+@keyframes vizChipIn{to{opacity:1;transform:translateY(0)}}
+@keyframes vizBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.viz-chip rect{fill:url(#vizChipG)}
+.viz-chip text{font-family:var(--font-sans);font-size:11px;font-weight:800;fill:#3b0718}
+/* Điểm chấm nhảy tuần tự theo đường (delay qua --pd inline) */
+.viz-pt{fill:#fff8ec;stroke:#d4af37;stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(0);animation:vizPop .55s cubic-bezier(.16,1,.3,1) forwards;animation-delay:var(--pd,1s)}
+@keyframes vizPop{0%{opacity:0;transform:scale(0)}60%{opacity:1;transform:scale(1.25)}100%{opacity:1;transform:scale(1)}}
+.viz-pt-last{fill:#d4af37;stroke:#fff8ec}
+.viz-pulse{fill:none;stroke:#d4af37;stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center;animation:vizPulse 2.2s ease-out 1.6s infinite}
+@keyframes vizPulse{0%{opacity:.75;transform:scale(.6)}70%,100%{opacity:0;transform:scale(2.4)}}
+.viz-note{font-size:12px;color:rgba(253,248,239,.62);margin-top:10px;line-height:1.6}
+/* KPI chips (chi phí giảm trừ + khách hàng) + legend 2 chuỗi */
+.viz-kpis{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 10px}
+.viz-kpi{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--accent-gold-light);background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.4);border-radius:999px;padding:5px 10px}
+.viz-kpi svg{width:13px;height:13px;flex:none}
+.viz-legend{display:flex;gap:16px;margin:0 0 10px}
+.viz-legend .lg-item{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:rgba(253,248,239,.75)}
+.lg-line{width:16px;height:3px;border-radius:2px;background:linear-gradient(90deg,#f0d9a8,#d4af37)}
+.lg-bar{width:9px;height:12px;border-radius:3px;background:linear-gradient(180deg,rgba(212,175,55,.8),rgba(212,175,55,.18))}
+/* Cột KH mới mọc theo đường doanh thu (mọc từ đáy, delay qua --bd inline) */
+.viz-bar{fill:url(#vizBarG);opacity:0;transform-box:fill-box;transform-origin:bottom center;transform:scaleY(.2);animation:vizBarIn .65s cubic-bezier(.16,1,.3,1) forwards;animation-delay:var(--bd,.8s)}
+@keyframes vizBarIn{0%{opacity:0;transform:scaleY(.2)}100%{opacity:1;transform:scaleY(1)}}
+/* Tooltip giá trị tự xoay vòng T1→T8 khi đứng yên (mỗi điểm 1 slot trong chu kỳ 8s) */
+.viz-tip rect{fill:rgba(30,5,13,.94);stroke:rgba(212,175,55,.5);stroke-width:1}
+.viz-tip text{font-family:var(--font-sans);font-size:10.5px;font-weight:700;fill:#f6e3ba}
+.viz-tip{opacity:0;transform-box:fill-box;transform-origin:center;transform:translateY(6px);animation:vizTip 8s linear infinite;animation-delay:var(--slot,0s)}
+@keyframes vizTip{0%,46%{opacity:0;transform:translateY(6px)}49%,57%{opacity:1;transform:translateY(0)}60%,100%{opacity:0;transform:translateY(-4px)}}
+.viz-travel{will-change:transform}
+/* Idle: đốm sáng chạy dọc đường doanh thu (SMIL animateMotion 7s), chip bob + pulse + tooltip đã loop sẵn */
+/* Desktop ≥1024: 2 cột, copy dồn trái */
+@media (min-width:1024px){
+.hero-single{max-width:1140px}
+.hero-split{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);gap:44px;align-items:center}
+.hero-split .hero-content.hero-content-center{text-align:left;align-items:flex-start}
+.hero-split .hero-desc{margin-left:0;margin-right:0}
+.hero-split .hero-features{justify-content:flex-start}
+.hero-split .hero-stats{justify-content:flex-start}
+.hero-viz{max-width:520px;margin-top:0;justify-self:end}
+}
+@media (max-width:640px){
+.viz-card{padding:16px 14px 10px;border-radius:18px;backdrop-filter:none;-webkit-backdrop-filter:none}
+.viz-title{font-size:13.5px}
+.viz-badge{font-size:12px;padding:6px 10px}
+.viz-kicker{font-size:9.5px}
+.viz-kpi{font-size:10.5px;padding:4px 8px}
+.viz-kpi svg{width:11px;height:11px}
+.viz-legend{gap:12px}
+.viz-legend .lg-item{font-size:10px}
+.viz-note{font-size:11px}
+}
+
 /* Neo menu khong bi header che (2026-09-24) */
 #blog,#services,#library{scroll-margin-top:90px}
 
 /* Hero anh nen + dai so lieu (2026-09-24) */
-.hero{background:linear-gradient(rgba(253,251,250,0.70),rgba(246,241,237,0.75)),image-set(url('../img/hero-bg.webp') type('image/webp'),url('../img/hero-bg.jpg') type('image/jpeg')) center/cover no-repeat}
-@media (max-width:640px){.hero{background:linear-gradient(rgba(253,251,250,0.70),rgba(246,241,237,0.75)),image-set(url('../img/hero-bg-mobile.webp') type('image/webp'),url('../img/hero-bg.jpg') type('image/jpeg')) center/cover no-repeat}}
+/* (2026-11-01: nen hero chuyen sang moi ghep .hero-bg/.hero-bmoves — bo rule background anh cu) */
 .hero-stats{display:flex;justify-content:center;gap:36px;margin-top:28px;flex-wrap:wrap}
 .hero-stat{display:flex;flex-direction:column;align-items:center;min-width:90px}
 .hero-stat strong{font-family:var(--font-serif);font-size:30px;font-weight:700;line-height:1;color:var(--primary-burgundy)}
@@ -76,4 +155,198 @@
 .header-actions .btn{min-width:0;padding:8px 12px;font-size:13px}
 .nav-dropdown{width:100%}
 .nav-dropdown .dropdown-menu{position:static;transform:none;box-shadow:none;border:0;border-top:1px solid var(--border-light);border-radius:0;min-width:0;width:100%}
+}
+
+/* =========================================================
+   SECTION-BG MOSAIC — 2026-11-02
+   Moi section mot kieu animation man ghep, khong lap lai:
+   Hero: man ghep 3x2 + Ken Burns + parallax khi scroll (JS transform chi tren .hero-bg)
+   Blog: split trai-phai     | Services: 3 dai ngang tu tren xuong
+   Library: man hien ngau nhien | Footer: giu nen toi cu
+   prefers-reduced-motion: hien day du tren tinh, tat moi animation
+   ========================================================= */
+.has-bg{position:relative}
+.section-bg{position:absolute;inset:0;overflow:hidden;z-index:0}
+.section-bg .bg-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(253,251,250,0.72) 0%,rgba(246,241,237,0.80) 62%,rgba(246,241,237,0.88) 100%)}
+.section-bg > *:not(.bg-overlay){position:absolute;top:0;left:0;right:0;bottom:0;background-repeat:no-repeat}
+/* Luu y: KHONG dat background-image chung o day — moi layer tu khai bo anh rieng */
+
+/* ============ 1) HERO: man ghep 3x2 + Ken Burns + parallax ============ */
+/* .hero-bg = layer parallax (JS translate), .hero-bmoves = layer Ken Burns (CSS scale) — 2 element khac nhau de khong xung dot transform */
+.hero{background:none}
+.hero-bg{position:absolute;top:-72px;left:0;right:0;bottom:0;overflow:hidden;z-index:0;will-change:transform}
+.hero-bmoves{position:absolute;inset:-72px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);transform:scale(1.02);animation:heroKenBurns 18s ease-in-out 1.6s infinite alternate}
+/* 6 o nghep anh hero-bg: size 300% 200% -> vi tri theo cot k: 0%/50%/100% va hang r: 0%/100% */
+.hero-bmoves .bg-tile{background-image:url('../img/hero-bg.webp');background-size:300% 200%;opacity:0;clip-path:inset(0 0 100% 0);transform:scale(1.06);animation:heroTileIn .7s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes heroTileIn{0%{opacity:0;clip-path:inset(0 0 100% 0);transform:scale(1.06)}100%{opacity:1;clip-path:inset(0 0 0% 0);transform:scale(1.02)}}
+.hero-bmoves .bg-tile:nth-child(1){background-position:0% 0%;animation-delay:.06s}
+.hero-bmoves .bg-tile:nth-child(2){background-position:50% 0%;animation-delay:.16s}
+.hero-bmoves .bg-tile:nth-child(3){background-position:100% 0%;animation-delay:.26s}
+.hero-bmoves .bg-tile:nth-child(4){background-position:0% 100%;animation-delay:.56s}
+.hero-bmoves .bg-tile:nth-child(5){background-position:50% 100%;animation-delay:.66s}
+.hero-bmoves .bg-tile:nth-child(6){background-position:100% 100%;animation-delay:.76s}
+@keyframes heroKenBurns{0%{transform:scale(1.02)}100%{transform:scale(1.10)}}
+.overlay-hero{position:absolute;inset:-72px;background:linear-gradient(180deg,rgba(253,251,250,0.58) 0%,rgba(246,241,237,0.66) 100%)}
+/* Cue cuon xuong cuoi hero (chinh thieu tu styles.css — landing khong nap styles.css) + khong bi nen de + nhan click */
+.hero .hero-scroll{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border-light);border-radius:50%;background:rgba(255,255,255,0.7);z-index:3}
+.hero .hero-scroll span{width:10px;height:10px;border-right:2px solid var(--primary-burgundy);border-bottom:2px solid var(--primary-burgundy);transform:rotate(45deg) translate(-2px,-2px);animation:hero-cue 2s ease infinite}
+@keyframes hero-cue{0%,100%{transform:rotate(45deg) translate(-2px,-2px);opacity:1}50%{transform:rotate(45deg) translate(2px,2px);opacity:.5}}
+/* Nen khong nhan su kien — content (z1/z2) la layer tuong tac duy nhat */
+.hero-bg,.overlay-hero,.section-bg,.hero .hero-shapes{pointer-events:none}
+.hero .hero-shapes{z-index:1}
+.hero .container{position:relative;z-index:2}
+@media (max-width:900px){
+.hero-bmoves{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,1fr)}
+.hero-bmoves .bg-tile{background-size:200% 300%}
+.hero-bmoves .bg-tile:nth-child(1){background-position:0% 0%}
+.hero-bmoves .bg-tile:nth-child(2){background-position:100% 0%}
+.hero-bmoves .bg-tile:nth-child(3){background-position:0% 50%}
+.hero-bmoves .bg-tile:nth-child(4){background-position:100% 50%}
+.hero-bmoves .bg-tile:nth-child(5){background-position:0% 100%}
+.hero-bmoves .bg-tile:nth-child(6){background-position:100% 100%}
+}
+@media (max-width:640px){
+.hero-bmoves .bg-tile{background-image:url('../img/hero-bg-mobile.webp')}
+}
+
+/* ============ 2) BLOG — split trai-phai ============ */
+/* KHONG dat z-index tren .bg-half — phai giu overlay phu tren anh */
+.blog-mini-section .bg-half{background-image:url('../img/section-bg-blog.webp');background-size:200% 100%}
+.blog-mini-section .bg-half-left{background-position:0% 0;left:0;right:50%;transform:translateX(-40%);opacity:0;transition:transform .9s cubic-bezier(.16,1,.3,1),opacity .7s ease}
+.blog-mini-section .bg-half-right{background-position:100% 0;left:50%;right:0;transform:translateX(40%);opacity:0;transition:transform .9s cubic-bezier(.16,1,.3,1),opacity .7s ease .08s}
+.blog-mini-section .section-bg.inview .bg-half{transform:none;opacity:1}
+
+/* ============ 3) SERVICES — 3 dai ngang truot tu tren xuong ============ */
+.services-section .bg-row{background-image:url('../img/section-bg-services.webp');background-size:100% 300%}
+.services-section .bg-row-1{top:0;bottom:66.7%;background-position:0% 0;transform:translateY(-100%);opacity:0;transition:transform .8s cubic-bezier(.16,1,.3,1),opacity .5s ease}
+.services-section .bg-row-2{top:33.3%;bottom:33.3%;background-position:0% 50%;transform:translateY(-100%);opacity:0;transition:transform .8s cubic-bezier(.16,1,.3,1) .14s,opacity .5s ease .14s}
+.services-section .bg-row-3{top:66.7%;bottom:0;background-position:0% 100%;transform:translateY(-100%);opacity:0;transition:transform .8s cubic-bezier(.16,1,.3,1) .28s,opacity .5s ease .28s}
+.services-section .section-bg.inview .bg-row{transform:none;opacity:1}
+
+/* ============ 4) LIBRARY — man hien ngau nhien (grid 3x2) ============ */
+/* .bg-grid chua 6 o nghep anh giong hero-bmoves; cac o tran trong o grid, khong tràn full-bleed */
+.bg-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr)}
+.library-mini-section .bg-rand{background-image:url('../img/section-bg-library.webp');background-size:300% 200%;opacity:0;transform:scale(1.16);clip-path:inset(30% 30% 30% 30%);transition:opacity .7s ease,transform .85s cubic-bezier(.16,1,.3,1),clip-path .85s cubic-bezier(.16,1,.3,1);transition-delay:0s}
+.library-mini-section .bg-rand:nth-child(1){background-position:0% 0%;--in-delay:.12s}
+.library-mini-section .bg-rand:nth-child(2){background-position:50% 0%;--in-delay:.44s}
+.library-mini-section .bg-rand:nth-child(3){background-position:100% 0%;--in-delay:.20s}
+.library-mini-section .bg-rand:nth-child(4){background-position:0% 100%;--in-delay:.58s}
+.library-mini-section .bg-rand:nth-child(5){background-position:50% 100%;--in-delay:.34s}
+.library-mini-section .bg-rand:nth-child(6){background-position:100% 100%;--in-delay:.05s}
+.library-mini-section .section-bg.inview .bg-rand{opacity:1;transform:none;clip-path:inset(0 0 0 0);transition:opacity .7s ease,transform .85s cubic-bezier(.16,1,.3,1),clip-path .85s cubic-bezier(.16,1,.3,1);transition-delay:var(--in-delay,0s)}
+
+/* Reset nhanh khi roi khoi section — khong giu delay de lan sau vao lai ghep tu dau */
+.section-bg:not(.inview) .bg-half,.section-bg:not(.inview) .bg-row,.section-bg:not(.inview) .bg-rand{transition-delay:0s}
+
+/* ============ MOBILE — overlay dam hon de chu doc du ============ */
+@media (max-width:640px){
+.section-bg .bg-overlay{background:linear-gradient(180deg,rgba(253,251,250,0.78) 0%,rgba(246,241,237,0.85) 60%,rgba(246,241,237,0.92) 100%)}
+}
+
+/* Noi dung section phai nam TREN section-bg (section-bg la positioned z0, container static se bi de) */
+.blog-mini-section .container,.services-section .container,.library-mini-section .container{position:relative;z-index:1}
+.section-header,.blog-mini-grid,.library-mini-grid,.library-mini-tabs,.blog-see-all,.library-see-all,.services-content,.services-cta{position:relative}
+/* Nut "Xem tat ca" tren nen anh — pill trang de doc */
+.blog-see-all .btn-ghost,.library-see-all .btn-ghost{background:rgba(253,251,250,0.78);border-radius:999px;padding:10px 26px;box-shadow:0 2px 14px rgba(15,5,7,0.08)}
+.blog-see-all .btn-ghost:hover,.library-see-all .btn-ghost:hover{background:var(--bg-light);transform:translateX(4px)}
+
+/* ============ CHỮ ĐẬM QUÊN ẢNH NỀN (2026-11-03) — dậy chữ xám/đen cho dễ đọc ============ */
+/* Bảng màu trước: muted #6e6063 quá lợn trên ảnh; nâng tông nâu-xám đậm (#37-#4a) + weight cao + halo kem mảnh */
+.hero-title span{font-weight:600;text-shadow:0 1px 2px rgba(253,251,250,.85)}
+.hero-desc{color:#3a2f32;font-weight:600;text-shadow:0 1px 2px rgba(253,251,250,.85)}
+.hero-feature-text{color:#3f3437;font-weight:700;text-shadow:0 1px 2px rgba(253,251,250,.85)}
+.hero-stat span{color:#4a3f42;font-weight:600;text-shadow:0 1px 2px rgba(253,251,250,.85)}
+.section-desc{color:#372c2f;font-weight:600;text-shadow:0 1px 2px rgba(253,251,250,.85)}
+.library-mini-tab:not(.active){color:#3f3437;text-shadow:0 1px 2px rgba(253,251,250,.85)}
+
+/* ============ FLOW COLOR SYSTEM (2026-11-04, fix 2026-11-06) — thay ảnh bằng khối màu liền mạch ============ */
+/* Định hình: nền kem chảy suốt + mỗi section 1 hình dạng màu khác nhau; ranh giới nối bằng "sóng cong" màu của section kế.
+   Ribbon nghiêng + dot trôi tạo sinh động idle. Các rule CŨ dùng ảnh hóa KHÔNG XÓA (đỡ rollback) — rule màu mới phía sau ghi đè hoàn toàn. */
+.section-bg .bg-overlay{display:none}
+.section-bg{background:transparent}
+
+/* --- 1) Hero: mosaic pastel màu brand (bỏ ảnh) --- */
+body .hero{background:linear-gradient(180deg,#fdfbfa 0%,#f6f1ed 100%)}
+.hero-bmoves .bg-tile{background-image:none}
+.hero-bmoves .bg-tile:nth-child(1){background:linear-gradient(135deg,rgba(128,0,32,.10),rgba(158,26,56,.04))}
+.hero-bmoves .bg-tile:nth-child(2){background:linear-gradient(225deg,rgba(212,175,55,.16),rgba(212,175,55,.03))}
+.hero-bmoves .bg-tile:nth-child(3){background:#f6f1ed}
+.hero-bmoves .bg-tile:nth-child(4){background:linear-gradient(45deg,rgba(212,175,55,.12),rgba(233,199,106,.03))}
+.hero-bmoves .bg-tile:nth-child(5){background:linear-gradient(180deg,rgba(128,0,32,.08),rgba(128,0,32,.02))}
+.hero-bmoves .bg-tile:nth-child(6){background:linear-gradient(315deg,rgba(233,199,106,.15),rgba(253,251,250,0))}
+.overlay-hero{background:linear-gradient(180deg,rgba(253,251,250,.34) 0%,rgba(246,241,237,.5) 100%)}
+@media (max-width:640px){
+.hero-bmoves .bg-tile{background-image:none}
+}
+
+/* --- 2) Blog: 2 blob màu (bán kính mờ dần, thay 2 nửa ảnh) --- */
+body .blog-mini-section{background:linear-gradient(180deg,#fdfbfa 0%,#f6f1ed 100%)}
+.blog-mini-section .bg-half{background-image:none;background-size:auto}
+.blog-mini-section .bg-half-left{background:radial-gradient(closest-side at 35% 45%,rgba(128,0,32,.10),rgba(128,0,32,0))}
+.blog-mini-section .bg-half-right{background:radial-gradient(closest-side at 65% 55%,rgba(212,175,55,.15),rgba(212,175,55,0))}
+
+/* --- 3) Services: băng burgundy đậm + 3 dải màu mờ trong (thay 3 dải ảnh) --- */
+body .services-section{background:linear-gradient(180deg,#2e0816 0%,#1c0a0f 100%)}
+.services-section .bg-row{background-image:none;background-size:auto}
+.services-section .bg-row-1{background:linear-gradient(180deg,rgba(212,175,55,.07),rgba(212,175,55,0))}
+.services-section .bg-row-2{background:linear-gradient(180deg,rgba(253,251,250,.05),rgba(253,251,250,0))}
+.services-section .bg-row-3{background:linear-gradient(180deg,rgba(212,175,55,.06),rgba(212,175,55,0))}
+/* Chữ + card trên nền đậm */
+.services-section .section-subtitle{color:var(--accent-gold-light)}
+.services-section .section-title{color:#fdf8ef}
+.services-section .section-desc{color:rgba(253,248,239,.82);text-shadow:none}
+.services-section .services-grid .services-card{border-bottom-color:rgba(253,251,250,.16)}
+.services-section .services-grid .services-card:hover{border-bottom-color:var(--accent-gold)}
+.services-section .services-num{color:var(--accent-gold-light)}
+.services-section .services-card:hover .services-num{color:#fdf8ef}
+.services-section .services-grid .services-card-name{color:#fdf8ef}
+.services-section .services-arrow{color:rgba(253,248,239,.85)}
+.services-section .btn-ghost{color:var(--accent-gold-light)}
+.services-section .btn-ghost:hover{color:#fdf8ef}
+
+/* --- 4) Library: 6 ô màu pastel ngẫu nhiên (thay ảnh sách) --- */
+body .library-mini-section{background:var(--bg-light-alt)}
+.library-mini-section .bg-rand{background-image:none;border-radius:30%}
+.library-mini-section .bg-rand:nth-child(1){background:rgba(212,175,55,.13)}
+.library-mini-section .bg-rand:nth-child(2){background:rgba(128,0,32,.07)}
+.library-mini-section .bg-rand:nth-child(3){background:rgba(253,251,250,.65)}
+.library-mini-section .bg-rand:nth-child(4){background:rgba(212,175,55,.09)}
+.library-mini-section .bg-rand:nth-child(5){background:rgba(158,26,56,.06)}
+.library-mini-section .bg-rand:nth-child(6){background:rgba(233,199,106,.12)}
+
+/* --- 5) Ribbon nghiêng + dot trôi + sóng cong nối session --- */
+.ribbon{position:absolute;z-index:1;border-radius:999px;transform:rotate(calc(var(--ang,-9deg) + var(--ribrot,0deg)));translate:calc(var(--ribp,0) * var(--ribamp,80px)) calc(var(--ribp,0) * var(--ribamp,80px) * .35);pointer-events:none;opacity:0;scale:.94 1.05;transition:opacity .8s ease,scale .9s cubic-bezier(.16,1,.3,1)}
+.ribbon.r-gold{background:linear-gradient(120deg,rgba(212,175,55,.20),rgba(212,175,55,.02) 72%)}
+.ribbon.r-burg{background:linear-gradient(300deg,rgba(128,0,32,.12),rgba(128,0,32,.02) 72%)}
+.ribbon.r-cream{background:linear-gradient(120deg,rgba(253,251,250,.10),rgba(253,251,250,.02) 72%)}
+.section-bg.inview .ribbon,.hero-bg .ribbon{opacity:.95;scale:1}
+.section-bg:not(.inview) .ribbon{transition-delay:0s}
+.fdot{position:absolute;width:10px;height:10px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .9s ease .3s;background:var(--fdc,#d4af37);translate:calc(var(--ribp,0) * -26px) calc(var(--ribp,0) * -26px * .4);animation:fdotFloat var(--fdur,10s) ease-in-out 1s infinite alternate;z-index:1}
+.section-bg.inview .fdot,.hero-bg .fdot{opacity:var(--fo,.55)}
+.section-bg:not(.inview) .fdot{transition-delay:0s}
+@keyframes fdotFloat{from{scale:.85}to{scale:1.2}}
+.flow-wave{position:absolute;left:-14%;width:128%;height:72px;bottom:-36px;border-radius:50%;pointer-events:none;z-index:2;background:var(--wfill,#f6f1ed);animation:waveBob 8s ease-in-out infinite alternate}
+.library-mini-section .flow-wave{height:64px}
+@keyframes waveBob{from{translate:0 -3px}to{translate:0 5px}}
+@media (max-width:640px){
+.flow-wave{height:46px;bottom:-23px}
+.library-mini-section .flow-wave{height:40px}
+}
+
+/* ============ NO MOTION — hien tinh su, tat moi animation ============ */
+@media (prefers-reduced-motion:reduce){
+.hero-bmoves{animation:none;transform:none}
+.hero-bmoves .bg-tile{animation:none;opacity:1;clip-path:inset(0);transform:none}
+.blog-mini-section .bg-half,.services-section .bg-row{opacity:1;transform:none;transition:none}
+.library-mini-section .bg-rand{opacity:1;transform:none;clip-path:inset(0);transition:none}
+.hero-viz .viz-card{animation:none}
+.viz-line{animation:none;stroke-dashoffset:0}
+.viz-area,.viz-pt,.viz-badge,.viz-chip,.viz-markline,.viz-bar{animation:none;opacity:1;transform:none}
+.viz-tip{animation:none;opacity:0}
+.viz-travel{display:none}
+.viz-pulse{animation:none;opacity:0}
+.ribbon{animation:none;opacity:.95;translate:0 0;scale:1}
+.fdot{animation:none;opacity:.5;translate:0 0}
+.flow-wave{animation:none}
+.hero-bmoves,.hero-bg{will-change:auto}
 }

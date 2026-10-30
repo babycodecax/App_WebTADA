@@ -13,8 +13,7 @@
 
   <!-- Preload critical fonts (above-the-fold) -->
   <link rel="preload" href="static/fonts/be-vietnam-pro-400-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="static/img/hero-bg.webp" as="image" type="image/webp" media="(min-width: 641px)">
-  <link rel="preload" href="static/img/hero-bg-mobile.webp" as="image" type="image/webp" media="(max-width: 640px)">
+  <link rel="preload" href="static/fonts/be-vietnam-pro-600-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="static/fonts/be-vietnam-pro-700-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="static/fonts/be-vietnam-pro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 
@@ -79,7 +78,7 @@
   }
   </script>
   <!-- Main CSS -->
-  <link rel="stylesheet" href="static/css/main.css?v=20261004">
+  <link rel="stylesheet" href="static/css/main.css?v=20261107">
   <link rel="stylesheet" href="static/css/blog.css?v=20261030" media="print" onload="this.media='all'">
 </head>
 <body>
@@ -183,8 +182,26 @@
       <div class="hero-shape hero-shape-1"></div>
       <div class="hero-shape hero-shape-2"></div>
     </div>
+    <div class="hero-bg" aria-hidden="true">
+      <div class="ribbon r-gold" style="--ang:-9deg;top:5%;right:-14%;width:72%;height:clamp(70px,9vw,120px);--ribamp:110px"></div>
+      <div class="ribbon r-burg" style="--ang:-10deg;bottom:7%;left:-16%;width:60%;height:clamp(56px,7vw,104px);--ribamp:56px"></div>
+      <div class="fdot" style="top:26%;left:8%;--fdur:9s"></div>
+      <div class="fdot" style="top:68%;left:24%;width:8px;height:8px;--fdc:rgba(128,0,32,.5);--fdur:12s"></div>
+      <div class="fdot" style="top:18%;left:77%;width:14px;height:14px;--fo:.35;--fdur:14s"></div>
+      <div class="hero-bmoves">
+        <div class="bg-tile"></div>
+        <div class="bg-tile"></div>
+        <div class="bg-tile"></div>
+        <div class="bg-tile"></div>
+        <div class="bg-tile"></div>
+        <div class="bg-tile"></div>
+      </div>
+      <div class="overlay-hero"></div>
+    </div>
     
     <div class="container hero-single">
+      <div class="hero-split">
+      <div class="hero-copy">
       <div class="hero-content hero-content-center">
         <h1 class="hero-title">
           <span>Giải Pháp Tài Chính</span>
@@ -222,6 +239,136 @@
           <div class="hero-stat"><strong id="stat-forms" class="stat-loading">–</strong><span>Biểu mẫu</span></div>
         </div>
       </div>
+      </div>
+
+      <!-- BIỂU ĐỒ ĐỘNG bên phải — SVG thuần, không thư viện; số liệu minh họa -->
+      <div class="hero-viz">
+        <div class="viz-card">
+          <div class="viz-head">
+            <div class="viz-head-text">
+              <span class="viz-kicker">Minh họa lộ trình</span>
+              <span class="viz-title">Doanh thu hộ kinh doanh được chuẩn hóa</span>
+            </div>
+            <span class="viz-badge vanim" style="--pd:1.3s">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 8-8M21 7h-6v6"/></svg>
+              +120%
+            </span>
+          </div>
+
+          <div class="viz-kpis">
+            <span class="viz-kpi">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6l6 6 4-4 8 8M21 8v8h-8"/></svg>
+              Chi phí thuế -32%
+            </span>
+            <span class="viz-kpi">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 8-8M21 7h-6v6"/></svg>
+              Khách hàng mới ×5
+            </span>
+          </div>
+
+          <div class="viz-legend" aria-hidden="true">
+            <span class="lg-item"><i class="lg-line"></i>Doanh thu (triệu/tháng)</span>
+            <span class="lg-item"><i class="lg-bar"></i>Khách hàng mới</span>
+          </div>
+
+          <svg class="viz-chart" viewBox="0 0 520 280" role="img" aria-label="Biểu đồ minh họa: cột là khách hàng mới và đường là doanh thu hằng tháng, từ 25 triệu tháng T1 tăng lên 55 triệu tháng T8; tăng mạnh sau khi TADA đồng hành từ tháng T4, chi phí thuế giảm 32%">
+            <defs>
+              <linearGradient id="vizLineG" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#f0d9a8"/>
+                <stop offset="1" stop-color="#d4af37"/>
+              </linearGradient>
+              <linearGradient id="vizAreaG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#d4af37" stop-opacity="0.36"/>
+                <stop offset="1" stop-color="#d4af37" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="vizBarG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#d4af37" stop-opacity="0.5"/>
+                <stop offset="1" stop-color="#d4af37" stop-opacity="0.08"/>
+              </linearGradient>
+              <linearGradient id="vizChipG" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#ecd9a0"/>
+                <stop offset="1" stop-color="#d4af37"/>
+              </linearGradient>
+            </defs>
+
+            <g class="viz-grid" aria-hidden="true">
+              <line x1="44" y1="24" x2="504" y2="24"/>
+              <line x1="44" y1="98" x2="504" y2="98"/>
+              <line x1="44" y1="172" x2="504" y2="172"/>
+              <line x1="44" y1="246" x2="504" y2="246"/>
+            </g>
+
+            <g class="viz-axis" aria-hidden="true">
+              <text x="36" y="28" text-anchor="end">60tr</text>
+              <text x="36" y="102" text-anchor="end">40tr</text>
+              <text x="36" y="176" text-anchor="end">20tr</text>
+              <text x="36" y="250" text-anchor="end">0</text>
+              <text x="44" y="266" text-anchor="middle">T1</text>
+              <text x="109.7" y="266" text-anchor="middle">T2</text>
+              <text x="175.4" y="266" text-anchor="middle">T3</text>
+              <text x="241.1" y="266" text-anchor="middle">T4</text>
+              <text x="306.9" y="266" text-anchor="middle">T5</text>
+              <text x="372.6" y="266" text-anchor="middle">T6</text>
+              <text x="438.3" y="266" text-anchor="middle">T7</text>
+              <text x="504" y="266" text-anchor="middle">T8</text>
+            </g>
+
+            <path class="viz-markline vanim" d="M241.1 30V246"/>
+            <path class="viz-area vanim" fill="url(#vizAreaG)" d="M44,153.5 C76.9,153.5 76.9,142.4 109.7,142.4 C142.6,142.4 142.6,146.1 175.4,146.1 C208.3,146.1 208.3,131.3 241.1,131.3 C274,131.3 274,109.1 306.9,109.1 C339.7,109.1 339.7,83.2 372.6,83.2 C405.4,83.2 405.4,61 438.3,61 C471.1,61 471.1,42.5 504,42.5 L504,246 L44,246 Z"/>
+
+            <g class="viz-bars" aria-hidden="true">
+              <rect class="viz-bar vanim" style="--bd:.72s" x="37" y="228" width="14" height="18" rx="4"/>
+              <rect class="viz-bar vanim" style="--bd:.78s" x="102.7" y="222" width="14" height="24" rx="4"/>
+              <rect class="viz-bar vanim" style="--bd:.84s" x="168.4" y="228" width="14" height="18" rx="4"/>
+              <rect class="viz-bar vanim" style="--bd:.9s" x="234.1" y="216" width="14" height="30" rx="4"/>
+              <rect class="viz-bar vanim" style="--bd:.96s" x="299.9" y="198" width="14" height="48" rx="4"/>
+              <rect class="viz-bar vanim" style="--bd:1.02s" x="365.6" y="180" width="14" height="66" rx="4"/>
+              <rect class="viz-bar vanim" style="--bd:1.08s" x="431.3" y="162" width="14" height="84" rx="4"/>
+              <rect class="viz-bar vanim" style="--bd:1.14s" x="497" y="150" width="14" height="96" rx="4"/>
+            </g>
+
+            <path class="viz-line vanim" id="vizRevenuePath" fill="none" stroke="url(#vizLineG)" pathLength="1000" d="M44,153.5 C76.9,153.5 76.9,142.4 109.7,142.4 C142.6,142.4 142.6,146.1 175.4,146.1 C208.3,146.1 208.3,131.3 241.1,131.3 C274,131.3 274,109.1 306.9,109.1 C339.7,109.1 339.7,83.2 372.6,83.2 C405.4,83.2 405.4,61 438.3,61 C471.1,61 471.1,42.5 504,42.5"/>
+
+            <g class="viz-pts" aria-hidden="true">
+              <circle class="viz-pt vanim" style="--pd:.85s" cx="44" cy="153.5" r="4.5"/>
+              <circle class="viz-pt vanim" style="--pd:.94s" cx="109.7" cy="142.4" r="4.5"/>
+              <circle class="viz-pt vanim" style="--pd:1.03s" cx="175.4" cy="146.1" r="4.5"/>
+              <circle class="viz-pt vanim" style="--pd:1.12s" cx="241.1" cy="131.3" r="4.5"/>
+              <circle class="viz-pt vanim" style="--pd:1.21s" cx="306.9" cy="109.1" r="4.5"/>
+              <circle class="viz-pt vanim" style="--pd:1.3s" cx="372.6" cy="83.2" r="4.5"/>
+              <circle class="viz-pt vanim" style="--pd:1.39s" cx="438.3" cy="61" r="4.5"/>
+              <circle class="viz-pt viz-pt-last vanim" style="--pd:1.5s" cx="504" cy="42.5" r="5"/>
+            </g>
+            <circle class="viz-pulse vanim" cx="504" cy="42.5" r="5"/>
+
+            <g class="viz-travel" aria-hidden="true">
+              <circle r="9" fill="rgba(212,175,55,0.32)"/>
+              <circle r="4" fill="#ffe9b3"/>
+              <animateMotion dur="7s" repeatCount="indefinite"><mpath href="#vizRevenuePath" xlink:href="#vizRevenuePath"/></animateMotion>
+              <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.05;.95;1" dur="7s" repeatCount="indefinite"/>
+            </g>
+
+            <g class="viz-tips" aria-hidden="true">
+              <g class="viz-tip" style="--slot:0s"><rect x="17" y="119.5" width="54" height="20" rx="10"/><text x="44" y="133.5" text-anchor="middle">T1 · 25tr</text></g>
+              <g class="viz-tip" style="--slot:1s"><rect x="82.7" y="108.4" width="54" height="20" rx="10"/><text x="109.7" y="122.4" text-anchor="middle">T2 · 28tr</text></g>
+              <g class="viz-tip" style="--slot:2s"><rect x="148.4" y="112.1" width="54" height="20" rx="10"/><text x="175.4" y="126.1" text-anchor="middle">T3 · 27tr</text></g>
+              <g class="viz-tip" style="--slot:3s"><rect x="214.1" y="97.3" width="54" height="20" rx="10"/><text x="241.1" y="111.3" text-anchor="middle">T4 · 31tr</text></g>
+              <g class="viz-tip" style="--slot:4s"><rect x="279.9" y="75.1" width="54" height="20" rx="10"/><text x="306.9" y="89.1" text-anchor="middle">T5 · 37tr</text></g>
+              <g class="viz-tip" style="--slot:5s"><rect x="345.6" y="97.2" width="54" height="20" rx="10"/><text x="372.6" y="111.2" text-anchor="middle">T6 · 44tr</text></g>
+              <g class="viz-tip" style="--slot:6s"><rect x="411.3" y="27" width="54" height="20" rx="10"/><text x="438.3" y="41" text-anchor="middle">T7 · 50tr</text></g>
+              <g class="viz-tip" style="--slot:7s"><rect x="450" y="8.5" width="54" height="20" rx="10"/><text x="477" y="22.5" text-anchor="middle">T8 · 55tr</text></g>
+            </g>
+
+            <g class="viz-chip vanim">
+              <rect x="249.1" y="34" width="124" height="24" rx="12"/>
+              <text x="311.1" y="50" text-anchor="middle">TADA đồng hành</text>
+            </g>
+          </svg>
+
+          <p class="viz-note">Số liệu minh họa — từ T4 (TADA đồng hành): doanh thu tăng, khách hàng mới lớn dần, chi phí thuế giảm sau tối ưu.</p>
+        </div>
+      </div>
+      </div>
 
       <!-- Audit details — an mac dinh, hien khi upload file -->
       <div class="audit-section" id="audit-section" style="display:none">
@@ -247,12 +394,22 @@
 
     </div>
     <a class="hero-scroll" href="#blog" aria-label="Cuộn xuống xem bài viết"><span aria-hidden="true"></span></a>
+    <div class="flow-wave" style="--wfill:#fdfbfa" aria-hidden="true"></div>
   </section>
 
   <!-- ==========================================
        BLOG SECTION — 5 bài viết gần nhất
        ========================================== -->
-  <section class="blog-mini-section section-padding" id="blog">
+  <section class="blog-mini-section section-padding has-bg" id="blog">
+    <div class="section-bg" aria-hidden="true">
+      <div class="bg-half bg-half-left"></div>
+      <div class="bg-half bg-half-right"></div>
+      <div class="ribbon r-gold" style="--ang:-8deg;top:16%;left:18%;width:64%;height:clamp(48px,7vw,84px)"></div>
+      <div class="ribbon r-burg" style="top:auto;--ang:-11deg;bottom:14%;left:-10%;width:46%;height:clamp(40px,6vw,72px)"></div>
+      <div class="fdot" style="top:30%;left:12%;--fdur:11s"></div>
+      <div class="fdot" style="top:auto;left:auto;bottom:24%;right:14%;width:12px;height:12px;--fdc:rgba(128,0,32,.45);--fdur:13s"></div>
+      <div class="bg-overlay"></div>
+    </div>
     <div class="container">
       <div class="section-header center text-center">
         <span class="section-subtitle">BLOG KIẾN THỨC</span>
@@ -268,12 +425,23 @@
         <a href="/blog" class="btn btn-ghost">Xem tất cả bài viết →</a>
       </div>
     </div>
+    <div class="flow-wave" style="--wfill:#2e0816" aria-hidden="true"></div>
   </section>
 
   <!-- ==========================================
        SERVICES SECTION (Nền tối sang trọng) — Giảm padding để nhường chỗ cho Blog
        ========================================== -->
-  <section class="services-section section-padding" id="services" style="padding: 56px 0;">
+  <section class="services-section section-padding has-bg" id="services" style="padding: 56px 0;">
+    <div class="section-bg" aria-hidden="true">
+      <div class="bg-row bg-row-1"></div>
+      <div class="bg-row bg-row-2"></div>
+      <div class="bg-row bg-row-3"></div>
+      <div class="ribbon r-cream" style="--ang:-12deg;top:12%;left:6%;width:70%;height:clamp(50px,8vw,92px);--ribamp:116px"></div>
+      <div class="ribbon r-gold" style="top:auto;--ang:-12deg;bottom:18%;left:-12%;width:52%;height:clamp(34px,4.5vw,54px)"></div>
+      <div class="fdot" style="top:22%;left:10%;--fdc:rgba(233,199,106,.8);--fdur:10s"></div>
+      <div class="fdot" style="top:auto;left:auto;bottom:20%;right:10%;--fdc:rgba(253,248,239,.7);width:9px;height:9px;--fdur:12s"></div>
+      <div class="bg-overlay"></div>
+    </div>
     <div class="container">
       <div class="section-header center text-center">
         <span class="section-subtitle">DANH MỤC DỊCH VỤ</span>
@@ -289,12 +457,27 @@
         <a href="https://zalo.me/0986424286" target="_blank" class="btn btn-ghost">Nhận tư vấn miễn phí →</a>
       </div>
     </div>
+    <div class="flow-wave" style="--wfill:#f6f1ed" aria-hidden="true"></div>
   </section>
 
   <!-- ==========================================
        LIBRARY SECTION — Thư viện (2 tab: Văn bản luật / Biểu mẫu, mỗi tab 5 mục đầu)
        ========================================== -->
-  <section class="library-mini-section section-padding" id="library">
+  <section class="library-mini-section section-padding has-bg" id="library">
+    <div class="section-bg" aria-hidden="true">
+      <div class="bg-grid">
+        <div class="bg-rand"></div>
+        <div class="bg-rand"></div>
+        <div class="bg-rand"></div>
+        <div class="bg-rand"></div>
+        <div class="bg-rand"></div>
+        <div class="bg-rand"></div>
+      </div>
+      <div class="ribbon r-burg" style="top:auto;--ang:-9deg;bottom:10%;left:-8%;width:56%;height:clamp(44px,6vw,78px)"></div>
+      <div class="fdot" style="top:18%;left:auto;right:12%;--fdur:10s"></div>
+      <div class="fdot" style="top:auto;bottom:28%;left:14%;width:12px;height:12px;--fdc:rgba(128,0,32,.4);--fdur:13s"></div>
+      <div class="bg-overlay"></div>
+    </div>
     <div class="container">
       <div class="section-header center text-center">
         <span class="section-subtitle">THƯ VIỆN</span>
@@ -315,6 +498,7 @@
         <a href="/thu-vien" class="btn btn-ghost">Xem tất cả biểu mẫu &amp; văn bản →</a>
       </div>
     </div>
+    <div class="flow-wave" style="--wfill:#1a0b0e;bottom:0;animation:none" aria-hidden="true"></div>
   </section>
 
   </main>
@@ -415,6 +599,88 @@
   <script src="static/js/blog.js?v=20260924" defer></script>
   <script src="static/js/audit.js" defer></script>
   <script src="static/js/auth.js?v=20260925" defer></script>
+  <script>
+  /* Section-bg reveal (2026-10-30): mo manh ghep cho Hero + 3 section, moi section mot kieu.
+     Chi dung Animate vid ved poznej CSS (khong infinite janky), IO 1 instance chung.
+     prefers-reduced-motion: JS khong chay, CSS hien day du tren tinh */
+    (function () {
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) return;
+
+      // 1) Kich hoat .section-bg khi vao viewport.
+      //    Chay lai MOI LAN vao khung nhin (len xuong deu co animation):
+      //    vao >=25% -> add inview (mo manh ghep); roi xuong <15% -> remove
+      //    (reset ve trang thai dau) de lan sau vao lai ghep tu dau.
+      //    Hysteresis 25%/15% de khong nhap nhay khi keo o ria khung.
+      var bgs = document.querySelectorAll('.has-bg > .section-bg');
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.intersectionRatio >= 0.25) e.target.classList.add('inview');
+            else if (e.intersectionRatio < 0.15 || !e.isIntersecting) e.target.classList.remove('inview');
+          });
+        }, { threshold: [0.15, 0.25] });
+        bgs.forEach(function (el) { io.observe(el); });
+      } else {
+        bgs.forEach(function (el) { el.classList.add('inview'); });
+      }
+
+      // 2) Parallax nhe cho hero-bg: translate ~0.15x cuon lan, rAF throttle
+      //    (transform CHI tren .hero-bg; layer .hero-bmoves con nam trong giu Ken Burns CSS rieng)
+      var hero = document.querySelector('.hero-bg');
+      if (!hero || !('requestAnimationFrame' in window)) return;
+      // 3) Ribbon & fdot parallax theo do lat cuon (2 chieu): ghi --ribp (-1..1)
+      //    + --ribrot tren moi layer (hero-bg va 3 section-bg). Ribbon truot ngang
+      //    + nghieng nhe; fdot di nguoc chieu de tao do sau. Dung thi mat — re-trigger
+      //    tu IO o tren khong anh huong (la thuoc tinh vi tri, khong phai reveal).
+      var ribbg = document.querySelectorAll('.hero-bg, .has-bg > .section-bg');
+      var ticking = false, lastY = -1, departed = false;
+      // Khi quay lai dau trang sau khi da roi khoi hero: cho man ghep hero mo lai
+      var bmoves = hero.querySelector('.hero-bmoves');
+      function replayHeroTiles() {
+        if (!bmoves) return;
+        var tiles = bmoves.querySelectorAll('.bg-tile');
+        for (var i = 0; i < tiles.length; i++) {
+          tiles[i].style.animation = 'none';
+          void tiles[i].offsetWidth; /* force reflow de restart animation */
+          tiles[i].style.animation = '';
+        }
+        /* Bieu do hero cung mo lai (vi-doc vien tu chay dat CSS animation → reset nhu tren) */
+        var vanim = document.querySelectorAll('.hero-viz .vanim');
+        for (var j = 0; j < vanim.length; j++) {
+          vanim[j].style.animation = 'none';
+          void vanim[j].getBoundingClientRect(); /* SVG khong co offsetWidth — bbox moi ep reflow */
+          vanim[j].style.animation = '';
+        }
+      }
+      function onScroll() {
+        ticking = false;
+        var y = window.scrollY || window.pageYOffset || 0;
+        if (Math.abs(y - lastY) < 0.5) return;
+        lastY = y;
+        var hh = (document.getElementById('hero') || {}).offsetHeight || 1;
+        var p = Math.max(0, Math.min(y / hh, 1));
+        if (y > hh * 0.6) departed = true;
+        if (p === 0 && departed) { departed = false; replayHeroTiles(); }
+        hero.style.transform = 'translate3d(0,' + (p * 46).toFixed(1) + 'px,0)';
+        var vh = window.innerHeight || 1;
+        for (var k = 0; k < ribbg.length; k++) {
+          var rg = ribbg[k].getBoundingClientRect();
+          if (rg.bottom < -240 || rg.top > vh + 240) continue;
+          var rp = (vh - rg.top) / (vh + rg.height) * 2 - 1;
+          rp = Math.max(-1, Math.min(1, rp));
+          ribbg[k].style.setProperty('--ribp', rp.toFixed(3));
+          ribbg[k].style.setProperty('--ribrot', (rp * 2.2).toFixed(2) + 'deg');
+        }
+      }
+      // Hero co the quay lai viewport (scroll len) — mo khoa khi do lai
+      window.addEventListener('resize', function () { departed = false; onScroll(); }, { passive: true });
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+      }, { passive: true });
+      onScroll();
+    })();
+  </script>
   <script>
 
     /* Blog mini section — load 5 recent posts */
