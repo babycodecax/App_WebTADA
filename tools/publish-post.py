@@ -90,7 +90,7 @@ def audit(action, **fields):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--draft", required=True)
-    ap.add_argument("--force", action="store_true", help="bo qua cong duyet noi dung")
+    ap.add_argument("--force", action="store_true", help="bo qua cong duyet noi dung; cho phep ha published -> draft khi di cung --overwrite")
     ap.add_argument("--overwrite", action="store_true", help="cho phep ghi de bai da published")
     ap.add_argument("--dry-run", action="store_true", help="khong ghi DB, khong gui index")
     ap.add_argument("--no-preflight", action="store_true")
