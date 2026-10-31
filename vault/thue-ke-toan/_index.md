@@ -1,11 +1,11 @@
----
+﻿---
 title: Index — Bộ não Thuế & Kế toán
 domain: tax
 tags:
   - tax
   - tax/index
 status: active
-updated: 2026-09-16
+updated: 2026-10-31
 ---
 
 # 🧠 Bộ não Thuế & Kế toán
@@ -31,6 +31,7 @@ updated: 2026-09-16
 | Lương tối thiểu | [[nd-293-2025-luong-toi-thieu\|NĐ 293/2025 lương tối thiểu vùng 2026]] | Vùng I–IV: 5,31/4,73/4,14/3,70 triệu; hiệu lực 01/01/2026 |
 | Thuế TNDN (chi tiết) | [[luat-67-2025-tndn\|Luật TNDN 67/2025 (gốc)]] · [[nd-320-2025-tndn\|NĐ 320/2025 chi tiết]] · [[tt-20-2026-tndn\|TT 20/2026 hướng dẫn]] | 20%; ưu đãi 10%/15%; hồ sơ chi được trừ, ưu đãi, nhà thầu nước ngoài |
 | Hộ KD & TNDN nhỏ | [[nd-141-2026-ho-kinh-doanh-tndn\|NĐ 141/2026 hộ KD & miễn thuế TNDN nhỏ]] | Ngưỡng 01 tỷ; miễn thuế TNDN DN ≤ 01 tỷ doanh thu |
+| **Giảm thuế 2026–27 (MỚI)** | [[nd-398-2026-giam-tncn-tndn\|NĐ 398/2026 giảm 30% TNCN/TNDN]] | Doanh thu ≤ 10 tỷ; hiệu lực 29/10/2026; mẫu kê khai 01/02/03 |
 | Thuế & QLT HKD/CNKD | [[nd-68-2026-ho-kinh-doanh\|NĐ 68/2026 thuế & QLT HKD/CNKD]] · [[tt-18-2026\|TT 18/2026 hồ sơ thủ tục]] | Doanh thu ≤01tỷ miễn GTGT/TNCN (NĐ 141/2026); HĐĐT ≥01 tỷ; bỏ phương pháp khoán |
 | Kinh tế tư nhân | [[nq-198-2025-kinh-te-tu-nhan\|NQ 198/2025 phát triển KTTN]] | Bỏ lệ phí môn bài 2026; miễn/giảm TNDN DNNVV; hỗ trợ đất, tín dụng, KH&CN |
 | Hợp đồng lao động điện tử | [[nd-337-2025-hop-dong-lao-dong-dien-tu\|NĐ 337/2025 HĐLĐ điện tử]] | eContract, Nền tảng Bộ Nội vụ; vận hành từ 01/07/2026 |

@@ -1,4 +1,4 @@
----
+﻿---
 title: Cheatsheet Ngưỡng Thuế 2026 (Single Source of Truth)
 domain: tax
 tags:
@@ -9,7 +9,7 @@ tags:
   - tax/nha-thau-nuoc-ngoai
 source: Tổng hợp từ các Luật/ND/TT 2024-2026 trong vault (luat-48, luat-67, luat-109, luat-66, luat-09, vbhn-xnk-107, nd-310-2025, nd-320-2025-tndn, tt-20-2026-tndn)
 status: active
-updated: 2026-09-07
+updated: 2026-10-31
 ---
 
 # 📌 Cheatsheet Ngưỡng Thuế 2026
@@ -56,6 +56,7 @@ updated: 2026-09-07
 - ⚠️ Dự phòng tiền lương: hết hạn **31/05** mới được tính vào chi phí.
 - ✅ Thuế GTGT đã khấu trừ, BHXH, chi phí thực tế liên quan SXKD → được trừ.
 - **Miễn thuế TNDN nhỏ:** DN có doanh thu ≤ 01 tỷ → miễn (NĐ 141/2026).
+- **Giảm 30% TNDN + TNCN ký 2026–2027 (MỚI 10/2026):** DN + cá nhân/hộ kinh doanh, doanh thu năm ≤ **10 tỷ** ([[nd-398-2026-giam-tncn-tndn|NĐ 398/2026]], chi tiết NQ 43/2026) — DN giảm 30% TNDN phải nộp sau ưu đãi, tự xác định khi tạm nộp quý; cá nhân kinh doanh giảm 30% TNCN (Mẫu 01/02, vượt 10 tỷ nộp lại qua Mẫu 03 không tính chậm nộp); DN mới chia/tách tổng doanh thu >10 tỷ không được áp dụng.
 
 ---
 
