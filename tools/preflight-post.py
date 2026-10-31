@@ -7,7 +7,8 @@ Cach dung (khong phu thuoc thu muc chay):
 Kiem tra:
   1. chay tools/check-post-format.py (in output; FAIL -> ERR)
   2. slug/title/summary; slug regex + so khop ten file; do dai chi WARN
-  3. rac token: CJK/Cyrillic/U+FFFD + mojibake letter?letter -> ERR
+  3. rac token: CJK/Cyrillic/U+FFFD + mojibake letter?letter -> ERR; tu case rac (lower+UPPER trong token) -> WARN
+  3b. ngan sach tu theo muc: intro > 160 / H2 > 320 / body > 1750 -> WARN (muc tieu viet <=1750 thay vi cat sau)
   4. link noi bo /blog/<slug> khong ton tai trong DB -> ERR
   5. ngay trong tuan: trong bang (xac dinh cot Ngay/Thu THEO HEADER) va trong cau chu
      (window 30 ky tu quanh ngay, ho tro 'la', 'roi vao', '29/12, thu Tu', '(thu Tu)',
@@ -39,6 +40,14 @@ WD_TOKEN = re.compile(r"thu\s*(?:2|3|4|5|6|7|hai|ba|tu|nam|sau|bay)(?!\w)|chu\s*
 SEP_CELL = re.compile(r"^:?-{2,}:?$")
 LINK_MD = re.compile(r"\]\((/blog/[A-Za-z0-9\-]+)(?:\s+\"[^\"]*\")?\)")
 LINK_HREF = re.compile(r"href=\"/blog/([A-Za-z0-9\-]+)\"")
+
+# Ngan sach tu theo muc (WARN, khong chan): tong the checker chan 1100-1800.
+INTRO_BUDGET = 160   # phan sau H1 title truoc H2 dau tien
+SEC_BUDGET = 320     # moi H2 (ke ca FAQ)
+# Tu co lowercase -> UPPERCASE ngay trong token (dau hieu rac xay ro khi viet nhanh)
+MIXCASE = re.compile(r"[a-zăâđêôơư][A-Z]")
+GARBLE_OK = {"eTax", "iPhone", "iPad", "iOS", "PayPal", "ZaloPay", "ShopeePay",
+             "MoMo", "PayOS"}
 
 
 def _parse_day(s):
@@ -275,6 +284,39 @@ def guess_year(text, fm):
     return datetime.date.today().year
 
 
+def check_word_budget(body):
+    """WARN ngan sach: mo bai > INTRO_BUDGET, tung muc H2 > SEC_BUDGET."""
+    warns = []
+    parts = re.split(r"(?m)^(#{1,2} .*)$", body)
+    heads = parts[1::2]
+    sects = parts[2::2]
+    for h, chunk in zip(heads, sects):
+        wcount = len(chunk.split())
+        if h.startswith("# "):
+            if wcount > INTRO_BUDGET:
+                warns.append("mo bai ~%d tu (ngan sach %d)" % (wcount, INTRO_BUDGET))
+        elif wcount > SEC_BUDGET:
+            warns.append("'%s' ~%d tu (ngan sach %d)" % (h[3:].strip()[:60], wcount, SEC_BUDGET))
+    return warns
+
+
+def check_garble_words(text, limit=5):
+    """WARN token rac co case bat thuong (vd 'tungOMISTRY'): lowercase + UPPERCASE trong 1 tu.
+    Bo qua dong chua link, token trong GARBLE_OK."""
+    res = []
+    for i, line in enumerate(text.split("\n"), 1):
+        if "http" in line.lower():
+            continue
+        for tok in re.findall(r"[A-Za-zăâđêôơưÀ-ỹ]{2,}", line):
+            if tok in GARBLE_OK or not MIXCASE.search(tok):
+                continue
+            res.append((i, tok))
+            break
+        if len(res) >= limit:
+            break
+    return res
+
+
 def load_db_slugs(env):
     base, h = supabase(env)
     url = base + "/blog_posts?select=slug&limit=5000"
@@ -296,6 +338,15 @@ def main():
                     help="sua cot Thu trong bang (backup .bak-<ts>)")
     ap.add_argument("--no-checker", action="store_true")
     args = ap.parse_args()
+
+    # Chay qua pipe (publish-post.py goi subprocess capture_output): console mac dinh
+    # cp1252 -> in token Viet dung %r/%s nut UnicodeEncodeError -> rc=1 gai nhiem FAIL.
+    # Reconfigure khop pattern extract_docx.py:34.
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except AttributeError:
+        pass
 
     path = args.draft
     if not os.path.isfile(path):
@@ -341,9 +392,11 @@ def main():
         errs.append("thieu summary")
     elif not 150 <= len(summary) <= 160:
         warns.append("summary %d ky tu (khuyen 150-160)" % len(summary))
-    wc = len(re.findall(r"[A-Za-z0-9À-ỹ]+", body))
-    if wc and not 900 <= wc <= 2200:
-        warns.append("body ~%d tu (khuyen 1100-1800)" % wc)
+    body_est = re.sub(r"<figure[\s\S]*?</figure>", " ", re.sub(r"https?://\S+", " ", body))
+    wc = len(re.findall(r"[A-Za-z0-9À-ỹ]+", body_est))
+    if wc and (wc < 1100 or wc > 1750):
+        warns.append("body ~%d tu (checker chan 1100-1800)" % wc)
+    warns.extend(check_word_budget(body))
 
     # 3) rac token
     cjk = sum(1 for c in text if (0x4E00 <= ord(c) <= 0x9FFF or 0x3040 <= ord(c) <= 0x30FF
@@ -354,6 +407,10 @@ def main():
     hit = re.findall(r"\w\?\w", re.sub(r"https?://\S+", " ", text))
     if hit:
         errs.append("mojibake letter?letter (vi du %r) - kiem tra lai encoding file" % hit[:3])
+    garble = check_garble_words(text)
+    if garble:
+        warns.append("tu co case rac (sua tay): "
+                     + ", ".join("%r (dong %d)" % (t, ln) for ln, t in garble))
 
     # 4) link noi bo
     env = read_env()
