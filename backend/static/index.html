@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -78,8 +78,8 @@
   }
   </script>
   <!-- Main CSS -->
-  <link rel="stylesheet" href="static/css/main.css?v=20261031">
-  <link rel="stylesheet" href="static/css/blog.css?v=20261031" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="static/css/main.css?v=20261031b">
+  <link rel="stylesheet" href="static/css/blog.css?v=20261031b" media="print" onload="this.media='all'">
 </head>
 <body>
 
@@ -209,7 +209,7 @@
         </h1>
         
         <p class="hero-desc">
-          Tối ưu hóa nghĩa vụ thuế, chuẩn hóa hệ thống<br>sổ sách kế toán chuyên nghiệp và bảo vệ<br><strong class="keep">cá nhân, hộ kinh doanh, doanh nghiệp</strong><br>trước các rủi ro pháp lý.
+          Tối ưu hóa nghĩa vụ thuế, chuẩn hóa hệ thống <br>sổ sách kế toán chuyên nghiệp và bảo vệ <br><strong class="keep">cá nhân, hộ kinh doanh, doanh nghiệp</strong> <br>trước các rủi ro pháp lý.
         </p>
         
         <div class="hero-features">
@@ -395,7 +395,6 @@
       </div>
 
     </div>
-    <a class="hero-scroll" href="#blog" aria-label="Cuộn xuống xem bài viết"><span aria-hidden="true"></span></a>
     <div class="flow-wave" style="--wfill:#fdfbfa" aria-hidden="true"></div>
   </section>
 
@@ -588,8 +587,8 @@
   <script>
     window.OB_CONFIG = { apiUrl: '' };
   </script>
-  <script src="static/js/app.js?v=20261031" defer></script>
-  <script src="static/js/blog.js?v=20261031" defer></script>
+  <script src="static/js/app.js?v=20261031b" defer></script>
+  <script src="static/js/blog.js?v=20261031b" defer></script>
   <script src="static/js/audit.js" defer></script>
   <script src="static/js/auth.js?v=20260925" defer></script>
   <script>
@@ -772,15 +771,22 @@
               '<div class="date">' + fmt(p.published_at) + '</div></span>';
             grid.appendChild(card);
           });
-          // Reveal lan luot nhu muc Dich vu
+          // Reveal lan luot nhu muc Dich vu — HAI CHIEU giong services-grid (31/10):
+          // vao >=.25 add inview, roi xuong <.15/khoi khung -> remove de cuon lai chay lai.
+          // Fallback 4s an toan CHI khi dang trong viewport (position check, khong blind-add).
           if ('IntersectionObserver' in window) {
-            var bio = new IntersectionObserver(function (es) {
+            if (window.__blogMiniIO) window.__blogMiniIO.disconnect();
+            window.__blogMiniIO = new IntersectionObserver(function (es) {
               es.forEach(function (e) {
-                if (e.isIntersecting) { grid.classList.add('inview'); bio.disconnect(); }
+                if (e.intersectionRatio >= 0.25) grid.classList.add('inview');
+                else if (e.intersectionRatio < 0.15 || !e.isIntersecting) grid.classList.remove('inview');
               });
-            }, { threshold: 0.12 });
-            bio.observe(grid);
-            setTimeout(function () { grid.classList.add('inview'); }, 4000);
+            }, { threshold: [0.15, 0.25] });
+            window.__blogMiniIO.observe(grid);
+            setTimeout(function () {
+              var r = grid.getBoundingClientRect();
+              if (r.top < window.innerHeight * 0.85 && r.bottom > 0) grid.classList.add('inview');
+            }, 4000);
           } else {
             grid.classList.add('inview');
           }
@@ -873,17 +879,23 @@
           }
           grid.appendChild(card);
         });
-        // Reveal lan luot nhu muc Dich vu (doi tab render lai thi tu chay lai)
-        if (grid.classList.contains('inview')) return;
+        // Reveal lan luot nhu muc Dich vu — HAI CHIEU giong services-grid (31/10):
+        // vao >=.25 add inview, roi xuong <.15/khoi khung -> remove de cuon lai chay lai.
+        // Fallback 4s an toan CHI khi dang trong viewport (position check, khong blind-add).
         if ('IntersectionObserver' in window) {
           if (window.__libIO) window.__libIO.disconnect();
           window.__libIO = new IntersectionObserver(function (es) {
             es.forEach(function (e) {
-              if (e.isIntersecting) { grid.classList.add('inview'); window.__libIO.disconnect(); }
+              if (e.intersectionRatio >= 0.25) grid.classList.add('inview');
+              else if (e.intersectionRatio < 0.15 || !e.isIntersecting) grid.classList.remove('inview');
             });
-          }, { threshold: 0.12 });
+          }, { threshold: [0.15, 0.25] });
           window.__libIO.observe(grid);
-          setTimeout(function () { grid.classList.add('inview'); }, 4000);
+          if (window.__libFB) clearTimeout(window.__libFB);
+          window.__libFB = setTimeout(function () {
+            var r = grid.getBoundingClientRect();
+            if (r.top < window.innerHeight * 0.85 && r.bottom > 0) grid.classList.add('inview');
+          }, 4000);
         } else {
           grid.classList.add('inview');
         }

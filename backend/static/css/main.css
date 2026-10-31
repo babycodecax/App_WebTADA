@@ -235,10 +235,6 @@
 .hero-bmoves .bg-tile:nth-child(6){background-position:100% 100%;animation-delay:.76s}
 @keyframes heroKenBurns{0%{transform:scale(1.02)}100%{transform:scale(1.10)}}
 .overlay-hero{position:absolute;inset:-72px;background:linear-gradient(180deg,rgba(253,251,250,0.58) 0%,rgba(246,241,237,0.66) 100%)}
-/* Cue cuon xuong cuoi hero (chinh thieu tu styles.css — landing khong nap styles.css) + khong bi nen de + nhan click */
-.hero .hero-scroll{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border-light);border-radius:50%;background:rgba(255,255,255,0.7);z-index:3}
-.hero .hero-scroll span{width:10px;height:10px;border-right:2px solid var(--primary-burgundy);border-bottom:2px solid var(--primary-burgundy);transform:rotate(45deg) translate(-2px,-2px);animation:hero-cue 2s ease infinite}
-@keyframes hero-cue{0%,100%{transform:rotate(45deg) translate(-2px,-2px);opacity:1}50%{transform:rotate(45deg) translate(2px,2px);opacity:.5}}
 /* Nen khong nhan su kien — content (z1/z2) la layer tuong tac duy nhat */
 .hero-bg,.overlay-hero,.section-bg,.hero .hero-shapes{pointer-events:none}
 .hero .hero-shapes{z-index:1}
@@ -405,5 +401,9 @@ html.js-anim .trv{opacity:1;transform:none;clip-path:inset(0 0 0 0);transition:n
 .hero-feature-item,.hero-stat{animation:none;opacity:1;transform:none}
 /* Footer bg: trang tinh */
 .footer-bg .ribbon,.footer-bg .fdot{animation:none;opacity:.55;translate:0 0}
+/* Danh sach Dich vu: trang tinh day du (ca bien the .inview de thang specificity).
+   Blog/library gom o blog.css (nap sau main.css — dat CUOI file de thang cascade). */
+.services-grid .services-card,.services-grid.inview .services-card{
+  opacity:1;transform:none;transition:none;transition-delay:0s}
 .hero-bmoves,.hero-bg{will-change:auto}
 }
