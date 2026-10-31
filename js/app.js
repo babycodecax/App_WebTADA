@@ -256,16 +256,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     content.appendChild(wrapper);
 
-    // Reveal lan luot khi cuon toi (stagger qua --i trong CSS)
+    // Reveal lan luot khi cuon toi (stagger qua --i trong CSS) — HAI CHIEU:
+    // vao >=.25 add inview, roi xuong <.15 | roi khung -> remove de cuon lai chay lai
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
-          if (e.isIntersecting) { wrapper.classList.add('inview'); io.disconnect(); }
+          if (e.intersectionRatio >= 0.25) wrapper.classList.add('inview');
+          else if (e.intersectionRatio < 0.15 || !e.isIntersecting) wrapper.classList.remove('inview');
         });
-      }, { threshold: 0.12 });
+      }, { threshold: [0.15, 0.25] });
       io.observe(wrapper);
-      // Luoi an toan: hien sau 4s neu IO khong kich hoat
-      setTimeout(function () { wrapper.classList.add('inview'); }, 4000);
+      // Luoi an toan: hien sau 4s NEU dang trong viewport (position check —
+      // khong blind-add vi hai chieu remove co the da xoa tu truoc)
+      setTimeout(function () {
+        var r = wrapper.getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.85 && r.bottom > 0) wrapper.classList.add('inview');
+      }, 4000);
     } else {
       wrapper.classList.add('inview');
     }

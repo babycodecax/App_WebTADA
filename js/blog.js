@@ -54,45 +54,6 @@
     }
   }
 
-  /** Tìm bài viết liên quan: matching keyword từ title */
-  function findRelated(currentSlug, currentTitle, allPosts, maxCount) {
-    if (maxCount === undefined) maxCount = 4;
-    // Extract meaningful keywords (≥ 5 ký tự) từ title hiện tại
-    var keywords = (currentTitle || '').toLowerCase().split(/[\s,.\-:;!?()]+/).filter(function (w) {
-      return w.length >= 5 && !['của', 'trong', 'với', 'cho', 'năm', 'các', 'có', 'theo', 'tại', 'từ', 'để', 'khi', 'nào', 'bao', 'nhiêu', 'làm', 'sao', 'thế', 'này', 'như', 'về', 'còn', 'đã', 'sẽ', 'đang', 'bị', 'không', 'những', 'một', 'ngày', 'tháng', 'đó', 'thì'].includes(w);
-    });
-
-    // Score each post by keyword matches in title + summary
-    var scored = [];
-    allPosts.forEach(function (p) {
-      if (p.slug === currentSlug) return;
-      var text = ((p.title || '') + ' ' + (p.summary || '')).toLowerCase();
-      var score = 0;
-      keywords.forEach(function (kw) {
-        if (text.includes(kw)) score++;
-      });
-      if (score > 0) scored.push({ post: p, score: score });
-    });
-
-    scored.sort(function (a, b) { return b.score - a.score; });
-    return scored.slice(0, maxCount).map(function (s) { return s.post; });
-  }
-
-  /** Render danh sách bài viết liên quan */
-  function renderRelatedPosts(related, container) {
-    if (!related || related.length === 0) return;
-    var html = '<div class="blog-related"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="vertical-align:-3px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Bài viết liên quan</h3><div class="blog-related-grid">';
-    related.forEach(function (p) {
-      html +=
-        '<a href="' + postUrl(p.slug) + '" class="blog-related-card">' +
-          '<h4>' + escHtml(p.title) + '</h4>' +
-          (p.summary ? '<p>' + escHtml(p.summary.slice(0, 100)) + '</p>' : '') +
-        '</a>';
-    });
-    html += '</div></div>';
-    container.insertAdjacentHTML('beforeend', html);
-  }
-
   function renderList(grid) {
     // SSR: route /blog da render san rows (data-ssr) → giu nguyen, khong fetch lai (van bat reveal)
     if (grid.dataset && grid.dataset.ssr === '1' && grid.querySelector('.blog-mini-card')) {
@@ -150,16 +111,23 @@
       });
   }
 
-  /** Reveal lan luot cho blog-mini-grid (giong services-grid). */
+  /** Reveal lan luot cho blog-mini-grid (giong services-grid) — HAI CHIEU:
+      vao >=.25 add inview (stagger card), roi xuong <.15 | roi khung -> remove
+      de lan cuon sau chay lai tu dau (dung voi hysteresis section-bg 2026-10-30). */
   function observeMiniReveal(grid) {
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
-          if (e.isIntersecting) { grid.classList.add('inview'); io.disconnect(); }
+          if (e.intersectionRatio >= 0.25) grid.classList.add('inview');
+          else if (e.intersectionRatio < 0.15 || !e.isIntersecting) grid.classList.remove('inview');
         });
-      }, { threshold: 0.12 });
+      }, { threshold: [0.15, 0.25] });
       io.observe(grid);
-      setTimeout(function () { grid.classList.add('inview'); }, 4000);
+      // Luoi an toan: hien sau 4s NEU dang trong viewport (position check)
+      setTimeout(function () {
+        var r = grid.getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.85 && r.bottom > 0) grid.classList.add('inview');
+      }, 4000);
     } else {
       grid.classList.add('inview');
     }
@@ -168,7 +136,7 @@
   /** Inject JSON-LD ItemList — Google đọc cấu trúc danh sách bài viết. */
   function injectItemListSchema(posts) {
     try {
-      var items = (posts || []).slice(0, 100).map(function (p, i) {
+      var items = (posts || []).slice(0, 1000).map(function (p, i) {
         return {
           '@type': 'ListItem',
           position: i + 1,
@@ -219,20 +187,6 @@
           '</article>';
         document.title = post.title + ' — TADA';
         updateDetailSeo(post);
-
-        // Bài viết liên quan — server đã SSR sẵn (#ssr-related) thì giữ nguyên,
-        // tránh vẽ trùng và tránh ghi đè nội dung server (chuẩn GSC 17/09)
-        fetch(API + '/api/blog?limit=999')
-          .then(function (r) { return r.json(); })
-          .then(function (allPosts) {
-            if (document.getElementById('ssr-related')) return;
-            var related = findRelated(post.slug, post.title, allPosts);
-            var articleEl = container.querySelector('.blog-detail');
-            if (articleEl && related.length > 0) {
-              renderRelatedPosts(related, container);
-            }
-          })
-          .catch(function () { /* silent */ });
       })
       .catch(function (err) {
         // Xóa wrap class khi lỗi
@@ -367,12 +321,20 @@
   }
 
   function renderMarkdown(md) {
+    var html;
     if (typeof marked !== 'undefined') {
       marked.setOptions({ breaks: true, gfm: true });
-      return marked.parse(md || '');
+      html = marked.parse(md || '');
+    } else {
+      // fallback: simple line breaks
+      html = (md || '').replace(/\n/g, '<br>');
     }
-    // fallback: simple line breaks
-    return (md || '').replace(/\n/g, '<br>');
+    // Chống stored XSS từ content DB: luôn lọc qua DOMPurify trước khi innerHTML
+    if (typeof DOMPurify !== 'undefined') {
+      return DOMPurify.sanitize(html, { FORBID_TAGS: ['style', 'form', 'input', 'iframe'], FORBID_ATTR: ['onerror', 'onclick', 'onload'] });
+    }
+    // DOMPurify mất tải → chiến lược an toàn: render thuần văn bản, không HTML
+    return escHtml(md || '').replace(/\n/g, '<br>');
   }
 
   function escHtml(s) {

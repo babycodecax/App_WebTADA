@@ -111,16 +111,23 @@
       });
   }
 
-  /** Reveal lan luot cho blog-mini-grid (giong services-grid). */
+  /** Reveal lan luot cho blog-mini-grid (giong services-grid) — HAI CHIEU:
+      vao >=.25 add inview (stagger card), roi xuong <.15 | roi khung -> remove
+      de lan cuon sau chay lai tu dau (dung voi hysteresis section-bg 2026-10-30). */
   function observeMiniReveal(grid) {
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
-          if (e.isIntersecting) { grid.classList.add('inview'); io.disconnect(); }
+          if (e.intersectionRatio >= 0.25) grid.classList.add('inview');
+          else if (e.intersectionRatio < 0.15 || !e.isIntersecting) grid.classList.remove('inview');
         });
-      }, { threshold: 0.12 });
+      }, { threshold: [0.15, 0.25] });
       io.observe(grid);
-      setTimeout(function () { grid.classList.add('inview'); }, 4000);
+      // Luoi an toan: hien sau 4s NEU dang trong viewport (position check)
+      setTimeout(function () {
+        var r = grid.getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.85 && r.bottom > 0) grid.classList.add('inview');
+      }, 4000);
     } else {
       grid.classList.add('inview');
     }
