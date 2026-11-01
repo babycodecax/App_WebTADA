@@ -170,6 +170,7 @@ def run_tool(args, log):
             encoding="utf-8",
             errors="replace",
             timeout=3600,
+            cwd=HERE,
         )
     except Exception as e:
         log("  subprocess LOI: %s" % e)
@@ -250,7 +251,7 @@ def main():
             with open(f, "w", encoding="utf-8") as fh:
                 fh.write("\n".join(batch) + "\n")
             log("GSC: pending=%d used=%d cap=%d -> %d URL" % (len(pending_gsc), used, cap, len(batch)))
-            run_tool(["tools/gsc-index.py", "--urls-file", f, "--limit", str(len(batch)), "--request"], log)
+            run_tool([os.path.join(HERE, "gsc-index.py"), "--urls-file", f, "--limit", str(len(batch)), "--request"], log)
             # doc report moi nhat sinh sau run_start de ghi state
             new_reports = []
             try:
@@ -314,7 +315,7 @@ def main():
             with open(f, "w", encoding="utf-8") as fh:
                 fh.write("\n".join(batch) + "\n")
             log("Bing: pending=%d remain=%d -> submit %d URL" % (len(pending_bing), remain, len(batch)))
-            rc = run_tool(["tools/bing-submit.py", "--urls-file", f], log)
+            rc = run_tool([os.path.join(HERE, "bing-submit.py"), "--urls-file", f], log)
             if rc == 0:
                 for u in batch:
                     ba[u] = today.isoformat()
