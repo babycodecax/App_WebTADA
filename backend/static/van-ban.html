@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+  <!-- Fix assets /van-ban/<id>: pathname 2 cấp phá đường dẫn tương đối static/...
+       (trình duyệt tải từ /van-ban/static/... → 404) — same fix như blog.html.
+       <base href="/"> phân giải mọi đường dẫn tương đối về gốc. -->
+  <base href="/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Văn bản luật — Dịch Vụ Thuế Kế Toán TADA</title>
