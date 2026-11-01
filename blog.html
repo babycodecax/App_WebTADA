@@ -222,6 +222,9 @@
   <script src="static/js/app.js?v=20261004" defer></script>
 <script src="static/js/auth.js?v=20260925" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- DOMPurify: blog.js renderDetail ghi đè SSR bằng render client — thiếu purify
+       thì renderMarkdown trả raw text (bug bảng/in đậm mất format 01/11/2026) -->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
   <script src="static/js/legal-link-rewrite.js?v=20261101"></script>
   <script src="static/js/blog.js"></script>
 </body>
