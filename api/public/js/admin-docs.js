@@ -130,7 +130,7 @@
     })
       .then(function (r) {
         return r.json().then(function (d) {
-          if (r.status === 401) { setToken(''); renderConnected(false); throw new Error('Phiên hết hạn'); }
+          if (r.status === 401) { renderConnected(false); throw new Error('Phiên hết hạn'); }
           if (!r.ok) throw new Error(d.error || 'Upload thất bại');
           return d;
         });
@@ -207,10 +207,13 @@
       }
     }, 1500);
 
-    // Re-check khi quay lại tab — token có thể expired khi chuyển tab
+    // Re-check khi quay lại tab — token có thể expired khi chuyển tab.
+    // recheck() (fix 2026-11-01) xác thực lại NGẦM, không xá trạng thái cũ:
+    // lỗi mạng tạm thời không kéo panel admin biến mất nữa (tầng admin-auth lo).
     document.addEventListener('visibilitychange', function () {
       if (!document.hidden) {
         _orig = window.__tadaSession; // force re-check
+        if (window.TADAAdminAuth && window.TADAAdminAuth.recheck) window.TADAAdminAuth.recheck();
         syncAuth();
       }
     });

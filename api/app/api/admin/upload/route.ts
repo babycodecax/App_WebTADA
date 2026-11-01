@@ -175,8 +175,12 @@ async function upsertSourceDocument(filePath: string, title: string, storagePath
  * TỰ ĐỘNG CẬP NHẬT THƯ VIỆN — admin upload .docx → parse mammoth (giữ bảng
  * biểu), .pdf → pdf-parse hoặc OCR → upsert landing_legal_docs → văn bản
  * xuất hiện ngay trong /thu-vien. Best-effort: lỗi KHÔNG chặn upload.
+ *
+ * adminTitle: tiêu đề admin nhập ở form Upload — Ưu Tiên TRỘN GIAO DIỆN
+ * (fix 2026-11-01: trước đây title tự derive từ nội dung file nên /thu-vien
+ * hiện tiêu đề khác với những gì admin nhập). Rỗng → giữ hành vi cũ.
  */
-async function syncLegalDocToLibrary(file: File): Promise<void> {
+async function syncLegalDocToLibrary(file: File, adminTitle?: string): Promise<void> {
   try {
     const name = file.name || '';
     const ext = name.split('.').pop()?.toLowerCase() || '';
@@ -288,7 +292,7 @@ async function syncLegalDocToLibrary(file: File): Promise<void> {
       : meta.doc_type;
     const row = buildLegalDocRow({
       html,
-      title: meta.title || fallbackTitle,
+      title: (adminTitle || '').trim() || meta.title || fallbackTitle,
       doc_type: finalType as any,
       doc_number: meta.doc_number,
       fileName: file.name,
@@ -399,7 +403,7 @@ export async function POST(req: NextRequest) {
     await upsertSourceDocument(filePath, title, storagePath);
     await clearAnswerCache();
     // TỰ ĐỘNG CẬP NHẬT THƯ VIỆN — .docx → landing_legal_docs (best-effort, chạy nền)
-    waitUntil(syncLegalDocToLibrary(file));
+    waitUntil(syncLegalDocToLibrary(file, rawTitle));
     // Số liệu structured (moc_mien_thue_tncn_2026...) + compliance records có
     // thể đổi theo tài liệu mới → invalidate cả 2 cache + knowledge cache
     invalidateStructuredCache();

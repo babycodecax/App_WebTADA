@@ -24,7 +24,10 @@
         supabase.auth.onAuthStateChange(function (ev, sess) {
           session = sess;
           window.__tadaSession = sess; // expose cho admin-auth.js (Quản lý tài liệu/Dịch vụ)
-          if (window.TADAAdminAuth && window.TADAAdminAuth.refreshAdmin) {
+          // fix 2026-11-01: chỉ re-check quyền admin khi ĐỊNH DANH đổi
+          // (INITIAL_SESSION/SIGNED_IN/SIGNED_OUT/USER_UPDATED) — bỏ TOKEN_REFRESHED
+          // (~1h/lần) vì re-check không cần thiết + từng gây flap ẩn panel admin.
+          if (ev !== 'TOKEN_REFRESHED' && window.TADAAdminAuth && window.TADAAdminAuth.refreshAdmin) {
             window.TADAAdminAuth.refreshAdmin(); // kiểm tra quyền admin ở server
           }
           updateAuthUI();

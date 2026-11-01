@@ -10,28 +10,60 @@
   var API = window.LOCAL_API ? window.LOCAL_API : '';
   var _isAdmin = false;
   var _isLoading = false;
+  var _tokenRetries = 0; // chờ session sẵn (blog-admin set __tadaSession)
+  var _netRetries = 0; // retry lỗi MẠNG — không đổi trạng thái hiện tại
+  var _netRetrying = false; // đang hẹn retry mạng (chưa tạm coi "loading")
+  var _pendingCheck = false; // có yêu cầu check khi đang chạy 1 check khác
 
   // Gọi /api/admin/check với Bearer token — server quyết định đúng/sai.
   // Nếu chưa có session (blog-admin.js chưa set xong __tadaSession) → thử lại
   // sau 300ms tối đa 10 lần — tránh kết luận "không admin" sai trước khi session sẵn.
-  var _retries = 0;
+  // SỰ CỐ TẠM THỜI (offline, gateway, HTTP 5xx) → GIỮ trạng thái cũ, retry 1s
+  // đến 3 lần — không ẩn panel admin vì lỗi hạ tầng nhất thời (fix 2026-11-01:
+  // trước đây 1 lần fail network/5xx là _isAdmin=false → panel tự ẩn hết).
+  // 401/403 (server chủ động từ chối) → mới ẩn đúng ý.
+  function scheduleRetry() {
+    if (_netRetries < 3) {
+      _netRetries++;
+      _netRetrying = true;
+      setTimeout(function () {
+        _netRetrying = false;
+        _isLoading = false;
+        checkAdmin();
+      }, 1000);
+      return true;
+    }
+    return false; // hết retry: vẫn giữ trạng thái cũ
+  }
+
   function checkAdmin() {
-    if (_isLoading) return;
+    if (_isLoading) { _pendingCheck = true; return; }
     var token = window.TADAAdminAuth ? window.TADAAdminAuth.getToken() : '';
     if (!token) {
-      _retries++;
-      if (_retries <= 10) { setTimeout(checkAdmin, 300); return; }
+      _tokenRetries++;
+      if (_tokenRetries <= 10) { setTimeout(checkAdmin, 300); return; }
       _isAdmin = false; notify(); return;
     }
     _isLoading = true;
     fetch(API + '/api/admin/check', { headers: { 'Authorization': 'Bearer ' + token } })
       .then(function (r) {
+        if (r.status >= 500) {
+          scheduleRetry(); // lỗi server — giữ trạng thái cũ (như sự cố mạng)
+          return;
+        }
         _isAdmin = r.ok;
-        _retries = 0;
+        _tokenRetries = 0; _netRetries = 0;
         notify();
       })
-      .catch(function () { _isAdmin = false; notify(); })
-      .finally(function () { _isLoading = false; });
+      .catch(function () {
+        // Lỗi mạng — giữ trạng thái cũ, retry tối đa 3 lần
+        var scheduledAll = scheduleRetry();
+        if (!scheduledAll) notify();
+      })
+      .finally(function () {
+        if (!_netRetrying) _isLoading = false;
+        if (_pendingCheck && !_netRetrying) { _pendingCheck = false; checkAdmin(); }
+      });
   }
 
   function notify() {
@@ -62,9 +94,21 @@
     isAdmin: function () {
       return _isAdmin;
     },
-    /** Yêu cầu kiểm tra lại quyền admin (gọi khi session thay đổi). */
+    /** Yêu cầu kiểm tra lại quyền admin (gọi khi session thay đổi).
+     *  fix 2026-11-01: KHÔNG xá _isAdmin=false trước khi check (false-first
+     *  làm panel admin chớp tắt/mất) — chỉ ẩn ngay khi đã đăng XUẤT (mất token).
+     *  Còn token → giữ kết quả cũ đến khi check mới trả về. */
     refreshAdmin: function () {
-      _isAdmin = false;
+      var token = this.getToken();
+      if (!token) {
+        _tokenRetries = 0;
+        _isAdmin = false; notify();
+      }
+      checkAdmin();
+    },
+    /** Kiểm tra im lặng (quay lại tab) — không xá trạng thái, lỗi mạng giữ trạng thái cũ. */
+    recheck: function () {
+      _netRetries = 0;
       checkAdmin();
     },
     /** Callback — các module đăng ký để nhận thông báo khi trạng thái đổi. */
