@@ -174,19 +174,18 @@
         // Noi dung markdown thuong mo dau bang '# tieu de' trung voi H1 tren -> cat bo
         var md = (post.content || '').replace(/^\s*#[^\n]*\n/, '');
         var contentHtml = renderMarkdown(md);
-        if (parentContainer) parentContainer.classList.add('blog-detail-wrap');
-        container.innerHTML =
-          '<article class="blog-detail">' +
-            '<a href="/blog" class="blog-detail-back">← Quay lại danh sách</a>' +
-            '<h1>' + escHtml(post.title) + '</h1>' +
-            '<div class="meta">' +
-              'Đăng ngày ' + formatDate(post.published_at) +
-              (post.author_email ? ' bởi ' + escHtml(post.author_email) : '') +
-            '</div>' +
-            '<div class="content">' + contentHtml + '</div>' +
-          '</article>';
-        document.title = post.title + ' — TADA';
-        updateDetailSeo(post);
+        // Rewrite link pháp lý client-side (SSR trên server cũng đã làm —
+        // renderDetail ghi đè SSR nên phải làm lại): số hiệu → /van-ban/<id>
+        fetchDocIndex()
+          .then(function (docs) {
+            try {
+              contentHtml = window.rewriteLegalLinks
+                ? window.rewriteLegalLinks(contentHtml, docs)
+                : contentHtml;
+            } catch (e) { /* giữ nguyên contentHtml khi lỗi */ }
+            mountDetail(post, contentHtml, container);
+          })
+          .catch(function () { mountDetail(post, contentHtml, container); });
       })
       .catch(function (err) {
         // Xóa wrap class khi lỗi
@@ -195,6 +194,42 @@
           '<div class="blog-error">' + escHtml(err.message) + '</div>' +
           '<div style="text-align:center;margin-top:20px"><a href="/blog" class="btn btn-primary">← Quay lại danh sách</a></div>';
       });
+  }
+
+  /** Render khung bài chi tiết (tách khỏi fetch để rewrite xong mới gắn DOM). */
+  function mountDetail(post, contentHtml, container) {
+    var parentContainer = container.closest ? container.closest('.container') : null;
+    if (parentContainer) parentContainer.classList.add('blog-detail-wrap');
+    container.innerHTML =
+      '<article class="blog-detail">' +
+        '<a href="/blog" class="blog-detail-back">← Quay lại danh sách</a>' +
+        '<h1>' + escHtml(post.title) + '</h1>' +
+        '<div class="meta">' +
+          'Đăng ngày ' + formatDate(post.published_at) +
+          (post.author_email ? ' bởi ' + escHtml(post.author_email) : '') +
+        '</div>' +
+        '<div class="content">' + contentHtml + '</div>' +
+      '</article>';
+    document.title = post.title + ' — TADA';
+    updateDetailSeo(post);
+  }
+
+  /** Fetch index số hiệu→id (cache module: mỗi phiên mở bài chỉ gọi 1 lần).
+   *  LOW-1 fix review: fetch fail → xoá promise để lần render sau fetch lại. */
+  var docIndexPromise = null;
+  function fetchDocIndex() {
+    if (docIndexPromise) return docIndexPromise;
+    docIndexPromise = fetch(API + '/api/library/doc-index')
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (d) { return (d && d.docs) || []; })
+      .catch(function (e) {
+        docIndexPromise = null;
+        throw e;
+      });
+    return docIndexPromise;
   }
 
   /** Cập nhật SEO động cho trang chi tiết bài viết.

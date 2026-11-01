@@ -52,6 +52,28 @@ export async function GET(_req: NextRequest) {
     console.error('[sitemap] Lỗi đọc blog_posts:', e);
   }
 
+  // Trang toàn văn văn bản luật — index để bài viết link sâu về đây (SEO)
+  try {
+    const client = getSupabase();
+    const { data: docs } = await client
+      .from('landing_legal_docs')
+      .select('id,updated_at,created_at')
+      .eq('is_active', true)
+      .limit(200);
+    for (const doc of docs || []) {
+      if (!doc.id) continue;
+      const lastmodSrc = doc.updated_at || doc.created_at;
+      urls.push(
+        `  <url><loc>${SITE}/van-ban/${escapeXml(doc.id)}</loc>` +
+          `<changefreq>monthly</changefreq><priority>0.7</priority>` +
+          (lastmodSrc ? `<lastmod>${escapeXml(String(lastmodSrc))}</lastmod>` : '') +
+          `</url>`
+      );
+    }
+  } catch (e) {
+    console.error('[sitemap] Lỗi đọc landing_legal_docs:', e);
+  }
+
   const xml =
     '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +

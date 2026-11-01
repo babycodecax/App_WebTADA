@@ -3,37 +3,15 @@ import { readFile } from 'fs/promises';
 import path from 'path';
 import { marked } from 'marked';
 import { getSupabase } from '@/lib/supabase';
+import { SITE, esc, escJson, sanitizeSsrHtml } from '@/lib/ssrHtml';
+import { rewriteLegalLinks } from '@/lib/legalLinkRewrite';
+import { getDocIndex } from '@/lib/docIndexCache';
 
 export const runtime = 'nodejs';
 // force-dynamic — trả blog.html + SSR meta tags theo slug (SEO)
 export const dynamic = 'force-dynamic';
 
 const PUBLIC_DIR = path.join(process.cwd(), 'public');
-const SITE = 'https://ketoanthuetada.com';
-
-/** Escape HTML entities — tránh XSS từ dữ liệu Supabase */
-function esc(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-/** Escape JSON string cho safe insertion vào <script> tag — tránh </script> injection */
-function escJson(s: string): string {
-  return s.replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
-}
-
-/** Sanitize tối thiểu HTML từ marked trước khi SSR (content từ DB, không tin blind) */
-function sanitizeSsrHtml(h: string): string {
-  return h
-    .replace(/<script[\s\S]*?<\/script\s*>/gi, '')
-    .replace(/<iframe[\s\S]*?<\/iframe\s*>/gi, '')
-    .replace(/\son\w+\s*=\s*(['"]).*?\1/gi, '')
-    .replace(/javascript\s*:/gi, '');
-}
 
 /**
  * Redirect map: old slug (thiếu nguyên âm do bug slugify cũ) → new slug (đúng).
@@ -247,7 +225,15 @@ export async function GET(
           const raw = String(
             await marked.parse(md, { breaks: true, gfm: true })
           );
-          const bodyHtml = sanitizeSsrHtml(raw);
+          const rawHtml = sanitizeSsrHtml(raw);
+          // Rewrite link pháp lý: số hiệu văn bản trong bài → /van-ban/<id>
+          // (best-effort — index lỗi/không khớp cứ giữ text nguyên)
+          let bodyHtml = rawHtml;
+          try {
+            bodyHtml = rewriteLegalLinks(rawHtml, await getDocIndex(getSupabase()));
+          } catch {
+            // giữ nguyên rawHtml
+          }
           const fmtDate = (iso: string) => {
             if (!iso) return '';
             const dd = new Date(iso);

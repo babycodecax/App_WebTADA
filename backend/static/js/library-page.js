@@ -52,7 +52,8 @@ document.addEventListener('DOMContentLoaded', function () {
       '<span class="library-badge">' + escHtml(badge) + '</span>' +
       (eff ? '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ' + escHtml(fmtDate(eff)) + '</span>' : '') +
       (item.doc_number ? '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> ' + escHtml(item.doc_number) + '</span>' : '');
-    var clickable = item.id || item.file_path;
+    var isVault = item.__src === 'vault';
+    var clickable = isVault ? (item.file_path || item.id || '') : item.id || item.file_path;
     var title = item.title || item.file_name || item.file_path || 'Văn bản luật';
     // Nút Tải .docx gốc (nếu có file_name) — public download route
     var downloadBtn = item.file_name
@@ -60,17 +61,28 @@ document.addEventListener('DOMContentLoaded', function () {
       : '';
     return (
       '<article class="library-row" data-kind="legal" data-id="' + escHtml(clickable) + '" ' +
-        'data-has-html="' + (item.id ? '1' : '0') + '" tabindex="0" role="button" ' +
+        'data-has-html="' + (!isVault && item.id ? '1' : '0') + '" tabindex="0" role="button" ' +
         'aria-label="Xem toàn văn: ' + escHtml(title) + '">' +
         numHtml(idx) +
         '<div class="library-row-main">' +
           '<h3 class="library-row-title">' + escHtml(title) + '</h3>' +
           '<div class="library-row-meta">' + meta + '</div>' +
         '</div>' +
-        '<span class="library-row-btn" data-kind="legal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Xem toàn văn</span>' +
+        viewFullBtn(item) +
         downloadBtn +
       '</article>'
     );
+  }
+  // Nút "Xem toàn văn": item.id (landing_legal_docs) → anchor sang trang
+  // /van-ban/<id> (2026-11-01). Fallback file_path (vault chunks) giữ span + modal.
+  // Nhận biết dòng vault (file_path + chunks markdown) — dùng chung 2 chỗ
+  function isVaultRow(item) {
+    return !!(item && item.__src === 'vault');
+  }
+  function viewFullBtn(item) {
+    return !isVaultRow(item) && item.id
+      ? '<a class="library-row-btn" href="/van-ban/' + encodeURIComponent(item.id) + '" aria-label="Xem toàn văn: ' + escHtml(item.title || item.file_name || '') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Xem toàn văn</a>'
+      : '<span class="library-row-btn" data-kind="legal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Xem toàn văn</span>';
   }
 
   function formRow(item, idx) {
@@ -170,7 +182,11 @@ document.addEventListener('DOMContentLoaded', function () {
           return;
         }
         var body = document.getElementById('legal-detail-body');
-        var safe = window.DOMPurify && window.DOMPurify.sanitize ? window.DOMPurify.sanitize(html) : html;
+        var hasPurify = window.DOMPurify && window.DOMPurify.sanitize;
+        // DomPurify thiếu (CDN lỗi/CSP) → KHÔNG chèn HTML chưa sanitize
+        // (fix review residual-HIGH 2026-11-01, pattern như van-ban-page.js)
+        var safe = hasPurify ? window.DOMPurify.sanitize(html)
+          : '<div class="library-empty">Không thể hiển thị nội dung an toàn — hãy tải file gốc hoặc tải lại trang.</div>';
         if (body) body.innerHTML = '<div class="legal-doc-html">' + safe + '</div>';
       })
       .catch(function (err) { showError(err.message || 'lỗi'); });
@@ -193,7 +209,12 @@ document.addEventListener('DOMContentLoaded', function () {
         var html = '';
         if (window.marked && window.marked.parse) {
           html = window.marked.parse(content);
-          if (window.DOMPurify && window.DOMPurify.sanitize) html = window.DOMPurify.sanitize(html);
+          if (window.DOMPurify && window.DOMPurify.sanitize) {
+            html = window.DOMPurify.sanitize(html);
+          } else {
+            // marked cho phép inline HTML gốc — thiếu DOMPurify thì rủi ro XSS
+            html = '<div class="library-empty">Không thể hiển thị nội dung an toàn — hãy tải lại trang.</div>';
+          }
         } else {
           html = '<pre style="white-space:pre-wrap">' + escHtml(content) + '</pre>';
         }
@@ -247,8 +268,12 @@ document.addEventListener('DOMContentLoaded', function () {
         var legalDocs = Array.isArray(data.legal_docs) ? data.legal_docs : [];
         var legalVault = Array.isArray(data.legal_documents) ? data.legal_documents : [];
         var forms = Array.isArray(data.forms) ? data.forms : [];
-        // Ưu tiên bảng landing_legal_docs (toàn văn HTML) — thiếu thì fallback vault
-        allLegal = legalDocs.length ? legalDocs : legalVault;
+        // Ưu tiên bảng landing_legal_docs (toàn văn HTML) — thiếu thì fallback vault.
+        // Vault rows có id riêng (source_documents) nhưng KHÔNG có trang /van-ban
+        // (fix MEDIUM-4 review: đánh dấu __src để điều hướng đúng hàng).
+        allLegal = legalDocs.length
+          ? legalDocs
+          : legalVault.map(function (v) { return Object.assign({}, v, { __src: 'vault' }); });
         allForms = forms;
         applySearch();
       })
@@ -285,6 +310,12 @@ document.addEventListener('DOMContentLoaded', function () {
   function openRow(row) {
     var id = row.getAttribute('data-id') || '';
     var hasHtml = row.getAttribute('data-has-html') === '1';
+    // landing_legal_docs (id=uuid) → trang /van-ban/<id> (2026-11-01);
+    // vault file_path (id=path, có thể chứa /) → giữ modal markdown.
+    if (hasHtml && id && id.indexOf('/') === -1 && /^[a-zA-Z0-9\-_]+$/.test(id)) {
+      window.location.href = '/van-ban/' + encodeURIComponent(id);
+      return;
+    }
     var title = row.querySelector('.library-row-title')?.textContent || '';
     if (hasHtml) openLegalDocHtml(id, title);
     else openLegalDocMarkdown(id, title);

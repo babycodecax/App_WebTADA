@@ -402,3 +402,91 @@
   .legal-detail-dialog { width: 100vw; max-height: 92vh; }
   .legal-detail-body { padding: 14px 14px; font-size: 14px; }
 }
+
+/* ==========================================================================
+   TRANG TOÀN VĂN VAN BẢN — /van-ban/<id> (2026-11-01)
+   SSR bởi route /van-ban/[id]; `.legal-doc-html` dùng lại style modal sẵn có.
+   ========================================================================== */
+.vanban-page {
+  padding: 0 0 56px;
+  min-height: 60vh;
+}
+
+.vanban-hero {
+  padding: 28px 0 8px;
+}
+
+.vanban-loading {
+  padding: 40px 0;
+  text-align: center;
+  color: var(--text-muted-dark);
+}
+
+.vanban-article {
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--primary-white, #fff);
+  border: 1px solid rgba(128, 0, 32, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 2px 14px rgba(31, 20, 22, 0.06);
+  padding: 28px 32px 32px;
+}
+
+.vanban-head {
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--accent-gold);
+}
+
+.vanban-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.vanban-meta-item {
+  font-size: 13.5px;
+  color: var(--text-muted-dark);
+}
+
+.vanban-meta-item strong { color: var(--text-dark); }
+
+.vanban-title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--primary-burgundy, #800020);
+  margin: 6px 0 14px;
+}
+
+.vanban-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  padding: 9px 16px;
+}
+
+.vanban-body {
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--text-dark);
+  word-break: break-word;
+}
+
+.vanban-body .library-empty {
+  padding: 18px 0;
+  color: var(--text-muted-dark);
+}
+
+@media (max-width: 768px) {
+  .vanban-article { padding: 20px 16px 24px; }
+  .vanban-title { font-size: 20px; }
+}
+
+@media (max-width: 480px) {
+  .vanban-hero { padding: 20px 0 4px; }
+  .vanban-body { font-size: 15px; }
+}

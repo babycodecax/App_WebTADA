@@ -30,6 +30,9 @@ export interface LegalDocPublicRow {
 export interface LegalDocContentResult {
   title: string;
   file_html: string;
+  /** Fix MEDIUM-5 review 2026-11-01: thêm meta cho trang /van-ban fallback client */
+  doc_number: string;
+  file_name: string;
   error: string | null;
 }
 
@@ -349,28 +352,37 @@ export async function fetchLegalDocContent(
   id: string
 ): Promise<LegalDocContentResult> {
   const cleanId = (id || '').trim();
-  if (!cleanId) return { title: '', file_html: '', error: 'Thiếu id' };
+  const emptyResult = (err: string) => ({
+    title: '',
+    file_html: '',
+    doc_number: '',
+    file_name: '',
+    error: err,
+  });
+  if (!cleanId) return emptyResult('Thiếu id');
 
   try {
     const { data, error } = await sb
       .from('landing_legal_docs')
-      .select('title,file_html')
+      .select('title,file_html,doc_number,file_name')
       .eq('id', cleanId)
       .eq('is_active', true)
       .limit(1)
       .maybeSingle();
-    if (error) return { title: '', file_html: '', error: error.message };
-    if (!data) return { title: '', file_html: '', error: 'Không tìm thấy văn bản' };
+    if (error) return emptyResult(error.message);
+    if (!data) return emptyResult('Không tìm thấy văn bản');
 
-    const row = data as { title?: string; file_html?: string };
+    const row = data as { title?: string; file_html?: string; doc_number?: string; file_name?: string };
     return {
       title: String(row.title || ''),
       file_html: String(row.file_html || ''),
+      doc_number: String(row.doc_number || ''),
+      file_name: String(row.file_name || ''),
       error: null,
     };
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : 'Lỗi không xác định';
-    return { title: '', file_html: '', error: `Lỗi lấy nội dung: ${msg}` };
+    return emptyResult(`Lỗi lấy nội dung: ${msg}`);
   }
 }
 

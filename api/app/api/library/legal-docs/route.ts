@@ -13,7 +13,7 @@ export const maxDuration = 60;
  * - KHÔNG dùng chung với /api/library/legal-content (chunks markdown) — endpoint
  *   này đọc bảng mới landing_legal_docs (parse .docx khi admin upload / bulk import).
  *
- * Response: { title, file_html }
+ * Response: { title, doc_number, file_name, file_html }
  */
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
@@ -28,6 +28,8 @@ export async function GET(req: NextRequest) {
   }
   return NextResponse.json({
     title: result.title,
+    doc_number: result.doc_number,
+    file_name: result.file_name,
     file_html: result.file_html,
   });
 }

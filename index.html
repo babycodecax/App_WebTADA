@@ -836,7 +836,7 @@
           return;
         }
         // Chỉ hiện 5 mục đầu. Card CHỈ HIỂN THỊ (không link) — xem chi tiết phải qua
-        // nút "Xem toàn văn" (link sang /thu-vien) hoặc nút "Xem tất cả". Nút ⬇
+        // nút "Xem toàn văn" (item.id → /van-ban/<id>, fallback /thu-vien) hoặc nút "Xem tất cả". Nút ⬇
         // tải file hoạt động trực tiếp không rời trang.
         items.slice(0, 5).forEach(function (item, idx) {
           var card = document.createElement('div');
@@ -858,7 +858,7 @@
                   (item.doc_number ? '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="vertical-align:-2px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> ' + esc(item.doc_number) + '</span>' : '') +
                 '</div>' +
               '</div>' +
-              '<a class="library-mini-btn" href="/thu-vien" aria-label="Xem toàn văn: ' + esc(item.title || item.file_name || 'Văn bản luật') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Xem toàn văn</a>' + download;
+              '<a class="library-mini-btn" href="' + (item.id ? '/van-ban/' + encodeURIComponent(item.id) : '/thu-vien') + '" aria-label="Xem toàn văn: ' + esc(item.title || item.file_name || 'Văn bản luật') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Xem toàn văn</a>' + download;
           } else {
             var size = item.file_size;
             var sizeTxt = size && size > 0 ? (size < 1024 ? size + ' B' : size < 1048576 ? (size / 1024).toFixed(1) + ' KB' : (size / 1048576).toFixed(1) + ' MB') : '';
