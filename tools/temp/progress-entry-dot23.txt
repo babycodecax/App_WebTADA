@@ -1,0 +1,20 @@
+## [2026-11-01] Dot 2+3 — nang cap 11 bai dich vu/guide cluster7 theo runbook 10/2026 (PUBLISH + COMMIT xong)
+
+### Ket qua
+- Dot 2 (7 bai phu dich vu) va Dot 3 (4 bai guide) giu nguyen than bai dai, chuan hoa: bang so sanh >=1, H2 cau hoi, FAQ in dam **Cau n**, link noi bo tuyet doi, khoi cuoi dung thu tu CTA -> Xem them (5 link ton tai trong DB) -> blockquote >=3 google-link -> byline 2 dong + "Cap nhat: 10/2026 (Dot 2) / 11/2026 (Dot 3) | Nguon... Van ban phap ly xem muc Can cu phap ly phia tren."
+- Dot 2: dich-vu-thue-ke-toan-tada (doi title 62->53 chu "Dich vu thue ke toan TADA tron goi giup duoc dieu gi?"), diem-kiem-toan-bctc, phan-mem-ke-toan, ke-khai-bhxh, bhxh-that-nghiep, thanh-lap-giai-the, thay-doi-tt.
+- Dot 3: etax-hkd, huong-dan-chi-tiet-dk-hddt, quyet-toan-AZ, etax-mobile (summary moi, Cap nhat 11/2026).
+- Dot 2 publish 7/7 PATCH OK + KB backfill 111 OK x7 + IndexNow 200 + Bing x7; verify REST+live 7/7 TOK (summary 152-159).
+- Dot 3 publish 4/4 PATCH OK + backfill + IndexNow/Bing; verify REST+live 4/4 TOK (summary 156-160).
+- Commit 07e5caa: 11 draft cluster7-dich-vu (964 dòng thêm). Chua push (cho lenh: 01eec1f + 2b02744 + 07e5caa).
+- Cong cu moi: tools/temp/_verify_dot2.py, _verify_dot3.py (REST title/summary khop draft + live marker FAQ Cau 1) — pattern tai dung.
+
+### Bai hoc
+- Viet dai de phan rác sinh nang: bat buoc scan garbage regex \[\u3000-\u9fff\uff00-\uffef\u0400-\u04ff\ufffd\] + words case rac (System/Default/Purpose/issues/napis/opening/TeenTax) cho moi draft tranh.
+- Summary 150-160 chu phai dem sau khi sua; checker chan 1100-1800 tu body — bài dai goc 1900+ phai cat 6 khoi (~100 tu).
+- San slug check truoc khi gan link Xem them qua published_posts.json tránh FAIL sau den.
+
+### Con viec treo
+- push 3 commit (01eec1f, 2b02744, 07e5caa) — cho user lenh.
+- Dang FB ND 398 (file social-posts ngh...) + GSC submit loi 13 anh — dang cho user.
+- Bai Viet Chu Nhat 01/11: tin don han Q3 2/11 + checklist (dang yeu).

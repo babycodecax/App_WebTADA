@@ -1,0 +1,210 @@
+== ① KE TOAN TRON GOI ==
+  [SUA] dich-vu-ke-toan-tron-goi
+      Dịch vụ kế toán trọn gói 2026: phạm vi và báo giá?
+      - summary 149 ky tu (can 150-160)
+      - checker: FAIL (5):
+      - checker: - summary len=149 (can 150-160)
+      - checker: - so tu=1013 (can 1100-1800)
+      - checker: - thu tu sai: Xem thêm phai truoc blockquote, va blockquote phai truoc byline
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - H2 khong phai cau hoi: Cách chọn gói theo lượng hóa đơn của bạn; 5 câu hỏi nên đặt ra trước khi ký hợp đồng kế toán
+      - khong co bang so sanh/checklist
+      (H2=7, figure=1)
+  [SUA] dich-vu-thue-ke-toan-tada
+      Dịch vụ Thuế Kế toán TADA: Giải pháp trọn gói cho doanh nghiệp
+      - title 62 ky tu (can 50-60)
+      - summary 143 ky tu (can 150-160)
+      - checker: FAIL (9):
+      - checker: - title len=62 (can 50-60)
+      - checker: - summary len=143 (can 150-160)
+      - checker: - so tu=916 (can 1100-1800)
+      - checker: - FAQ khong co cau hoi in dam **Câu n**
+      - checker: - blockquote thieu link google.com/search (>=3)
+      - checker: - thieu byline chuan
+      - checker: - Xem thêm co 3 link post (can >=5, dung link tuyet doi)
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - khong co bang so sanh/checklist
+      - than bai chi co 0 link noi bo (can >=2)
+      - Xem them chi co 3 link DB (can >=5)
+      (H2=7, figure=0)
+  [SUA] dich-vu-kiem-toan-lap-bctc-fix-loi-thue
+      Dịch vụ kiểm toán, lập BCTC và xử lý lỗi thuế 2026?
+      - summary 147 ky tu (can 150-160)
+      - checker: FAIL (6):
+      - checker: - summary len=147 (can 150-160)
+      - checker: - so tu=920 (can 1100-1800)
+      - checker: - blockquote thieu link google.com/search (>=3)
+      - checker: - thu tu sai: Xem thêm phai truoc blockquote, va blockquote phai truoc byline
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - khong co bang so sanh/checklist
+      (H2=5, figure=1)
+  [SUA] dich-vu-phan-mem-ke-toan-hoa-don
+      Giải pháp phần mềm kế toán hóa đơn điện tử trọn gói 2026?
+      - checker: FAIL (4):
+      - checker: - so tu=967 (can 1100-1800)
+      - checker: - thu tu sai: Xem thêm phai truoc blockquote, va blockquote phai truoc byline
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - khong co bang so sanh/checklist
+      (H2=5, figure=1)
+
+== ② TU VAN, DAO TAO THUE-KE TOAN-BHXH-NS ==
+  [SUA] dich-vu-tu-van-thue-ke-toan-tong-hop
+      Tư vấn thuế kế toán BHXH nhân sự lương thưởng 2026?
+      - summary 134 ky tu (can 150-160)
+      - checker: FAIL (6):
+      - checker: - summary len=134 (can 150-160)
+      - checker: - so tu=953 (can 1100-1800)
+      - checker: - blockquote thieu link google.com/search (>=3)
+      - checker: - thu tu sai: Xem thêm phai truoc blockquote, va blockquote phai truoc byline
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - khong co bang so sanh/checklist
+      (H2=5, figure=1)
+  [SUA] dich-vu-ke-khai-bao-hiem-xa-hoi
+      Dịch vụ kê khai BHXH cho doanh nghiệp 2026 thế nào?
+      - checker: FAIL (6):
+      - checker: - so tu=906 (can 1100-1800)
+      - checker: - blockquote thieu link google.com/search (>=3)
+      - checker: - Xem thêm co 4 link post (can >=5, dung link tuyet doi)
+      - checker: - thu tu sai: Xem thêm phai truoc blockquote, va blockquote phai truoc byline
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - khong co bang so sanh/checklist
+      - Xem them chi co 4 link DB (can >=5)
+      (H2=6, figure=1)
+  [SUA] dich-vu-giai-quyet-bhxh-that-nghiep
+      Dịch vụ làm BHXH thất nghiệp 2026 thế nào cho nhanh?
+      - checker: FAIL (7):
+      - checker: - so tu=905 (can 1100-1800)
+      - checker: - FAQ=6 cau (can 3-5, khong dem lan FAQ khac trong bai)
+      - checker: - blockquote thieu link google.com/search (>=3)
+      - checker: - Xem thêm co 4 link post (can >=5, dung link tuyet doi)
+      - checker: - thu tu sai: Xem thêm phai truoc blockquote, va blockquote phai truoc byline
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - khong co bang so sanh/checklist
+      - Xem them chi co 4 link DB (can >=5)
+      (H2=5, figure=1)
+
+== ③ DANG KY MST HKD/DN/CKD + HDDT ==
+  [SUA] dich-vu-dang-ky-hkd-hoa-don-dien-tu
+      Dịch vụ đăng ký HKD và hóa đơn điện tử trọn gói 2026?
+      - checker: FAIL (5):
+      - checker: - so tu=932 (can 1100-1800)
+      - checker: - Xem thêm co 3 link post (can >=5, dung link tuyet doi)
+      - checker: - thu tu sai: Xem thêm phai truoc blockquote, va blockquote phai truoc byline
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - khong co bang so sanh/checklist
+      - Xem them chi co 3 link DB (can >=5)
+      (H2=5, figure=1)
+  [SUA] dich-vu-thanh-lap-giai-the-doanh-nghiep
+      Thành lập và giải thể doanh nghiệp trọn gói: thủ tục 2026?
+      - checker: FAIL (6):
+      - checker: - so tu=829 (can 1100-1800)
+      - checker: - FAQ=2 cau (can 3-5, khong dem lan FAQ khac trong bai)
+      - checker: - blockquote thieu link google.com/search (>=3)
+      - checker: - thu tu sai: Xem thêm phai truoc blockquote, va blockquote phai truoc byline
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - H2 khong phai cau hoi: Khi nào nên giải thể thay vì bỏ mặc công ty; Checklist giấy tờ cần chuẩn bị
+      - khong co bang so sanh/checklist
+      - than bai chi co 1 link noi bo (can >=2)
+      (H2=7, figure=0)
+  [SUA] dich-vu-thay-doi-thong-tin-ca-nhan
+      Thay đổi thông tin CCCD địa chỉ SĐT trên MST 2026?
+      - summary 162 ky tu (can 150-160)
+      - checker: FAIL (6):
+      - checker: - summary len=162 (can 150-160)
+      - checker: - so tu=935 (can 1100-1800)
+      - checker: - blockquote thieu link google.com/search (>=3)
+      - checker: - thu tu sai: Xem thêm phai truoc blockquote, va blockquote phai truoc byline
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - khong co bang so sanh/checklist
+      (H2=5, figure=1)
+  [SUA] huong-dan-chi-tiet-quy-trinh-dang-ky-su-dung-hoa-don-dien-tu-cho-ho-kinh-doanh-nam-2026
+      Hướng dẫn chi tiết quy trình đăng ký sử dụng hóa đơn điện tử
+      - summary 145 ky tu (can 150-160)
+      - checker: FAIL (6):
+      - checker: - summary len=145 (can 150-160)
+      - checker: - FAQ khong co cau hoi in dam **Câu n**
+      - checker: - blockquote thieu link google.com/search (>=3)
+      - checker: - thieu byline chuan
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - khong co bang so sanh/checklist
+      - than bai chi co 0 link noi bo (can >=2)
+      (H2=7, figure=0)
+  [SUA] cach-dang-ky-hoa-don-dien-tu-tren-etax-cho-hkd
+      Cách đăng ký hóa đơn điện tử trên eTax cho hộ kinh doanh
+      - summary 134 ky tu (can 150-160)
+      - checker: FAIL (6):
+      - checker: - summary len=134 (can 150-160)
+      - checker: - FAQ khong co cau hoi in dam **Câu n**
+      - checker: - thieu byline chuan
+      - checker: - Xem thêm co 4 link post (can >=5, dung link tuyet doi)
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - khong co bang so sanh/checklist
+      - Xem them chi co 4 link DB (can >=5)
+      (H2=8, figure=1)
+
+== ④ KE KHAI + HOAN THUE TNCN, GTGT ==
+  [SUA] dich-vu-ke-khai-thue-tncn-gtgt
+      Dịch vụ kê khai thuế TNCN GTGT hàng tháng 2026 thế nào?
+      - summary 140 ky tu (can 150-160)
+      - checker: FAIL (5):
+      - checker: - summary len=140 (can 150-160)
+      - checker: - so tu=957 (can 1100-1800)
+      - checker: - thu tu sai: Xem thêm phai truoc blockquote, va blockquote phai truoc byline
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - khong co bang so sanh/checklist
+      (H2=5, figure=1)
+  [SUA] dich-vu-hoan-thue-tncn
+      Hoàn thuế TNCN cho cá nhân: điều kiện thủ tục 2026?
+      - summary 140 ky tu (can 150-160)
+      - checker: FAIL (8):
+      - checker: - summary len=140 (can 150-160)
+      - checker: - so tu=967 (can 1100-1800)
+      - checker: - FAQ=2 cau (can 3-5, khong dem lan FAQ khac trong bai)
+      - checker: - blockquote thieu link google.com/search (>=3)
+      - checker: - Xem thêm co 3 link post (can >=5, dung link tuyet doi)
+      - checker: - thu tu sai: Xem thêm phai truoc blockquote, va blockquote phai truoc byline
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - H2 khong phai cau hoi: Checklist chứng từ cần gom đủ trước khi nộp; 3 lỗi khiến hồ sơ hoàn thuế bị trả về nhiều nhất
+      - khong co bang so sanh/checklist
+      - Xem them chi co 3 link DB (can >=5)
+      (H2=8, figure=1)
+  [SUA] quyet-toan-thue-tncn-2026-huong-dan-chi-tiet
+      Quyết toán thuế TNCN 2026 - Hướng dẫn chi tiết từ A-Z
+      - summary 120 ky tu (can 150-160)
+      - checker: FAIL (5):
+      - checker: - summary len=120 (can 150-160)
+      - checker: - FAQ khong co cau hoi in dam **Câu n**
+      - checker: - thieu byline chuan
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - khong co bang so sanh/checklist
+      (H2=9, figure=1)
+  [SUA] ke-khai-thue-tncn-tren-etax-mobile-huong-dan-a-z
+      Kê khai thuế TNCN trên eTax Mobile - Hướng dẫn A-Z
+      - summary 142 ky tu (can 150-160)
+      - checker: FAIL (7):
+      - checker: - summary len=142 (can 150-160)
+      - checker: - FAQ khong co cau hoi in dam **Câu n**
+      - checker: - blockquote thieu link google.com/search (>=3)
+      - checker: - thieu byline chuan
+      - checker: - Xem thêm co 3 link post (can >=5, dung link tuyet doi)
+      - checker: - thieu dong *Cập nhật: MM/YYYY | Nguồn...*
+      - checker: - dong Nguồn con liệt kê trùng văn bản (cần chốt: xem mục Căn cứ pháp lý phía trên)
+      - khong co bang so sanh/checklist
+      - Xem them chi co 3 link DB (can >=5)
+      (H2=9, figure=1)
+
